@@ -1,22 +1,27 @@
 export const linksAdmin = [
   {
     name: 'Dashboard',
-    icon: 'home',
+    icon: 'dashboard',
     path: '/admin/dashboard'
   },
   {
-    name: 'Relatórios',
-    icon: 'paper',
-    path: '/admin/relatorios'
-  },
-  {
-    name: 'Bolsistas',
-    icon: 'list',
-    path: '/admin/lista'
+    name: 'Bolsas Ativas',
+    icon: 'event_available_outlined',
+    path: '/admin/bolsas-ativas'
   },
   {
     name: 'Bolsas Expiradas',
-    icon: 'cancel',
-    path: '/admin/bolsas/expiradas'
+    icon: 'hourglass_bottom_outlined',
+    path: '/admin/bolsas-expiradas'
+  },
+  {
+    name: 'Estudantes',
+    icon: 'school',
+    path: '/admin/estudantes'
+  },
+  {
+    name: 'Orientadores',
+    icon: 'people',
+    path: '/admin/orientadores'
   }
 ]
