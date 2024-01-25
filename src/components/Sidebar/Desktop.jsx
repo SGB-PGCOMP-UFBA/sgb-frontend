@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
+import Icon from '@mui/material/Icon'
 import { useAppContext } from '../../context/appContext'
 import { linksAdmin } from '../../utils/linksAdmin'
 import { linksDiscente } from '../../utils/linksDiscente'
@@ -15,7 +17,7 @@ export default function Desktop({ userType }) {
         return setLinks(linksAdmin)
       case 'student':
         return setLinks(linksDiscente)
-      case 'teacher':
+      case 'advisor':
         return setLinks(linksDocente)
       default:
         return setLinks([])
@@ -44,13 +46,14 @@ export default function Desktop({ userType }) {
             alt="Logo"
             className={`${expandSidebar ? 'block' : 'hidden'} w-52`}
           />
+          <p>PGCOMP</p>
           <a
             href="/"
             className={`${
               expandSidebar ? 'block' : 'hidden'
             } text-center font-poppins text-base font-semibold`}
           >
-            Sistema de acompanhamento de bolsistas
+            Sistema de Acompanhamento de Bolsistas
           </a>
         </header>
         <ul className=" flex w-full flex-col items-center">
@@ -68,7 +71,7 @@ export default function Desktop({ userType }) {
                   borderColor: isActive ? '#3b82f6' : 'transparent'
                 })}
               >
-                <img src={`/assets/icons/${link.icon}.svg`} alt={link.icon} />
+                <Icon sx={{ fontSize: 32 }}>{link.icon}</Icon>
                 <span className="text-center font-inter font-medium text-gray-800">
                   {link.name}
                 </span>
@@ -90,7 +93,7 @@ export default function Desktop({ userType }) {
                 borderColor: isActive ? '#3b82f6' : 'transparent'
               })}
             >
-              <img src="/assets/icons/logout.svg" alt="Help" />
+              <Icon sx={{ fontSize: 32 }}>logout</Icon>
               <span className="font-inter font-medium text-gray-800">Sair</span>
             </NavLink>
           </li>
@@ -98,4 +101,8 @@ export default function Desktop({ userType }) {
       </div>
     </aside>
   )
+}
+
+Desktop.propTypes = {
+  userType: PropTypes.string.isRequired
 }

@@ -4,7 +4,7 @@ import List from '../../../components/Lists'
 export default function DocenteBolsasExpiradas() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
-      <Sidebar userType="teacher" />
+      <Sidebar userType="advisor" />
       <section className="flex w-full justify-center py-6">
         <div className="shadow-base h-max w-full space-y-8 rounded-lg bg-white p-6 lg:w-10/12">
           <div className="mb-8 flex items-center gap-x-4">

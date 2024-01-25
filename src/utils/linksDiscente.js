@@ -1,7 +1,7 @@
 export const linksDiscente = [
   {
     name: 'Dashboard',
-    icon: 'home',
+    icon: 'dashboard',
     path: '/discente/dashboard'
   },
   {

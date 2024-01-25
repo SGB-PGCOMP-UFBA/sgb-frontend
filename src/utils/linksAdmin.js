@@ -23,5 +23,10 @@ export const linksAdmin = [
     name: 'Orientadores',
     icon: 'people',
     path: '/admin/orientadores'
+  },
+  {
+    name: 'Agências',
+    icon: 'business',
+    path: '/admin/agencias'
   }
 ]

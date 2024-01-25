@@ -2,6 +2,9 @@ import AdminDashboard from './Admin/Dashboard'
 import AdminBolsasExpiradas from './Admin/BolsasExpiradas'
 import AdminLista from './Admin/Lista'
 import AdminRelatorios from './Admin/Relatorios'
+import AdminGerenciaOrientadores from './Admin/GerenciamentoOrientadores'
+import AdminGerenciaEstudantes from './Admin/GerenciamentoEstudantes'
+import AdminGerenciaAgencias from './Admin/GerenciamentoAgencias'
 import DiscenteDashboard from './Discente/Dashboard'
 import DiscenteEstenderBolsa from './Discente/Estender'
 import DocenteDashboard from './Docente/Dashboard'
@@ -17,6 +20,9 @@ export {
   AdminBolsasExpiradas,
   AdminLista,
   AdminRelatorios,
+  AdminGerenciaAgencias,
+  AdminGerenciaOrientadores,
+  AdminGerenciaEstudantes,
   DiscenteDashboard,
   DiscenteEstenderBolsa,
   DocenteLista,

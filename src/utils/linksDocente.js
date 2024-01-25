@@ -1,7 +1,7 @@
 export const linksDocente = [
   {
     name: 'Dashboard',
-    icon: 'home',
+    icon: 'dashboard',
     path: '/docente/dashboard'
   },
   {
@@ -10,13 +10,13 @@ export const linksDocente = [
     path: '/docente/relatorios'
   },
   {
-    name: 'Bolsistas',
-    icon: 'list',
+    name: 'Bolsas Ativas',
+    icon: 'event_available_outlined',
     path: '/docente/lista'
   },
   {
     name: 'Bolsas Expiradas',
-    icon: 'cancel',
+    icon: 'hourglass_empty_outlined',
     path: '/docente/bolsas/expiradas'
   },
   {

@@ -5,7 +5,7 @@ import { menuListDocente } from '../../../utils/menuListDocente'
 export default function DocenteDashboard() {
   return (
     <div className="flex h-screen flex-col overflow-y-auto bg-gray-100 pb-4 md:flex-row">
-      <Sidebar userType="teacher" />
+      <Sidebar userType="advisor" />
       <div className="flex w-full flex-col items-center gap-y-8 overflow-y-auto p-4 md:justify-center">
         <div className="space-y-1.5 text-center">
           <h1 className="font-poppins text-2xl font-semibold">

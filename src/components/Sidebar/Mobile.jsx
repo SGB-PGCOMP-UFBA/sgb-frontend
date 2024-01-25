@@ -15,7 +15,7 @@ export default function Mobile({ userType }) {
         return setLinks(linksAdmin)
       case 'student':
         return setLinks(linksDiscente)
-      case 'teacher':
+      case 'advisor':
         return setLinks(linksDocente)
       default:
         return setLinks([])

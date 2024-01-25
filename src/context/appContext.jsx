@@ -17,6 +17,12 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
+  GET_ADVISORS_BEGIN,
+  GET_ADVISORS_SUCCESS,
+  GET_ADVISORS_ERROR,
+  GET_AGENCYS_BEGIN,
+  GET_AGENCYS_SUCCESS,
+  GET_AGENCYS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
@@ -45,7 +51,9 @@ const initialState = {
   token: token || '',
   userRole: roles || '',
   name: username || '',
+  agencys: [],
   students: [],
+  advisors: [],
   totalItems: 0,
   totalPages: 1,
   currentPage: 1,
@@ -161,15 +169,49 @@ function AppProvider({ children }) {
     dispatch({ type: GET_STUDENTS_BEGIN })
 
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
-      )
+      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/student`)
       dispatch({
         type: GET_STUDENTS_SUCCESS,
         payload: data
       })
     } catch (error) {
-      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Falha ao carregar a lista de estudantes.' })
+    }
+
+    clearAlert()
+  }
+
+  const getAgencys = async () => {
+    dispatch({ type: GET_AGENCYS_BEGIN })
+
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/agency`)
+      dispatch({
+        type: GET_AGENCYS_SUCCESS,
+        payload: data
+      })
+    } catch (error) {
+      dispatch({ type: GET_AGENCYS_ERROR, payload: 'Falha ao carregar a lista de agências.' })
+    }
+
+    clearAlert()
+  }
+
+  const deleteAgency = async (id) => {
+    await axios.delete(`${process.env.REACT_APP_BASE_URL}/v1/agency/${id}`)
+  }
+
+  const getAdvisors = async () => {
+    dispatch({ type: GET_ADVISORS_BEGIN })
+
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/advisor`)
+      dispatch({
+        type: GET_ADVISORS_SUCCESS,
+        payload: data
+      })
+    } catch (error) {
+      dispatch({ type: GET_ADVISORS_ERROR, payload: 'Falha ao carregar a lista de orientadores.' })
     }
 
     clearAlert()
@@ -276,7 +318,10 @@ function AppProvider({ children }) {
         forgetPassword,
         displayFormAlert,
         getStudentData,
-        extendEndDate
+        extendEndDate,
+        getAdvisors,
+        getAgencys,
+        deleteAgency
       }}
     >
       {children}
