@@ -4,7 +4,7 @@ import AdminLista from './Admin/Lista'
 import AdminRelatorios from './Admin/Relatorios'
 import AdminGerenciaOrientadores from './Admin/GerenciamentoOrientadores'
 import AdminGerenciaEstudantes from './Admin/GerenciamentoEstudantes'
-import AdminGerenciaAgencias from './Admin/GerenciamentoAgencias'
+import { GerenciamentoAgencias } from './GerenciamentoAgencias'
 import Login from './Login'
 import { PageNotFound } from './PageNotFound'
 import { PageForgetPassword } from './PageForgetPassword'
@@ -14,7 +14,7 @@ export {
   AdminBolsasExpiradas,
   AdminLista,
   AdminRelatorios,
-  AdminGerenciaAgencias,
+  GerenciamentoAgencias,
   AdminGerenciaOrientadores,
   AdminGerenciaEstudantes,
   Login,

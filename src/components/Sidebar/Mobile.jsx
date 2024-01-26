@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { linksAdmin } from '../../utils/linksAdmin'
-import { linksDiscente } from '../../utils/linksDiscente'
-import { linksDocente } from '../../utils/linksDocente'
 
 export default function Mobile({ userType }) {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
@@ -13,10 +11,6 @@ export default function Mobile({ userType }) {
     switch (userType) {
       case 'admin':
         return setLinks(linksAdmin)
-      case 'student':
-        return setLinks(linksDiscente)
-      case 'advisor':
-        return setLinks(linksDocente)
       default:
         return setLinks([])
     }

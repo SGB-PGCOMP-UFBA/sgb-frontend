@@ -11,7 +11,7 @@ import {
   PageForgetPassword,
   Login,
   PageNotFound,
-  AdminGerenciaAgencias
+  GerenciamentoAgencias
 } from './pages'
 
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
           <Route path="admin/bolsas-ativas" element={<AdminLista />} />
           <Route path="admin/bolsas-expiradas" element={<AdminBolsasExpiradas />} />
           <Route path="admin/relatorios" element={<AdminRelatorios />} />
-          <Route path="admin/agencias" element={<AdminGerenciaAgencias />} />
+          <Route path="admin/agencias" element={<GerenciamentoAgencias />} />
           <Route path="admin/estudantes" element={<AdminGerenciaEstudantes />} />
           <Route path="admin/orientadores" element={<AdminGerenciaOrientadores />} />
         </Route>

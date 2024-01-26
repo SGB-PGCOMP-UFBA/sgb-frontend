@@ -4,8 +4,6 @@ import { NavLink } from 'react-router-dom'
 import Icon from '@mui/material/Icon'
 import { useAppContext } from '../../context/appContext'
 import { linksAdmin } from '../../utils/linksAdmin'
-import { linksDiscente } from '../../utils/linksDiscente'
-import { linksDocente } from '../../utils/linksDocente'
 
 export default function Desktop({ userType }) {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
@@ -15,10 +13,6 @@ export default function Desktop({ userType }) {
     switch (userType) {
       case 'admin':
         return setLinks(linksAdmin)
-      case 'student':
-        return setLinks(linksDiscente)
-      case 'advisor':
-        return setLinks(linksDocente)
       default:
         return setLinks([])
     }
