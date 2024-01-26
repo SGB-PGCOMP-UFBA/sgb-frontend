@@ -1,14 +1,12 @@
 import { toast } from 'react-toastify'
 import {
+  actions,
   DISPLAY_ALERT,
   CLEAR_ALERT,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
-  FORGET_PASSWORD_BEGIN,
-  FORGET_PASSWORD_SUCCESS,
-  FORGET_PASSWORD_ERROR,
   TOGGLE_SIDEBAR,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
@@ -16,9 +14,6 @@ import {
   GET_ADVISORS_BEGIN,
   GET_ADVISORS_SUCCESS,
   GET_ADVISORS_ERROR,
-  GET_AGENCYS_BEGIN,
-  GET_AGENCYS_SUCCESS,
-  GET_AGENCYS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   EXTEND_END_DATE_BEGIN,
@@ -121,17 +116,17 @@ const reducer = (state, action) => {
     }
   }
 
-  if (action.type === GET_AGENCYS_BEGIN) {
+  if (action.type === actions.agency.getAll.GET_AGENCYS_BEGIN) {
     return { ...state, isLoading: true, showAlert: false }
   }
-  if (action.type === GET_AGENCYS_SUCCESS) {
+  if (action.type === actions.agency.getAll.GET_AGENCYS_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       agencys: action.payload
     }
   }
-  if (action.type === GET_AGENCYS_ERROR) {
+  if (action.type === actions.agency.getAll.GET_AGENCYS_ERROR) {
     toast.error(action.payload)
     return {
       ...state,
@@ -139,22 +134,18 @@ const reducer = (state, action) => {
     }
   }
 
-  if (action.type === FORGET_PASSWORD_BEGIN) {
-    return {
-      ...state,
-      isLoading: true
-    }
+  if (action.type === actions.agency.delete.DELETE_AGENCY_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false }
   }
-  if (action.type === FORGET_PASSWORD_ERROR) {
-    toast.error(action.payload)
+  if (action.type === actions.agency.delete.DELETE_AGENCY_SUCCESS) {
+    toast.success(action.payload)
     return {
       ...state,
       isLoading: false
     }
   }
-
-  if (action.type === FORGET_PASSWORD_SUCCESS) {
-    toast.success('Email enviado com sucesso.')
+  if (action.type === actions.agency.delete.DELETE_AGENCY_ERROR) {
+    toast.error(action.payload)
     return {
       ...state,
       isLoading: false

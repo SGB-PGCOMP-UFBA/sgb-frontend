@@ -1,6 +1,6 @@
-import ForgetPasswordForm from '../../components/ForgetPasswordForm'
+import { ForgetPasswordForm } from './ForgetPasswordForm'
 
-export default function ForgetPassword() {
+function PageForgetPassword() {
   return (
     <div className="flex h-screen w-full items-center justify-center p-6 md:p-0">
       <section className="flex w-full flex-col items-center justify-center gap-y-7 md:w-11/12 lg:w-full">
@@ -11,10 +11,12 @@ export default function ForgetPassword() {
           </a>
         </h1>
         <p className="mt-4 max-w-[390px] text-center font-inter text-sm leading-6 text-gray-800 md:text-base">
-          Informe seu endereço de e-mail usando durante o cadastro e lhe enviaremos uma nova senha.
+          Informe o endereço de e-mail usado durante o seu cadastro.
         </p>
         <ForgetPasswordForm />
       </section>
     </div>
   )
 }
+
+export { PageForgetPassword }

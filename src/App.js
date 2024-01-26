@@ -8,15 +8,9 @@ import {
   AdminRelatorios,
   AdminGerenciaOrientadores,
   AdminGerenciaEstudantes,
-  DiscenteDashboard,
-  DiscenteEstenderBolsa,
-  DocenteDashboard,
-  ForgetPassword,
-  DocenteLista,
-  DocenteBolsasExpiradas,
-  DocenteRelatorios,
+  PageForgetPassword,
   Login,
-  Page404,
+  PageNotFound,
   AdminGerenciaAgencias
 } from './pages'
 
@@ -26,21 +20,7 @@ export default function App() {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
-
-        {/* Rotas de usuário discente */}
-        <Route element={<RequireAuth allowedRoles="STUDENT" />}>
-          <Route path="discente/dashboard" element={<DiscenteDashboard />} />
-          <Route path="discente/estender" element={<DiscenteEstenderBolsa />} />
-        </Route>
-
-        {/* Rotas de usuário docente */}
-        <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
-          <Route path="docente/dashboard" element={<DocenteDashboard />} />
-          <Route path="docente/lista" element={<DocenteLista />} />
-          <Route path="docente/bolsas/expiradas" element={<DocenteBolsasExpiradas />} />
-          <Route path="docente/relatorios" element={<DocenteRelatorios />} />
-        </Route>
+        <Route path="/esqueci-a-senha" element={<PageForgetPassword />} />
 
         {/* Rotas de usuário administrador */}
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
@@ -54,7 +34,7 @@ export default function App() {
         </Route>
 
         {/* Qualquer rota */}
-        <Route path="*" element={<Page404 />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>

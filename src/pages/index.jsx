@@ -5,15 +5,9 @@ import AdminRelatorios from './Admin/Relatorios'
 import AdminGerenciaOrientadores from './Admin/GerenciamentoOrientadores'
 import AdminGerenciaEstudantes from './Admin/GerenciamentoEstudantes'
 import AdminGerenciaAgencias from './Admin/GerenciamentoAgencias'
-import DiscenteDashboard from './Discente/Dashboard'
-import DiscenteEstenderBolsa from './Discente/Estender'
-import DocenteDashboard from './Docente/Dashboard'
-import DocenteLista from './Docente/Lista'
-import DocenteBolsasExpiradas from './Docente/BolsasExpiradas'
-import DocenteRelatorios from './Docente/Relatorios'
 import Login from './Login'
-import Page404 from './Page404'
-import ForgetPassword from './ForgetPassword'
+import { PageNotFound } from './PageNotFound'
+import { PageForgetPassword } from './PageForgetPassword'
 
 export {
   AdminDashboard,
@@ -23,13 +17,7 @@ export {
   AdminGerenciaAgencias,
   AdminGerenciaOrientadores,
   AdminGerenciaEstudantes,
-  DiscenteDashboard,
-  DiscenteEstenderBolsa,
-  DocenteLista,
-  DocenteDashboard,
-  DocenteBolsasExpiradas,
-  DocenteRelatorios,
   Login,
-  Page404,
-  ForgetPassword
+  PageNotFound,
+  PageForgetPassword
 }

@@ -4,15 +4,13 @@ import axios from 'axios'
 import reducer from './reducer' // eslint-disable-line
 
 import {
+  actions,
   DISPLAY_ALERT,
   CLEAR_ALERT,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
-  FORGET_PASSWORD_BEGIN,
-  FORGET_PASSWORD_SUCCESS,
-  FORGET_PASSWORD_ERROR,
   TOGGLE_SIDEBAR,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
@@ -20,9 +18,6 @@ import {
   GET_ADVISORS_BEGIN,
   GET_ADVISORS_SUCCESS,
   GET_ADVISORS_ERROR,
-  GET_AGENCYS_BEGIN,
-  GET_AGENCYS_SUCCESS,
-  GET_AGENCYS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
@@ -106,33 +101,6 @@ function AppProvider({ children }) {
     localStorage.removeItem('id')
   }
 
-  const forgetPassword = async (forgestPasswordData) => {
-    const { email } = forgestPasswordData
-    dispatch({ type: FORGET_PASSWORD_BEGIN })
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byemail?email=${email}`
-      )
-      if (data) {
-        await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/v1/password-recovery/request`,
-          forgestPasswordData
-        )
-        dispatch({
-          type: FORGET_PASSWORD_SUCCESS
-        })
-      }
-    } catch (error) {
-      if (!error?.response) {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Sem resposta do servidor' })
-      } else if (error?.response?.status === 404) {
-        displayFormAlert('Usuário não encontrado.')
-      } else {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado. Tente novamente' })
-      }
-    }
-  }
-
   const loginUser = async (currentUser) => {
     dispatch({ type: LOGIN_USER_BEGIN })
     try {
@@ -182,23 +150,41 @@ function AppProvider({ children }) {
   }
 
   const getAgencys = async () => {
-    dispatch({ type: GET_AGENCYS_BEGIN })
+    dispatch({ type: actions.agency.getAll.GET_AGENCYS_BEGIN })
 
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/agency`)
       dispatch({
-        type: GET_AGENCYS_SUCCESS,
+        type: actions.agency.getAll.GET_AGENCYS_SUCCESS,
         payload: data
       })
     } catch (error) {
-      dispatch({ type: GET_AGENCYS_ERROR, payload: 'Falha ao carregar a lista de agências.' })
+      dispatch({
+        type: actions.agency.getAll.GET_AGENCYS_ERROR,
+        payload: 'Falha ao carregar a lista de agências.'
+      })
     }
 
     clearAlert()
   }
 
   const deleteAgency = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_BASE_URL}/v1/agency/${id}`)
+    dispatch({ type: actions.agency.delete.DELETE_AGENCY_BEGIN })
+
+    try {
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/v1/agency/${id}`)
+      dispatch({
+        type: actions.agency.delete.DELETE_AGENCY_SUCCESS,
+        payload: 'Agência excluída com sucesso.'
+      })
+    } catch (error) {
+      dispatch({
+        type: actions.agency.delete.DELETE_AGENCY_ERROR,
+        payload: 'Falha ao carregar a lista de agências.'
+      })
+    }
+
+    clearAlert()
   }
 
   const getAdvisors = async () => {
@@ -315,7 +301,6 @@ function AppProvider({ children }) {
         handleChange,
         getExpiredStudents,
         getStudentsEndDate,
-        forgetPassword,
         displayFormAlert,
         getStudentData,
         extendEndDate,

@@ -7,12 +7,16 @@ export function DialogExclusaoAgencia({ item, isOpen, onClose }) {
   console.log(item)
   const { deleteAgency } = useAppContext()
 
+  const executeAndClose = (id) => {
+    deleteAgency(id)
+    onClose()
+  }
+
   const dialogTitle = 'Excluir Agência'
 
   const dialogContent = (
     <div>
-      <p>Você está prestes a excluir esta agência e esta ação é irreversível.</p>
-      <p>Você tem certeza?</p>
+      <p>Esta ação é irreversível. Você tem certeza?</p>
     </div>
   )
 
@@ -22,7 +26,7 @@ export function DialogExclusaoAgencia({ item, isOpen, onClose }) {
         Cancelar
       </Button>
       <Button
-        onClick={() => deleteAgency(item.id)}
+        onClick={() => executeAndClose(item.id)}
         autoFocus
         variant="contained"
         color="error"
