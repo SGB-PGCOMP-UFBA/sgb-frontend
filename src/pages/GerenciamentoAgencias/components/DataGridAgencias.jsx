@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../components/Loading'
-import { formatDate } from '../../utils/formatters'
-import { DialogExclusaoAgencia } from './components/DialogExclusaoAgencia'
+import Loading from '../../../components/Loading'
+import { formatDate } from '../../../utils/formatters'
+import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 
 function DataGridAgencias({ agencys, isLoading, onRemoveAgency }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
