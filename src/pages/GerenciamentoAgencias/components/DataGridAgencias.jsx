@@ -4,19 +4,31 @@ import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 import Loading from '../../../components/Loading'
 import { formatDate } from '../../../utils/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
+import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
 
-function DataGridAgencias({ agencys, isLoading, onRemoveAgency }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
+  const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
+  const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedAgency, setSelectedAgency] = useState(null)
 
-  const handleDialogClose = () => {
+  const handleDialogForDeleteClose = () => {
     setSelectedAgency(null)
-    setIsDialogOpen(false)
+    setIsDialogForDeleteOpen(false)
   }
 
-  const handleDialogOpen = (data) => {
+  const handleDialogForDeleteOpen = (data) => {
     setSelectedAgency(data)
-    setIsDialogOpen(true)
+    setIsDialogForDeleteOpen(true)
+  }
+
+  const handleDialogForUpdateClose = () => {
+    setSelectedAgency(null)
+    setIsDialogForUpdateOpen(false)
+  }
+
+  const handleDialogForUpdateOpen = (data) => {
+    setSelectedAgency(data)
+    setIsDialogForUpdateOpen(true)
   }
 
   const columns = [
@@ -56,12 +68,12 @@ function DataGridAgencias({ agencys, isLoading, onRemoveAgency }) {
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Editar Agência">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Agência">
-            <IconButton onClick={() => handleDialogOpen(params.row)}>
+            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>delete</Icon>
             </IconButton>
           </Tooltip>
@@ -94,10 +106,19 @@ function DataGridAgencias({ agencys, isLoading, onRemoveAgency }) {
 
       {selectedAgency && (
         <DialogExclusaoAgencia
-          isOpen={isDialogOpen}
+          isOpen={isDialogForDeleteOpen}
           item={selectedAgency}
-          onClose={handleDialogClose}
-          onSubmit={onRemoveAgency}
+          onClose={handleDialogForDeleteClose}
+          onSubmit={onDelete}
+        />
+      )}
+
+      {selectedAgency && (
+        <DialogEdicaoAgencia
+          isOpen={isDialogForUpdateOpen}
+          item={selectedAgency}
+          onClose={handleDialogForUpdateClose}
+          onSubmit={onUpdate}
         />
       )}
     </div>

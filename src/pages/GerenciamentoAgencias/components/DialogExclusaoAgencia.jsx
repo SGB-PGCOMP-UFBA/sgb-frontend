@@ -10,8 +10,11 @@ function DialogExclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
   }
 
   const dialogContent = (
-    <div>
-      <p>Esta ação é irreversível. Você tem certeza?</p>
+    <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
+      <p>
+        Você tem certeza que deseja apagar a agência <b>{item.name}</b>?
+      </p>
+      <p>Não será possível recuperar as informações relacionadas à ela depois disso.</p>
     </div>
   )
 

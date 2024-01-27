@@ -1,17 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+
+const initialState = {
+  name: '',
+  description: ''
+}
 
 function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
-  const submitAndCloseDialog = async (id) => {
-    onSubmit(id)
-    toast.success('Agência excluída com sucesso.')
+  const [values, setValues] = useState(initialState)
+
+  const handleChangeValues = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
+  const submitAndCloseDialog = async () => {
+    onSubmit()
+    toast.success('Agência atualizada com sucesso.')
     onClose()
   }
 
   const dialogContent = (
-    <div>
-      <p>Esta ação é irreversível. Você tem certeza?</p>
+    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
+      <TextField
+        required
+        fullWidth
+        id="name"
+        label="Nome"
+        type="text"
+        name="name"
+        value={item.name}
+        onChange={(e) => handleChangeValues(e)}
+        placeholder="Insira o nome da agência"
+      />
+
+      <TextField
+        multiline
+        rows={4}
+        required
+        fullWidth
+        id="description"
+        label="Descrição"
+        type="textarea"
+        name="description"
+        value={item.description}
+        onChange={(e) => handleChangeValues(e)}
+        placeholder="Insira a descrição da agência"
+      />
     </div>
   )
 
@@ -24,17 +58,17 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         onClick={() => submitAndCloseDialog(item.id)}
         autoFocus
         variant="contained"
-        color="error"
+        color="success"
         size="small"
       >
-        Excluir
+        Salvar
       </Button>
     </div>
   )
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Excluir Agência</DialogTitle>
+      <DialogTitle>Editar Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
