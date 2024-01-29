@@ -1,11 +1,9 @@
 import React from 'react'
-import { toast } from 'react-toastify'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
 
 function DialogExclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (id) => {
     onSubmit(id)
-    toast.success('Agência excluída com sucesso.')
     onClose()
   }
 

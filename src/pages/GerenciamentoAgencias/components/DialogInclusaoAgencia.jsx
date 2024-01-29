@@ -1,26 +1,12 @@
-import React, { useState } from 'react'
-import { toast } from 'react-toastify'
+import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
 
-const initialState = {
-  name: '',
-  description: ''
-}
-
 function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
-  const [values, setValues] = useState(initialState)
+  const submitAndCloseDialog = async (event) => {
+    event.preventDefault()
+    const newAgencyData = new FormData(event.currentTarget)
 
-  const handleChangeValues = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value })
-  }
-  const submitAndCloseDialog = async () => {
-    const newAgency = {
-      name: values.name,
-      description: values.description
-    }
-
-    onSubmit(newAgency)
-    toast.success('Agência inserida com sucesso.')
+    onSubmit(Object.fromEntries(newAgencyData.entries()))
     onClose()
   }
 
@@ -33,8 +19,6 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
-        value={values.name}
-        onChange={(e) => handleChangeValues(e)}
         placeholder="Insira o nome da agência"
       />
 
@@ -47,8 +31,6 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         label="Descrição"
         type="textarea"
         name="description"
-        value={values.description}
-        onChange={(e) => handleChangeValues(e)}
         placeholder="Insira a descrição da agência"
       />
     </div>
@@ -59,20 +41,21 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
       <Button onClick={onClose} variant="contained" color="primary" size="small">
         Cancelar
       </Button>
-      <Button
-        onClick={() => submitAndCloseDialog()}
-        autoFocus
-        variant="contained"
-        color="success"
-        size="small"
-      >
+      <Button autoFocus type="submit" variant="contained" color="success" size="small">
         Salvar
       </Button>
     </div>
   )
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      PaperProps={{
+        component: 'form',
+        onSubmit: (event) => submitAndCloseDialog(event)
+      }}
+    >
       <DialogTitle>Inserir Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>

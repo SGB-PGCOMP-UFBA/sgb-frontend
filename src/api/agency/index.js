@@ -15,5 +15,5 @@ export const updateAgency = async (agencyId, agency) => {
 }
 
 export const deleteAgency = async (agencyId) => {
-  await api.delete(`${BASE_AGENCY_API_PATH}/${agencyId}`)
+  return api.delete(`${BASE_AGENCY_API_PATH}/${agencyId}`)
 }
