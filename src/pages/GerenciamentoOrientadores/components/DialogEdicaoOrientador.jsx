@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 
 function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
@@ -19,21 +20,47 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
+        placeholder="Insira o nome do orientador"
         defaultValue={item.name}
-        placeholder="Insira o nome da agência"
       />
 
       <TextField
-        multiline
-        rows={4}
         required
         fullWidth
-        id="description"
-        label="Descrição"
-        type="textarea"
-        name="description"
-        defaultValue={item.description}
-        placeholder="Insira a descrição da agência"
+        id="email"
+        label="E-mail"
+        type="email"
+        name="email"
+        placeholder="Insira o e-mail do orientador"
+        defaultValue={item.email}
+      />
+
+      <TextField
+        required
+        fullWidth
+        id="tax_id"
+        label="CPF"
+        type="text"
+        name="tax_id"
+        placeholder="Insira o CPF do orientador"
+        InputProps={{
+          inputComponent: CpfInputMask
+        }}
+        defaultValue={item.tax_id}
+      />
+
+      <TextField
+        required
+        fullWidth
+        id="phone_number"
+        label="Telefone"
+        type="phone"
+        name="phone_number"
+        placeholder="Insira o telefone do orientador"
+        InputProps={{
+          inputComponent: PhoneInputMask
+        }}
+        defaultValue={item.phone_number}
       />
     </div>
   )
@@ -58,7 +85,7 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
         onSubmit: (event) => submitAndCloseDialog(event)
       }}
     >
-      <DialogTitle>Editar Agência</DialogTitle>
+      <DialogTitle>Editar Orientador</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
