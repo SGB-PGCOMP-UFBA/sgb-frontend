@@ -2,19 +2,20 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
 
-const initialState = {
-  name: '',
-  description: ''
-}
-
 function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
-  const [values, setValues] = useState(initialState)
+  const [values, setValues] = useState(item)
 
   const handleChangeValues = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
+
   const submitAndCloseDialog = async () => {
-    onSubmit()
+    const agency = {
+      name: values.name,
+      description: values.description
+    }
+
+    onSubmit(item.id, agency)
     toast.success('Agência atualizada com sucesso.')
     onClose()
   }
@@ -28,7 +29,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
-        value={item.name}
+        value={values.name}
         onChange={(e) => handleChangeValues(e)}
         placeholder="Insira o nome da agência"
       />
@@ -42,7 +43,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         label="Descrição"
         type="textarea"
         name="description"
-        value={item.description}
+        value={values.description}
         onChange={(e) => handleChangeValues(e)}
         placeholder="Insira a descrição da agência"
       />
@@ -55,7 +56,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         Cancelar
       </Button>
       <Button
-        onClick={() => submitAndCloseDialog(item.id)}
+        onClick={() => submitAndCloseDialog()}
         autoFocus
         variant="contained"
         color="success"

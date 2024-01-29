@@ -10,8 +10,8 @@ export const createAgency = async (agency) => {
   return api.post(`${BASE_AGENCY_API_PATH}`, { agency })
 }
 
-export const updateAgency = async (agency) => {
-  return api.patch(`${BASE_AGENCY_API_PATH}`, { agency })
+export const updateAgency = async (agencyId, agency) => {
+  return api.patch(`${BASE_AGENCY_API_PATH}/${agencyId}`, agency)
 }
 
 export const deleteAgency = async (agencyId) => {

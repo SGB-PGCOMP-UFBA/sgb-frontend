@@ -16,8 +16,8 @@ function GerenciamentoAgencias() {
     await getAgencys()
   }
 
-  const updateAgency = async (agency) => {
-    await api.agency.updateAgency(agency)
+  const updateAgency = async (agencyId, agency) => {
+    await api.agency.updateAgency(agencyId, agency)
     await getAgencys()
   }
 
