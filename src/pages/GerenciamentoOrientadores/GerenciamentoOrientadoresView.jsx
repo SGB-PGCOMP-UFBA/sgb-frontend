@@ -5,7 +5,14 @@ import Sidebar from '../../components/Sidebar'
 import { DataGridOrientadores } from './components/DataGridOrientadores'
 import { DialogInclusaoOrientador } from './components/DialogInclusaoOrientador'
 
-function GerenciamentoOrientadoresView({ isLoading, advisors, onCreate, onUpdate, onDelete }) {
+function GerenciamentoOrientadoresView({
+  isLoading,
+  advisors,
+  onCreate,
+  onUpdate,
+  onDelete,
+  onResetPassword
+}) {
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -50,6 +57,7 @@ function GerenciamentoOrientadoresView({ isLoading, advisors, onCreate, onUpdate
             onCreate={onCreate}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            onResetPassword={onResetPassword}
           />
 
           {isDialogForCreateOpen && (

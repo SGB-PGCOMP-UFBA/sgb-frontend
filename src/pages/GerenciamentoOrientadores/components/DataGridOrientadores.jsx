@@ -5,10 +5,12 @@ import Loading from '../../../components/Loading'
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
+import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
 
-function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete }) {
+function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onResetPassword }) {
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState(null)
 
   const handleDialogForDeleteClose = () => {
@@ -29,6 +31,16 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete }) {
   const handleDialogForUpdateOpen = (data) => {
     setSelectedAdvisor(data)
     setIsDialogForUpdateOpen(true)
+  }
+
+  const handleDialogForPasswordResetClose = () => {
+    setSelectedAdvisor(null)
+    setIsDialogForPasswordResetOpen(false)
+  }
+
+  const handleDialogForPasswordResetOpen = (data) => {
+    setSelectedAdvisor(data)
+    setIsDialogForPasswordResetOpen(true)
   }
 
   const columns = [
@@ -89,7 +101,7 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete }) {
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Resetar Senha do Orientador">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForPasswordResetOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>lock_reset</Icon>
             </IconButton>
           </Tooltip>
@@ -145,6 +157,15 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete }) {
           item={selectedAdvisor}
           onClose={handleDialogForUpdateClose}
           onSubmit={onUpdate}
+        />
+      )}
+
+      {selectedAdvisor && (
+        <DialogResetarSenhaOrientador
+          isOpen={isDialogForPasswordResetOpen}
+          item={selectedAdvisor}
+          onClose={handleDialogForPasswordResetClose}
+          onSubmit={onResetPassword}
         />
       )}
     </div>

@@ -53,6 +53,16 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
+  const resetAdvisorPassword = async (email) => {
+    const response = await api.password.resetPassword(email)
+
+    if (response.status === 200) {
+      toast.success('Senha resetada com sucesso.')
+    } else {
+      toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+  }
+
   useEffect(() => {
     if (isLoading) return
     getAdvisors().finally(() => setIsLoading(false))
@@ -65,6 +75,7 @@ function GerenciamentoOrientadores() {
       onCreate={createAdvisor}
       onUpdate={updateAdvisor}
       onDelete={deleteAdvisor}
+      onResetPassword={resetAdvisorPassword}
     />
   )
 }
