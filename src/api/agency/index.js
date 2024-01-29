@@ -7,7 +7,7 @@ export const getAgencys = async () => {
 }
 
 export const createAgency = async (agency) => {
-  return api.post(`${BASE_AGENCY_API_PATH}`, { agency })
+  return api.post(`${BASE_AGENCY_API_PATH}`, agency)
 }
 
 export const updateAgency = async (agencyId, agency) => {

@@ -7,15 +7,20 @@ const initialState = {
   description: ''
 }
 
-function DialogInclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
+function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
   const [values, setValues] = useState(initialState)
 
   const handleChangeValues = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
   const submitAndCloseDialog = async () => {
-    onSubmit()
-    toast.success('Agência atualizada com sucesso.')
+    const newAgency = {
+      name: values.name,
+      description: values.description
+    }
+
+    onSubmit(newAgency)
+    toast.success('Agência inserida com sucesso.')
     onClose()
   }
 
@@ -28,7 +33,7 @@ function DialogInclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
-        value={item.name}
+        value={values.name}
         onChange={(e) => handleChangeValues(e)}
         placeholder="Insira o nome da agência"
       />
@@ -42,7 +47,7 @@ function DialogInclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
         label="Descrição"
         type="textarea"
         name="description"
-        value={item.description}
+        value={values.description}
         onChange={(e) => handleChangeValues(e)}
         placeholder="Insira a descrição da agência"
       />
@@ -55,7 +60,7 @@ function DialogInclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
         Cancelar
       </Button>
       <Button
-        onClick={() => submitAndCloseDialog(item.id)}
+        onClick={() => submitAndCloseDialog()}
         autoFocus
         variant="contained"
         color="success"
@@ -68,7 +73,7 @@ function DialogInclusaoAgencia({ item, isOpen, onClose, onSubmit }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Editar Agência</DialogTitle>
+      <DialogTitle>Inserir Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
