@@ -1,19 +1,35 @@
-import { IconButton, Tooltip } from '@mui/material'
-
-/* eslint-disable no-unused-vars */
-import { useEffect } from 'react'
-import Icon from '@mui/material/Icon'
+import { useState } from 'react'
+import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../../../../components/Loading'
-import { formatDate, formatPhone } from '../../../../../utils/formatters'
-import { useAppContext } from '../../../../../context/appContext'
+import Loading from '../../../components/Loading'
+import { formatDate, formatPhone } from '../../../utils/formatters'
+import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
+import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 
-export default function DataGridOrientadores() {
-  const { advisors, getAdvisors, isLoading } = useAppContext()
+function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete }) {
+  const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
+  const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [selectedAdvisor, setSelectedAdvisor] = useState(null)
 
-  useEffect(() => {
-    getAdvisors()
-  }, [])
+  const handleDialogForDeleteClose = () => {
+    setSelectedAdvisor(null)
+    setIsDialogForDeleteOpen(false)
+  }
+
+  const handleDialogForDeleteOpen = (data) => {
+    setSelectedAdvisor(data)
+    setIsDialogForDeleteOpen(true)
+  }
+
+  const handleDialogForUpdateClose = () => {
+    setSelectedAdvisor(null)
+    setIsDialogForUpdateOpen(false)
+  }
+
+  const handleDialogForUpdateOpen = (data) => {
+    setSelectedAdvisor(data)
+    setIsDialogForUpdateOpen(true)
+  }
 
   const columns = [
     {
@@ -78,12 +94,12 @@ export default function DataGridOrientadores() {
             </IconButton>
           </Tooltip>
           <Tooltip title="Editar Orientador">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Orientador">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>delete</Icon>
             </IconButton>
           </Tooltip>
@@ -105,7 +121,6 @@ export default function DataGridOrientadores() {
             rowsPerPageOptions={[7]}
             disableColumnMenu
             components={{ Toolbar: GridToolbar }}
-            GridCellParams={advisors.scholarship}
             isRowSelectable={() => false}
             rowHeight={45}
             autoHeight
@@ -114,6 +129,26 @@ export default function DataGridOrientadores() {
           />
         </div>
       )}
+
+      {selectedAdvisor && (
+        <DialogExclusaoOrientador
+          isOpen={isDialogForDeleteOpen}
+          item={selectedAdvisor}
+          onClose={handleDialogForDeleteClose}
+          onSubmit={onDelete}
+        />
+      )}
+
+      {selectedAdvisor && (
+        <DialogEdicaoOrientador
+          isOpen={isDialogForUpdateOpen}
+          item={selectedAdvisor}
+          onClose={handleDialogForUpdateClose}
+          onSubmit={onUpdate}
+        />
+      )}
     </div>
   )
 }
+
+export { DataGridOrientadores }

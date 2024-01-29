@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
 
-function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
+function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
     const newAgencyData = new FormData(event.currentTarget)
 
-    onSubmit(Object.fromEntries(newAgencyData.entries()))
+    onSubmit(item.id, Object.fromEntries(newAgencyData.entries()))
     onClose()
   }
 
@@ -19,6 +19,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
+        defaultValue={item.name}
         placeholder="Insira o nome da agência"
       />
 
@@ -31,6 +32,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         label="Descrição"
         type="textarea"
         name="description"
+        defaultValue={item.description}
         placeholder="Insira a descrição da agência"
       />
     </div>
@@ -41,7 +43,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
       <Button onClick={onClose} variant="contained" color="primary" size="small">
         Cancelar
       </Button>
-      <Button autoFocus type="submit" variant="contained" color="success" size="small">
+      <Button type="submit" autoFocus variant="contained" color="success" size="small">
         Salvar
       </Button>
     </div>
@@ -56,11 +58,11 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         onSubmit: (event) => submitAndCloseDialog(event)
       }}
     >
-      <DialogTitle>Adicionar Agência</DialogTitle>
+      <DialogTitle>Editar Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
   )
 }
 
-export { DialogInclusaoAgencia }
+export { DialogEdicaoOrientador }

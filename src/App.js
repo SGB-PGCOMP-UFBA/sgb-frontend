@@ -6,12 +6,12 @@ import {
   AdminLista,
   AdminBolsasExpiradas,
   AdminRelatorios,
-  AdminGerenciaOrientadores,
   AdminGerenciaEstudantes,
   PageForgetPassword,
   Login,
   PageNotFound,
-  GerenciamentoAgencias
+  GerenciamentoAgencias,
+  GerenciamentoOrientadores
 } from './pages'
 
 export default function App() {
@@ -30,7 +30,7 @@ export default function App() {
           <Route path="admin/relatorios" element={<AdminRelatorios />} />
           <Route path="admin/agencias" element={<GerenciamentoAgencias />} />
           <Route path="admin/estudantes" element={<AdminGerenciaEstudantes />} />
-          <Route path="admin/orientadores" element={<AdminGerenciaOrientadores />} />
+          <Route path="admin/orientadores" element={<GerenciamentoOrientadores />} />
         </Route>
 
         {/* Qualquer rota */}

@@ -1,12 +1,13 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 
-function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
+function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
-    const newAgencyData = new FormData(event.currentTarget)
+    const newAdvisorData = new FormData(event.currentTarget)
 
-    onSubmit(Object.fromEntries(newAgencyData.entries()))
+    onSubmit(Object.fromEntries(newAdvisorData.entries()))
     onClose()
   }
 
@@ -19,19 +20,43 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         label="Nome"
         type="text"
         name="name"
-        placeholder="Insira o nome da agência"
+        placeholder="Insira o nome do orientador"
       />
 
       <TextField
-        multiline
-        rows={4}
         required
         fullWidth
-        id="description"
-        label="Descrição"
-        type="textarea"
-        name="description"
-        placeholder="Insira a descrição da agência"
+        id="email"
+        label="E-mail"
+        type="email"
+        name="email"
+        placeholder="Insira o e-mail do orientador"
+      />
+
+      <TextField
+        required
+        fullWidth
+        id="tax_id"
+        label="CPF"
+        type="text"
+        name="tax_id"
+        placeholder="Insira o CPF do orientador"
+        InputProps={{
+          inputComponent: CpfInputMask
+        }}
+      />
+
+      <TextField
+        required
+        fullWidth
+        id="phone_number"
+        label="Telefone"
+        type="phone"
+        name="phone_number"
+        placeholder="Insira o telefone do orientador"
+        InputProps={{
+          inputComponent: PhoneInputMask
+        }}
       />
     </div>
   )
@@ -56,11 +81,11 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         onSubmit: (event) => submitAndCloseDialog(event)
       }}
     >
-      <DialogTitle>Adicionar Agência</DialogTitle>
+      <DialogTitle>Adicionar Orientador</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
   )
 }
 
-export { DialogInclusaoAgencia }
+export { DialogInclusaoOrientador }
