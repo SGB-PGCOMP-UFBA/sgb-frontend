@@ -5,9 +5,9 @@ import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
-    const newAgencyData = new FormData(event.currentTarget)
+    const newAdvisorData = new FormData(event.currentTarget)
 
-    onSubmit(item.id, Object.fromEntries(newAgencyData.entries()))
+    onSubmit(item.id, Object.fromEntries(newAdvisorData.entries()))
     onClose()
   }
 
