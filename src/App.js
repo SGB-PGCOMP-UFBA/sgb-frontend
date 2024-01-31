@@ -6,11 +6,11 @@ import {
   AdminLista,
   AdminBolsasExpiradas,
   AdminRelatorios,
-  AdminGerenciaEstudantes,
   PageForgetPassword,
   Login,
   PageNotFound,
   GerenciamentoAgencias,
+  GerenciamentoEstudantes,
   GerenciamentoOrientadores
 } from './pages'
 
@@ -29,7 +29,7 @@ export default function App() {
           <Route path="admin/bolsas-expiradas" element={<AdminBolsasExpiradas />} />
           <Route path="admin/relatorios" element={<AdminRelatorios />} />
           <Route path="admin/agencias" element={<GerenciamentoAgencias />} />
-          <Route path="admin/estudantes" element={<AdminGerenciaEstudantes />} />
+          <Route path="admin/estudantes" element={<GerenciamentoEstudantes />} />
           <Route path="admin/orientadores" element={<GerenciamentoOrientadores />} />
         </Route>
 

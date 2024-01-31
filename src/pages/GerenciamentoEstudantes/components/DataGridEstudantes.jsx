@@ -1,19 +1,35 @@
-import { IconButton, Tooltip } from '@mui/material'
-
-/* eslint-disable no-unused-vars */
-import { useEffect } from 'react'
-import Icon from '@mui/material/Icon'
+import { useState } from 'react'
+import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../../../../components/Loading'
-import { formatDate, formatPhone } from '../../../../../utils/formatters'
-import { useAppContext } from '../../../../../context/appContext'
+import Loading from '../../../components/Loading'
+import { formatDate, formatPhone } from '../../../utils/formatters'
+import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
+import { DialogEdicaoEstudante } from './DialogEdicaoEstudante'
 
-export default function DataGridEstudantes() {
-  const { students, getStudents, isLoading } = useAppContext()
+function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
+  const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
+  const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [selectedStudent, setSelectedStudent] = useState(null)
 
-  useEffect(() => {
-    getStudents()
-  }, [])
+  const handleDialogForDeleteClose = () => {
+    setSelectedStudent(null)
+    setIsDialogForDeleteOpen(false)
+  }
+
+  const handleDialogForDeleteOpen = (data) => {
+    setSelectedStudent(data)
+    setIsDialogForDeleteOpen(true)
+  }
+
+  const handleDialogForUpdateClose = () => {
+    setSelectedStudent(null)
+    setIsDialogForUpdateOpen(false)
+  }
+
+  const handleDialogForUpdateOpen = (data) => {
+    setSelectedStudent(data)
+    setIsDialogForUpdateOpen(true)
+  }
 
   const columns = [
     {
@@ -87,18 +103,13 @@ export default function DataGridEstudantes() {
       width: 180,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Resetar Senha do Estudante">
-            <IconButton>
-              <Icon sx={{ fontSize: 28 }}>lock_reset</Icon>
-            </IconButton>
-          </Tooltip>
           <Tooltip title="Editar Estudante">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Estudante">
-            <IconButton>
+            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>delete</Icon>
             </IconButton>
           </Tooltip>
@@ -128,6 +139,26 @@ export default function DataGridEstudantes() {
           />
         </div>
       )}
+
+      {selectedStudent && (
+        <DialogExclusaoEstudante
+          isOpen={isDialogForDeleteOpen}
+          item={selectedStudent}
+          onClose={handleDialogForDeleteClose}
+          onSubmit={onDelete}
+        />
+      )}
+
+      {selectedStudent && (
+        <DialogEdicaoEstudante
+          isOpen={isDialogForUpdateOpen}
+          item={selectedStudent}
+          onClose={handleDialogForUpdateClose}
+          onSubmit={onUpdate}
+        />
+      )}
     </div>
   )
 }
+
+export { DataGridEstudantes }
