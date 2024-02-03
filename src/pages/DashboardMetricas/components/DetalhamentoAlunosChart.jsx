@@ -6,10 +6,10 @@ function DetalhamentoAlunosChart(props) {
   const { sx } = props
 
   const options = {
-    // configurações do gráfico
+    labels: ['Alunos Bolsistas', 'Alunos Não Bolsistas']
   }
 
-  const series = [44, 55, 13, 43, 22]
+  const series = [44, 23]
 
   return (
     <Card sx={sx}>

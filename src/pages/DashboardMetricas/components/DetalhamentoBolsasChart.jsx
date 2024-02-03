@@ -53,16 +53,19 @@ function DetalhamentoBolsasChart(props) {
       intersect: false
     },
     xaxis: {
-      categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007]
-    }
+      categories: ['CAPES', 'FAPESB', 'CNPQ']
+    },
+    labels: ['Alunos Bolsistas', 'Alunos Não Bolsistas']
   }
 
   const series = [
     {
-      data: [44, 55, 41, 64, 22, 43, 21]
+      name: 'Mestrado',
+      data: [2, 0, 15]
     },
     {
-      data: [53, 32, 33, 52, 13, 44, 32]
+      name: 'Doutorado',
+      data: [1, 0, 4]
     }
   ]
 
@@ -72,11 +75,11 @@ function DetalhamentoBolsasChart(props) {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
-              BOLSAS POR CURSO E AGÊNCIA
+              BOLSAS ATIVAS POR CURSO E AGÊNCIA
             </Typography>
           </Stack>
           <Avatar
-            className="bg-purple-400 !bg-purple-400"
+            className="bg-green-400 !bg-green-400"
             sx={{
               height: 56,
               width: 56

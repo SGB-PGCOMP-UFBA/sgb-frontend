@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { Box, Grid, Container, Icon } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import { BolsasCapesCard } from './components/BolsasCapesCard'
@@ -6,8 +7,11 @@ import { BolsasCnpqCard } from './components/BolsasCnpqCard'
 import { TotalBolsasCard } from './components/TotalBolsasCard'
 import { DetalhamentoBolsasChart } from './components/DetalhamentoBolsasChart'
 import { DetalhamentoAlunosChart } from './components/DetalhamentoAlunosChart'
+import Loading from '../../components/Loading'
 
-function DashboardMetricasView() {
+function DashboardMetricasView(props) {
+  const { isLoading, totalDataCard, cnpqDataCard, capesDataCard, fapesbDataCard } = props
+
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
@@ -22,50 +26,92 @@ function DashboardMetricasView() {
               <p className="poppins font-medium text-gray-500">Métricas e Análises</p>
             </div>
           </div>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Container maxWidth={false} disableGutters>
-              <Grid container>
-                <Grid xs={12} sm={6} lg={3} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <BolsasCapesCard difference={12} positive sx={{ height: '100%' }} value="24" />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Container maxWidth={false} disableGutters>
+                <Grid container>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                  >
+                    <BolsasCapesCard data={capesDataCard} sx={{ height: '100%' }} />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                  >
+                    <BolsasFapesbCard data={fapesbDataCard} sx={{ height: '100%' }} />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                  >
+                    <BolsasCnpqCard data={cnpqDataCard} sx={{ height: '100%' }} />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                  >
+                    <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
+                  </Grid>
+                  <Grid item xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
+                    <DetalhamentoBolsasChart
+                      difference={12}
+                      positive
+                      sx={{ height: '100%' }}
+                      value="24"
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    lg={4}
+                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                  >
+                    <DetalhamentoAlunosChart
+                      difference={12}
+                      positive
+                      sx={{ height: '100%' }}
+                      value="24"
+                    />
+                  </Grid>
                 </Grid>
-                <Grid xs={12} sm={6} lg={3} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <BolsasFapesbCard difference={12} sx={{ height: '100%' }} value="24" />
-                </Grid>
-                <Grid xs={12} sm={6} lg={3} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <BolsasCnpqCard difference={12} positive sx={{ height: '100%' }} value="24" />
-                </Grid>
-                <Grid xs={12} sm={6} lg={3} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <TotalBolsasCard difference={12} positive sx={{ height: '100%' }} value="24" />
-                </Grid>
-                <Grid xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <DetalhamentoBolsasChart
-                    difference={12}
-                    positive
-                    sx={{ height: '100%' }}
-                    value="24"
-                  />
-                </Grid>
-                <Grid xs={12} md={6} lg={4} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                  <DetalhamentoAlunosChart
-                    difference={12}
-                    positive
-                    sx={{ height: '100%' }}
-                    value="24"
-                  />
-                </Grid>
-              </Grid>
-            </Container>
-          </Box>
+              </Container>
+            </Box>
+          )}
         </div>
       </section>
     </div>
   )
+}
+
+DashboardMetricasView.prototypes = {
+  isLoading: PropTypes.boolean,
+  totalDataCard: PropTypes.number,
+  cnpqDataCard: PropTypes.node,
+  fapesbDataCard: PropTypes.node,
+  capesDataCard: PropTypes.node
 }
 
 export { DashboardMetricasView }
