@@ -3,28 +3,29 @@ import { toast } from 'react-toastify'
 import { api } from '../../api'
 import { DashboardMetricasView } from './DashboardMetricasView'
 
-const initialCardData = {
-  count: 0,
-  growthOverLastYear: 0,
-  lastYearAmount: 0,
-  currentYearAmount: 0
-}
-
 function DashboardMetricas() {
   const [isLoading, setIsLoading] = useState(true)
-  const [totalDataCard, setTotalDataCard] = useState(0)
-  const [cnpqDataCard, setCnpqDataCard] = useState(initialCardData)
-  const [fapesbDataCard, setFapesbDataCard] = useState(initialCardData)
-  const [capesDataCard, setCapesDataCard] = useState(initialCardData)
+  const [alunosDataChart, setAlunosDataChart] = useState(null)
+  const [bolsasDataChart, setBolsasDataChart] = useState({})
+  const [cnpqDataCard, setCnpqDataCard] = useState({})
+  const [fapesbDataCard, setFapesbDataCard] = useState({})
+  const [capesDataCard, setCapesDataCard] = useState({})
 
   const getAnalytics = async () => {
     const response = await api.analytics.getAnalytics()
 
     if (response.status === 200) {
-      setTotalDataCard(response.data.total)
-      if (response.data.cnpq) setCnpqDataCard(response.data.cnpq)
-      if (response.data.fapesb) setFapesbDataCard(response.data.fapesb)
-      if (response.data.capes) setCapesDataCard(response.data.capes)
+      const {
+        studentsHavingScholarship,
+        scholarshipGroupedByAgencyAndCourse,
+        scholarshipGroupedByAgencyAndYear
+      } = response.data
+
+      setAlunosDataChart(studentsHavingScholarship)
+      setBolsasDataChart(scholarshipGroupedByAgencyAndCourse)
+      setCnpqDataCard(scholarshipGroupedByAgencyAndYear.CNPQ)
+      setFapesbDataCard(scholarshipGroupedByAgencyAndYear.FAPESB)
+      setCapesDataCard(scholarshipGroupedByAgencyAndYear.CAPES)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }
@@ -37,7 +38,8 @@ function DashboardMetricas() {
   return (
     <div>
       <DashboardMetricasView
-        totalDataCard={totalDataCard}
+        alunosDataChart={alunosDataChart}
+        bolsasDataChart={bolsasDataChart}
         cnpqDataCard={cnpqDataCard}
         fapesbDataCard={fapesbDataCard}
         capesDataCard={capesDataCard}

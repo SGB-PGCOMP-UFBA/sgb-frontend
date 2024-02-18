@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
 function DetalhamentoBolsasChart(props) {
-  const { sx } = props
+  const { sx, data } = props
 
   const options = {
     chart: {
@@ -53,21 +53,9 @@ function DetalhamentoBolsasChart(props) {
       intersect: false
     },
     xaxis: {
-      categories: ['CAPES', 'FAPESB', 'CNPQ']
-    },
-    labels: ['Alunos Bolsistas', 'Alunos Não Bolsistas']
-  }
-
-  const series = [
-    {
-      name: 'Mestrado',
-      data: [2, 0, 15]
-    },
-    {
-      name: 'Doutorado',
-      data: [1, 0, 4]
+      categories: data.categories
     }
-  ]
+  }
 
   return (
     <Card sx={sx}>
@@ -79,7 +67,7 @@ function DetalhamentoBolsasChart(props) {
             </Typography>
           </Stack>
           <Avatar
-            className="bg-green-400 !bg-green-400"
+            className="bg-gray-400 !bg-gray-400"
             sx={{
               height: 56,
               width: 56
@@ -88,17 +76,15 @@ function DetalhamentoBolsasChart(props) {
             <Icon sx={{ fontSize: 32 }}>bar_chart</Icon>
           </Avatar>
         </Stack>
-        <Chart options={options} series={series} type="bar" height={350} />
+        <Chart options={options} series={data.series} type="bar" height={350} />
       </CardContent>
     </Card>
   )
 }
 
 DetalhamentoBolsasChart.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   sx: PropTypes.node,
-  value: PropTypes.string.isRequired
+  data: PropTypes.node.isRequired
 }
 
 export { DetalhamentoBolsasChart }

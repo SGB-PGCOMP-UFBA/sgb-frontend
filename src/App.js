@@ -3,8 +3,6 @@ import { ToastContainer } from 'react-toastify'
 import RequireAuth from './context/requireAuth'
 import {
   AdminLista,
-  AdminBolsasExpiradas,
-  AdminRelatorios,
   PageForgetPassword,
   Login,
   PageNotFound,
@@ -26,8 +24,6 @@ export default function App() {
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
           <Route path="admin/dashboard" element={<DashboardMetricas />} />
           <Route path="admin/bolsas-ativas" element={<AdminLista />} />
-          <Route path="admin/bolsas-expiradas" element={<AdminBolsasExpiradas />} />
-          <Route path="admin/relatorios" element={<AdminRelatorios />} />
           <Route path="admin/agencias" element={<GerenciamentoAgencias />} />
           <Route path="admin/estudantes" element={<GerenciamentoEstudantes />} />
           <Route path="admin/orientadores" element={<GerenciamentoOrientadores />} />

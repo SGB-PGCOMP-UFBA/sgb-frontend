@@ -20,7 +20,7 @@ function BolsasCnpqCard(props) {
             </Typography>
           </Stack>
           <Avatar
-            className="bg-yellow-400 !bg-yellow-400"
+            className="bg-gray-400 !bg-gray-400"
             sx={{
               height: 56,
               width: 56
@@ -66,10 +66,8 @@ function BolsasCnpqCard(props) {
 }
 
 BolsasCnpqCard.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   sx: PropTypes.node,
-  value: PropTypes.string.isRequired
+  data: PropTypes.node.isRequired
 }
 
 export { BolsasCnpqCard }

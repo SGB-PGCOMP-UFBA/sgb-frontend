@@ -10,11 +10,6 @@ export const linksAdmin = [
     path: '/admin/bolsas-ativas'
   },
   {
-    name: 'Bolsas Expiradas',
-    icon: 'hourglass_bottom_outlined',
-    path: '/admin/bolsas-expiradas'
-  },
-  {
     name: 'Estudantes',
     icon: 'school',
     path: '/admin/estudantes'
@@ -23,10 +18,5 @@ export const linksAdmin = [
     name: 'Orientadores',
     icon: 'people',
     path: '/admin/orientadores'
-  },
-  {
-    name: 'Agências',
-    icon: 'business',
-    path: '/admin/agencias'
   }
 ]

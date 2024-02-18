@@ -3,13 +3,16 @@ import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
 function DetalhamentoAlunosChart(props) {
-  const { sx } = props
+  const { sx, data } = props
 
   const options = {
     labels: ['Alunos Bolsistas', 'Alunos Não Bolsistas']
   }
 
-  const series = [44, 23]
+  const series = [
+    parseInt(data.studentswithscholarship, 10),
+    parseInt(data.studentswithoutscholarship, 10)
+  ]
 
   return (
     <Card sx={sx}>
@@ -37,10 +40,8 @@ function DetalhamentoAlunosChart(props) {
 }
 
 DetalhamentoAlunosChart.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   sx: PropTypes.node,
-  value: PropTypes.string.isRequired
+  data: PropTypes.node.isRequired
 }
 
 export { DetalhamentoAlunosChart }

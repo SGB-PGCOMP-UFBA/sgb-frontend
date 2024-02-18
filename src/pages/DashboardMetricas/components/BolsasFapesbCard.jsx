@@ -20,7 +20,7 @@ function BolsasFapesbCard(props) {
             </Typography>
           </Stack>
           <Avatar
-            className="bg-blue-400 !bg-blue-400"
+            className="bg-gray-400 !bg-gray-400"
             sx={{
               height: 56,
               width: 56
@@ -66,10 +66,8 @@ function BolsasFapesbCard(props) {
 }
 
 BolsasFapesbCard.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   sx: PropTypes.node,
-  value: PropTypes.string.isRequired
+  data: PropTypes.node.isRequired
 }
 
 export { BolsasFapesbCard }

@@ -13,10 +13,8 @@ export default function AdminLista() {
               <Icon sx={{ fontSize: 32 }}>event_available_outlined</Icon>
             </div>
             <div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Bolsas Ativas</h2>
-              <p className="poppins font-medium text-gray-500">
-                Lista de Bolsistas Cujas Bolsas Estão em Vigor
-              </p>
+              <h2 className="poppins text-xl font-semibold text-gray-900">Bolsas</h2>
+              <p className="poppins font-medium text-gray-500">Visualização e Gestão de Bolsas</p>
             </div>
           </div>
           <List listType="finalizacao" />

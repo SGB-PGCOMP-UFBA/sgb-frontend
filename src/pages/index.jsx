@@ -1,4 +1,3 @@
-import AdminBolsasExpiradas from './Admin/BolsasExpiradas'
 import AdminLista from './Admin/Lista'
 import AdminRelatorios from './Admin/Relatorios'
 import Login from './Login'
@@ -11,7 +10,6 @@ import { GerenciamentoEstudantes } from './GerenciamentoEstudantes'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 
 export {
-  AdminBolsasExpiradas,
   AdminLista,
   AdminRelatorios,
   Login,

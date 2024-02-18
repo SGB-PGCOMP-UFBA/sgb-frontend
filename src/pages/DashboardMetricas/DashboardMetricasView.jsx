@@ -10,15 +10,23 @@ import { DetalhamentoAlunosChart } from './components/DetalhamentoAlunosChart'
 import Loading from '../../components/Loading'
 
 function DashboardMetricasView(props) {
-  const { isLoading, totalDataCard, cnpqDataCard, capesDataCard, fapesbDataCard } = props
+  const {
+    isLoading,
+    totalDataCard,
+    cnpqDataCard,
+    capesDataCard,
+    fapesbDataCard,
+    alunosDataChart,
+    bolsasDataChart
+  } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
       <section className="flex w-full justify-center p-4">
-        <div className="shadow-base h-max w-full rounded-lg bg-white p-4 lg:w-full">
+        <div className="shadow-base h-max w-full rounded-lg bg-white p-6 lg:w-full">
           <div className="mb-8 flex items-center gap-x-4">
-            <div className="rounded-md bg-gray-300 p-2 leading-none">
+            <div className="rounded-md bg-red-400 p-2 leading-none">
               <Icon sx={{ fontSize: 32 }}>dashboard</Icon>
             </div>
             <div>
@@ -75,12 +83,7 @@ function DashboardMetricasView(props) {
                     <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
                   </Grid>
                   <Grid item xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                    <DetalhamentoBolsasChart
-                      difference={12}
-                      positive
-                      sx={{ height: '100%' }}
-                      value="24"
-                    />
+                    <DetalhamentoBolsasChart sx={{ height: '100%' }} data={bolsasDataChart} />
                   </Grid>
                   <Grid
                     item
@@ -89,12 +92,7 @@ function DashboardMetricasView(props) {
                     lg={4}
                     sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                   >
-                    <DetalhamentoAlunosChart
-                      difference={12}
-                      positive
-                      sx={{ height: '100%' }}
-                      value="24"
-                    />
+                    <DetalhamentoAlunosChart sx={{ height: '100%' }} data={alunosDataChart} />
                   </Grid>
                 </Grid>
               </Container>
