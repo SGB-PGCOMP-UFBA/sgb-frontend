@@ -40,7 +40,7 @@ const initialState = {
   showToast: false,
   alertType: '',
   alertText: '',
-  expandSidebar: false,
+  expandSidebar: true,
   id: userId || 0,
   user: user || null,
   token: token || '',

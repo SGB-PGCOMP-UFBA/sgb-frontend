@@ -1,20 +1,30 @@
-import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-import { linksAdmin } from '../../utils/linksAdmin'
 
-export default function Mobile({ userType }) {
+export default function Mobile() {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
-  const [links, setLinks] = useState([])
-
-  useEffect(() => {
-    switch (userType) {
-      case 'admin':
-        return setLinks(linksAdmin)
-      default:
-        return setLinks([])
+  const links = [
+    {
+      name: 'Dashboard',
+      icon: 'dashboard',
+      path: '/dashboard'
+    },
+    {
+      name: 'Bolsas',
+      icon: 'event_available_outlined',
+      path: '/bolsas'
+    },
+    {
+      name: 'Estudantes',
+      icon: 'school',
+      path: '/estudantes'
+    },
+    {
+      name: 'Orientadores',
+      icon: 'people',
+      path: '/orientadores'
     }
-  }, [userType])
+  ]
 
   return (
     <header className="mb-5 space-y-5 bg-white p-5 pb-2">
