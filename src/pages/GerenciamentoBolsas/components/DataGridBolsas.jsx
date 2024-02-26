@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Chip, Icon, IconButton, Tooltip } from '@mui/material'
+import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 import { formatDate } from '../../../utils/formatters'
+import { CustomChip } from '../../../components'
 
 function DataGridBolsas(props) {
   const [pageSize, setPageSize] = useState(5)
@@ -39,7 +40,7 @@ function DataGridBolsas(props) {
       headerName: 'Programa',
       width: 150,
       renderCell: (params) => (
-        <Chip className="overflow-auto" label={params.row.enrollment.enrollment_program} />
+        <CustomChip value={params.row.enrollment.enrollment_program} type="program" />
       )
     },
     {
@@ -58,7 +59,7 @@ function DataGridBolsas(props) {
       field: 'row.agency.name',
       headerName: 'Agência',
       width: 150,
-      renderCell: (params) => <Chip className="overflow-auto" label={params.row.agency.name} />
+      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />
     },
     {
       field: 'scholarship_starts_at',
@@ -84,7 +85,7 @@ function DataGridBolsas(props) {
       headerName: 'Status',
       width: 150,
       renderCell: (params) => (
-        <Chip className="overflow-auto" label={params.row.active ? 'Ativa' : 'Inativa'} />
+        <CustomChip value={params.row.active ? 'Ativa' : 'Inativa'} type="status" />
       )
     },
     {
