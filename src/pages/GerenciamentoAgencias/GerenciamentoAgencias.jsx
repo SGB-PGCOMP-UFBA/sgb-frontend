@@ -5,7 +5,7 @@ import { GerenciamentoAgenciasView } from './GerenciamentoAgenciasView'
 
 function GerenciamentoAgencias() {
   const [agencys, setAgencys] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const getAgencys = async () => {
     const response = await api.agency.getAgencys()
@@ -54,14 +54,13 @@ function GerenciamentoAgencias() {
   }
 
   useEffect(() => {
-    if (isLoading) return
     getAgencys().finally(() => setIsLoading(false))
   }, [])
 
   return (
     <GerenciamentoAgenciasView
       isLoading={isLoading}
-      agencys={agencys}
+      data={agencys}
       onCreate={createAgency}
       onUpdate={updateAgency}
       onDelete={deleteAgency}

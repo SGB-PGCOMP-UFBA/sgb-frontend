@@ -5,7 +5,7 @@ import { GerenciamentoEstudantesView } from './GerenciamentoEstudantesView'
 
 function GerenciamentoEstudantes() {
   const [students, setStudents] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const getStudents = async () => {
     const response = await api.student.getStudents()
@@ -42,14 +42,13 @@ function GerenciamentoEstudantes() {
   }
 
   useEffect(() => {
-    if (isLoading) return
     getStudents().finally(() => setIsLoading(false))
   }, [])
 
   return (
     <GerenciamentoEstudantesView
       isLoading={isLoading}
-      students={students}
+      data={students}
       onUpdate={updateStudent}
       onDelete={deleteStudent}
     />

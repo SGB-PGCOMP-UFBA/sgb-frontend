@@ -5,7 +5,7 @@ import { GerenciamentoOrientadoresView } from './GerenciamentoOrientadoresView'
 
 function GerenciamentoOrientadores() {
   const [advisors, setAdvisors] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const getAdvisors = async () => {
     const response = await api.advisor.getAdvisor()
@@ -64,14 +64,13 @@ function GerenciamentoOrientadores() {
   }
 
   useEffect(() => {
-    if (isLoading) return
     getAdvisors().finally(() => setIsLoading(false))
   }, [])
 
   return (
     <GerenciamentoOrientadoresView
       isLoading={isLoading}
-      advisors={advisors}
+      data={advisors}
       onCreate={createAdvisor}
       onUpdate={updateAdvisor}
       onDelete={deleteAdvisor}

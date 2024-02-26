@@ -1,11 +1,14 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Button, Icon } from '@mui/material'
 import { AddCircleOutline } from '@mui/icons-material'
-import Sidebar from '../../components/Sidebar'
 import { DataGridAgencias } from './components/DataGridAgencias'
 import { DialogInclusaoAgencia } from './components/DialogInclusaoAgencia'
+import Sidebar from '../../components/Sidebar'
+import Loading from '../../components/Loading'
 
-function GerenciamentoAgenciasView({ isLoading, agencys, onCreate, onUpdate, onDelete }) {
+function GerenciamentoAgenciasView(props) {
+  const { isLoading, data, onCreate, onUpdate, onDelete } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -44,13 +47,16 @@ function GerenciamentoAgenciasView({ isLoading, agencys, onCreate, onUpdate, onD
               </Button>
             </div>
           </div>
-          <DataGridAgencias
-            isLoading={isLoading}
-            agencys={agencys}
-            onCreate={onCreate}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <DataGridAgencias
+              data={data}
+              onCreate={onCreate}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+            />
+          )}
 
           {isDialogForCreateOpen && (
             <DialogInclusaoAgencia
@@ -63,6 +69,14 @@ function GerenciamentoAgenciasView({ isLoading, agencys, onCreate, onUpdate, onD
       </section>
     </div>
   )
+}
+
+GerenciamentoAgenciasView.prototypes = {
+  isLoading: PropTypes.boolean,
+  data: PropTypes.node,
+  onCreate: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { GerenciamentoAgenciasView }

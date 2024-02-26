@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../../components/Loading'
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
 import { DialogEdicaoEstudante } from './DialogEdicaoEstudante'
 
-function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
+function DataGridEstudantes(props) {
+  const { data, onUpdate, onDelete } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState(null)
@@ -17,8 +18,8 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
     setIsDialogForDeleteOpen(false)
   }
 
-  const handleDialogForDeleteOpen = (data) => {
-    setSelectedStudent(data)
+  const handleDialogForDeleteOpen = (value) => {
+    setSelectedStudent(value)
     setIsDialogForDeleteOpen(true)
   }
 
@@ -27,8 +28,8 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
     setIsDialogForUpdateOpen(false)
   }
 
-  const handleDialogForUpdateOpen = (data) => {
-    setSelectedStudent(data)
+  const handleDialogForUpdateOpen = (value) => {
+    setSelectedStudent(value)
     setIsDialogForUpdateOpen(true)
   }
 
@@ -121,25 +122,21 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
 
   return (
     <div>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-          <DataGrid
-            rows={students}
-            columns={columns}
-            disableColumnMenu
-            components={{ Toolbar: GridToolbar }}
-            isRowSelectable={() => false}
-            autoHeight
-            pagination
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          />
-        </div>
-      )}
+      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          disableColumnMenu
+          components={{ Toolbar: GridToolbar }}
+          isRowSelectable={() => false}
+          autoHeight
+          pagination
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        />
+      </div>
 
       {selectedStudent && (
         <DialogExclusaoEstudante
@@ -160,6 +157,12 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
       )}
     </div>
   )
+}
+
+DataGridEstudantes.prototypes = {
+  data: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { DataGridEstudantes }

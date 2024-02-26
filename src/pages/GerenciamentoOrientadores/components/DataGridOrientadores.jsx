@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../../components/Loading'
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
 
-function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onResetPassword }) {
+function DataGridOrientadores(props) {
+  const { data, onUpdate, onDelete, onResetPassword } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
@@ -19,8 +20,8 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
     setIsDialogForDeleteOpen(false)
   }
 
-  const handleDialogForDeleteOpen = (data) => {
-    setSelectedAdvisor(data)
+  const handleDialogForDeleteOpen = (value) => {
+    setSelectedAdvisor(value)
     setIsDialogForDeleteOpen(true)
   }
 
@@ -29,8 +30,8 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
     setIsDialogForUpdateOpen(false)
   }
 
-  const handleDialogForUpdateOpen = (data) => {
-    setSelectedAdvisor(data)
+  const handleDialogForUpdateOpen = (value) => {
+    setSelectedAdvisor(value)
     setIsDialogForUpdateOpen(true)
   }
 
@@ -39,8 +40,8 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
     setIsDialogForPasswordResetOpen(false)
   }
 
-  const handleDialogForPasswordResetOpen = (data) => {
-    setSelectedAdvisor(data)
+  const handleDialogForPasswordResetOpen = (value) => {
+    setSelectedAdvisor(value)
     setIsDialogForPasswordResetOpen(true)
   }
 
@@ -123,25 +124,21 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
 
   return (
     <div>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-          <DataGrid
-            rows={advisors}
-            columns={columns}
-            disableColumnMenu
-            components={{ Toolbar: GridToolbar }}
-            isRowSelectable={() => false}
-            autoHeight
-            pagination
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          />
-        </div>
-      )}
+      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          disableColumnMenu
+          components={{ Toolbar: GridToolbar }}
+          isRowSelectable={() => false}
+          autoHeight
+          pagination
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        />
+      </div>
 
       {selectedAdvisor && (
         <DialogExclusaoOrientador
@@ -171,6 +168,13 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
       )}
     </div>
   )
+}
+
+DataGridOrientadores.prototypes = {
+  data: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node,
+  onResetPassword: PropTypes.node
 }
 
 export { DataGridOrientadores }

@@ -1,9 +1,13 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { Icon } from '@mui/material'
-import Sidebar from '../../components/Sidebar'
 import { DataGridEstudantes } from './components/DataGridEstudantes'
+import Sidebar from '../../components/Sidebar'
+import Loading from '../../components/Loading'
 
-function GerenciamentoEstudantesView({ isLoading, students, onUpdate, onDelete }) {
+function GerenciamentoEstudantesView(props) {
+  const { isLoading, data, onUpdate, onDelete } = props
+
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
@@ -22,16 +26,27 @@ function GerenciamentoEstudantesView({ isLoading, students, onUpdate, onDelete }
               </div>
             </div>
           </div>
-          <DataGridEstudantes
-            isLoading={isLoading}
-            students={students}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <DataGridEstudantes
+              isLoading={isLoading}
+              data={data}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+            />
+          )}
         </div>
       </section>
     </div>
   )
+}
+
+GerenciamentoEstudantesView.prototypes = {
+  isLoading: PropTypes.boolean,
+  data: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { GerenciamentoEstudantesView }

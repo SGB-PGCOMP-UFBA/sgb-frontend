@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import Loading from '../../../components/Loading'
 import { formatDate } from '../../../utils/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
 
-function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
+function DataGridAgencias(props) {
+  const { data, onUpdate, onDelete } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedAgency, setSelectedAgency] = useState(null)
@@ -17,8 +18,8 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
     setIsDialogForDeleteOpen(false)
   }
 
-  const handleDialogForDeleteOpen = (data) => {
-    setSelectedAgency(data)
+  const handleDialogForDeleteOpen = (value) => {
+    setSelectedAgency(value)
     setIsDialogForDeleteOpen(true)
   }
 
@@ -27,8 +28,8 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
     setIsDialogForUpdateOpen(false)
   }
 
-  const handleDialogForUpdateOpen = (data) => {
-    setSelectedAgency(data)
+  const handleDialogForUpdateOpen = (value) => {
+    setSelectedAgency(value)
     setIsDialogForUpdateOpen(true)
   }
 
@@ -85,25 +86,21 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
 
   return (
     <div>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-          <DataGrid
-            rows={agencys}
-            columns={columns}
-            disableColumnMenu
-            components={{ Toolbar: GridToolbar }}
-            isRowSelectable={() => false}
-            autoHeight
-            pagination
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          />
-        </div>
-      )}
+      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          disableColumnMenu
+          components={{ Toolbar: GridToolbar }}
+          isRowSelectable={() => false}
+          autoHeight
+          pagination
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        />
+      </div>
 
       {selectedAgency && (
         <DialogExclusaoAgencia
@@ -124,6 +121,12 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
       )}
     </div>
   )
+}
+
+DataGridAgencias.prototypes = {
+  data: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { DataGridAgencias }

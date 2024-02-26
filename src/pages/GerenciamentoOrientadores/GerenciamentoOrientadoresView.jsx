@@ -1,18 +1,14 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Button, Icon } from '@mui/material'
 import { AddCircleOutline } from '@mui/icons-material'
-import Sidebar from '../../components/Sidebar'
 import { DataGridOrientadores } from './components/DataGridOrientadores'
 import { DialogInclusaoOrientador } from './components/DialogInclusaoOrientador'
+import Sidebar from '../../components/Sidebar'
+import Loading from '../../components/Loading'
 
-function GerenciamentoOrientadoresView({
-  isLoading,
-  advisors,
-  onCreate,
-  onUpdate,
-  onDelete,
-  onResetPassword
-}) {
+function GerenciamentoOrientadoresView(props) {
+  const { isLoading, data, onCreate, onUpdate, onDelete, onResetPassword } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -51,14 +47,17 @@ function GerenciamentoOrientadoresView({
               </Button>
             </div>
           </div>
-          <DataGridOrientadores
-            isLoading={isLoading}
-            advisors={advisors}
-            onCreate={onCreate}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-            onResetPassword={onResetPassword}
-          />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <DataGridOrientadores
+              data={data}
+              onCreate={onCreate}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              onResetPassword={onResetPassword}
+            />
+          )}
 
           {isDialogForCreateOpen && (
             <DialogInclusaoOrientador
@@ -71,6 +70,14 @@ function GerenciamentoOrientadoresView({
       </section>
     </div>
   )
+}
+
+GerenciamentoOrientadoresView.prototypes = {
+  isLoading: PropTypes.boolean,
+  data: PropTypes.node,
+  onCreate: PropTypes.node,
+  onUpdate: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { GerenciamentoOrientadoresView }
