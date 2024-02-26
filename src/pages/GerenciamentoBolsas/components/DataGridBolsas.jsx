@@ -6,7 +6,7 @@ import { formatDate } from '../../../utils/formatters'
 import { CustomChip } from '../../../components'
 
 function DataGridBolsas(props) {
-  const [pageSize, setPageSize] = useState(5)
+  const [pageSize, setPageSize] = useState(10)
   const { data } = props
 
   const columns = [

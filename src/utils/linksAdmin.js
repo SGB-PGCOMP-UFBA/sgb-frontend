@@ -2,21 +2,21 @@ export const linksAdmin = [
   {
     name: 'Dashboard',
     icon: 'dashboard',
-    path: '/admin/dashboard'
+    path: '/dashboard'
   },
   {
     name: 'Bolsas',
     icon: 'event_available_outlined',
-    path: '/admin/bolsas'
+    path: '/bolsas'
   },
   {
     name: 'Estudantes',
     icon: 'school',
-    path: '/admin/estudantes'
+    path: '/estudantes'
   },
   {
     name: 'Orientadores',
     icon: 'people',
-    path: '/admin/orientadores'
+    path: '/orientadores'
   }
 ]

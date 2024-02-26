@@ -22,14 +22,14 @@ export default function App() {
 
         {/* Rotas de usuário administrador */}
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
-          <Route path="admin/dashboard" element={<DashboardMetricas />} />
-          <Route path="admin/bolsas" element={<GerenciamentoBolsas />} />
-          <Route path="admin/agencias" element={<GerenciamentoAgencias />} />
-          <Route path="admin/estudantes" element={<GerenciamentoEstudantes />} />
-          <Route path="admin/orientadores" element={<GerenciamentoOrientadores />} />
+          <Route path="dashboard" element={<DashboardMetricas />} />
+          <Route path="bolsas" element={<GerenciamentoBolsas />} />
+          <Route path="agencias" element={<GerenciamentoAgencias />} />
+          <Route path="estudantes" element={<GerenciamentoEstudantes />} />
+          <Route path="orientadores" element={<GerenciamentoOrientadores />} />
         </Route>
 
-        {/* Qualquer rota */}
+        {/* Qualquer rota desconhecida */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
