@@ -10,6 +10,7 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState(null)
+  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForDeleteClose = () => {
     setSelectedStudent(null)
@@ -38,7 +39,7 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
       width: 300,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>person</Icon>
+          <Icon sx={{ fontSize: 28 }}>school</Icon>
           {params.row.name}
         </div>
       )
@@ -127,14 +128,14 @@ function DataGridEstudantes({ students, isLoading, onUpdate, onDelete }) {
           <DataGrid
             rows={students}
             columns={columns}
-            pageSize={7}
-            rowsPerPageOptions={[7]}
             disableColumnMenu
             components={{ Toolbar: GridToolbar }}
             isRowSelectable={() => false}
-            rowHeight={45}
             autoHeight
-            disableDensitySelector
+            pagination
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 25, 50]}
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>

@@ -5,9 +5,9 @@ export const linksAdmin = [
     path: '/admin/dashboard'
   },
   {
-    name: 'Bolsas Ativas',
+    name: 'Bolsas',
     icon: 'event_available_outlined',
-    path: '/admin/bolsas-ativas'
+    path: '/admin/bolsas'
   },
   {
     name: 'Estudantes',

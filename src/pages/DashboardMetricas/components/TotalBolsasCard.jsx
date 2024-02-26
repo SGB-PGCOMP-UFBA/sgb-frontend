@@ -1,35 +1,42 @@
 import PropTypes from 'prop-types'
-import { Card, CardContent, Stack, Typography } from '@mui/material'
+import { Card, CardContent } from '@mui/material'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 
 function TotalBolsasCard(props) {
-  const { data, sx } = props
+  const { sx } = props
+
+  const columns = [
+    { field: 'id', headerName: 'Modalidade', width: 140, editable: false },
+    { field: 'mestrado', headerName: 'Concedidas Mestrado', width: 200, editable: true },
+    { field: 'doutorado', headerName: 'Concedidas Doutorado', width: 200, editable: true }
+  ]
+
+  const rows = [
+    { id: 'CAPES', mestrado: 13, doutorado: 18 },
+    { id: 'FAPESB', mestrado: 11, doutorado: 15 },
+    { id: 'CNPQ', mestrado: 11, doutorado: 15 }
+  ]
 
   return (
-    <Card sx={sx} className="bg-blue-400 !bg-blue-400">
+    <Card sx={sx}>
       <CardContent className="h-full">
-        <Stack className="h-full" alignItems="center" direction="column">
-          <Stack justifyContent="space-evenly" alignItems="center" height="100%">
-            <Typography fontWeight="bold" variant="h3" sx={{ color: '#fff' }}>
-              TOTAL
-            </Typography>
-            <Typography textAlign="center" variant="h3" sx={{ color: '#fff' }}>
-              {data}
-              <div>
-                <Typography variant="subtitle1">bolsas ativas</Typography>
-              </div>
-            </Typography>
-          </Stack>
-        </Stack>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          density="compact"
+          editMode="row"
+          hideFooter
+          hideFooterPagination
+          hideFooterSelectedRowCount
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        />
       </CardContent>
     </Card>
   )
 }
 
 TotalBolsasCard.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
-  sx: PropTypes.node,
-  value: PropTypes.string.isRequired
+  sx: PropTypes.node
 }
 
 export { TotalBolsasCard }

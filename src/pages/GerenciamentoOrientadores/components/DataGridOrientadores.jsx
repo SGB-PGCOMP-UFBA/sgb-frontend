@@ -12,6 +12,7 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState(null)
+  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForDeleteClose = () => {
     setSelectedAdvisor(null)
@@ -129,14 +130,14 @@ function DataGridOrientadores({ advisors, isLoading, onUpdate, onDelete, onReset
           <DataGrid
             rows={advisors}
             columns={columns}
-            pageSize={7}
-            rowsPerPageOptions={[7]}
             disableColumnMenu
             components={{ Toolbar: GridToolbar }}
             isRowSelectable={() => false}
-            rowHeight={45}
             autoHeight
-            disableDensitySelector
+            pagination
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 25, 50]}
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>

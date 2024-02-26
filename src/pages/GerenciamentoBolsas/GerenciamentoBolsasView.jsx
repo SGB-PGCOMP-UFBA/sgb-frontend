@@ -1,8 +1,12 @@
+import PropTypes from 'prop-types'
 import Icon from '@mui/material/Icon'
-import List from '../../../components/Lists'
-import Sidebar from '../../../components/Sidebar'
+import Sidebar from '../../components/Sidebar'
+import Loading from '../../components/Loading'
+import { DataGridBolsas } from './components/DataGridBolsas'
 
-export default function AdminLista() {
+function GerenciamentoBolsasView(props) {
+  const { isLoading, data } = props
+
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
@@ -17,9 +21,16 @@ export default function AdminLista() {
               <p className="poppins font-medium text-gray-500">Visualização e Gestão de Bolsas</p>
             </div>
           </div>
-          <List listType="finalizacao" />
+          {isLoading ? <Loading /> : <DataGridBolsas data={data} />}
         </div>
       </section>
     </div>
   )
 }
+
+GerenciamentoBolsasView.prototypes = {
+  data: PropTypes.node,
+  isLoading: PropTypes.boolean
+}
+
+export { GerenciamentoBolsasView }

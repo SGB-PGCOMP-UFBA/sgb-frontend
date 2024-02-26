@@ -10,6 +10,7 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedAgency, setSelectedAgency] = useState(null)
+  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForDeleteClose = () => {
     setSelectedAgency(null)
@@ -91,14 +92,14 @@ function DataGridAgencias({ agencys, isLoading, onUpdate, onDelete }) {
           <DataGrid
             rows={agencys}
             columns={columns}
-            pageSize={7}
-            rowsPerPageOptions={[7]}
             disableColumnMenu
             components={{ Toolbar: GridToolbar }}
             isRowSelectable={() => false}
-            rowHeight={45}
             autoHeight
-            disableDensitySelector
+            pagination
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 25, 50]}
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>

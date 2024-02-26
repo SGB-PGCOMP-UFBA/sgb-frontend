@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import { Box, Grid, Container, Icon } from '@mui/material'
-import Sidebar from '../../components/Sidebar'
 import { BolsasCapesCard } from './components/BolsasCapesCard'
 import { BolsasFapesbCard } from './components/BolsasFapesbCard'
 import { BolsasCnpqCard } from './components/BolsasCnpqCard'
 import { TotalBolsasCard } from './components/TotalBolsasCard'
 import { DetalhamentoBolsasChart } from './components/DetalhamentoBolsasChart'
 import { DetalhamentoAlunosChart } from './components/DetalhamentoAlunosChart'
+import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 
 function DashboardMetricasView(props) {
