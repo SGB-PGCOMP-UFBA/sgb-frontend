@@ -5,7 +5,7 @@ import MobileSidebar from './Mobile'
 export default function Sidebar({ userType }) {
   return (
     <>
-      <div className="hidden md:block">
+      <div className="sticky top-0 hidden md:block">
         <DesktopSidebar userType={userType} />
       </div>
       <div className="md:hidden">

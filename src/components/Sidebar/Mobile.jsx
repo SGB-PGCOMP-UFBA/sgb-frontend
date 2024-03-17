@@ -1,8 +1,9 @@
 import { Link, NavLink } from 'react-router-dom'
+import { Icon } from '@mui/material'
 import { useAppContext } from '../../context/appContext'
 
 export default function Mobile() {
-  const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
+  const { toggleSidebar, expandSidebar } = useAppContext()
   const links = [
     {
       name: 'Dashboard',
@@ -11,7 +12,7 @@ export default function Mobile() {
     },
     {
       name: 'Bolsas',
-      icon: 'event_available_outlined',
+      icon: 'work',
       path: '/bolsas'
     },
     {
@@ -30,7 +31,7 @@ export default function Mobile() {
     <header className="mb-5 space-y-5 bg-white p-5 pb-2">
       <div className="flex w-full items-center justify-between">
         <Link to="/admin/dashboard" className="w-32 justify-self-center">
-          <img src="/assets/logo.png" alt="Logo" />
+          <img src="/assets/pgcomp_1.png" alt="Logo" />
         </Link>
         <Link
           to="/admin/dashboard"
@@ -54,25 +55,13 @@ export default function Mobile() {
                   borderColor: isActive ? '#3b82f6' : 'transparent'
                 })}
               >
-                <img src={`/assets/icons/${link.icon}.svg`} alt={link.icon} />
-                <span className="font-inter font-medium text-gray-800">{link.name}</span>
+                <Icon sx={{ fontSize: 32 }}>{link.icon}</Icon>
+                <span className="text-center font-inter font-medium text-gray-800">
+                  {link.name}
+                </span>
               </NavLink>
             </li>
           ))}
-          <li className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>
-            <NavLink
-              to="/"
-              onClick={logoutUser}
-              className="flex w-full items-center gap-x-3 border-l-4 border-transparent p-3 outline-none "
-              style={({ isActive }) => ({
-                backgroundColor: isActive ? '#dbeafe' : 'transparent',
-                borderColor: isActive ? '#3b82f6' : 'transparent'
-              })}
-            >
-              <img src="/assets/icons/logout.svg" alt="Logout" />
-              <span className="font-inter font-medium text-gray-800">Sair</span>
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </header>

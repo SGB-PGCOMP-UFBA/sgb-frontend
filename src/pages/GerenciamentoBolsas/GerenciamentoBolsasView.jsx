@@ -14,7 +14,7 @@ function GerenciamentoBolsasView(props) {
         <div className="shadow-base h-max w-full space-y-8 rounded-lg bg-white p-6 lg:w-full">
           <div className="mb-8 flex items-center gap-x-4">
             <div className="rounded-md bg-green-400 p-2 leading-none">
-              <Icon sx={{ fontSize: 32 }}>event_available_outlined</Icon>
+              <Icon sx={{ fontSize: 32 }}>work</Icon>
             </div>
             <div>
               <h2 className="poppins text-xl font-semibold text-gray-900">Bolsas</h2>
