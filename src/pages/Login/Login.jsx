@@ -1,24 +1,87 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { LoginView } from './LoginView'
 import { api } from '../../api'
 import { addUserToLocalStorage, getUserFromLocalStorage } from '../../utils/auth-user'
+import { IdentificationForm } from './components/IdentificationForm'
+import { LoginForm } from './components/LoginForm'
+
+const initialState = {
+  role: '',
+  tax_id: '',
+  password: ''
+}
+
+const steps = ['Identifique-se', 'Dados de Acesso']
 
 function Login() {
   const navigate = useNavigate()
+  const [formErrors, setFormErrors] = useState({})
+  const [formValues, setFormValues] = useState(initialState)
+  const [activeStep, setActiveStep] = useState(0)
 
-  const authenticate = async (form) => {
-    const response = await api.auth.login(form)
+  const validateForm = () => {
+    const errors = {}
+    if (!formValues.tax_id) {
+      errors.tax_id = 'CPF é obrigatório'
+    }
+    if (!formValues.password) {
+      errors.password = 'Senha é obrigatória'
+    }
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
 
-    if ([200, 201].includes(response.status)) {
-      toast.success('Autenticado com sucesso.')
+  const handleFormValueChange = (e) => {
+    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+  }
 
-      addUserToLocalStorage(response.data)
+  const handleStepperBack = () => {
+    setActiveStep((prevStep) => prevStep - 1)
+  }
 
-      navigate('/dashboard', { replace: true })
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
+  const handleStepperNext = () => {
+    setActiveStep((prevStep) => prevStep + 1)
+  }
+
+  const pickFormContentByStep = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <IdentificationForm formValues={formValues} onFormValueChange={handleFormValueChange} />
+        )
+      case 1:
+        return (
+          <LoginForm
+            formValues={formValues}
+            formErrors={formErrors}
+            onFormValueChange={handleFormValueChange}
+          />
+        )
+
+      default:
+        return <div>404: Not Found</div>
+    }
+  }
+
+  const authenticate = async () => {
+    if (!validateForm()) {
+      return
+    }
+
+    try {
+      const response = await api.auth.login(formValues)
+
+      if ([200, 201].includes(response.status)) {
+        toast.success('Autenticado com sucesso.', { autoClose: 1000 })
+
+        addUserToLocalStorage(response.data)
+
+        navigate('/dashboard', { replace: true })
+      }
+    } catch (err) {
+      toast.error(`[${err.response.data.statusCode}]: ${err.response.data.message}`)
     }
   }
 
@@ -30,7 +93,16 @@ function Login() {
     }
   }, [])
 
-  return <LoginView action={authenticate} />
+  return (
+    <LoginView
+      steps={steps}
+      activeStep={activeStep}
+      onFormChoose={pickFormContentByStep}
+      onSubmit={authenticate}
+      onStepBack={handleStepperBack}
+      onStepNext={handleStepperNext}
+    />
+  )
 }
 
 export { Login }

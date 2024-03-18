@@ -1,15 +1,9 @@
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 
-export default function Input({
-  label,
-  value,
-  name,
-  placeholder,
-  handleChange,
-  inputRef,
-  patternErro,
-  pattern
-}) {
+export default function PasswordInput(props) {
+  const { label, value, name, placeholder, handleChange, inputRef, patternErro, pattern, error } =
+    props
   const [visiblity, setVisiblity] = useState(false)
 
   const input = useRef(inputRef ?? null)
@@ -23,7 +17,7 @@ export default function Input({
   }
 
   return (
-    <div className="relative flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
+    <div className="relative flex w-full flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
       <label
         htmlFor={name}
         className="flex flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800"
@@ -56,6 +50,20 @@ export default function Input({
           height={24}
         />
       </button>
+      {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
   )
+}
+
+PasswordInput.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  error: PropTypes.string
+}
+
+PasswordInput.defaultProps = {
+  error: ''
 }
