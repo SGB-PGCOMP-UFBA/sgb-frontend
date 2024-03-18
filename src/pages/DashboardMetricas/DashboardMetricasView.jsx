@@ -8,6 +8,7 @@ import { DetalhamentoBolsasChart } from './components/DetalhamentoBolsasChart'
 import { DetalhamentoAlunosChart } from './components/DetalhamentoAlunosChart'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
+import MenuAppBar from '../../components/Navbar'
 
 function DashboardMetricasView(props) {
   const {
@@ -22,84 +23,87 @@ function DashboardMetricasView(props) {
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
-      <Sidebar userType="admin" />
-      <section className="flex w-full justify-center p-4">
-        <div className="shadow-base h-max w-full rounded-lg bg-white p-6 lg:w-full">
-          <div className="mb-8 flex items-center gap-x-4">
-            <div className="rounded-md bg-red-400 p-2 leading-none">
-              <Icon sx={{ fontSize: 32 }}>dashboard</Icon>
+      <Sidebar />
+      <div className="flex w-full flex-col justify-start">
+        <MenuAppBar />
+        <section className="flex w-full justify-center p-4">
+          <div className="shadow-base h-max w-full rounded-lg bg-white p-6 lg:w-full">
+            <div className="mb-8 flex items-center gap-x-4">
+              <div className="rounded-md bg-red-400 p-2 leading-none">
+                <Icon sx={{ fontSize: 32 }}>dashboard</Icon>
+              </div>
+              <div>
+                <h2 className="poppins text-xl font-semibold text-gray-900">Dashboard</h2>
+                <p className="poppins font-medium text-gray-500">Métricas e Análises</p>
+              </div>
             </div>
-            <div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Dashboard</h2>
-              <p className="poppins font-medium text-gray-500">Métricas e Análises</p>
-            </div>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Container maxWidth={false} disableGutters>
+                  <Grid container>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <BolsasCapesCard data={capesDataCard} sx={{ height: '100%' }} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <BolsasFapesbCard data={fapesbDataCard} sx={{ height: '100%' }} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <BolsasCnpqCard data={cnpqDataCard} sx={{ height: '100%' }} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
+                    </Grid>
+                    <Grid item xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
+                      <DetalhamentoBolsasChart sx={{ height: '100%' }} data={bolsasDataChart} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      lg={4}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <DetalhamentoAlunosChart sx={{ height: '100%' }} data={alunosDataChart} />
+                    </Grid>
+                  </Grid>
+                </Container>
+              </Box>
+            )}
           </div>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Container maxWidth={false} disableGutters>
-                <Grid container>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    lg={3}
-                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                  >
-                    <BolsasCapesCard data={capesDataCard} sx={{ height: '100%' }} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    lg={3}
-                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                  >
-                    <BolsasFapesbCard data={fapesbDataCard} sx={{ height: '100%' }} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    lg={3}
-                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                  >
-                    <BolsasCnpqCard data={cnpqDataCard} sx={{ height: '100%' }} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    lg={3}
-                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                  >
-                    <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
-                  </Grid>
-                  <Grid item xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                    <DetalhamentoBolsasChart sx={{ height: '100%' }} data={bolsasDataChart} />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                    lg={4}
-                    sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                  >
-                    <DetalhamentoAlunosChart sx={{ height: '100%' }} data={alunosDataChart} />
-                  </Grid>
-                </Grid>
-              </Container>
-            </Box>
-          )}
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   )
 }

@@ -1,20 +1,15 @@
-import PropTypes from 'prop-types'
 import DesktopSidebar from './Desktop'
 import MobileSidebar from './Mobile'
 
-export default function Sidebar({ userType }) {
+export default function Sidebar() {
   return (
     <>
       <div className="sticky top-0 hidden md:block">
-        <DesktopSidebar userType={userType} />
+        <DesktopSidebar />
       </div>
       <div className="md:hidden">
-        <MobileSidebar userType={userType} />
+        <MobileSidebar />
       </div>
     </>
   )
-}
-
-Sidebar.propTypes = {
-  userType: PropTypes.string.isRequired
 }

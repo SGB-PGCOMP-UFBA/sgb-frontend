@@ -1,15 +1,15 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { useAppContext } from './appContext'
+import { getUserFromLocalStorage } from '../utils/auth-user'
 
 function RequireAuth({ allowedRoles }) {
-  const { userRole } = useAppContext()
+  const user = getUserFromLocalStorage()
   const location = useLocation()
 
-  return allowedRoles === userRole ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/" state={{ from: location }} replace />
-  )
+  if (user && allowedRoles === user.role) {
+    return <Outlet />
+  }
+
+  return <Navigate to="/" state={{ from: location }} replace />
 }
 
 export default RequireAuth
