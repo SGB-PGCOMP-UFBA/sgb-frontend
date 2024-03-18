@@ -46,7 +46,10 @@ export default function MenuAppBar() {
   }
 
   return (
-    <Box sx={{ height: 50, marginBottom: 2 }}>
+    <Box
+      className="hidden text-center text-sm font-semibold md:block"
+      sx={{ height: 50, marginBottom: 2 }}
+    >
       <AppBar
         position="sticky"
         elevation={0}

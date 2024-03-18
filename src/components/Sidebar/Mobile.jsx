@@ -4,6 +4,7 @@ import { useAppContext } from '../../context/appContext'
 
 export default function Mobile() {
   const { toggleSidebar, expandSidebar } = useAppContext()
+
   const links = [
     {
       name: 'Dashboard',
@@ -30,14 +31,8 @@ export default function Mobile() {
   return (
     <header className="mb-5 space-y-5 bg-white p-5 pb-2">
       <div className="flex w-full items-center justify-between">
-        <Link to="/admin/dashboard" className="w-32 justify-self-center">
+        <Link to="/dashboard" className="w-32 justify-self-center">
           <img src="/assets/pgcomp_1.png" alt="Logo" />
-        </Link>
-        <Link
-          to="/admin/dashboard"
-          className="hidden w-56 text-center text-sm font-semibold sm:block"
-        >
-          Sistema de acompanhamento de bolsistas
         </Link>
         <button type="button" onClick={toggleSidebar}>
           <img src="/assets/icons/menu.svg" alt="Menu" />
