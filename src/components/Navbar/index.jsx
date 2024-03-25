@@ -30,6 +30,14 @@ export default function MenuAppBar() {
     setAnchorEl(null)
   }
 
+  const handleRedirectToSettings = () => {
+    navigate('/settings', { replace: true })
+  }
+
+  const handleRedirectToProfile = () => {
+    navigate('/profile', { replace: true })
+  }
+
   const handleLogout = () => {
     removeUserFromLocalStorage()
     navigate('/', { replace: true })
@@ -132,13 +140,13 @@ export default function MenuAppBar() {
                 </Typography>
               </Box>
               <Divider />
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleRedirectToSettings}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>
                 Configurações
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleRedirectToProfile}>
                 <ListItemIcon>
                   <Person fontSize="small" />
                 </ListItemIcon>

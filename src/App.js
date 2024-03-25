@@ -4,6 +4,8 @@ import RequireAuth from './context/requireAuth'
 import {
   PageForgetPassword,
   Login,
+  LoggedUserProfile,
+  LoggedUserSettings,
   PageNotFound,
   DashboardMetricas,
   GerenciamentoBolsas,
@@ -19,6 +21,8 @@ export default function App() {
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/esqueci-a-senha" element={<PageForgetPassword />} />
+        <Route path="/profile" element={<LoggedUserProfile />} />
+        <Route path="/settings" element={<LoggedUserSettings />} />
 
         {/* Rotas de usuário administrador */}
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
