@@ -1,9 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Person, Logout, Settings } from '@mui/icons-material'
+import { Person, Logout, Settings, Notifications } from '@mui/icons-material'
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Divider,
   IconButton,
@@ -13,10 +14,11 @@ import {
   MenuItem,
   Toolbar
 } from '@mui/material'
-import { removeUserFromLocalStorage } from '../../utils/auth-user'
+import { getUserFromLocalStorage, removeUserFromLocalStorage } from '../../utils/auth-user'
 
 export default function MenuAppBar() {
   const navigate = useNavigate()
+  const user = getUserFromLocalStorage()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -59,14 +61,27 @@ export default function MenuAppBar() {
           <div>
             <IconButton
               size="medium"
+              aria-label="show 17 new notifications"
+              style={{
+                backgroundColor: 'transparent',
+                color: '#1c253f',
+                height: '48px',
+                width: '48px'
+              }}
+            >
+              <Badge badgeContent={17} color="error">
+                <Notifications color="white" />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="medium"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleMenu}
-              color="primary"
             >
               <Avatar
-                {...stringAvatar('Hérson Rezende')}
+                {...stringAvatar(user ? user.name : '')}
                 style={{
                   backgroundColor: '#1c253f',
                   width: '48px',
@@ -111,9 +126,9 @@ export default function MenuAppBar() {
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
               <Box className="py-4 px-5">
-                <Typography variant="subtitle1">Hérson Rezende</Typography>
+                <Typography variant="subtitle1">{user ? user.name : ''}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  herson.reis@ufba.br
+                  {user ? user.email : ''}
                 </Typography>
               </Box>
               <Divider />

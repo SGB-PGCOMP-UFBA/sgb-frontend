@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
 
-function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
+function DialogResetarSenhaEstudante({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async () => {
     onSubmit({ email: item.email, role: item.role })
     onClose()
@@ -10,7 +10,7 @@ function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
   const dialogContent = (
     <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
       <p>
-        Você tem certeza que deseja resetar a senha do(a) orientador(a) <b>{item.name}</b>?
+        Você tem certeza que deseja resetar a senha do(a) estudante(a) <b>{item.name}</b>?
       </p>
       <p>Ele(a) receberá uma nova senha pelo e-mail cadastrado nesta plataforma.</p>
     </div>
@@ -35,11 +35,11 @@ function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Resetar a Senha do Orientador</DialogTitle>
+      <DialogTitle>Resetar a Senha do Estudante</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
   )
 }
 
-export { DialogResetarSenhaOrientador }
+export { DialogResetarSenhaEstudante }

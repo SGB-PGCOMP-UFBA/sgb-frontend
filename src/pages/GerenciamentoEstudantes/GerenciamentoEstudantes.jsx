@@ -41,6 +41,16 @@ function GerenciamentoEstudantes() {
     await getStudents()
   }
 
+  const resetStudentPassword = async (payload) => {
+    const response = await api.password.resetPassword(payload)
+
+    if ([200, 201].includes(response.status)) {
+      toast.success('Senha resetada com sucesso.')
+    } else {
+      toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+  }
+
   useEffect(() => {
     getStudents().finally(() => setIsLoading(false))
   }, [])
@@ -51,6 +61,7 @@ function GerenciamentoEstudantes() {
       data={students}
       onUpdate={updateStudent}
       onDelete={deleteStudent}
+      onResetPassword={resetStudentPassword}
     />
   )
 }

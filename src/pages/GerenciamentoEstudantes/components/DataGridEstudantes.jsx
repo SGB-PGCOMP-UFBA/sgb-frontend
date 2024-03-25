@@ -5,11 +5,13 @@ import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
 import { DialogEdicaoEstudante } from './DialogEdicaoEstudante'
+import { DialogResetarSenhaEstudante } from './DialogResetarSenhaEstudante'
 
 function DataGridEstudantes(props) {
-  const { data, onUpdate, onDelete } = props
+  const { data, onUpdate, onDelete, onResetPassword } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [pageSize, setPageSize] = useState(5)
 
@@ -31,6 +33,16 @@ function DataGridEstudantes(props) {
   const handleDialogForUpdateOpen = (value) => {
     setSelectedStudent(value)
     setIsDialogForUpdateOpen(true)
+  }
+
+  const handleDialogForPasswordResetClose = () => {
+    setSelectedStudent(null)
+    setIsDialogForPasswordResetOpen(false)
+  }
+
+  const handleDialogForPasswordResetOpen = (value) => {
+    setSelectedStudent(value)
+    setIsDialogForPasswordResetOpen(true)
   }
 
   const columns = [
@@ -105,6 +117,11 @@ function DataGridEstudantes(props) {
       width: 180,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
+          <Tooltip title="Resetar Senha do Estudante">
+            <IconButton onClick={() => handleDialogForPasswordResetOpen(params.row)}>
+              <Icon sx={{ fontSize: 28 }}>lock_reset</Icon>
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Editar Estudante">
             <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
@@ -153,6 +170,15 @@ function DataGridEstudantes(props) {
           item={selectedStudent}
           onClose={handleDialogForUpdateClose}
           onSubmit={onUpdate}
+        />
+      )}
+
+      {selectedStudent && (
+        <DialogResetarSenhaEstudante
+          isOpen={isDialogForPasswordResetOpen}
+          item={selectedStudent}
+          onClose={handleDialogForPasswordResetClose}
+          onSubmit={onResetPassword}
         />
       )}
     </div>

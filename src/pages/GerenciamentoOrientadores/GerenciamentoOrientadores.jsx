@@ -53,10 +53,10 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
-  const resetAdvisorPassword = async (email) => {
-    const response = await api.password.resetPassword(email)
+  const resetAdvisorPassword = async (payload) => {
+    const response = await api.password.resetPassword(payload)
 
-    if (response.status === 200) {
+    if ([200, 201].includes(response.status)) {
       toast.success('Senha resetada com sucesso.')
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)

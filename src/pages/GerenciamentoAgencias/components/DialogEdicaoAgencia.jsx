@@ -13,6 +13,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
   const dialogContent = (
     <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
       <TextField
+        disabled
         required
         fullWidth
         id="name"

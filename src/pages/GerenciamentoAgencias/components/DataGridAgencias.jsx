@@ -33,6 +33,10 @@ function DataGridAgencias(props) {
     setIsDialogForUpdateOpen(true)
   }
 
+  const hasScholarships = (agency) => {
+    return agency.scholarshipsCount > 0
+  }
+
   const columns = [
     {
       field: 'name',
@@ -74,10 +78,21 @@ function DataGridAgencias(props) {
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
-          <Tooltip title="Excluir Agência">
-            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>delete</Icon>
-            </IconButton>
+          <Tooltip
+            title={
+              hasScholarships(params.row)
+                ? 'Não é possível excluir esta agência!'
+                : 'Excluir Agência'
+            }
+          >
+            <span>
+              <IconButton
+                onClick={() => handleDialogForDeleteOpen(params.row)}
+                disabled={hasScholarships(params.row)}
+              >
+                <Icon sx={{ fontSize: 28 }}>delete</Icon>
+              </IconButton>
+            </span>
           </Tooltip>
         </div>
       )

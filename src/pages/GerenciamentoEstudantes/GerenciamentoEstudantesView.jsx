@@ -7,7 +7,7 @@ import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
 function GerenciamentoEstudantesView(props) {
-  const { isLoading, data, onUpdate, onDelete } = props
+  const { isLoading, data, onUpdate, onDelete, onResetPassword } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
@@ -37,6 +37,7 @@ function GerenciamentoEstudantesView(props) {
                 data={data}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
+                onResetPassword={onResetPassword}
               />
             )}
           </div>
@@ -50,7 +51,8 @@ GerenciamentoEstudantesView.prototypes = {
   isLoading: PropTypes.boolean,
   data: PropTypes.node,
   onUpdate: PropTypes.node,
-  onDelete: PropTypes.node
+  onDelete: PropTypes.node,
+  onResetPassword: PropTypes.node
 }
 
 export { GerenciamentoEstudantesView }
