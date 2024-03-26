@@ -6,7 +6,7 @@ import { formatDate, formatPhone } from '../../../utils/formatters'
 
 function DataGridOrientandos(props) {
   const { data } = props
-  const [pageSize, setPageSize] = useState(5)
+  const [pageSize, setPageSize] = useState(10)
 
   const columns = [
     {
