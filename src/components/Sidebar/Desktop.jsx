@@ -1,31 +1,14 @@
 import { NavLink } from 'react-router-dom'
 import { Icon, Divider } from '@mui/material'
 
-export default function Desktop() {
-  const currentYear = new Date().getFullYear()
+export default function Desktop(props) {
+  const { user, links } = props
 
-  const links = [
-    {
-      name: 'Dashboard',
-      icon: 'dashboard',
-      path: '/dashboard'
-    },
-    {
-      name: 'Bolsas',
-      icon: 'work',
-      path: '/bolsas'
-    },
-    {
-      name: 'Estudantes',
-      icon: 'school',
-      path: '/estudantes'
-    },
-    {
-      name: 'Orientadores',
-      icon: 'people',
-      path: '/orientadores'
-    }
-  ]
+  const filteredLinks = links.filter(
+    (link) => !link.availableRoles || link.availableRoles.includes(user.role)
+  )
+
+  const currentYear = new Date().getFullYear()
 
   return (
     <aside className="block h-screen w-60 overflow-auto bg-[#1C253F]">
@@ -35,7 +18,7 @@ export default function Desktop() {
             <img src="/assets/pgcomp_2.png" alt="Logo" className="block w-52" />
           </header>
           <ul className=" flex w-full flex-col items-center">
-            {links.map((link) => (
+            {filteredLinks.map((link) => (
               <li key={link.name} className="w-full text-white hover:bg-[#323a52]">
                 <NavLink
                   to={link.path}

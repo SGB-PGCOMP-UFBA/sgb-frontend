@@ -6,7 +6,7 @@ import MenuAppBar from '../../components/Navbar'
 import { DataGridBolsas } from './components/DataGridBolsas'
 
 function GerenciamentoBolsasView(props) {
-  const { isLoading, data } = props
+  const { isLoading, data, onDelete } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
@@ -24,7 +24,7 @@ function GerenciamentoBolsasView(props) {
                 <p className="poppins font-medium text-gray-500">Visualização e Gestão de Bolsas</p>
               </div>
             </div>
-            {isLoading ? <Loading /> : <DataGridBolsas data={data} />}
+            {isLoading ? <Loading /> : <DataGridBolsas data={data} onDelete={onDelete} />}
           </div>
         </section>
       </div>
@@ -34,7 +34,8 @@ function GerenciamentoBolsasView(props) {
 
 GerenciamentoBolsasView.prototypes = {
   data: PropTypes.node,
-  isLoading: PropTypes.boolean
+  isLoading: PropTypes.boolean,
+  onDelete: PropTypes.node
 }
 
 export { GerenciamentoBolsasView }

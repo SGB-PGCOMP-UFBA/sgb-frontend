@@ -81,7 +81,7 @@ function DataGridAgencias(props) {
           <Tooltip
             title={
               hasScholarships(params.row)
-                ? 'Não é possível excluir esta agência!'
+                ? 'Não é possível excluir esta agência'
                 : 'Excluir Agência'
             }
           >

@@ -4,10 +4,24 @@ import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 import { formatDate } from '../../../utils/formatters'
 import { CustomChip } from '../../../components'
+import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 
 function DataGridBolsas(props) {
+  const { data, onDelete } = props
+
   const [pageSize, setPageSize] = useState(10)
-  const { data } = props
+  const [selectedScholarship, setSelectedScholarship] = useState(null)
+  const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+
+  const handleDialogForDeleteClose = () => {
+    setSelectedScholarship(null)
+    setIsDialogForDeleteOpen(false)
+  }
+
+  const handleDialogForDeleteOpen = (value) => {
+    setSelectedScholarship(value)
+    setIsDialogForDeleteOpen(true)
+  }
 
   const columns = [
     {
@@ -92,15 +106,10 @@ function DataGridBolsas(props) {
       field: 'actions',
       headerName: 'Ações',
       width: 130,
-      renderCell: () => (
+      renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Editar Bolsa">
-            <IconButton onClick={() => {}}>
-              <Icon sx={{ fontSize: 28 }}>edit</Icon>
-            </IconButton>
-          </Tooltip>
           <Tooltip title="Excluir Bolsa">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>delete</Icon>
             </IconButton>
           </Tooltip>
@@ -110,24 +119,38 @@ function DataGridBolsas(props) {
   ]
 
   return (
-    <DataGrid
-      rows={data}
-      columns={columns}
-      disableColumnMenu
-      autoHeight
-      isRowSelectable={() => false}
-      components={{ Toolbar: GridToolbar }}
-      pagination
-      pageSize={pageSize}
-      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-      rowsPerPageOptions={[5, 10, 25, 50]}
-      localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-    />
+    <div>
+      <div>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          disableColumnMenu
+          autoHeight
+          isRowSelectable={() => false}
+          components={{ Toolbar: GridToolbar }}
+          pagination
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        />
+
+        {selectedScholarship && (
+          <DialogExclusaoBolsa
+            isOpen={isDialogForDeleteOpen}
+            item={selectedScholarship}
+            onClose={handleDialogForDeleteClose}
+            onSubmit={onDelete}
+          />
+        )}
+      </div>
+    </div>
   )
 }
 
 DataGridBolsas.prototypes = {
-  data: PropTypes.node
+  data: PropTypes.node,
+  onDelete: PropTypes.node
 }
 
 export { DataGridBolsas }

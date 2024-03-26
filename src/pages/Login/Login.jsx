@@ -8,7 +8,7 @@ import { IdentificationForm } from './components/IdentificationForm'
 import { LoginForm } from './components/LoginForm'
 
 const initialState = {
-  role: '',
+  role: 'STUDENT',
   tax_id: '',
   password: ''
 }
@@ -65,6 +65,14 @@ function Login() {
     }
   }
 
+  const firstRedirect = (user) => {
+    if (user && user.role === 'ADMIN') {
+      navigate('/dashboard', { replace: true })
+    } else if (user && user.role === 'ADVISOR') {
+      navigate('/orientandos', { replace: true })
+    }
+  }
+
   const authenticate = async () => {
     if (!validateForm()) {
       return
@@ -78,7 +86,7 @@ function Login() {
 
         addUserToLocalStorage(response.data)
 
-        navigate('/dashboard', { replace: true })
+        firstRedirect(getUserFromLocalStorage())
       }
     } catch (err) {
       toast.error(`[${err.response.data.statusCode}]: ${err.response.data.message}`)
@@ -88,9 +96,7 @@ function Login() {
   useEffect(() => {
     const user = getUserFromLocalStorage()
 
-    if (user) {
-      navigate('/dashboard', { replace: true })
-    }
+    firstRedirect(user)
   }, [])
 
   return (

@@ -11,6 +11,7 @@ import {
   GerenciamentoBolsas,
   GerenciamentoAgencias,
   GerenciamentoEstudantes,
+  GerenciamentoOrientandos,
   GerenciamentoOrientadores
 } from './pages'
 
@@ -31,6 +32,11 @@ export default function App() {
           <Route path="agencias" element={<GerenciamentoAgencias />} />
           <Route path="estudantes" element={<GerenciamentoEstudantes />} />
           <Route path="orientadores" element={<GerenciamentoOrientadores />} />
+        </Route>
+
+        {/* Rotas de usuário orientador */}
+        <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
+          <Route path="orientandos" element={<GerenciamentoOrientandos />} />
         </Route>
 
         {/* Qualquer rota desconhecida */}

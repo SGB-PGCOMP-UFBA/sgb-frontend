@@ -7,6 +7,7 @@ import { DashboardMetricas } from './DashboardMetricas'
 import { GerenciamentoBolsas } from './GerenciamentoBolsas'
 import { GerenciamentoAgencias } from './GerenciamentoAgencias'
 import { GerenciamentoEstudantes } from './GerenciamentoEstudantes'
+import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 
 export {
@@ -19,5 +20,6 @@ export {
   GerenciamentoBolsas,
   GerenciamentoAgencias,
   GerenciamentoEstudantes,
+  GerenciamentoOrientandos,
   GerenciamentoOrientadores
 }

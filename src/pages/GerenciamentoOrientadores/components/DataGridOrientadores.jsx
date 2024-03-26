@@ -45,6 +45,10 @@ function DataGridOrientadores(props) {
     setIsDialogForPasswordResetOpen(true)
   }
 
+  const hasEnrollments = (advisor) => {
+    return advisor.enrollmentsCount > 0
+  }
+
   const columns = [
     {
       field: 'name',
@@ -112,10 +116,21 @@ function DataGridOrientadores(props) {
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
-          <Tooltip title="Excluir Orientador">
-            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>delete</Icon>
-            </IconButton>
+          <Tooltip
+            title={
+              hasEnrollments(params.row)
+                ? 'Não é possível excluir este(a) orientador(a)'
+                : 'Excluir Orientador(a)'
+            }
+          >
+            <span>
+              <IconButton
+                onClick={() => handleDialogForDeleteOpen(params.row)}
+                disabled={hasEnrollments(params.row)}
+              >
+                <Icon sx={{ fontSize: 28 }}>delete</Icon>
+              </IconButton>
+            </span>
           </Tooltip>
         </div>
       )

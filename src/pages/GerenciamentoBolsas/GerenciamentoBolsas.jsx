@@ -17,14 +17,28 @@ function GerenciamentoBolsas() {
     }
   }
 
+  const deleteScholarship = async (scholarshipId) => {
+    const response = await api.scholarship.deleteScholarship(scholarshipId)
+
+    if (response.status === 204) {
+      toast.success('Bolsa excluída com sucesso.')
+    } else {
+      toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+
+    await getScholarships()
+  }
+
   useEffect(() => {
     getScholarships().finally(() => setIsLoading(false))
   }, [])
 
   return (
-    <div>
-      <GerenciamentoBolsasView isLoading={isLoading} data={scholarships} />
-    </div>
+    <GerenciamentoBolsasView
+      isLoading={isLoading}
+      data={scholarships}
+      onDelete={deleteScholarship}
+    />
   )
 }
 

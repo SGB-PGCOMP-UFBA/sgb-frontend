@@ -29,8 +29,8 @@ function GerenciamentoEstudantes() {
     await getStudents()
   }
 
-  const deleteStudent = async (student) => {
-    const response = await api.student.deleteStudent(student)
+  const deleteStudent = async (studentId) => {
+    const response = await api.student.deleteStudent(studentId)
 
     if (response.status === 204) {
       toast.success('Estudante excluído(a) com sucesso.')

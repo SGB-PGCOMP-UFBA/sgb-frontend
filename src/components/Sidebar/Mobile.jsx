@@ -2,31 +2,13 @@ import { Link, NavLink } from 'react-router-dom'
 import { Icon } from '@mui/material'
 import { useAppContext } from '../../context/appContext'
 
-export default function Mobile() {
+export default function Mobile(props) {
+  const { user, links } = props
   const { toggleSidebar, expandSidebar } = useAppContext()
 
-  const links = [
-    {
-      name: 'Dashboard',
-      icon: 'dashboard',
-      path: '/dashboard'
-    },
-    {
-      name: 'Bolsas',
-      icon: 'work',
-      path: '/bolsas'
-    },
-    {
-      name: 'Estudantes',
-      icon: 'school',
-      path: '/estudantes'
-    },
-    {
-      name: 'Orientadores',
-      icon: 'people',
-      path: '/orientadores'
-    }
-  ]
+  const filteredLinks = links.filter(
+    (link) => !link.availableRoles || link.availableRoles.includes(user.role)
+  )
 
   return (
     <header className="mb-5 space-y-5 bg-white p-5 pb-2">
@@ -40,7 +22,7 @@ export default function Mobile() {
       </div>
       <nav className={`${expandSidebar ? 'h-max' : 'h-0'} transition-all`}>
         <ul className={`${expandSidebar ? 'opacity-1' : 'opacity-0'} transition-all`}>
-          {links.map((link) => (
+          {filteredLinks.map((link) => (
             <li key={link.name} className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>
               <NavLink
                 to={link.path}

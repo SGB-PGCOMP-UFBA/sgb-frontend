@@ -13,7 +13,7 @@ function DataGridEstudantes(props) {
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState(null)
-  const [pageSize, setPageSize] = useState(5)
+  const [pageSize, setPageSize] = useState(10)
 
   const handleDialogForDeleteClose = () => {
     setSelectedStudent(null)
