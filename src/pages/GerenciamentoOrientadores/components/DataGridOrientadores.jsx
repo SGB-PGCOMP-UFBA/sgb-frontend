@@ -59,19 +59,22 @@ function DataGridOrientadores(props) {
           <Icon sx={{ fontSize: 28 }}>person</Icon>
           {params.row.name}
         </div>
-      )
+      ),
+      valueGetter: (params) => params.row.name
     },
     {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
-      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>
+      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>,
+      valueGetter: (params) => params.row.email
     },
     {
       field: 'tax_id',
       headerName: 'CPF',
       width: 150,
-      renderCell: (params) => <p className="overflow-auto">{params.row.tax_id}</p>
+      renderCell: (params) => <p className="overflow-auto">{params.row.tax_id}</p>,
+      valueGetter: (params) => params.row.tax_id
     },
     {
       field: 'phone_number',
@@ -86,24 +89,28 @@ function DataGridOrientadores(props) {
         >
           {formatPhone(params.row.phone_number)}
         </a>
-      )
+      ),
+      valueGetter: (params) => params.row.phone_number
     },
     {
       field: 'created_at',
       headerName: 'Cadastrado Em',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
       field: 'updated_at',
       headerName: 'Atualizado Em',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
       field: 'actions',
       headerName: 'Ações',
       width: 180,
+      filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Resetar Senha do Orientador">

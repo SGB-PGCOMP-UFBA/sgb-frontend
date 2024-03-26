@@ -47,30 +47,35 @@ function DataGridAgencias(props) {
           <Icon sx={{ fontSize: 28 }}>business</Icon>
           {params.row.name}
         </div>
-      )
+      ),
+      valueGetter: (params) => params.row.name
     },
     {
       field: 'description',
       headerName: 'Descrição',
       minWidth: 600,
-      renderCell: (params) => <p className="overflow-auto">{params.row.description}</p>
+      renderCell: (params) => <p className="overflow-auto">{params.row.description}</p>,
+      valueGetter: (params) => params.row.description
     },
     {
-      field: 'created_at',
+      field: 'createdAt',
       headerName: 'Criado Em',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
-      field: 'updated_at',
+      field: 'updatedAt',
       headerName: 'Atualizado Em',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
       field: 'actions',
       headerName: 'Ações',
       width: 180,
+      filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Editar Agência">

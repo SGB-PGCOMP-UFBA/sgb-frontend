@@ -29,7 +29,7 @@ function BolsasCapesCard(props) {
             <Icon sx={{ fontSize: 32 }}>work_outline</Icon>
           </Avatar>
         </Stack>
-        {data.growthOverLastYear && (
+        {data.growthOverLastYear >= 0 && (
           <Tooltip
             title={`No ano passado havia ${data.lastYearAmount} bolsa(s) ativa(s). Neste ano há ${data.currentYearAmount} bolsa(s) ativa(s).`}
           >

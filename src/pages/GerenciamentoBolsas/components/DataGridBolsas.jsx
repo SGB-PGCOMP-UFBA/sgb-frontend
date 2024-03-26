@@ -25,7 +25,7 @@ function DataGridBolsas(props) {
 
   const columns = [
     {
-      field: 'row.student.name',
+      field: 'studentName',
       headerName: 'Estudante',
       width: 300,
       renderCell: (params) => (
@@ -33,79 +33,90 @@ function DataGridBolsas(props) {
           <Icon sx={{ fontSize: 28 }}>school</Icon>
           {params.row.student.name}
         </div>
-      )
+      ),
+      valueGetter: (params) => params.row.student.name
     },
     {
-      field: 'row.enrollment.enrollment_date',
+      field: 'enrollmentDate',
       headerName: 'Data da matrícula',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.enrollment.enrollment_date)
     },
     {
-      field: 'row.enrollment.enrollment_number',
+      field: 'enrollmentNumber',
       headerName: 'Matrícula',
       width: 150,
       renderCell: (params) => (
         <p className="overflow-auto">{params.row.enrollment.enrollment_number}</p>
-      )
+      ),
+      valueGetter: (params) => params.row.enrollment.enrollment_number
     },
     {
-      field: 'row.enrollment.enrollment_program',
+      field: 'enrollmentProgram',
       headerName: 'Programa',
       width: 150,
       renderCell: (params) => (
         <CustomChip value={params.row.enrollment.enrollment_program} type="program" />
-      )
+      ),
+      valueGetter: (params) => params.row.enrollment.enrollment_program
     },
     {
-      field: 'row.enrollment.defense_prediction_date',
+      field: 'defensePredictionDate',
       headerName: 'Previsão de defesa',
       width: 150,
       renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date)
     },
     {
-      field: 'row.advisor.name',
+      field: 'advisorName',
       headerName: 'Orientador',
       width: 300,
-      renderCell: (params) => <p className="overflow-auto">{params.row.advisor.name}</p>
+      renderCell: (params) => <p className="overflow-auto">{params.row.advisor.name}</p>,
+      valueGetter: (params) => params.row.advisor.name
     },
     {
-      field: 'row.agency.name',
+      field: 'agencyName',
       headerName: 'Agência',
       width: 150,
-      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />
+      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
+      valueGetter: (params) => params.row.agency.name
     },
     {
-      field: 'scholarship_starts_at',
+      field: 'scholarshipStartsAt',
       headerName: 'Início da bolsa',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.scholarship_starts_at)
     },
     {
-      field: 'scholarship_ends_at',
+      field: 'scholarshipEndsAt',
       headerName: 'Término da bolsa',
       width: 150,
+      filterable: false,
       renderCell: (params) => formatDate(params.row.scholarship_ends_at)
     },
     {
-      field: 'extension_ends_at',
+      field: 'extensionEndsAt',
       headerName: 'Bolsa extendida até',
       width: 150,
+      filterable: false,
       renderCell: (params) =>
         params.row.extension_ends_at ? formatDate(params.row.extension_ends_at) : 'N/A'
     },
     {
-      field: 'row.active',
+      field: 'active',
       headerName: 'Status',
       width: 150,
       renderCell: (params) => (
         <CustomChip value={params.row.active ? 'Ativa' : 'Inativa'} type="status" />
-      )
+      ),
+      valueGetter: (params) => (params.row.active ? 'Ativa' : 'Inativa')
     },
     {
       field: 'actions',
       headerName: 'Ações',
       width: 130,
+      filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Excluir Bolsa">
