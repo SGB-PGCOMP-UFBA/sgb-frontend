@@ -18,6 +18,8 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
+    'import/max-lines-per-function': 'off',
+    'import/max-line-length': null,
     'eslint-disable-line-camelcase': 'off',
     camelcase: 'off',
     'no-nested-ternary': 'off'
