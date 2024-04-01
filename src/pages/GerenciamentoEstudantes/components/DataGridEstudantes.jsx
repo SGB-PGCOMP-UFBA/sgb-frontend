@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Icon, IconButton, Tooltip } from '@mui/material'
+import { Button, Icon, IconButton, Tooltip } from '@mui/material'
+import { School } from '@mui/icons-material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
@@ -49,11 +50,13 @@ function DataGridEstudantes(props) {
     {
       field: 'name',
       headerName: 'Nome completo',
-      width: 300,
+      width: 360,
+      maxWidth: 400,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>school</Icon>
-          {params.row.name}
+          <Button variant="text" color="inherit" startIcon={<School />} onClick={() => {}}>
+            {params.row.name}
+          </Button>
         </div>
       ),
       valueGetter: (params) => params.row.name
@@ -121,7 +124,7 @@ function DataGridEstudantes(props) {
     {
       field: 'actions',
       headerName: 'Ações',
-      width: 180,
+      width: 175,
       filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
