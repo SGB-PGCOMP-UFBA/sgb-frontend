@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
+import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogResetarSenhaEstudante({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async () => {
@@ -34,7 +35,7 @@ function DialogResetarSenhaEstudante({ item, isOpen, onClose, onSubmit }) {
   )
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
       <DialogTitle>Resetar a Senha do Estudante</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>

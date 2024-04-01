@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
+import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
@@ -80,6 +81,7 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
         component: 'form',
         onSubmit: (event) => submitAndCloseDialog(event)
       }}
+      TransitionComponent={SlideUp}
     >
       <DialogTitle>Adicionar Orientador</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>

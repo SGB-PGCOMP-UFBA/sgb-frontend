@@ -7,12 +7,14 @@ import { formatDate, formatPhone } from '../../../utils/formatters'
 import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
 import { DialogEdicaoEstudante } from './DialogEdicaoEstudante'
 import { DialogResetarSenhaEstudante } from './DialogResetarSenhaEstudante'
+import StudentProfileView from '../../../components/views/StudentProfileView'
 
 function DataGridEstudantes(props) {
   const { data, onUpdate, onDelete, onResetPassword } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
+  const [isDialogForVisualizationOpen, setIsDialogForVisualizationOpen] = useState(false)
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [pageSize, setPageSize] = useState(10)
 
@@ -46,6 +48,16 @@ function DataGridEstudantes(props) {
     setIsDialogForPasswordResetOpen(true)
   }
 
+  const handleCloseStudentProfileView = () => {
+    setSelectedStudent(null)
+    setIsDialogForVisualizationOpen(false)
+  }
+
+  const handleOpenStudentProfileView = (value) => {
+    setSelectedStudent(value)
+    setIsDialogForVisualizationOpen(true)
+  }
+
   const columns = [
     {
       field: 'name',
@@ -53,9 +65,13 @@ function DataGridEstudantes(props) {
       width: 360,
       maxWidth: 400,
       renderCell: (params) => (
-        // TODO: Implementar click para abrir perfil do estudante
         <div className="flex items-center gap-x-2 overflow-hidden">
-          <Button variant="text" color="inherit" startIcon={<School />} onClick={() => {}}>
+          <Button
+            variant="text"
+            color="inherit"
+            startIcon={<School />}
+            onClick={() => handleOpenStudentProfileView(params.row)}
+          >
             {params.row.name}
           </Button>
         </div>
@@ -191,6 +207,14 @@ function DataGridEstudantes(props) {
           item={selectedStudent}
           onClose={handleDialogForPasswordResetClose}
           onSubmit={onResetPassword}
+        />
+      )}
+
+      {selectedStudent && (
+        <StudentProfileView
+          item={selectedStudent}
+          isOpen={isDialogForVisualizationOpen}
+          onClose={handleCloseStudentProfileView}
         />
       )}
     </div>

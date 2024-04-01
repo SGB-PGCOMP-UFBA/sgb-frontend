@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
@@ -55,6 +56,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         component: 'form',
         onSubmit: (event) => submitAndCloseDialog(event)
       }}
+      TransitionComponent={SlideUp}
     >
       <DialogTitle>Adicionar Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>

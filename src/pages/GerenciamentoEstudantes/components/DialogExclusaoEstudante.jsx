@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
+import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogExclusaoEstudante({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (id) => {
@@ -10,9 +11,10 @@ function DialogExclusaoEstudante({ item, isOpen, onClose, onSubmit }) {
   const dialogContent = (
     <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
       <p>
-        Você tem certeza que deseja apagar o(a) orientador(a) <b>{item.name}</b>?
+        Você tem certeza que deseja apagar do sistema o(a) estudante <b>{item.name}</b>?
       </p>
-      <p>Não será possível recuperar as informações relacionadas à ele(a) depois disso.</p>
+      <br />
+      <p>Não será possível recuperar estas informações após a exclusão!</p>
     </div>
   )
 
@@ -34,7 +36,7 @@ function DialogExclusaoEstudante({ item, isOpen, onClose, onSubmit }) {
   )
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
       <DialogTitle>Excluir Estudante</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
