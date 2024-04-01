@@ -53,6 +53,7 @@ function DataGridEstudantes(props) {
       width: 360,
       maxWidth: 400,
       renderCell: (params) => (
+        // TODO: Implementar click para abrir perfil do estudante
         <div className="flex items-center gap-x-2 overflow-hidden">
           <Button variant="text" color="inherit" startIcon={<School />} onClick={() => {}}>
             {params.row.name}

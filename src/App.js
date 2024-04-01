@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import RequireAuth from './context/requireAuth'
+import RequireAuth from './hooks/requireAuth'
 import {
   PageForgetPassword,
   Login,

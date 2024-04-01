@@ -1,10 +1,14 @@
+import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Icon } from '@mui/material'
-import { useAppContext } from '../../context/appContext'
 
 export default function Mobile(props) {
   const { user, links } = props
-  const { toggleSidebar, expandSidebar } = useAppContext()
+  const [expandSidebar, setExpandSidebar] = useState(true)
+
+  const handleExpandSidebar = () => {
+    setExpandSidebar(!expandSidebar)
+  }
 
   const filteredLinks = links.filter(
     (link) => !link.availableRoles || link.availableRoles.includes(user.role)
@@ -16,7 +20,7 @@ export default function Mobile(props) {
         <Link to="/dashboard" className="w-32 justify-self-center">
           <img src="/assets/pgcomp_1.png" alt="Logo" />
         </Link>
-        <button type="button" onClick={toggleSidebar}>
+        <button type="button" onClick={handleExpandSidebar}>
           <img src="/assets/icons/menu.svg" alt="Menu" />
         </button>
       </div>

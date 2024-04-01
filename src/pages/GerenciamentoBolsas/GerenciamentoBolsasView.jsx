@@ -33,7 +33,7 @@ function GerenciamentoBolsasView(props) {
                   variant="contained"
                   color="info"
                   startIcon={<Download />}
-                  onClick={() => {}}
+                  onClick={() => {}} // TODO: Implementar download do relatório
                 >
                   Baixar Relatório Completo
                 </Button>

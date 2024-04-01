@@ -10,14 +10,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Test-and-Lint:
+  Lint-and-Test:
     runs-on: ubuntu-latest
     steps:
       - name: github/actionsv3
         uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
         
       - name: Lint
-        run: npm install && npm run lint
+        run: npm run lint
         
-      - name: Tests FRONTEND
-        run: npm install && npm run test
+      - name: Tests
+        run: npm run test
