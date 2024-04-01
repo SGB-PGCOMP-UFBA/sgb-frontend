@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppBar, Button, Dialog, Divider, IconButton, Toolbar, Typography } from '@mui/material/Button'
+import { AppBar, Button, Dialog, Divider, IconButton, Toolbar, Typography } from '@mui/material'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 import List from '@mui/material/List'
