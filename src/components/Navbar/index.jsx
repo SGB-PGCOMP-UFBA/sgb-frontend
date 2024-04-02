@@ -14,7 +14,7 @@ import {
   MenuItem,
   Toolbar
 } from '@mui/material'
-import { getUserFromLocalStorage, removeUserFromLocalStorage } from '../../utils/auth-user'
+import { getUserFromLocalStorage, removeUserFromLocalStorage } from '../../helpers/auth-user'
 
 export default function MenuAppBar() {
   const navigate = useNavigate()

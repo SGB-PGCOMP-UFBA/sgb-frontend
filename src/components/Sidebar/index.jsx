@@ -1,6 +1,6 @@
 import DesktopSidebar from './Desktop'
 import MobileSidebar from './Mobile'
-import { getUserFromLocalStorage } from '../../utils/auth-user'
+import { getUserFromLocalStorage } from '../../helpers/auth-user'
 
 export default function Sidebar() {
   const user = getUserFromLocalStorage()

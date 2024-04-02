@@ -1,0 +1,6 @@
+/node_modules
+/public
+.prettierrc.js
+.lintstagedrc.js
+jest.config.js
+yarn.lock

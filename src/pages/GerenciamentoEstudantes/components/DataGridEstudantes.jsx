@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button, Icon, IconButton, Tooltip } from '@mui/material'
 import { School } from '@mui/icons-material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../utils/formatters'
+import { formatDate, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoEstudante } from './DialogExclusaoEstudante'
 import { DialogEdicaoEstudante } from './DialogEdicaoEstudante'
 import { DialogResetarSenhaEstudante } from './DialogResetarSenhaEstudante'
@@ -69,6 +69,7 @@ function DataGridEstudantes(props) {
           <Button
             variant="text"
             color="inherit"
+            sx={{ textTransform: 'none' }}
             startIcon={<School />}
             onClick={() => handleOpenStudentProfileView(params.row)}
           >

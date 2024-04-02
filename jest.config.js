@@ -23,5 +23,8 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/__mocks__/fileMock.ts'
   },
 
-  moduleDirectories: ['node_modules', 'src']
+  moduleDirectories: ['node_modules', 'src'],
+  transform: {
+    '^.+\\.jsx?$': 'babel-jest'
+  }
 }

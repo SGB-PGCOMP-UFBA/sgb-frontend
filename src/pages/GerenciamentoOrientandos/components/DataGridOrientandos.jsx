@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../utils/formatters'
+import { formatDate, formatPhone } from '../../../helpers/formatters'
 
 function DataGridOrientandos(props) {
   const { data } = props

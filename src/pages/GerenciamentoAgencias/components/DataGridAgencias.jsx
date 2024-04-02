@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import { formatDate } from '../../../utils/formatters'
+import { formatDate } from '../../../helpers/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
 

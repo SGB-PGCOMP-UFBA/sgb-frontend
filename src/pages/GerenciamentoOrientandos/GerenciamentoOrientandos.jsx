@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../api'
 import { GerenciamentoOrientandosView } from './GerenciamentoOrientandosView'
-import { getUserFromLocalStorage } from '../../utils/auth-user'
+import { getUserFromLocalStorage } from '../../helpers/auth-user'
 
 function GerenciamentoOrientandos() {
   const user = getUserFromLocalStorage()

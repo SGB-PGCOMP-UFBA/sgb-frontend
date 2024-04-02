@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { LoginView } from './LoginView'
 import { api } from '../../api'
-import { addUserToLocalStorage, getUserFromLocalStorage } from '../../utils/auth-user'
+import { addUserToLocalStorage, getUserFromLocalStorage } from '../../helpers/auth-user'
 import { IdentificationForm } from './components/IdentificationForm'
 import { LoginForm } from './components/LoginForm'
 

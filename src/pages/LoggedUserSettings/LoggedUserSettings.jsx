@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoggedUserSettingsView } from './LoggedUserSettingsView'
-import { getUserFromLocalStorage } from '../../utils/auth-user'
+import { getUserFromLocalStorage } from '../../helpers/auth-user'
 
 function LoggedUserSettings() {
   const user = getUserFromLocalStorage()
