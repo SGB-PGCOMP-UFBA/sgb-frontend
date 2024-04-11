@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
+import { DialogContatoBolsista } from './DialogContatoBolsista'
 
 function DataGridBolsas(props) {
   const { data, onDelete } = props
@@ -12,6 +13,7 @@ function DataGridBolsas(props) {
   const [pageSize, setPageSize] = useState(10)
   const [selectedScholarship, setSelectedScholarship] = useState(null)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [isDialogForContactOpen, setIsDialogForContactOpen] = useState(false)
 
   const handleDialogForDeleteClose = () => {
     setSelectedScholarship(null)
@@ -23,17 +25,22 @@ function DataGridBolsas(props) {
     setIsDialogForDeleteOpen(true)
   }
 
+  const handleDialogForContactClose = () => {
+    setSelectedScholarship(null)
+    setIsDialogForContactOpen(false)
+  }
+
+  const handleDialogForContactOpen = (value) => {
+    setSelectedScholarship(value)
+    setIsDialogForContactOpen(true)
+  }
+
   const columns = [
     {
       field: 'studentName',
       headerName: 'Estudante',
       width: 300,
-      renderCell: (params) => (
-        <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>school</Icon>
-          {params.row.student.name}
-        </div>
-      ),
+      renderCell: (params) => params.row.student.name,
       valueGetter: (params) => params.row.student.name
     },
     {
@@ -119,6 +126,11 @@ function DataGridBolsas(props) {
       filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
+          <Tooltip title="Abrir Informações de Contato">
+            <IconButton onClick={() => handleDialogForContactOpen(params.row)}>
+              <Icon sx={{ fontSize: 28 }}>contact_page</Icon>
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Excluir Bolsa">
             <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>delete</Icon>
@@ -135,12 +147,11 @@ function DataGridBolsas(props) {
         <DataGrid
           rows={data}
           columns={columns}
-          disableColumnMenu
           autoHeight
           isRowSelectable={() => false}
-          components={{ Toolbar: GridToolbar }}
           pagination
           pageSize={pageSize}
+          disableColumnMenu
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 25, 50]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
@@ -152,6 +163,14 @@ function DataGridBolsas(props) {
             item={selectedScholarship}
             onClose={handleDialogForDeleteClose}
             onSubmit={onDelete}
+          />
+        )}
+
+        {selectedScholarship && (
+          <DialogContatoBolsista
+            isOpen={isDialogForContactOpen}
+            item={selectedScholarship}
+            onClose={handleDialogForContactClose}
           />
         )}
       </div>

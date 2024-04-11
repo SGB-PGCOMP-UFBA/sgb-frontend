@@ -6,7 +6,6 @@ import { PageForgetPassword } from './PageForgetPassword'
 import { DashboardMetricas } from './DashboardMetricas'
 import { GerenciamentoBolsas } from './GerenciamentoBolsas'
 import { GerenciamentoAgencias } from './GerenciamentoAgencias'
-import { GerenciamentoEstudantes } from './GerenciamentoEstudantes'
 import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 
@@ -19,7 +18,6 @@ export {
   DashboardMetricas,
   GerenciamentoBolsas,
   GerenciamentoAgencias,
-  GerenciamentoEstudantes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores
 }

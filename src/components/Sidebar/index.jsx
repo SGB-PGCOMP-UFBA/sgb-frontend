@@ -10,30 +10,35 @@ export default function Sidebar() {
       name: 'Dashboard',
       icon: 'dashboard',
       path: '/dashboard',
+      visible: true,
       availableRoles: ['ADMIN']
     },
     {
       name: 'Bolsas',
       icon: 'work',
       path: '/bolsas',
-      availableRoles: ['ADMIN']
-    },
-    {
-      name: 'Estudantes',
-      icon: 'school',
-      path: '/estudantes',
+      visible: true,
       availableRoles: ['ADMIN']
     },
     {
       name: 'Orientadores',
       icon: 'people',
       path: '/orientadores',
+      visible: false,
+      availableRoles: ['ADMIN']
+    },
+    {
+      name: 'Agências',
+      icon: 'business',
+      path: '/agencias',
+      visible: false,
       availableRoles: ['ADMIN']
     },
     {
       name: 'Orientandos',
       icon: 'people',
       path: '/orientandos',
+      visible: true,
       availableRoles: ['ADVISOR']
     }
   ]

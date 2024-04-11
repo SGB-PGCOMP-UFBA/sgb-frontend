@@ -29,7 +29,7 @@ function GerenciamentoAgenciasView(props) {
           <div className="shadow-base h-max w-full space-y-8 rounded-lg bg-white p-6 lg:w-full">
             <div className="mb-8 flex justify-between">
               <div className="flex items-center gap-x-4">
-                <div className="rounded-md bg-purple-400 p-2 leading-none">
+                <div className="rounded-md bg-blue-400 p-2 leading-none">
                   <Icon sx={{ fontSize: 32 }}>business</Icon>
                 </div>
                 <div>

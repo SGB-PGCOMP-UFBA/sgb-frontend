@@ -5,7 +5,7 @@ export default function Desktop(props) {
   const { user, links } = props
 
   const filteredLinks = links.filter(
-    (link) => !link.availableRoles || link.availableRoles.includes(user.role)
+    (link) => !link.availableRoles || (link.availableRoles.includes(user.role) && link.visible)
   )
 
   const currentYear = new Date().getFullYear()

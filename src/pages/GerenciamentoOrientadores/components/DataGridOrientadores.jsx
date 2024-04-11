@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
+
+const NOT_INFORMED = 'Não informado'
 
 function DataGridOrientadores(props) {
   const { data, onUpdate, onDelete, onResetPassword } = props
@@ -54,26 +56,24 @@ function DataGridOrientadores(props) {
       field: 'name',
       headerName: 'Nome completo',
       width: 300,
-      renderCell: (params) => (
-        <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>person</Icon>
-          {params.row.name}
-        </div>
-      ),
+      renderCell: (params) =>
+        <p className="overflow-auto">{ params.row.name ? params.row.name : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.name
     },
     {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
-      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>,
+      renderCell: (params) =>
+        <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.email
     },
     {
       field: 'tax_id',
       headerName: 'CPF',
       width: 150,
-      renderCell: (params) => <p className="overflow-auto">{params.row.tax_id}</p>,
+      renderCell: (params) =>
+        <p className="overflow-auto">{ params.row.tax_id ? params.row.tax_id : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.tax_id
     },
     {
@@ -151,7 +151,6 @@ function DataGridOrientadores(props) {
           rows={data}
           columns={columns}
           disableColumnMenu
-          components={{ Toolbar: GridToolbar }}
           isRowSelectable={() => false}
           autoHeight
           pagination

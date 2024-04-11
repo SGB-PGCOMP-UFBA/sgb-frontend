@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate } from '../../../helpers/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
@@ -11,7 +11,7 @@ function DataGridAgencias(props) {
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedAgency, setSelectedAgency] = useState(null)
-  const [pageSize, setPageSize] = useState(5)
+  const [pageSize, setPageSize] = useState(10)
 
   const handleDialogForDeleteClose = () => {
     setSelectedAgency(null)
@@ -42,12 +42,7 @@ function DataGridAgencias(props) {
       field: 'name',
       headerName: 'Nome da Agência',
       minWidth: 200,
-      renderCell: (params) => (
-        <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>business</Icon>
-          {params.row.name}
-        </div>
-      ),
+      renderCell: (params) => <p className="overflow-auto">{params.row.name}</p>,
       valueGetter: (params) => params.row.name
     },
     {
@@ -74,7 +69,7 @@ function DataGridAgencias(props) {
     {
       field: 'actions',
       headerName: 'Ações',
-      width: 180,
+      width: 120,
       filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
@@ -111,7 +106,6 @@ function DataGridAgencias(props) {
           rows={data}
           columns={columns}
           disableColumnMenu
-          components={{ Toolbar: GridToolbar }}
           isRowSelectable={() => false}
           autoHeight
           pagination

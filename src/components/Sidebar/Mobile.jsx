@@ -11,7 +11,7 @@ export default function Mobile(props) {
   }
 
   const filteredLinks = links.filter(
-    (link) => !link.availableRoles || link.availableRoles.includes(user.role)
+    (link) => !link.availableRoles || (link.availableRoles.includes(user.role) && link.visible)
   )
 
   return (

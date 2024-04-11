@@ -10,7 +10,6 @@ import {
   DashboardMetricas,
   GerenciamentoBolsas,
   GerenciamentoAgencias,
-  GerenciamentoEstudantes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores
 } from './pages'
@@ -30,7 +29,6 @@ export default function App() {
           <Route path="dashboard" element={<DashboardMetricas />} />
           <Route path="bolsas" element={<GerenciamentoBolsas />} />
           <Route path="agencias" element={<GerenciamentoAgencias />} />
-          <Route path="estudantes" element={<GerenciamentoEstudantes />} />
           <Route path="orientadores" element={<GerenciamentoOrientadores />} />
         </Route>
 
