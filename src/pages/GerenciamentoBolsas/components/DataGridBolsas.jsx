@@ -126,7 +126,7 @@ function DataGridBolsas(props) {
       filterable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Abrir Informações de Contato">
+          <Tooltip title="Abrir Informações de Contato do Bolsista">
             <IconButton onClick={() => handleDialogForContactOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>contact_page</Icon>
             </IconButton>
