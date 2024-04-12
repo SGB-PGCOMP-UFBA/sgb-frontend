@@ -8,10 +8,12 @@ function GerenciamentoBolsas() {
   const [isLoading, setIsLoading] = useState(true)
 
   const getScholarships = async () => {
-    const response = await api.scholarship.getScholarships()
+    const filters = { scholarshipStatus: 'ON_GOING'}
+
+    const response = await api.scholarship.getScholarships(1, 10, filters)
 
     if (response.status === 200) {
-      setScholarships(response.data)
+      setScholarships(response.data.items)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }

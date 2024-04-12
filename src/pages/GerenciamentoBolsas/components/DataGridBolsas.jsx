@@ -61,8 +61,8 @@ function DataGridBolsas(props) {
     },
     {
       field: 'enrollmentProgram',
-      headerName: 'Programa',
-      width: 150,
+      headerName: 'Curso',
+      width: 130,
       renderCell: (params) => (
         <CustomChip value={params.row.enrollment.enrollment_program} type="program" />
       ),
@@ -84,7 +84,7 @@ function DataGridBolsas(props) {
     {
       field: 'agencyName',
       headerName: 'Agência',
-      width: 150,
+      width: 130,
       renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
       valueGetter: (params) => params.row.agency.name
     },
@@ -113,11 +113,11 @@ function DataGridBolsas(props) {
     {
       field: 'active',
       headerName: 'Status',
-      width: 150,
+      width: 170,
       renderCell: (params) => (
-        <CustomChip value={params.row.active ? 'Ativa' : 'Inativa'} type="status" />
+        <CustomChip value={params.row.status} type="status" />
       ),
-      valueGetter: (params) => (params.row.active ? 'Ativa' : 'Inativa')
+      valueGetter: (params) => (params.row.status)
     },
     {
       field: 'actions',

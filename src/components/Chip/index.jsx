@@ -25,9 +25,9 @@ export default function CustomChip(props) {
         return 'custom-chip-ativo'
       case 'status-inativa':
         return 'custom-chip-inativo'
-      case 'status-active':
+      case 'status-on_going':
           return 'custom-chip-ativo'
-      case 'status-inactive':
+      case 'status-finalized':
           return 'custom-chip-inativo'
       default:
         return 'custom-chip-default'
