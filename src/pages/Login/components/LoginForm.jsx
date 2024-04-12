@@ -8,14 +8,14 @@ function LoginForm(props) {
   return (
     <form className="flex w-full flex-col gap-y-5 font-inter">
       <FormInput
-        id="tax_id"
-        label="CPF"
+        id="email"
+        label="E-mail"
         type="text"
-        name="tax_id"
-        placeholder="Digite seu CPF"
-        value={formValues.tax_id}
+        name="email"
+        placeholder="Digite seu e-mail"
+        value={formValues.email}
         handleChange={onFormValueChange}
-        error={formErrors.tax_id}
+        error={formErrors.email}
       />
       <PasswordInput
         id="password"

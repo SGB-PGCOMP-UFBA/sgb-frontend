@@ -6,6 +6,7 @@ import { formatDate, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
+import { CustomChip } from '../../../components'
 
 const NOT_INFORMED = 'Não informado'
 
@@ -61,6 +62,13 @@ function DataGridOrientadores(props) {
       valueGetter: (params) => params.row.name
     },
     {
+      field: 'status',
+      headerName: 'Situação',
+      width: 110,
+      renderCell: (params) => <CustomChip value={params.row.status} type="status" />,
+      valueGetter: (params) => params.row.name
+    },
+    {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
@@ -80,7 +88,7 @@ function DataGridOrientadores(props) {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
-      renderCell: (params) => (
+      renderCell: (params) => ( params.row.phone_number ?
         <a
           href={`https://wa.me/${params.row.phone_number}`}
           target="_blank"
@@ -89,20 +97,30 @@ function DataGridOrientadores(props) {
         >
           {formatPhone(params.row.phone_number)}
         </a>
+        : <p className="overflow-auto">{NOT_INFORMED}</p>
       ),
       valueGetter: (params) => params.row.phone_number
     },
     {
+      field: 'count_orientandos',
+      headerName: 'Orientandos',
+      type: 'number',
+      align:'center',
+      width: 100,
+      renderCell: (params) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
+      valueGetter: (params) => params.row.enrollmentsCount
+    },
+    {
       field: 'created_at',
       headerName: 'Cadastrado Em',
-      width: 150,
+      width: 120,
       filterable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
       field: 'updated_at',
       headerName: 'Atualizado Em',
-      width: 150,
+      width: 120,
       filterable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },

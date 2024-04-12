@@ -9,7 +9,7 @@ import { LoginForm } from './components/LoginForm'
 
 const initialState = {
   role: 'STUDENT',
-  tax_id: '',
+  email: '',
   password: ''
 }
 
@@ -23,8 +23,8 @@ function Login() {
 
   const validateForm = () => {
     const errors = {}
-    if (!formValues.tax_id) {
-      errors.tax_id = 'CPF é obrigatório'
+    if (!formValues.email) {
+      errors.email = 'E-mail é obrigatório'
     }
     if (!formValues.password) {
       errors.password = 'Senha é obrigatória'
@@ -97,7 +97,7 @@ function Login() {
     const user = getUserFromLocalStorage()
 
     firstRedirect(user)
-  }, [])
+  })
 
   return (
     <LoginView

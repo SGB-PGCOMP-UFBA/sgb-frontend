@@ -37,7 +37,6 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
       />
 
       <TextField
-        required
         fullWidth
         id="tax_id"
         label="CPF"
@@ -51,7 +50,6 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
       />
 
       <TextField
-        required
         fullWidth
         id="phone_number"
         label="Telefone"

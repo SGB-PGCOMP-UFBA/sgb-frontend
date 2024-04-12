@@ -35,7 +35,6 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
       />
 
       <TextField
-        required
         fullWidth
         id="tax_id"
         label="CPF"
@@ -48,7 +47,6 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
       />
 
       <TextField
-        required
         fullWidth
         id="phone_number"
         label="Telefone"

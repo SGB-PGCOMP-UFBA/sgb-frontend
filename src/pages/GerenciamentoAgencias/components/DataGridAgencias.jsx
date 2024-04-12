@@ -48,21 +48,29 @@ function DataGridAgencias(props) {
     {
       field: 'description',
       headerName: 'Descrição',
-      minWidth: 600,
+      minWidth: 500,
       renderCell: (params) => <p className="overflow-auto">{params.row.description}</p>,
       valueGetter: (params) => params.row.description
     },
     {
+      field: 'count_scholarships',
+      headerName: 'Bolsas Concedidas',
+      width: 150,
+      align: 'center',
+      renderCell: (params) => <p className="overflow-auto">{params.row.scholarshipsCount}</p>,
+      valueGetter: (params) => params.row.scholarshipsCount
+    },
+    {
       field: 'createdAt',
       headerName: 'Criado Em',
-      width: 150,
+      width: 100,
       filterable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
       field: 'updatedAt',
       headerName: 'Atualizado Em',
-      width: 150,
+      width: 120,
       filterable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },

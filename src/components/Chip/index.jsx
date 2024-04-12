@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Chip } from '@mui/material'
+import { StatusEnum } from '../../constants/Status'
 import './styles.css'
 
 export default function CustomChip(props) {
@@ -24,17 +25,32 @@ export default function CustomChip(props) {
         return 'custom-chip-ativo'
       case 'status-inativa':
         return 'custom-chip-inativo'
+      case 'status-active':
+          return 'custom-chip-ativo'
+      case 'status-inactive':
+          return 'custom-chip-inativo'
       default:
         return 'custom-chip-default'
     }
   }
 
+  const getLabel = () => {
+    switch (type) {
+      case 'status':
+        return StatusEnum[value].toUpperCase()
+      default:
+        return value.toUpperCase()
+    }
+  }
+
   let className = getClassName()
-  className += ' overflow-auto'
+  className += ' overflow-auto w-full'
+
+  let label = getLabel()
 
   return (
     <Chip
-      label={value.toUpperCase()}
+      label={label}
       className={className}
       style={{
         borderRadius: '0.4rem'
