@@ -10,7 +10,11 @@ import { DialogContatoBolsista } from './DialogContatoBolsista'
 function DataGridBolsas(props) {
   const { data, onDelete } = props
 
-  const [pageSize, setPageSize] = useState(10)
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: props.size,
+    page: props.page
+  })
+
   const [selectedScholarship, setSelectedScholarship] = useState(null)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForContactOpen, setIsDialogForContactOpen] = useState(false)
@@ -37,20 +41,6 @@ function DataGridBolsas(props) {
 
   const columns = [
     {
-      field: 'studentName',
-      headerName: 'Estudante',
-      width: 300,
-      renderCell: (params) => params.row.student.name,
-      valueGetter: (params) => params.row.student.name
-    },
-    {
-      field: 'enrollmentDate',
-      headerName: 'Data da matrícula',
-      width: 150,
-      filterable: false,
-      renderCell: (params) => formatDate(params.row.enrollment.enrollment_date)
-    },
-    {
       field: 'enrollmentNumber',
       headerName: 'Matrícula',
       width: 150,
@@ -60,19 +50,27 @@ function DataGridBolsas(props) {
       valueGetter: (params) => params.row.enrollment.enrollment_number
     },
     {
+      field: 'studentName',
+      headerName: 'Bolsista',
+      width: 300,
+      renderCell: (params) => params.row.student.name,
+      valueGetter: (params) => params.row.student.name
+    },
+    {
       field: 'enrollmentProgram',
       headerName: 'Curso',
-      width: 130,
+      width: 140,
       renderCell: (params) => (
         <CustomChip value={params.row.enrollment.enrollment_program} type="program" />
       ),
       valueGetter: (params) => params.row.enrollment.enrollment_program
     },
     {
-      field: 'defensePredictionDate',
-      headerName: 'Previsão de defesa',
-      width: 150,
-      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date)
+      field: 'agencyName',
+      headerName: 'Agência',
+      width: 140,
+      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
+      valueGetter: (params) => params.row.agency.name
     },
     {
       field: 'advisorName',
@@ -82,11 +80,26 @@ function DataGridBolsas(props) {
       valueGetter: (params) => params.row.advisor.name
     },
     {
-      field: 'agencyName',
-      headerName: 'Agência',
-      width: 130,
-      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
-      valueGetter: (params) => params.row.agency.name
+      field: 'active',
+      headerName: 'Status',
+      width: 170,
+      renderCell: (params) => (
+        <CustomChip value={params.row.status} type="status" />
+      ),
+      valueGetter: (params) => (params.row.status)
+    },
+    {
+      field: 'enrollmentDate',
+      headerName: 'Data da matrícula',
+      width: 150,
+      filterable: false,
+      renderCell: (params) => formatDate(params.row.enrollment.enrollment_date)
+    },
+    {
+      field: 'defensePredictionDate',
+      headerName: 'Previsão de defesa',
+      width: 150,
+      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date)
     },
     {
       field: 'scholarshipStartsAt',
@@ -109,15 +122,6 @@ function DataGridBolsas(props) {
       filterable: false,
       renderCell: (params) =>
         params.row.extension_ends_at ? formatDate(params.row.extension_ends_at) : 'N/A'
-    },
-    {
-      field: 'active',
-      headerName: 'Status',
-      width: 170,
-      renderCell: (params) => (
-        <CustomChip value={params.row.status} type="status" />
-      ),
-      valueGetter: (params) => (params.row.status)
     },
     {
       field: 'actions',
@@ -148,11 +152,10 @@ function DataGridBolsas(props) {
           rows={data}
           columns={columns}
           autoHeight
-          isRowSelectable={() => false}
-          pagination
-          pageSize={pageSize}
           disableColumnMenu
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          isRowSelectable={() => false}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
           rowsPerPageOptions={[5, 10, 25, 50]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         />

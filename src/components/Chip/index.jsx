@@ -21,9 +21,9 @@ export default function CustomChip(props) {
         return 'custom-chip-doutorado'
       case 'program-mestrado':
         return 'custom-chip-mestrado'
-      case 'status-ativa':
+      case 'status-active':
         return 'custom-chip-ativo'
-      case 'status-inativa':
+      case 'status-inactive':
         return 'custom-chip-inativo'
       case 'status-on_going':
           return 'custom-chip-ativo'

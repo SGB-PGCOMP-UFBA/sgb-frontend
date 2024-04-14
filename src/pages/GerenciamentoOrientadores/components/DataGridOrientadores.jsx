@@ -66,7 +66,7 @@ function DataGridOrientadores(props) {
       headerName: 'Situação',
       width: 110,
       renderCell: (params) => <CustomChip value={params.row.status} type="status" />,
-      valueGetter: (params) => params.row.name
+      valueGetter: (params) => params.row.status
     },
     {
       field: 'email',
@@ -144,7 +144,7 @@ function DataGridOrientadores(props) {
           <Tooltip
             title={
               hasEnrollments(params.row)
-                ? 'Não é possível excluir este(a) orientador(a)'
+                ? 'Não é possível excluir este(a) orientador(a) pois ele possui bolsistas relacionados a ele.'
                 : 'Excluir Orientador(a)'
             }
           >

@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types'
 import { Button, Icon } from '@mui/material'
-import { Download } from '@mui/icons-material'
+import { Download, FilterAlt } from '@mui/icons-material'
 import { DataGridBolsas } from './components/DataGridBolsas'
+import { DialogFiltros } from './components/DialogFiltros'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
 function GerenciamentoBolsasView(props) {
-  const { isLoading, data, onDelete } = props
+  const { isLoading, scholarships, onDeleteScholarship } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
@@ -30,6 +31,13 @@ function GerenciamentoBolsasView(props) {
               </div>
               <div className="flex items-center gap-x-4">
                 <Button
+                  variant="outlined"
+                  color="info"
+                  onClick={() => props.handleDialogForFiltersOpen()}
+                >
+                  <FilterAlt fontSize="medium" />
+                </Button>
+                <Button
                   variant="contained"
                   color="info"
                   startIcon={<Download />}
@@ -39,7 +47,27 @@ function GerenciamentoBolsasView(props) {
                 </Button>
               </div>
             </div>
-            {isLoading ? <Loading /> : <DataGridBolsas data={data} onDelete={onDelete} />}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <DataGridBolsas
+                page={props.page}
+                setPage={props.setPage}
+                size={props.size}
+                setSize={props.setSize}
+                data={scholarships}
+                onDelete={onDeleteScholarship}
+              />
+            )}
+
+            {!isLoading && (
+              <DialogFiltros
+                filters={props.filters}
+                setFilters={props.setFilters}
+                isOpen={props.isDialogForFiltersOpen}
+                onClose={props.handleDialogForFiltersClose}
+              />
+            )}
           </div>
         </section>
       </div>
@@ -48,9 +76,18 @@ function GerenciamentoBolsasView(props) {
 }
 
 GerenciamentoBolsasView.prototypes = {
-  data: PropTypes.node,
+  page: PropTypes.number,
+  setPage: PropTypes.node,
+  size: PropTypes.number,
+  setSize: PropTypes.node,
+  filters: PropTypes.node,
+  setFilters: PropTypes.node,
   isLoading: PropTypes.boolean,
-  onDelete: PropTypes.node
+  scholarships: PropTypes.node,
+  onDeleteScholarship: PropTypes.node,
+  isDialogForFiltersOpen: PropTypes.node,
+  handleDialogForFiltersOpen: PropTypes.node,
+  handleDialogForFiltersClose: PropTypes.node
 }
 
 export { GerenciamentoBolsasView }

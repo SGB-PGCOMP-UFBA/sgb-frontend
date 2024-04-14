@@ -24,7 +24,7 @@ function DialogContatoBolsista({ item, isOpen, onClose }) {
   }
 
   const dialogContent = (
-    <div className="flex flex-col min-w-[395px] max-w-[595px]">
+    <div className="flex flex-col min-w-[395px] max-w-[595px">
       <div className="mt-2 flex flex-row font-inter">
         <TextField
           id="email"
@@ -93,7 +93,7 @@ function DialogContatoBolsista({ item, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
-      <DialogTitle>Contatos de {item.student.name}</DialogTitle>
+      <DialogTitle>Contatos de {item.student.name.split(' ')[0]}</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
     </Dialog>
   )
