@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
+import { formatCpf, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
@@ -104,25 +104,10 @@ function DataGridOrientadores(props) {
     {
       field: 'count_orientandos',
       headerName: 'Orientandos',
-      type: 'number',
       align:'center',
-      width: 100,
+      width: 130,
       renderCell: (params) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
       valueGetter: (params) => params.row.enrollmentsCount
-    },
-    {
-      field: 'created_at',
-      headerName: 'Cadastrado Em',
-      width: 120,
-      filterable: false,
-      renderCell: (params) => formatDate(params.row.created_at)
-    },
-    {
-      field: 'updated_at',
-      headerName: 'Atualizado Em',
-      width: 120,
-      filterable: false,
-      renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
       field: 'actions',
