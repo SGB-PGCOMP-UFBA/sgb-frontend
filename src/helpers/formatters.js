@@ -17,5 +17,14 @@ export const formatDate = (date) => {
 }
 
 export const formatPhone = (phone) => {
-  return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+  if(phone) {
+    return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+  }
 }
+
+export const formatCpf = (tax_id) => {
+  if(tax_id) {
+    return tax_id.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+  }
+}
+

@@ -156,7 +156,7 @@ function DataGridBolsas(props) {
           isRowSelectable={() => false}
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         />
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
+import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
@@ -81,7 +81,7 @@ function DataGridOrientadores(props) {
       headerName: 'CPF',
       width: 150,
       renderCell: (params) =>
-        <p className="overflow-auto">{ params.row.tax_id ? params.row.tax_id : NOT_INFORMED }</p>,
+        <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.tax_id
     },
     {

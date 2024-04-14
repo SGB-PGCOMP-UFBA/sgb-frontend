@@ -18,7 +18,13 @@ function GerenciamentoOrientadores() {
   }
 
   const createAdvisor = async (advisor) => {
-    const response = await api.advisor.createAdvisor(advisor)
+    const creatingAdvisor = {
+      ...advisor,
+      tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
+      phone_number: advisor.phone_number.replace(/[^0-9]/g, '')
+    }
+
+    const response = await api.advisor.createAdvisor(creatingAdvisor)
 
     if (response.status === 201) {
       toast.success('Orientador(a) inserido(a) com sucesso.')
@@ -30,7 +36,13 @@ function GerenciamentoOrientadores() {
   }
 
   const updateAdvisor = async (advisorId, advisor) => {
-    const response = await api.advisor.updateAdvisor(advisorId, advisor)
+    const updatedAdvisor = {
+      ...advisor,
+      tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
+      phone_number: advisor.phone_number.replace(/[^0-9]/g, '')
+    }
+
+    const response = await api.advisor.updateAdvisor(advisorId, updatedAdvisor)
 
     if (response.status === 200) {
       toast.success('Orientador(a) atualizado(a) com sucesso.')

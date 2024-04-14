@@ -5,6 +5,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { toast } from 'react-toastify'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
+import { formatPhone } from '../../../helpers/formatters'
 
 function DialogContatoBolsista({ item, isOpen, onClose }) {
 
@@ -54,7 +55,7 @@ function DialogContatoBolsista({ item, isOpen, onClose }) {
           name="phone"
           readonly
           fullWidth
-          value={item.student.phone_number}
+          value={formatPhone(item.student.phone_number)}
           InputProps={{
             endAdornment: <InputAdornment position="end">
               <IconButton
