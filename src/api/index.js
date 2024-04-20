@@ -3,6 +3,7 @@ import * as agencyApi from './agency'
 import * as analyticsApi from './analytics'
 import * as passwordApi from './password'
 import * as studentApi from './student'
+import * as enrollmentApi from './enrollment'
 import * as scholarshipApi from './scholarship'
 import * as authApi from './auth'
 
@@ -13,6 +14,7 @@ const api = {
   analytics: analyticsApi,
   password: passwordApi,
   student: studentApi,
+  enrollment: enrollmentApi,
   scholarship: scholarshipApi
 }
 

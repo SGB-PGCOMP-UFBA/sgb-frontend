@@ -2,6 +2,10 @@ import { api } from '../../services/api'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 
+export const getScholarshipStatusFilterList = async () => {
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`)
+}
+
 export const getScholarships = async (page, limit, filters) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/paginated?page=${page}&limit=${limit}`
 
@@ -14,6 +18,9 @@ export const getScholarships = async (page, limit, filters) => {
     }
     if (filters.advisorName) {
       url += `&advisorName=${encodeURIComponent(filters.advisorName)}`;
+    }
+    if (filters.programName) {
+      url += `&programName=${encodeURIComponent(filters.programName)}`;
     }
   }
 

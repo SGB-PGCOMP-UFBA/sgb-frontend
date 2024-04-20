@@ -6,6 +6,10 @@ export const getAgencys = async () => {
   return api.get(`${BASE_AGENCY_API_PATH}`)
 }
 
+export const getAgencyFilterList = async () => {
+  return api.get(`${BASE_AGENCY_API_PATH}/filter-list`)
+}
+
 export const createAgency = async (agency) => {
   return api.post(`${BASE_AGENCY_API_PATH}`, agency)
 }

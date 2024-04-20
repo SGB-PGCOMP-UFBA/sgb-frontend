@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function SelectInput(props) {
-  const { id, label, name, options, handleChange } = props
+  const { id, label, name, selected, options, handleChange } = props
 
   const handleChangeInput = (e) => {
     handleChange(e)
@@ -15,6 +15,7 @@ export default function SelectInput(props) {
       <select
         id={id}
         name={name}
+        value={selected}
         onChange={handleChangeInput}
         className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-left text-base font-normal
           leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"

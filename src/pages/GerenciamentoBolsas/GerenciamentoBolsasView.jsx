@@ -63,10 +63,12 @@ function GerenciamentoBolsasView(props) {
 
             {!isLoading && (
               <DialogFiltros
+                filterOptions={props.filterOptions}
                 filters={props.filters}
                 setFilters={props.setFilters}
                 isOpen={props.isDialogForFiltersOpen}
                 onClose={props.handleDialogForFiltersClose}
+                onClear={props.handleResetFilters}
               />
             )}
           </div>
@@ -84,6 +86,8 @@ GerenciamentoBolsasView.prototypes = {
   setSize: PropTypes.node,
   filters: PropTypes.node,
   setFilters: PropTypes.node,
+  handleResetFilters: PropTypes.node,
+  filterOptions: PropTypes.node,
   isLoading: PropTypes.boolean,
   onDeleteScholarship: PropTypes.node,
   isDialogForFiltersOpen: PropTypes.node,

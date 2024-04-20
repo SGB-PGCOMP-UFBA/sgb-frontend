@@ -6,6 +6,10 @@ export const getAdvisor = async () => {
   return api.get(`${BASE_ADVISOR_API_PATH}`)
 }
 
+export const getAdvisorFilterList = async () => {
+  return api.get(`${BASE_ADVISOR_API_PATH}/filter-list`)
+}
+
 export const createAdvisor = async (advisor) => {
   return api.post(`${BASE_ADVISOR_API_PATH}`, advisor)
 }
