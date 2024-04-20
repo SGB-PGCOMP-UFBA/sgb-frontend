@@ -11,11 +11,11 @@ const initialFilters = {
 }
 
 function GerenciamentoBolsas() {
+  const [data, setData] = useState({})
   const [page, setPage] = useState(1)
   const [size, setSize] = useState(10)
   const [filters, setFilters] = useState(initialFilters)
   const [isLoading, setIsLoading] = useState(true)
-  const [scholarships, setScholarships] = useState([])
   const [isDialogForFiltersOpen, setIsDialogForFiltersOpen] = useState(false)
 
   const handleDialogForFiltersClose = () => {
@@ -30,11 +30,11 @@ function GerenciamentoBolsas() {
     setFilters({ ...filters, [e.target.name]: e.target.value })
   }
 
-  const getScholarships = async () => {
+  const getScholarships = async ({size, page, filters}) => {
     const response = await api.scholarship.getScholarships(page, size, filters)
 
     if (response.status === 200) {
-      setScholarships(response.data.items)
+      setData(response.data)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }
@@ -53,11 +53,12 @@ function GerenciamentoBolsas() {
   }
 
   useEffect(() => {
-    getScholarships().finally(() => setIsLoading(false))
-  })
+    getScholarships({size, page, filters}).finally(() => setIsLoading(false))
+  }, [size, page, filters])
 
   return (
     <GerenciamentoBolsasView
+      data={data}
       page={page}
       setPage={setPage}
       size={size}
@@ -65,7 +66,6 @@ function GerenciamentoBolsas() {
       filters={filters}
       setFilters={handleFiltersValueChange}
       isLoading={isLoading}
-      scholarships={scholarships}
       onDeleteScholarship={deleteScholarship}
       isDialogForFiltersOpen={isDialogForFiltersOpen}
       handleDialogForFiltersOpen={handleDialogForFiltersOpen}

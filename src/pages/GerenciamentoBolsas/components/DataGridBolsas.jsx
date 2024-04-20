@@ -8,12 +8,22 @@ import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import { DialogContatoBolsista } from './DialogContatoBolsista'
 
 function DataGridBolsas(props) {
-  const { data, onDelete } = props
+  const { data, metadata, onDelete } = props
 
   const [paginationModel, setPaginationModel] = useState({
-    pageSize: props.size,
-    page: props.page
+    pageSize: metadata.itemsPerPage,
+    page: metadata.currentPage - 1
   })
+
+  const handlePaginationChange = (newPaginationModel) => {
+    setPaginationModel({
+      page: newPaginationModel.currentPage - 1,
+      pageSize: newPaginationModel.itemsPerPage
+    })
+
+    props.setPage(newPaginationModel.currentPage)
+    props.setSize(newPaginationModel.itemsPerPage)
+  }
 
   const [selectedScholarship, setSelectedScholarship] = useState(null)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
@@ -154,10 +164,15 @@ function DataGridBolsas(props) {
           autoHeight
           disableColumnMenu
           isRowSelectable={() => false}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          pagination
+          paginationMode="server"
+          page={paginationModel.page}
+          pageSize={paginationModel.pageSize}
+          rowCount={metadata.totalItems}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
+          onPageChange={(newPage) => handlePaginationChange({ currentPage: newPage + 1, itemsPerPage: paginationModel.pageSize })}
+          onPageSizeChange={(newPageSize) => handlePaginationChange({ currentPage: 1, itemsPerPage: newPageSize })}
         />
 
         {selectedScholarship && (
@@ -183,6 +198,7 @@ function DataGridBolsas(props) {
 
 DataGridBolsas.prototypes = {
   data: PropTypes.node,
+  metadata: PropTypes.node,
   onDelete: PropTypes.node
 }
 

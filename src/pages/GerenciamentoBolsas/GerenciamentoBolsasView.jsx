@@ -8,7 +8,7 @@ import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
 function GerenciamentoBolsasView(props) {
-  const { isLoading, scholarships, onDeleteScholarship } = props
+  const { isLoading, data, onDeleteScholarship } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
@@ -55,7 +55,8 @@ function GerenciamentoBolsasView(props) {
                 setPage={props.setPage}
                 size={props.size}
                 setSize={props.setSize}
-                data={scholarships}
+                data={data.items}
+                metadata={data.meta}
                 onDelete={onDeleteScholarship}
               />
             )}
@@ -76,6 +77,7 @@ function GerenciamentoBolsasView(props) {
 }
 
 GerenciamentoBolsasView.prototypes = {
+  data: PropTypes.node,
   page: PropTypes.number,
   setPage: PropTypes.node,
   size: PropTypes.number,
@@ -83,7 +85,6 @@ GerenciamentoBolsasView.prototypes = {
   filters: PropTypes.node,
   setFilters: PropTypes.node,
   isLoading: PropTypes.boolean,
-  scholarships: PropTypes.node,
   onDeleteScholarship: PropTypes.node,
   isDialogForFiltersOpen: PropTypes.node,
   handleDialogForFiltersOpen: PropTypes.node,
