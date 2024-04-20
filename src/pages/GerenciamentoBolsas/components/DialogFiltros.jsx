@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
 import { FilterAltOff } from '@mui/icons-material'
+import CloseIcon from '@mui/icons-material/Close';
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 import { SelectInput } from '../../../components'
 
@@ -73,6 +74,18 @@ function DialogFiltros({ filters, setFilters, filterOptions, isOpen, onClose, on
 
   return (
     <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>Filtros</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>

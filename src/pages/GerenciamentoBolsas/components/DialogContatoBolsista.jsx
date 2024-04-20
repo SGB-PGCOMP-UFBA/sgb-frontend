@@ -2,6 +2,7 @@ import React from 'react'
 import { Dialog, DialogTitle, DialogContent, IconButton, TextField, InputAdornment } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import CloseIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { toast } from 'react-toastify'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
@@ -94,6 +95,18 @@ function DialogContatoBolsista({ item, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>Contatos de {item.student.name.split(' ')[0]}</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
     </Dialog>
