@@ -4,11 +4,11 @@ import { BolsasCapesCard } from './components/BolsasCapesCard'
 import { BolsasFapesbCard } from './components/BolsasFapesbCard'
 import { BolsasCnpqCard } from './components/BolsasCnpqCard'
 import { TotalBolsasCard } from './components/TotalBolsasCard'
-import { DetalhamentoBolsasChart } from './components/DetalhamentoBolsasChart'
-import { DetalhamentoAlunosChart } from './components/DetalhamentoAlunosChart'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
+import { PieChartBolsasMestrado } from './components/charts/PieChartBolsasMestrado'
+import { PieChartBolsasDoutorado } from './components/charts/PieChartBolsasDoutorado'
 
 function DashboardMetricasView(props) {
   const {
@@ -17,8 +17,6 @@ function DashboardMetricasView(props) {
     cnpqDataCard,
     capesDataCard,
     fapesbDataCard,
-    alunosDataChart,
-    bolsasDataChart
   } = props
 
   return (
@@ -53,7 +51,7 @@ function DashboardMetricasView(props) {
                       item
                       xs={12}
                       sm={6}
-                      lg={3}
+                      lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <BolsasCapesCard data={capesDataCard} sx={{ height: '100%' }} />
@@ -62,7 +60,7 @@ function DashboardMetricasView(props) {
                       item
                       xs={12}
                       sm={6}
-                      lg={3}
+                      lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <BolsasFapesbCard data={fapesbDataCard} sx={{ height: '100%' }} />
@@ -71,7 +69,7 @@ function DashboardMetricasView(props) {
                       item
                       xs={12}
                       sm={6}
-                      lg={3}
+                      lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <BolsasCnpqCard data={cnpqDataCard} sx={{ height: '100%' }} />
@@ -80,22 +78,28 @@ function DashboardMetricasView(props) {
                       item
                       xs={12}
                       sm={6}
-                      lg={3}
+                      lg={6}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
-                    </Grid>
-                    <Grid item xs={12} lg={8} sx={{ marginBottom: '1rem', paddingRight: '1rem' }}>
-                      <DetalhamentoBolsasChart sx={{ height: '100%' }} data={bolsasDataChart} />
                     </Grid>
                     <Grid
                       item
                       xs={12}
                       md={6}
-                      lg={4}
+                      lg={3}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <DetalhamentoAlunosChart sx={{ height: '100%' }} data={alunosDataChart} />
+                      <PieChartBolsasDoutorado sx={{ height: '100%' }} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <PieChartBolsasMestrado sx={{ height: '100%' }} />
                     </Grid>
                   </Grid>
                 </Container>

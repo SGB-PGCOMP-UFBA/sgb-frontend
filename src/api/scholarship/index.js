@@ -6,6 +6,16 @@ export const getScholarshipStatusFilterList = async () => {
   return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`)
 }
 
+export const countOnGoingScholarshipsGroupingByAgencyForCourse = async (programName) => {
+  let url = `${BASE_SCHOLARSHIP_API_PATH}/count/by-agency-and-course`
+
+  if (programName) {
+    url += `?programName=${encodeURIComponent(programName)}`
+  }
+
+  return api.get(url)
+}
+
 export const getScholarships = async (page, limit, filters) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/paginated?page=${page}&limit=${limit}`
 
