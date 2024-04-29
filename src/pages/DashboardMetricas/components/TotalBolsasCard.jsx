@@ -8,13 +8,14 @@ function TotalBolsasCard(props) {
   const columns = [
     { field: 'id', headerName: 'Modalidade', width: 140, editable: false },
     { field: 'mestrado', headerName: 'Concedidas Mestrado', width: 200, editable: true },
-    { field: 'doutorado', headerName: 'Concedidas Doutorado', width: 200, editable: true }
+    { field: 'doutorado', headerName: 'Concedidas Doutorado', width: 200, editable: true },
+    { field: 'total', headerName: 'Total de Bolsas Concedidas', width: 200, editable: true }
   ]
 
   const rows = [
-    { id: 'CAPES', mestrado: 13, doutorado: 18 },
-    { id: 'FAPESB', mestrado: 11, doutorado: 15 },
-    { id: 'CNPQ', mestrado: 11, doutorado: 15 }
+    { id: 'CAPES', mestrado: 13, doutorado: 18, total: 31},
+    { id: 'FAPESB', mestrado: 11, doutorado: 15, total: 26},
+    { id: 'CNPQ', mestrado: 11, doutorado: 15, total: 26}
   ]
 
   return (

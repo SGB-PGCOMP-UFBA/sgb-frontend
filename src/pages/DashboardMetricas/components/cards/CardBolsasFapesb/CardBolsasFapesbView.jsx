@@ -14,16 +14,14 @@ function CardBolsasFapesbView(props) {
   return (
     <Card sx={sx}>
       <CardContent>
-        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack spacing={1} marginBottom={2}>
+        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3} marginBottom={2}>
+          <Stack marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
               FAPESB
             </Typography>
             <Typography variant="h4">
               {data[LITERAL_ON_GOING].count}
-              <div>
-                <Typography variant="subtitle2">bolsas em andamento</Typography>
-              </div>
+              <Typography variant="subtitle2">bolsas em andamento</Typography>
             </Typography>
           </Stack>
           <Avatar
@@ -36,14 +34,8 @@ function CardBolsasFapesbView(props) {
             <Icon sx={{ fontSize: 32 }}>work_outline</Icon>
           </Avatar>
         </Stack>
-        <Stack alignItems="center" direction="row" sx={{ mt: 2 }}>
-          <Typography
-            color="text.secondary"
-            variant="caption"
-            lineHeight={0}
-            sx={{ marginLeft: 0.5 }}
-            fontWeight="bold"
-          >
+        <Stack alignItems="center" direction="row">
+          <Typography color="text.secondary" variant="caption" fontWeight="bold">
             {total_count} bolsas desde o começo do programa
           </Typography>
         </Stack>

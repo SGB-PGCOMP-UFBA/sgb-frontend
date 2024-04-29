@@ -25,7 +25,7 @@ function GerenciamentoBolsasView(props) {
                 <div>
                   <h2 className="poppins text-xl font-semibold text-gray-900">Bolsas</h2>
                   <p className="poppins font-medium text-gray-500">
-                    Visualização e Gestão de Bolsas
+                    Visualização dos Bolsistas do Programa de Pós-Graduação
                   </p>
                 </div>
               </div>
