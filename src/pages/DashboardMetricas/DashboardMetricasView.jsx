@@ -1,24 +1,15 @@
 import PropTypes from 'prop-types'
 import { Box, Grid, Container, Icon } from '@mui/material'
-import { BolsasCapesCard } from './components/BolsasCapesCard'
-import { BolsasFapesbCard } from './components/BolsasFapesbCard'
-import { BolsasCnpqCard } from './components/BolsasCnpqCard'
 import { TotalBolsasCard } from './components/TotalBolsasCard'
 import Sidebar from '../../components/Sidebar'
-import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 import { PieChartBolsasMestrado } from './components/charts/PieChartBolsasMestrado'
 import { PieChartBolsasDoutorado } from './components/charts/PieChartBolsasDoutorado'
+import { CardBolsasCapes } from './components/cards/CardBolsasCapes'
+import { CardBolsasCnpq } from './components/cards/CardBolsasCnpq'
+import { CardBolsasFapesb } from './components/cards/CardBolsasFapesb'
 
 function DashboardMetricasView(props) {
-  const {
-    isLoading,
-    totalDataCard,
-    cnpqDataCard,
-    capesDataCard,
-    fapesbDataCard,
-  } = props
-
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
@@ -35,9 +26,6 @@ function DashboardMetricasView(props) {
                 <p className="poppins font-medium text-gray-500">Métricas e Análises</p>
               </div>
             </div>
-            {isLoading ? (
-              <Loading />
-            ) : (
               <Box
                 sx={{
                   display: 'flex',
@@ -54,7 +42,7 @@ function DashboardMetricasView(props) {
                       lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <BolsasCapesCard data={capesDataCard} sx={{ height: '100%' }} />
+                      <CardBolsasCapes sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
@@ -63,7 +51,7 @@ function DashboardMetricasView(props) {
                       lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <BolsasFapesbCard data={fapesbDataCard} sx={{ height: '100%' }} />
+                      <CardBolsasCnpq sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
@@ -72,7 +60,7 @@ function DashboardMetricasView(props) {
                       lg={2}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <BolsasCnpqCard data={cnpqDataCard} sx={{ height: '100%' }} />
+                      <CardBolsasFapesb sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
@@ -81,7 +69,7 @@ function DashboardMetricasView(props) {
                       lg={6}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <TotalBolsasCard data={totalDataCard} sx={{ height: '100%' }} />
+                      <TotalBolsasCard data={[]} sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
@@ -104,7 +92,6 @@ function DashboardMetricasView(props) {
                   </Grid>
                 </Container>
               </Box>
-            )}
           </div>
         </section>
       </div>
