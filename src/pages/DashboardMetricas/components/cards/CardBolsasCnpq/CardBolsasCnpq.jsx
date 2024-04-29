@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../../../../api'
 import { CardBolsasCnpqView } from './CardBolsasCnpqView'
-import Loading from '../../../../../components/Loading'
+import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
 
 const LITERAL_CNPQ = 'CNPQ'
 
@@ -26,7 +26,7 @@ function CardBolsasCnpq(props) {
   }, [])
 
   return (
-    isLoading ? <Loading /> : <CardBolsasCnpqView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCnpqView sx={props.sx} isLoading={isLoading} data={data} />
   )
 }
 

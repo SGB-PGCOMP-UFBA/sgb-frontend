@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../../../../api'
 import { CardBolsasCapesView } from './CardBolsasCapesView'
-import Loading from '../../../../../components/Loading'
+import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
 
 const LITERAL_CAPES = 'CAPES'
 
@@ -26,7 +26,7 @@ function CardBolsasCapes(props) {
   }, [])
 
   return (
-    isLoading ? <Loading /> : <CardBolsasCapesView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCapesView sx={props.sx} isLoading={isLoading} data={data} />
   )
 }
 

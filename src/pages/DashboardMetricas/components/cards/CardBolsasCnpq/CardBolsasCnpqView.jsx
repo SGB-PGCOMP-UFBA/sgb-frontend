@@ -36,17 +36,17 @@ function CardBolsasCnpqView(props) {
             <Icon sx={{ fontSize: 32 }}>work_outline</Icon>
           </Avatar>
         </Stack>
-            <Stack alignItems="center" direction="row" sx={{ mt: 2 }}>
-              <Typography
-                color="text.secondary"
-                variant="caption"
-                lineHeight={0}
-                sx={{ marginLeft: 0.5 }}
-                fontWeight="bold"
-              >
-                {total_count} bolsas desde o começo do programa
-              </Typography>
-            </Stack>
+        <Stack alignItems="center" direction="row" sx={{ mt: 2 }}>
+          <Typography
+            color="text.secondary"
+            variant="caption"
+            lineHeight={0}
+            sx={{ marginLeft: 0.5 }}
+            fontWeight="bold"
+          >
+            {total_count} bolsas desde o começo do programa
+          </Typography>
+        </Stack>
       </CardContent>
     </Card>
   )

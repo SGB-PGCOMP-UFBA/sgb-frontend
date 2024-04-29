@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../../../../api'
 import { CardBolsasFapesbView } from './CardBolsasFapesbView'
-import Loading from '../../../../../components/Loading'
+import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
 
 const LITERAL_FAPESB = 'FAPESB'
 
@@ -26,7 +26,7 @@ function CardBolsasFapesb(props) {
   }, [])
 
   return (
-    isLoading ? <Loading /> : <CardBolsasFapesbView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasFapesbView sx={props.sx} isLoading={isLoading} data={data} />
   )
 }
 
