@@ -2,13 +2,27 @@ import PropTypes from 'prop-types'
 import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
-function DetalhamentoBolsasChart(props) {
-  const { sx, data } = props
+function ColumnChartHistogramaBolsasView(props) {
+  const { data } = props
+
+  const years = Object.keys(data)
+  const programs = ['MESTRADO', 'DOUTORADO']
+
+  const series = programs.map(program => {
+    return {
+      name: program,
+      data: Object.keys(data).map(year => parseInt(data[year][program]))
+    };
+  });
 
   const options = {
     chart: {
       type: 'bar',
-      height: 430
+      stacked: true,
+      height: 430,
+      toolbar: {
+        show: false
+      }
     },
     plotOptions: {
       bar: {
@@ -53,17 +67,17 @@ function DetalhamentoBolsasChart(props) {
       intersect: false
     },
     xaxis: {
-      categories: data.categories
+      categories: years
     }
   }
 
   return (
-    <Card sx={sx}>
+    <Card sx={props.sx}>
       <CardContent>
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
-              BOLSAS ATIVAS POR CURSO E AGÊNCIA
+              Histórico de Bolsas por Ano
             </Typography>
           </Stack>
           <Avatar
@@ -76,15 +90,16 @@ function DetalhamentoBolsasChart(props) {
             <Icon sx={{ fontSize: 32 }}>bar_chart</Icon>
           </Avatar>
         </Stack>
-        <Chart options={options} series={data.series} type="bar" height={350} />
+        <Chart options={options} series={series} type="bar" height={350} />
       </CardContent>
     </Card>
   )
 }
 
-DetalhamentoBolsasChart.prototypes = {
+ColumnChartHistogramaBolsasView.prototypes = {
   sx: PropTypes.node,
-  data: PropTypes.node.isRequired
+  data: PropTypes.node.isRequired,
+  isLoading: PropTypes.bool.isRequired
 }
 
-export { DetalhamentoBolsasChart }
+export { ColumnChartHistogramaBolsasView }

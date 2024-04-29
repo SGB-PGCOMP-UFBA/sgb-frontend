@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types'
 import { Box, Grid, Container, Icon } from '@mui/material'
-import { TotalBolsasCard } from './components/TotalBolsasCard'
 import Sidebar from '../../components/Sidebar'
 import MenuAppBar from '../../components/Navbar'
 import { PieChartBolsasMestrado } from './components/charts/PieChartBolsasMestrado'
@@ -8,8 +6,10 @@ import { PieChartBolsasDoutorado } from './components/charts/PieChartBolsasDouto
 import { CardBolsasCapes } from './components/cards/CardBolsasCapes'
 import { CardBolsasCnpq } from './components/cards/CardBolsasCnpq'
 import { CardBolsasFapesb } from './components/cards/CardBolsasFapesb'
+import { ColumnChartHistogramaBolsas } from './components/charts/ColumnChartHistogramaBolsas'
+import { TotalBolsasCard } from './components/TotalBolsasCard'
 
-function DashboardMetricasView(props) {
+function DashboardMetricasView() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
@@ -89,6 +89,15 @@ function DashboardMetricasView(props) {
                     >
                       <PieChartBolsasMestrado sx={{ height: '100%' }} />
                     </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <ColumnChartHistogramaBolsas sx={{ height: '100%' }} />
+                    </Grid>
                   </Grid>
                 </Container>
               </Box>
@@ -97,14 +106,6 @@ function DashboardMetricasView(props) {
       </div>
     </div>
   )
-}
-
-DashboardMetricasView.prototypes = {
-  isLoading: PropTypes.boolean,
-  totalDataCard: PropTypes.number,
-  cnpqDataCard: PropTypes.node,
-  fapesbDataCard: PropTypes.node,
-  capesDataCard: PropTypes.node
 }
 
 export { DashboardMetricasView }
