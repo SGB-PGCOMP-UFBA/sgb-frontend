@@ -1,9 +1,9 @@
 .custom-chip-cnpq {
-    background-color: rgb(255, 160, 59, 0.4) !important;
-    color: rgb(158, 86, 10) !important;
-    font-weight: bold !important;
+  background-color: rgba(17, 130, 59, 0.4) !important;
+  color: rgb(10, 78, 35) !important;
+  font-weight: bold !important;
 }
-  
+
 .custom-chip-capes {
     background-color: rgba(96, 165, 250, 0.4) !important;
     color: rgb(36, 97, 172) !important;
@@ -11,19 +11,25 @@
 }
 
 .custom-chip-fapesb {
-    background-color: rgb(250, 204, 21, 0.4) !important;
+    background-color: rgba(250, 204, 21, 0.4) !important;
     color: rgb(116, 93, 5) !important;
     font-weight: bold !important;
 }
 
-.custom-chip-doutorado {
-    background-color: rgba(17, 130, 59, 0.4) !important;
-    color: rgb(10, 78, 35) !important;
+.custom-chip-outras {
+  background-color: rgba(248, 113, 113, 0.4) !important;
+    color: rgb(109, 2, 2) !important;
     font-weight: bold !important;
 }
 
+.custom-chip-doutorado {
+  background-color: rgba(214, 216, 255, 0.4) !important;
+  color: rgb(104, 120, 248) !important;
+  font-weight: bold !important;
+}
+
 .custom-chip-mestrado {
-    background-color: rgba(192, 132, 252, 0.4) !important;
+    background-color: rgba(255, 223, 255, 0.4) !important;
     color: rgb(115, 58, 172) !important;
     font-weight: bold !important;
 }
@@ -35,7 +41,7 @@
 }
 
 .custom-chip-inativo {
-    background-color: rgba(248, 113, 113, 0.4) !important;
-    color: rgb(109, 2, 2) !important;
+    background-color: rgba(201, 198, 198, 0.4) !important;
+    color: rgb(105, 105, 105) !important;
     font-weight: bold !important;
 }

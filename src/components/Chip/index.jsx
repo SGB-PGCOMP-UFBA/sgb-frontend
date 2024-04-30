@@ -11,6 +11,8 @@ export default function CustomChip(props) {
     const key = `${type}-${value}`.toLowerCase()
 
     switch (key) {
+      case 'agency-outras':
+        return 'custom-chip-outras'
       case 'agency-cnpq':
         return 'custom-chip-cnpq'
       case 'agency-capes':
@@ -27,7 +29,9 @@ export default function CustomChip(props) {
         return 'custom-chip-inativo'
       case 'status-on_going':
           return 'custom-chip-ativo'
-      case 'status-finalized':
+      case 'status-extended':
+            return 'custom-chip-ativo'
+      case 'status-finished':
           return 'custom-chip-inativo'
       default:
         return 'custom-chip-default'
