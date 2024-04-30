@@ -19,10 +19,8 @@ function CardBolsasFapesbView(props) {
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
               FAPESB
             </Typography>
-            <Typography variant="h4">
-              {data[LITERAL_ON_GOING].count}
-              <Typography variant="subtitle2">bolsas em andamento</Typography>
-            </Typography>
+            <Typography variant="h4">{data[LITERAL_ON_GOING].count}</Typography>
+            <Typography variant="subtitle2">bolsas em andamento</Typography>
           </Stack>
           <Avatar
             className="bg-yellow-400 !bg-yellow-400"

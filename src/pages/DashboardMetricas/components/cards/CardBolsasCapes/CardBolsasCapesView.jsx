@@ -19,10 +19,8 @@ function CardBolsasCapesView(props) {
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
               CAPES
             </Typography>
-            <Typography variant="h4">
-              {data[LITERAL_ON_GOING].count}
-              <Typography variant="subtitle2">bolsas em andamento</Typography>
-            </Typography>
+            <Typography variant="h4">{data[LITERAL_ON_GOING].count}</Typography>
+            <Typography variant="subtitle2">bolsas em andamento</Typography>
           </Stack>
           <Avatar
             className="bg-blue-400 !bg-blue-400"

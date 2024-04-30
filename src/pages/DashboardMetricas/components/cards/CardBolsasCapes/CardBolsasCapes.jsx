@@ -7,15 +7,21 @@ import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
 
 const LITERAL_CAPES = 'CAPES'
 
+const initialState = {
+  ON_GOING: {
+    count: 0
+  }
+}
+
 function CardBolsasCapes(props) {
-  const [data, setData] = useState({})
+  const [data, setData] = useState(initialState)
   const [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
     const response = await api.scholarship.countScholarshipsGroupingByStatusForAgency(LITERAL_CAPES)
 
     if (response.status === 200) {
-      setData(response.data[LITERAL_CAPES])
+      setData(response.data[LITERAL_CAPES] || initialState)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }
