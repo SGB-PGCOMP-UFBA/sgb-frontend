@@ -93,7 +93,7 @@ function DashboardMetricasView() {
                       item
                       xs={12}
                       md={6}
-                      lg={3}
+                      lg={6}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <ColumnChartHistogramaBolsas sx={{ height: '100%' }} />
