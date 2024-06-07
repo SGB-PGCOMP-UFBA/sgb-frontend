@@ -14,8 +14,8 @@ export const createStudent = async (student) => {
   return api.post(`${BASE_STUDENT_API_PATH}`, student)
 }
 
-export const updateStudent = async (studentId, student) => {
-  return api.patch(`${BASE_STUDENT_API_PATH}/${studentId}`, student)
+export const updateStudent = async (payload) => {
+  return api.patch(`${BASE_STUDENT_API_PATH}`, payload)
 }
 
 export const updateStudentPassword = async (payload) => {

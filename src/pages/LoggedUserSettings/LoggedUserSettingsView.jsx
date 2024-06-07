@@ -28,7 +28,7 @@ function LoggedUserSettingsView(props) {
               </div>
             </div>
             <Stack spacing={3}>
-              <ProfileDetailsSection />
+              <ProfileDetailsSection user={props.user} />
               <SettingsPasswordSection user={props.user} />
             </Stack>
           </div>

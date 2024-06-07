@@ -14,8 +14,8 @@ export const createAdvisor = async (advisor) => {
   return api.post(`${BASE_ADVISOR_API_PATH}`, advisor)
 }
 
-export const updateAdvisor = async (advisorId, advisor) => {
-  return api.patch(`${BASE_ADVISOR_API_PATH}/${advisorId}`, advisor)
+export const updateAdvisor = async (payload) => {
+  return api.patch(`${BASE_ADVISOR_API_PATH}`, payload)
 }
 
 export const updateAdvisorPassword = async (payload) => {

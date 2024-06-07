@@ -1,4 +1,6 @@
-import { useCallback, useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 import {
   Box,
   Button,
@@ -10,46 +12,54 @@ import {
   TextField,
   Unstable_Grid2 as Grid
 } from '@mui/material'
+import { api } from '../../../api'
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  },
-  {
-    value: 'los-angeles',
-    label: 'Los Angeles'
+const initialState = {
+  originalEmail: '',
+  email: '',
+  name: '',
+  tax_id: '',
+  phone_number: '',
+  link_to_lattes: ''
+}
+
+function ProfileDetailsSection(props) {
+  const { user } = props
+  const [values, setValues] = useState(user || initialState)
+
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value })
   }
-]
 
-function ProfileDetailsSection() {
-  const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA'
-  })
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-  const handleChange = useCallback((event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value
-    }))
-  }, [])
+    try {
+      if(user && user.role === 'ADMIN') {
+        await api.admin.updateAdmin(user.id, values)
+      }
+      else if(user && user.role === 'ADVISOR') {
+        await api.advisor.updateAdvisor(user.id, values)
+      }
+      else if(user && user.role === 'STUDENT') {
+        await api.student.updateStudent(user.id, values)
+      }
+      toast.success('Informações alteradas com sucesso.')
+    } catch (error) {
+      if ([400, 422].includes(error.response.status)) {
+        toast.error(getFirstErrorMessage(error.response.data.message))
+      } else {
+        toast.error('Erro inesperado. Tente novamente!')
+      }
+    }
+  }
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault()
-  }, [])
+  function getFirstErrorMessage(message) {
+    if (Array.isArray(message)) {
+      return message[0];
+    }
+    return message;
+  }
 
   return (
     <form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -61,81 +71,64 @@ function ProfileDetailsSection() {
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
+                  label="Name"
+                  name="name"
+                  onChange={(e) => handleChange(e)}
+                  value={values.name}
                 />
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={values.lastName}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Email Address"
+                  label="E-mail"
                   name="email"
-                  onChange={handleChange}
-                  required
+                  onChange={(e) => handleChange(e)}
                   value={values.email}
                 />
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.phone}
+                  label="CPF"
+                  name="tax_id"
+                  onChange={(e) => handleChange(e)}
+                  value={values.tax_id}
                 />
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Country"
-                  name="country"
-                  onChange={handleChange}
-                  required
-                  value={values.country}
+                  label="Telefone"
+                  name="phone_number"
+                  onChange={(e) => handleChange(e)}
+                  value={values.phone_number}
                 />
               </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
-                >
-                  {states.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
+              {user.role === 'STUDENT' && (
+                <Grid xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="Link para o Lattes"
+                    name="link_to_lattes"
+                    onChange={(e) => handleChange(e)}
+                    value={values.link_to_lattes}
+                  />
+                </Grid>
+              )}
             </Grid>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Salvar Informações</Button>
+          <Button variant="contained" type="submit">Salvar Informações</Button>
         </CardActions>
       </Card>
     </form>
   )
+}
+
+ProfileDetailsSection.prototypes = {
+  user: PropTypes.node
 }
 
 export { ProfileDetailsSection }
