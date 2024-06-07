@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon } from '@mui/material'
 import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
+import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
+
+const NOT_INFORMED = 'Não informado'
 
 function DataGridOrientandos(props) {
   const { data } = props
@@ -25,21 +27,23 @@ function DataGridOrientandos(props) {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
-      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>,
+      renderCell: (params) =>
+        <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.email
     },
     {
       field: 'tax_id',
       headerName: 'CPF',
       width: 150,
-      renderCell: (params) => <p className="overflow-auto">{params.row.tax_id}</p>,
+      renderCell: (params) =>
+        <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.tax_id
     },
     {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
-      renderCell: (params) => (
+      renderCell: (params) => ( params.row.phone_number ?
         <a
           href={`https://wa.me/${params.row.phone_number}`}
           target="_blank"
@@ -48,6 +52,7 @@ function DataGridOrientandos(props) {
         >
           {formatPhone(params.row.phone_number)}
         </a>
+        : <p className="overflow-auto">{NOT_INFORMED}</p>
       ),
       valueGetter: (params) => params.row.phone_number
     },

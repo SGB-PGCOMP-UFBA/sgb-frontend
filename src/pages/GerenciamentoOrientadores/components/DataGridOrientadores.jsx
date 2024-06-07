@@ -103,10 +103,10 @@ function DataGridOrientadores(props) {
       valueGetter: (params) => params.row.phone_number
     },
     {
-      field: 'count_orientandos',
-      headerName: 'Orientandos',
+      field: 'count_enrollments',
+      headerName: 'Bolsas Pleiteadas',
       align:'center',
-      width: 130,
+      width: 150,
       renderCell: (params) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
       valueGetter: (params) => params.row.enrollmentsCount
     },
