@@ -6,6 +6,7 @@ import { formatCpf, formatPhone } from '../../../helpers/formatters'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
+import { formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
 
 const NOT_INFORMED = 'Não informado'
@@ -108,6 +109,20 @@ function DataGridOrientadores(props) {
       width: 130,
       renderCell: (params) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
       valueGetter: (params) => params.row.enrollmentsCount
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Criado Em',
+      width: 100,
+      filterable: false,
+      renderCell: (params) => formatDate(params.row.created_at)
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Atualizado Em',
+      width: 120,
+      filterable: false,
+      renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
       field: 'actions',
