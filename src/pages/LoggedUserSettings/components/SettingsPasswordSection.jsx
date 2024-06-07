@@ -13,15 +13,14 @@ import {
 } from '@mui/material'
 import { api } from '../../../api'
 
-const initialState = {
-  email: '',
-  password: '',
-  confirm: ''
-}
-
 function SettingsPasswordSection(props) {
   const { user } = props
-  const [values, setValues] = useState(initialState)
+  const [values, setValues] = useState({
+    email: user?.email || '',
+    current_password: '',
+    new_password: '',
+    confirm_new_password: ''
+  })
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value })
@@ -29,9 +28,10 @@ function SettingsPasswordSection(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setValues({ ...values, email: user.email })
 
     try {
+      console.log(values)
+      setValues({ ...values, email: user.email })
       if(user && user.role === 'ADMIN') {
         await api.admin.updateAdminPassword(values)
       }
@@ -42,8 +42,14 @@ function SettingsPasswordSection(props) {
         await api.student.updateStudentPassword(values)
       }
       toast.success('Senha alterada com sucesso.')
-      setValues(initialState)
+      setValues({
+        email: user?.email || '',
+        current_password: '',
+        new_password: '',
+        confirm_new_password: ''
+      })
     } catch (error) {
+      console.log(error)
       if ([400, 422].includes(error.response.status)) {
         toast.error(getFirstErrorMessage(error.response.data.message))
       } else {
@@ -68,19 +74,27 @@ function SettingsPasswordSection(props) {
           <Stack spacing={3} sx={{ maxWidth: 400 }}>
             <TextField
               fullWidth
-              label="Senha"
-              name="password"
+              label="Senha Atual"
+              name="current_password"
               onChange={(e) => handleChange(e)}
               type="password"
-              value={values.password}
+              value={values.current_password}
             />
             <TextField
               fullWidth
-              label="Senha (Confirmar)"
-              name="confirm"
+              label="Nova Senha"
+              name="new_password"
               onChange={(e) => handleChange(e)}
               type="password"
-              value={values.confirm}
+              value={values.new_password}
+            />
+            <TextField
+              fullWidth
+              label="Nova Senha (Confirmar)"
+              name="confirm_new_password"
+              onChange={(e) => handleChange(e)}
+              type="password"
+              value={values.confirm_new_password}
             />
           </Stack>
         </CardContent>
