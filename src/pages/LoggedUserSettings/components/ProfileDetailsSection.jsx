@@ -13,19 +13,19 @@ import {
   Unstable_Grid2 as Grid
 } from '@mui/material'
 import { api } from '../../../api'
+import { updateUserFromLocalStorage } from '../../../helpers/auth-user'
+import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 
-const initialState = {
-  originalEmail: '',
-  email: '',
-  name: '',
-  tax_id: '',
-  phone_number: '',
-  link_to_lattes: ''
-}
 
 function ProfileDetailsSection(props) {
   const { user } = props
-  const [values, setValues] = useState(user || initialState)
+  const [values, setValues] = useState({
+    email: user?.email || '',
+    name: user?.name || '',
+    tax_id: user?.tax_id || '',
+    phone_number: user?.phone_number || '',
+    link_to_lattes: user?.link_to_lattes || ''
+  })
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value })
@@ -34,17 +34,25 @@ function ProfileDetailsSection(props) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    const payload = {
+      ...values,
+      current_email: user?.email || '',
+      tax_id: values.tax_id.replace(/[^0-9]/g, ''),
+      phone_number: values.phone_number.replace(/[^0-9]/g, '')
+    }
+
     try {
       if(user && user.role === 'ADMIN') {
-        await api.admin.updateAdmin(user.id, values)
+        await api.admin.updateAdmin(payload)
       }
       else if(user && user.role === 'ADVISOR') {
-        await api.advisor.updateAdvisor(user.id, values)
+        await api.advisor.updateAdvisor(payload)
       }
       else if(user && user.role === 'STUDENT') {
-        await api.student.updateStudent(user.id, values)
+        await api.student.updateStudent(payload)
       }
       toast.success('Informações alteradas com sucesso.')
+      updateUserFromLocalStorage(payload)
     } catch (error) {
       if ([400, 422].includes(error.response.status)) {
         toast.error(getFirstErrorMessage(error.response.data.message))
@@ -93,6 +101,9 @@ function ProfileDetailsSection(props) {
                   name="tax_id"
                   onChange={(e) => handleChange(e)}
                   value={values.tax_id}
+                  InputProps={{
+                    inputComponent: CpfInputMask
+                  }}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -102,6 +113,9 @@ function ProfileDetailsSection(props) {
                   name="phone_number"
                   onChange={(e) => handleChange(e)}
                   value={values.phone_number}
+                  InputProps={{
+                    inputComponent: PhoneInputMask
+                  }}
                 />
               </Grid>
               {user.role === 'STUDENT' && (
@@ -120,7 +134,7 @@ function ProfileDetailsSection(props) {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">Salvar Informações</Button>
+          <Button variant="contained" type="submit">Salvar</Button>
         </CardActions>
       </Card>
     </form>
