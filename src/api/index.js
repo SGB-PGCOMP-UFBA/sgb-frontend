@@ -6,6 +6,7 @@ import * as enrollmentApi from './enrollment'
 import * as scholarshipApi from './scholarship'
 import * as authApi from './auth'
 import * as adminApi from './admin'
+import * as embedNotificationApi from './embed-notification'
 
 const api = {
   auth: authApi,
@@ -15,7 +16,8 @@ const api = {
   student: studentApi,
   enrollment: enrollmentApi,
   scholarship: scholarshipApi,
-  admin: adminApi
+  admin: adminApi,
+  embedNotification: embedNotificationApi
 }
 
 export { api }

@@ -16,6 +16,11 @@ export const formatDate = (date) => {
   return newDate.toLocaleDateString('pt-BR')
 }
 
+export const formatDateHour = (date) => {
+  const newDate = new Date(date)
+  return newDate.toLocaleString('pt-BR')
+}
+
 export const formatPhone = (phone) => {
   if(phone) {
     return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
