@@ -54,7 +54,7 @@ function SettingsPasswordSection() {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Atualizar</Button>
+          <Button variant="contained">Salvar Nova Senha</Button>
         </CardActions>
       </Card>
     </form>

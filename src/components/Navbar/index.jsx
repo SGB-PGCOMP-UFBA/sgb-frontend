@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Person, Logout, Settings, Notifications } from '@mui/icons-material'
+import { Logout, Settings, Notifications } from '@mui/icons-material'
 import {
   AppBar,
   Avatar,
@@ -32,10 +32,6 @@ export default function MenuAppBar() {
 
   const handleRedirectToSettings = () => {
     navigate('/settings', { replace: true })
-  }
-
-  const handleRedirectToProfile = () => {
-    navigate('/profile', { replace: true })
   }
 
   const handleLogout = () => {
@@ -145,12 +141,6 @@ export default function MenuAppBar() {
                   <Settings fontSize="small" />
                 </ListItemIcon>
                 Configurações
-              </MenuItem>
-              <MenuItem onClick={handleRedirectToProfile}>
-                <ListItemIcon>
-                  <Person fontSize="small" />
-                </ListItemIcon>
-                Perfil
               </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>

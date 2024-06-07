@@ -1,5 +1,4 @@
 import { Login } from './Login'
-import { LoggedUserProfile } from './LoggedUserProfile'
 import { LoggedUserSettings } from './LoggedUserSettings'
 import { PageNotFound } from './PageNotFound'
 import { PageForgetPassword } from './PageForgetPassword'
@@ -11,7 +10,6 @@ import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 
 export {
   Login,
-  LoggedUserProfile,
   LoggedUserSettings,
   PageNotFound,
   PageForgetPassword,
