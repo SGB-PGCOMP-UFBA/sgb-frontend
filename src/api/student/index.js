@@ -18,6 +18,10 @@ export const updateStudent = async (studentId, student) => {
   return api.patch(`${BASE_STUDENT_API_PATH}/${studentId}`, student)
 }
 
+export const updateStudentPassword = async (payload) => {
+  return api.patch(`${BASE_STUDENT_API_PATH}/update-password`, payload)
+}
+
 export const deleteStudent = async (studentId) => {
   return api.delete(`${BASE_STUDENT_API_PATH}/${studentId}`)
 }

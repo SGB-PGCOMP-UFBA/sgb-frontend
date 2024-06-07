@@ -5,6 +5,7 @@ import * as studentApi from './student'
 import * as enrollmentApi from './enrollment'
 import * as scholarshipApi from './scholarship'
 import * as authApi from './auth'
+import * as adminApi from './admin'
 
 const api = {
   auth: authApi,
@@ -13,7 +14,8 @@ const api = {
   password: passwordApi,
   student: studentApi,
   enrollment: enrollmentApi,
-  scholarship: scholarshipApi
+  scholarship: scholarshipApi,
+  admin: adminApi
 }
 
 export { api }

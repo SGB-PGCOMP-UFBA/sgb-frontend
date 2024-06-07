@@ -18,6 +18,10 @@ export const updateAdvisor = async (advisorId, advisor) => {
   return api.patch(`${BASE_ADVISOR_API_PATH}/${advisorId}`, advisor)
 }
 
+export const updateAdvisorPassword = async (payload) => {
+  return api.patch(`${BASE_ADVISOR_API_PATH}/update-password`, payload)
+}
+
 export const deleteAdvisor = async (advisorId) => {
   return api.delete(`${BASE_ADVISOR_API_PATH}/${advisorId}`)
 }

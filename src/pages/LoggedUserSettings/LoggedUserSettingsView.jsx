@@ -6,7 +6,7 @@ import MenuAppBar from '../../components/Navbar'
 import { ProfileDetailsSection } from './components/ProfileDetailsSection'
 import { SettingsPasswordSection } from './components/SettingsPasswordSection'
 
-function LoggedUserSettingsView() {
+function LoggedUserSettingsView(props) {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
@@ -29,7 +29,7 @@ function LoggedUserSettingsView() {
             </div>
             <Stack spacing={3}>
               <ProfileDetailsSection />
-              <SettingsPasswordSection />
+              <SettingsPasswordSection user={props.user} />
             </Stack>
           </div>
         </section>
