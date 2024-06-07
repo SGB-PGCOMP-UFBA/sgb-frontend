@@ -35,14 +35,8 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
-  const updateAdvisor = async (advisorId, advisor) => {
-    const updatedAdvisor = {
-      ...advisor,
-      tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
-      phone_number: advisor.phone_number.replace(/[^0-9]/g, '')
-    }
-
-    const response = await api.advisor.updateAdvisor(advisorId, updatedAdvisor)
+  const updateAdvisor = async (payload) => {
+    const response = await api.advisor.updateAdvisor(payload)
 
     if (response.status === 200) {
       toast.success('Orientador(a) atualizado(a) com sucesso.')

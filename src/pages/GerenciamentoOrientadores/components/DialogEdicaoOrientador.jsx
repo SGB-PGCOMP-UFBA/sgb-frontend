@@ -6,9 +6,17 @@ import { SlideUp } from '../../../components/Transitions/SlideUp'
 function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
-    const newAdvisorData = new FormData(event.currentTarget)
+    const newFormData = new FormData(event.currentTarget)
+    const entries = Object.fromEntries(newFormData.entries())
 
-    onSubmit(item.id, Object.fromEntries(newAdvisorData.entries()))
+    const payload = {
+      ...entries,
+      current_email: item.email,
+      tax_id: entries.tax_id.replace(/[^0-9]/g, ''),
+      phone_number: entries.phone_number.replace(/[^0-9]/g, '')
+    }
+
+    onSubmit(payload)
     onClose()
   }
 
