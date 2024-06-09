@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../api'
 import { GerenciamentoBolsasView } from './GerenciamentoBolsasView'
+import { formattedNow } from '../../helpers/formatters'
 
 const initialStateForAllFilter = {
   key: 'ALL',
@@ -54,6 +55,40 @@ function GerenciamentoBolsas() {
       setData(response.data)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+  }
+
+  const handleReportDownload = async () => {
+    try {
+      const response = await api.report.downloadPdfReport();
+
+      if (response.status === 200) {
+        // Cria um Blob a partir dos dados da resposta
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+
+        // Define o nome do arquivo
+        const filename = 'relatorio_sab_' + formattedNow() + '.pdf'
+
+        // Cria um link para download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+
+        // Simula o clique no link
+        document.body.appendChild(link);
+        link.click();
+
+        // Remove o link do DOM
+        document.body.removeChild(link);
+
+        // Libera o objeto URL
+        window.URL.revokeObjectURL(url);
+      } else {
+        toast.error(`[${response.status}]: ${response.data.error}`);
+      }
+    } catch (error) {
+      toast.error(`Erro ao baixar o relatório: ${error.message}`);
     }
   }
 
@@ -121,6 +156,7 @@ function GerenciamentoBolsas() {
       isLoading={isLoading}
       onDeleteScholarship={deleteScholarship}
       isDialogForFiltersOpen={isDialogForFiltersOpen}
+      handleReportDownload={handleReportDownload}
       handleDialogForFiltersOpen={handleDialogForFiltersOpen}
       handleDialogForFiltersClose={handleDialogForFiltersClose}
     />

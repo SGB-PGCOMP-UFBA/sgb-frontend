@@ -21,6 +21,19 @@ export const formatDateHour = (date) => {
   return newDate.toLocaleString('pt-BR')
 }
 
+export function formattedNow() {
+  const now = new Date().toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+
+  return now.replace(/[^0-9]/g, '')
+}
+
 export const formatPhone = (phone) => {
   if(phone) {
     return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')

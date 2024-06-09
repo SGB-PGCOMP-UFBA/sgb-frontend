@@ -41,7 +41,7 @@ function GerenciamentoBolsasView(props) {
                   variant="contained"
                   color="info"
                   startIcon={<Download />}
-                  onClick={() => {}} // TODO: Implementar download do relatório
+                  onClick={() => props.handleReportDownload()}
                 >
                   Baixar Relatório Completo
                 </Button>
@@ -91,6 +91,7 @@ GerenciamentoBolsasView.prototypes = {
   isLoading: PropTypes.boolean,
   onDeleteScholarship: PropTypes.node,
   isDialogForFiltersOpen: PropTypes.node,
+  handleReportDownload: PropTypes.node,
   handleDialogForFiltersOpen: PropTypes.node,
   handleDialogForFiltersClose: PropTypes.node
 }
