@@ -30,7 +30,6 @@ function SettingsPasswordSection(props) {
     e.preventDefault()
 
     try {
-      console.log(values)
       setValues({ ...values, email: user.email })
       if(user && user.role === 'ADMIN') {
         await api.admin.updateAdminPassword(values)
@@ -49,7 +48,6 @@ function SettingsPasswordSection(props) {
         confirm_new_password: ''
       })
     } catch (error) {
-      console.log(error)
       if ([400, 422].includes(error.response.status)) {
         toast.error(getFirstErrorMessage(error.response.data.message))
       } else {
