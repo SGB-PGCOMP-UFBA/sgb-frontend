@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../api'
-import { GerenciamentoBolsasView } from './GerenciamentoBolsasView'
+import { GerenciamentoBolsistasView } from './GerenciamentoBolsistasView'
 import { formattedNow } from '../../helpers/formatters'
 
 const initialStateForAllFilter = {
@@ -23,7 +23,7 @@ const initialFilters = {
   programName: 'ALL'
 }
 
-function GerenciamentoBolsas() {
+function GerenciamentoBolsistas() {
   const [data, setData] = useState({})
   const [page, setPage] = useState(1)
   const [size, setSize] = useState(10)
@@ -143,7 +143,7 @@ function GerenciamentoBolsas() {
   }, [])
 
   return (
-    <GerenciamentoBolsasView
+    <GerenciamentoBolsistasView
       data={data}
       page={page}
       setPage={setPage}
@@ -163,4 +163,4 @@ function GerenciamentoBolsas() {
   )
 }
 
-export { GerenciamentoBolsas }
+export { GerenciamentoBolsistas }

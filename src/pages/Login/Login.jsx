@@ -89,7 +89,11 @@ function Login() {
         firstRedirect(getUserFromLocalStorage())
       }
     } catch (err) {
-      toast.error(`[${err.response.data.statusCode}]: ${err.response.data.message}`)
+      if (err.response.status === 404) {
+        toast.error('Parece que seu login ou senha está incorreto. Tente novamente!')
+      } else {
+        toast.error(`[${err.response.data.statusCode}]: ${err.response.data.message}`)
+      }
     }
   }
 

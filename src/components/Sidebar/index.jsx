@@ -14,9 +14,9 @@ export default function Sidebar() {
       availableRoles: ['ADMIN']
     },
     {
-      name: 'Bolsas',
+      name: 'Bolsistas',
       icon: 'work',
-      path: '/bolsas',
+      path: '/bolsistas',
       visible: true,
       availableRoles: ['ADMIN']
     },

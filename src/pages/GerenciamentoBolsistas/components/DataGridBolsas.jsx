@@ -53,7 +53,7 @@ function DataGridBolsas(props) {
     {
       field: 'enrollmentNumber',
       headerName: 'Matrícula',
-      width: 150,
+      width: 110,
       renderCell: (params) => (
         <p className="overflow-auto">{params.row.enrollment.enrollment_number}</p>
       ),
@@ -116,14 +116,16 @@ function DataGridBolsas(props) {
       headerName: 'Início da bolsa',
       width: 150,
       filterable: false,
-      renderCell: (params) => formatDate(params.row.scholarship_starts_at)
+      renderCell: (params) => formatDate(params.row.scholarship_starts_at),
+      valueGetter: (params) => formatDate(params.row.scholarship_starts_at)
     },
     {
       field: 'scholarshipEndsAt',
       headerName: 'Término da bolsa',
       width: 150,
       filterable: false,
-      renderCell: (params) => formatDate(params.row.scholarship_ends_at)
+      renderCell: (params) => formatDate(params.row.scholarship_ends_at),
+      valueGetter: (params) => formatDate(params.row.scholarship_ends_at)
     },
     {
       field: 'extensionEndsAt',
@@ -173,6 +175,14 @@ function DataGridBolsas(props) {
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
           onPageChange={(newPage) => handlePaginationChange({ currentPage: newPage + 1, itemsPerPage: paginationModel.pageSize })}
           onPageSizeChange={(newPageSize) => handlePaginationChange({ currentPage: 1, itemsPerPage: newPageSize })}
+          sx={{
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold',
+            },
+            '.MuiDataGrid-columnSeparator': {
+              display: 'none',
+            },
+          }}
         />
 
         {selectedScholarship && (

@@ -7,7 +7,7 @@ import {
   LoggedUserSettings,
   PageNotFound,
   DashboardMetricas,
-  GerenciamentoBolsas,
+  GerenciamentoBolsistas,
   GerenciamentoAgencias,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores
@@ -25,7 +25,7 @@ export default function App() {
         {/* Rotas de usuário administrador */}
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
           <Route path="dashboard" element={<DashboardMetricas />} />
-          <Route path="bolsas" element={<GerenciamentoBolsas />} />
+          <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
           <Route path="agencias" element={<GerenciamentoAgencias />} />
           <Route path="orientadores" element={<GerenciamentoOrientadores />} />
         </Route>

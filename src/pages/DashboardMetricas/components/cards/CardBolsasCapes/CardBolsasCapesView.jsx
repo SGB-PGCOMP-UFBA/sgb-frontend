@@ -20,7 +20,7 @@ function CardBolsasCapesView(props) {
               CAPES
             </Typography>
             <Typography variant="h4">{data[LITERAL_ON_GOING].count}</Typography>
-            <Typography variant="subtitle2">bolsas em andamento</Typography>
+            <Typography variant="subtitle1">bolsas alocadas</Typography>
           </Stack>
           <Avatar
             className="bg-blue-400 !bg-blue-400"
@@ -32,9 +32,12 @@ function CardBolsasCapesView(props) {
             <Icon sx={{ fontSize: 32 }}>work_outline</Icon>
           </Avatar>
         </Stack>
-        <Stack alignItems="center" direction="row">
-          <Typography color="text.secondary" variant="caption" fontWeight="bold">
-            {total_count} bolsas desde o começo do programa
+        <Stack alignItems="center" justifyContent="end" direction="row">
+        <Typography color="text.primary" variant="caption" fontWeight="bold">
+            {total_count}&nbsp;
+          </Typography>
+          <Typography color="text.primary" variant="caption">
+            bolsas desde o início
           </Typography>
         </Stack>
       </CardContent>

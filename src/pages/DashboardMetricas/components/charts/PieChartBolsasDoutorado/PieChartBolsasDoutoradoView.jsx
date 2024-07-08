@@ -12,6 +12,10 @@ function PieChartBolsasDoutoradoView(props) {
       enabled: true,
       formatter: function(val, opts) {
         return opts.w.globals.series[opts.seriesIndex];
+      },
+      style: {
+        fontSize: '16px',
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     },
     tooltip: {
@@ -20,8 +24,12 @@ function PieChartBolsasDoutoradoView(props) {
         formatter: function(val, opts) {
           var total = opts.globals.seriesTotals.reduce((a, b) => a + b, 0);
           var percentage = (val / total) * 100;
-          return percentage.toPrecision(4) + "%";
+          return percentage.toPrecision(2) + "%";
         }
+      },
+      style: {
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     }
   }

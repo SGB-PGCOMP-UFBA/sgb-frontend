@@ -7,7 +7,7 @@ import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
-function GerenciamentoBolsasView(props) {
+function GerenciamentoBolsistasView(props) {
   const { isLoading, data, onDeleteScholarship } = props
 
   return (
@@ -23,7 +23,7 @@ function GerenciamentoBolsasView(props) {
                   <Icon sx={{ fontSize: 32 }}>work</Icon>
                 </div>
                 <div>
-                  <h2 className="poppins text-xl font-semibold text-gray-900">Bolsas</h2>
+                  <h2 className="poppins text-xl font-semibold text-gray-900">Bolsistas</h2>
                   <p className="poppins font-medium text-gray-500">
                     Visualização dos Bolsistas do Programa de Pós-Graduação
                   </p>
@@ -78,7 +78,7 @@ function GerenciamentoBolsasView(props) {
   )
 }
 
-GerenciamentoBolsasView.prototypes = {
+GerenciamentoBolsistasView.prototypes = {
   data: PropTypes.node,
   page: PropTypes.number,
   setPage: PropTypes.node,
@@ -96,4 +96,4 @@ GerenciamentoBolsasView.prototypes = {
   handleDialogForFiltersClose: PropTypes.node
 }
 
-export { GerenciamentoBolsasView }
+export { GerenciamentoBolsistasView }

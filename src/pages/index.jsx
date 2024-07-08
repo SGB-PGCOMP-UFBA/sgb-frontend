@@ -3,7 +3,7 @@ import { LoggedUserSettings } from './LoggedUserSettings'
 import { PageNotFound } from './PageNotFound'
 import { PageForgetPassword } from './PageForgetPassword'
 import { DashboardMetricas } from './DashboardMetricas'
-import { GerenciamentoBolsas } from './GerenciamentoBolsas'
+import { GerenciamentoBolsistas } from './GerenciamentoBolsistas'
 import { GerenciamentoAgencias } from './GerenciamentoAgencias'
 import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
@@ -14,7 +14,7 @@ export {
   PageNotFound,
   PageForgetPassword,
   DashboardMetricas,
-  GerenciamentoBolsas,
+  GerenciamentoBolsistas,
   GerenciamentoAgencias,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores

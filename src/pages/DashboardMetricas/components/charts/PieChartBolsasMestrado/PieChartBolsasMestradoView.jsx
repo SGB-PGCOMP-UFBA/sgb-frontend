@@ -12,6 +12,10 @@ function PieChartBolsasMestradoView(props) {
       enabled: true,
       formatter: function(val, opts) {
         return opts.w.globals.series[opts.seriesIndex];
+      },
+      style: {
+        fontSize: '16px',
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     },
     tooltip: {
@@ -22,6 +26,10 @@ function PieChartBolsasMestradoView(props) {
           var percentage = (val / total) * 100;
           return percentage.toPrecision(4) + "%";
         }
+      },
+      style: {
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial, sans-serif'
       }
     }
   }

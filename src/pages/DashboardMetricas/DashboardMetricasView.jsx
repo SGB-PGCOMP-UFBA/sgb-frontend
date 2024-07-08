@@ -23,7 +23,7 @@ function DashboardMetricasView() {
               </div>
               <div>
                 <h2 className="poppins text-xl font-semibold text-gray-900">Dashboard</h2>
-                <p className="poppins font-medium text-gray-500">Gráficos e Indicadores</p>
+                <p className="poppins font-medium text-gray-500">Gráficos e Métricas</p>
               </div>
             </div>
               <Box

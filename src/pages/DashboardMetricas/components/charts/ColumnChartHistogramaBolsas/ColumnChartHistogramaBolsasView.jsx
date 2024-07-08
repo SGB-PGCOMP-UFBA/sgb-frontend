@@ -34,9 +34,9 @@ function ColumnChartHistogramaBolsasView(props) {
     },
     dataLabels: {
       enabled: true,
-      offsetX: -6,
+      offsetX: -2,
       style: {
-        fontSize: '12px',
+        fontSize: '16px',
         colors: ['#fff']
       },
       background: {
@@ -64,7 +64,11 @@ function ColumnChartHistogramaBolsasView(props) {
     },
     tooltip: {
       shared: true,
-      intersect: false
+      intersect: false,
+      style: {
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial, sans-serif'
+      }
     },
     xaxis: {
       categories: years
@@ -77,7 +81,7 @@ function ColumnChartHistogramaBolsasView(props) {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
-              Histórico de Bolsas por Ano
+              Histórico de Bolsas Alocadas por Ano
             </Typography>
           </Stack>
           <Avatar
