@@ -1,0 +1,9 @@
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Make the scrollbar background transparent */
+}
+
+.custom-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}

@@ -20,7 +20,8 @@ const initialFilters = {
   scholarshipStatus: 'ALL',
   agencyName: 'ALL',
   advisorName: 'ALL',
-  programName: 'ALL'
+  programName: 'ALL',
+  orderBy: 'DAT_TERMINO_DESC',
 }
 
 function GerenciamentoBolsistas() {

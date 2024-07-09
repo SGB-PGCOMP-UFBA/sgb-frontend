@@ -35,16 +35,19 @@ export const getScholarships = async (page, limit, filters) => {
 
   if (filters) {
     if (filters.scholarshipStatus) {
-      url += `&scholarshipStatus=${encodeURIComponent(filters.scholarshipStatus)}`;
+      url += `&scholarshipStatus=${encodeURIComponent(filters.scholarshipStatus)}`
     }
     if (filters.agencyName) {
-      url += `&agencyName=${encodeURIComponent(filters.agencyName)}`;
+      url += `&agencyName=${encodeURIComponent(filters.agencyName)}`
     }
     if (filters.advisorName) {
-      url += `&advisorName=${encodeURIComponent(filters.advisorName)}`;
+      url += `&advisorName=${encodeURIComponent(filters.advisorName)}`
     }
     if (filters.programName) {
-      url += `&programName=${encodeURIComponent(filters.programName)}`;
+      url += `&programName=${encodeURIComponent(filters.programName)}`
+    }
+    if (filters.orderBy) {
+      url += `&orderBy=${encodeURIComponent(filters.orderBy)}`
     }
   }
 
