@@ -9,19 +9,26 @@ function GerenciamentoOrientandos() {
   const [students, setStudents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const getStudents = async () => {
-    const response = await api.student.getStudentsByAdvisorId(user.id)
-
-    if (response.status === 200) {
-      setStudents(response.data)
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
-    }
-  }
-
   useEffect(() => {
-    getStudents().finally(() => setIsLoading(false))
-  }, [])
+    const getStudents = async () => {
+      try {
+        const response = await api.student.getStudentsByAdvisorId(user.id)
+
+        if (response.status === 200) {
+          setStudents(response.data)
+        } else {
+          toast.error(`[${response.status}]: ${response.data.error}`)
+        }
+      } catch (error) {
+        console.error('Error fetching students:', error)
+        toast.error('Failed to fetch students. Please try again.')
+      } finally {
+        setIsLoading(false)
+      }
+    };
+
+    getStudents()
+  }, [user.id])
 
   return <GerenciamentoOrientandosView isLoading={isLoading} data={students} />
 }

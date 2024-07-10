@@ -1,100 +1,56 @@
 import React from 'react'
-import { Dialog, DialogTitle, DialogContent, IconButton, TextField, InputAdornment } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import { Dialog, DialogTitle, DialogContent, IconButton, TextField, DialogActions, Button } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import { toast } from 'react-toastify'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
-import { formatPhone } from '../../../helpers/formatters'
+import { DatePicker } from '@mui/x-date-pickers';
 
-function DialogEdicaoBolsista({ item, isOpen, onClose }) {
+function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit }) {
+  console.log(item)
+  const submitAndCloseDialog = async (event) => {
+    event.preventDefault()
+    const newAgencyData = new FormData(event.currentTarget)
 
-  const copyEmailToClipboard = (email) => {
-    navigator.clipboard.writeText(email)
-    toast.success('Conteúdo copiado com sucesso!', { autoClose: 1000 })
-  }
-
-  const openWhatsApp = (phone) => {
-    const adjutedPhone = phone.replace(/[^0-9]/g, '')
-    const url = `https://api.whatsapp.com/send?phone=55${adjutedPhone}`
-    window.open(url, '_blank')
-  }
-
-  const openLattes = (link) => {
-    window.open(link, '_blank')
+    onSubmit(item.id, Object.fromEntries(newAgencyData.entries()))
+    onClose()
   }
 
   const dialogContent = (
-    <div className="flex flex-col min-w-[395px] max-w-[595px">
-      <div className="mt-2 flex flex-row font-inter">
-        <TextField
-          id="email"
-          label="E-mail"
-          type="text"
-          name="email"
-          readonly
-          fullWidth
-          value={item.student.email}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => copyEmailToClipboard(item.student.email)}
-                edge="end"
-              >
-                <ContentCopyIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
-      <div className="mt-6 flex flex-row font-inter">
-        <TextField
-          id="phone"
-          label="Telefone"
-          type="text"
-          name="phone"
-          readonly
-          fullWidth
-          value={formatPhone(item.student.phone_number)}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => openWhatsApp(item.student.phone_number)}
-                edge="end"
-              >
-                <WhatsAppIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
-      <div className="mt-6 flex flex-row font-inter">
-        <TextField
-          id="lattes"
-          label="Lattes"
-          type="text"
-          name="lattes"
-          readonly
-          fullWidth
-          value={item.student.link_to_lattes}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => openLattes(item.student.link_to_lattes)}
-                edge="end"
-              >
-                <SendIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
+    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
+      <TextField
+        required
+        fullWidth
+        id="name"
+        label="Nome"
+        type="text"
+        name="name"
+        defaultValue={item.name}
+        placeholder="Insira o nome da agência"
+      />
+      <DatePicker label="Basic date picker" />
+    </div>
+  )
+
+  const dialogActions = (
+    <div className="flex items-center gap-x-4">
+      <Button onClick={onClose} variant="contained" color="primary" size="small">
+        Cancelar
+      </Button>
+      <Button type="submit" autoFocus variant="contained" color="success" size="small">
+        Salvar
+      </Button>
     </div>
   )
 
   return (
-    <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      TransitionComponent={SlideUp}
+      PaperProps={{
+        component: 'form',
+        onSubmit: (event) => submitAndCloseDialog(event)
+      }}
+    >
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -107,8 +63,9 @@ function DialogEdicaoBolsista({ item, isOpen, onClose }) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogTitle>Contatos de {item.student.name.split(' ')[0]}</DialogTitle>
+      <DialogTitle>Editar Bolsista</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
+      <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
   )
 }
