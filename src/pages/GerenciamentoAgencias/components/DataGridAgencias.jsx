@@ -5,7 +5,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate } from '../../../helpers/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
-import DataGridFooterBar from '../../../components/DataGridFooterBar'
+import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
 
 function DataGridAgencias(props) {
   const { data, onUpdate, onDelete } = props

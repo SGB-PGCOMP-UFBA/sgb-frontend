@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Icon } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
-import DataGridFooterBar from '../../../components/DataGridFooterBar'
+import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
 
 const NOT_INFORMED = 'Não informado'
 

@@ -8,7 +8,7 @@ import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
 import { formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
-import DataGridFooterBar from '../../../components/DataGridFooterBar'
+import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
 
 const NOT_INFORMED = 'Não informado'
 
