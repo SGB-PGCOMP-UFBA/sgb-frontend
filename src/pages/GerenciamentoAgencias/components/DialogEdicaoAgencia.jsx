@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
@@ -61,6 +62,18 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
       }}
       TransitionComponent={SlideUp}
     >
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>Editar Agência</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>

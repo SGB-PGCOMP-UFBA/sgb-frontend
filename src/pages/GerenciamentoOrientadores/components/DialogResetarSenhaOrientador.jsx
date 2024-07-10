@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
@@ -37,6 +38,18 @@ function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>Resetar a Senha do Orientador</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>

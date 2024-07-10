@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Tooltip, IconButton } from '@mui/material'
 import InfoIcon from '@mui/icons-material/Info'
+import CloseIcon from '@mui/icons-material/Close';
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
@@ -82,6 +83,18 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
       }}
       TransitionComponent={SlideUp}
     >
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           Adicionar Orientador

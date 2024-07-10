@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
@@ -108,6 +109,18 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
       }}
       TransitionComponent={SlideUp}
     >
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
       <DialogTitle>Editar Orientador</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
