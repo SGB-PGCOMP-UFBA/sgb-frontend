@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
@@ -13,7 +13,8 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
       ...entries,
       current_email: item.email,
       tax_id: entries.tax_id.replace(/[^0-9]/g, ''),
-      phone_number: entries.phone_number.replace(/[^0-9]/g, '')
+      phone_number: entries.phone_number.replace(/[^0-9]/g, ''),
+      status: entries.status,
     }
 
     onSubmit(payload)
@@ -69,6 +70,20 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
         }}
         defaultValue={item.phone_number}
       />
+
+      <FormControl fullWidth required>
+        <InputLabel id="label-status">Situação</InputLabel>
+        <Select
+          labelId="label-status"
+          id="select-status"
+          defaultValue={item.status}
+          label="Situação"
+          name="status"
+        >
+          <MenuItem value={"ACTIVE"}>Ativo(a)</MenuItem>
+          <MenuItem value={"INACTIVE"}>Inativo(a)</MenuItem>
+        </Select>
+      </FormControl>
     </div>
   )
 

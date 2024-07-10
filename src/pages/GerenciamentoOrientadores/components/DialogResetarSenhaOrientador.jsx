@@ -13,7 +13,8 @@ function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
       <p>
         Você tem certeza que deseja resetar a senha do(a) orientador(a) <b>{item.name}</b>?
       </p>
-      <p>Ele(a) receberá uma nova senha pelo e-mail cadastrado nesta plataforma.</p>
+      <br/>
+      <p>Ele(a) receberá uma nova senha no e-mail informado em seu cadastrado nesta plataforma.</p>
     </div>
   )
 
@@ -29,7 +30,7 @@ function DialogResetarSenhaOrientador({ item, isOpen, onClose, onSubmit }) {
         color="warning"
         size="small"
       >
-        Resetar
+        Resetar Senha
       </Button>
     </div>
   )

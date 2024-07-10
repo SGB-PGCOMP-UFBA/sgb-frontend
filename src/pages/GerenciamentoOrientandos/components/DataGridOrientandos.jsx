@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { Icon } from '@mui/material'
-import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
+import DataGridFooterBar from '../../../components/DataGridFooterBar'
 
 const NOT_INFORMED = 'Não informado'
 
@@ -15,6 +16,8 @@ function DataGridOrientandos(props) {
       field: 'name',
       headerName: 'Nome completo',
       width: 300,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-hidden">
           <Icon sx={{ fontSize: 28 }}>school</Icon>
@@ -27,6 +30,8 @@ function DataGridOrientandos(props) {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
+      filterable: false,
+      sortable: false,
       renderCell: (params) =>
         <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.email
@@ -35,6 +40,8 @@ function DataGridOrientandos(props) {
       field: 'tax_id',
       headerName: 'CPF',
       width: 150,
+      filterable: false,
+      sortable: false,
       renderCell: (params) =>
         <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.tax_id
@@ -43,6 +50,8 @@ function DataGridOrientandos(props) {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => ( params.row.phone_number ?
         <a
           href={`https://wa.me/${params.row.phone_number}`}
@@ -60,6 +69,8 @@ function DataGridOrientandos(props) {
       field: 'link_to_lattes',
       headerName: 'Lattes',
       width: 300,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => (
         <a
           href={`${params.row.link_to_lattes}`}
@@ -77,6 +88,7 @@ function DataGridOrientandos(props) {
       headerName: 'Cadastrado Em',
       width: 150,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
@@ -84,6 +96,7 @@ function DataGridOrientandos(props) {
       headerName: 'Atualizado Em',
       width: 150,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     }
   ]
@@ -95,7 +108,7 @@ function DataGridOrientandos(props) {
           rows={data}
           columns={columns}
           disableColumnMenu
-          components={{ Toolbar: GridToolbar }}
+          components={{ Footer: DataGridFooterBar }}
           isRowSelectable={() => false}
           autoHeight
           pagination
@@ -103,6 +116,29 @@ function DataGridOrientandos(props) {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 25, 50]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          sx={{
+            '.MuiDataGrid-columnSeparator': {
+              display: 'none',
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-columnHeader': {
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            },
+          }}
         />
       </div>
     </div>

@@ -24,14 +24,14 @@ export default function Sidebar() {
       name: 'Orientadores',
       icon: 'people',
       path: '/orientadores',
-      visible: false,
+      visible: true,
       availableRoles: ['ADMIN']
     },
     {
       name: 'Agências',
       icon: 'business',
       path: '/agencias',
-      visible: false,
+      visible: true,
       availableRoles: ['ADMIN']
     },
     {

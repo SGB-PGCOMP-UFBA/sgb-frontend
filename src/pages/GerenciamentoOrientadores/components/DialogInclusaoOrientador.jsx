@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@mui/material'
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Tooltip, IconButton } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
@@ -81,7 +82,16 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
       }}
       TransitionComponent={SlideUp}
     >
-      <DialogTitle>Adicionar Orientador</DialogTitle>
+      <DialogTitle>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          Adicionar Orientador
+          <Tooltip title="O(a) orientador(a) receberá no e-mail informado abaixo uma mensagem informando sobre o seu cadastrado bem como a senha para acesso à plataforma.">
+            <IconButton color='info'>
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+      </DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>

@@ -5,6 +5,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate } from '../../../helpers/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
+import DataGridFooterBar from '../../../components/DataGridFooterBar'
 
 function DataGridAgencias(props) {
   const { data, onUpdate, onDelete } = props
@@ -41,7 +42,9 @@ function DataGridAgencias(props) {
     {
       field: 'name',
       headerName: 'Nome da Agência',
-      minWidth: 200,
+      minWidth: 170,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => <p className="overflow-auto">{params.row.name}</p>,
       valueGetter: (params) => params.row.name
     },
@@ -49,14 +52,18 @@ function DataGridAgencias(props) {
       field: 'description',
       headerName: 'Descrição',
       minWidth: 500,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => <p className="overflow-auto">{params.row.description}</p>,
       valueGetter: (params) => params.row.description
     },
     {
       field: 'count_scholarships',
-      headerName: 'Bolsas Concedidas',
+      headerName: 'Bolsas Alocadas Desde o Início',
       width: 150,
       align: 'center',
+      filterable: false,
+      sortable: false,
       renderCell: (params) => <p className="overflow-auto">{params.row.scholarshipsCount}</p>,
       valueGetter: (params) => params.row.scholarshipsCount
     },
@@ -65,6 +72,7 @@ function DataGridAgencias(props) {
       headerName: 'Criado Em',
       width: 100,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
@@ -72,13 +80,15 @@ function DataGridAgencias(props) {
       headerName: 'Atualizado Em',
       width: 120,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
       field: 'actions',
       headerName: 'Ações',
-      width: 120,
+      width: 150,
       filterable: false,
+      sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Editar Agência">
@@ -114,6 +124,7 @@ function DataGridAgencias(props) {
           rows={data}
           columns={columns}
           disableColumnMenu
+          components={{ Footer: DataGridFooterBar }}
           isRowSelectable={() => false}
           autoHeight
           pagination
@@ -121,6 +132,29 @@ function DataGridAgencias(props) {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 25, 50]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          sx={{
+            '.MuiDataGrid-columnSeparator': {
+              display: 'none',
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-columnHeader': {
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            },
+          }}
         />
       </div>
 

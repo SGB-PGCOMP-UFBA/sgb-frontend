@@ -8,6 +8,7 @@ import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
 import { formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
+import DataGridFooterBar from '../../../components/DataGridFooterBar'
 
 const NOT_INFORMED = 'Não informado'
 
@@ -58,6 +59,8 @@ function DataGridOrientadores(props) {
       field: 'name',
       headerName: 'Nome completo',
       width: 300,
+      filterable: false,
+      sortable: false,
       renderCell: (params) =>
         <p className="overflow-auto">{ params.row.name ? params.row.name : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.name
@@ -66,6 +69,8 @@ function DataGridOrientadores(props) {
       field: 'status',
       headerName: 'Situação',
       width: 110,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => <CustomChip value={params.row.status} type="status" />,
       valueGetter: (params) => params.row.status
     },
@@ -73,6 +78,8 @@ function DataGridOrientadores(props) {
       field: 'email',
       headerName: 'E-mail',
       width: 250,
+      filterable: false,
+      sortable: false,
       renderCell: (params) =>
         <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.email
@@ -81,6 +88,8 @@ function DataGridOrientadores(props) {
       field: 'tax_id',
       headerName: 'CPF',
       width: 150,
+      filterable: false,
+      sortable: false,
       renderCell: (params) =>
         <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.tax_id
@@ -89,6 +98,8 @@ function DataGridOrientadores(props) {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => ( params.row.phone_number ?
         <a
           href={`https://wa.me/${params.row.phone_number}`}
@@ -104,9 +115,11 @@ function DataGridOrientadores(props) {
     },
     {
       field: 'count_enrollments',
-      headerName: 'Bolsas Pleiteadas',
+      headerName: 'Bolsistas Orientados',
       align:'center',
       width: 150,
+      filterable: false,
+      sortable: false,
       renderCell: (params) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
       valueGetter: (params) => params.row.enrollmentsCount
     },
@@ -115,6 +128,7 @@ function DataGridOrientadores(props) {
       headerName: 'Criado Em',
       width: 100,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.created_at)
     },
     {
@@ -122,6 +136,7 @@ function DataGridOrientadores(props) {
       headerName: 'Atualizado Em',
       width: 120,
       filterable: false,
+      sortable: false,
       renderCell: (params) => formatDate(params.row.updated_at)
     },
     {
@@ -129,6 +144,7 @@ function DataGridOrientadores(props) {
       headerName: 'Ações',
       width: 180,
       filterable: false,
+      sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Resetar Senha do Orientador">
@@ -169,6 +185,7 @@ function DataGridOrientadores(props) {
           rows={data}
           columns={columns}
           disableColumnMenu
+          components={{ Footer: DataGridFooterBar }}
           isRowSelectable={() => false}
           autoHeight
           pagination
@@ -176,6 +193,29 @@ function DataGridOrientadores(props) {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           rowsPerPageOptions={[5, 10, 25, 50]}
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          sx={{
+            '.MuiDataGrid-columnSeparator': {
+              display: 'none',
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold',
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-columnHeader': {
+              whiteSpace: 'normal',
+              wordWrap: 'break-word',
+              lineHeight: '1.2',
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            },
+          }}
         />
       </div>
 

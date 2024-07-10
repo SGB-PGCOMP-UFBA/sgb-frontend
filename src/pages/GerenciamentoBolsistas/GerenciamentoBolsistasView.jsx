@@ -28,7 +28,7 @@ function GerenciamentoBolsistasView(props) {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-x-4">
+              <div className="hidden md:flex items-center gap-x-4">
                 <Button
                   variant="contained"
                   color="info"
@@ -40,7 +40,7 @@ function GerenciamentoBolsistasView(props) {
               </div>
             </div>
             <Box sx={{ width: '100%', border: '1px solid rgba(224, 224, 224, 1)', borderRadius: '4px', padding: '0.6em', marginTop: '0px !important' }}>
-              <div className='flex flex-col gap-4 md:flex-row mb-2'>
+              <div className='flex flex-col gap-4 md:flex-row'>
                 <FormControl fullWidth>
                   <InputLabel id="label-order">Ordenar por</InputLabel>
                   <Select
