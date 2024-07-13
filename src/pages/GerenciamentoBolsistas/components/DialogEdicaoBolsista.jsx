@@ -171,6 +171,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
                 defaultValue={item.status}
               >
                 <MenuItem value={"ON_GOING"}>Em Andamento</MenuItem>
+                <MenuItem value={"EXTENDED"}>Prazo Extendido</MenuItem>
                 <MenuItem value={"FINISHED"}>Finalizado</MenuItem>
               </Select>
             </FormControl>
@@ -225,7 +226,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
 
   const dialogActions = (
     <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="contained" color="primary" size="small">
+      <Button onClick={onClose} variant="text" color="info" size="small">
         Cancelar
       </Button>
       <Button type="submit" autoFocus variant="contained" color="success" size="small">

@@ -40,7 +40,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
 
   const dialogActions = (
     <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="contained" color="primary" size="small">
+      <Button onClick={onClose} variant="text" color="info" size="small">
         Cancelar
       </Button>
       <Button autoFocus type="submit" variant="contained" color="success" size="small">
