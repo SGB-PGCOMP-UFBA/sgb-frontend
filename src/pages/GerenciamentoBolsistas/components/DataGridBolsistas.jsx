@@ -11,7 +11,7 @@ import './styles.css';
 const NOT_INFORMED = 'Não informado'
 
 function DataGridBolsistas(props) {
-  const { data, metadata, onDelete } = props
+  const { data, metadata, onEdit, onDelete } = props
 
   const [paginationModel, setPaginationModel] = useState({
     pageSize: metadata.itemsPerPage,
@@ -259,18 +259,20 @@ function DataGridBolsistas(props) {
 
         {selectedScholarship && (
           <DialogExclusaoBolsa
-            isOpen={isDialogForDeleteOpen}
             item={selectedScholarship}
-            onClose={handleDialogForDeleteClose}
+            isOpen={isDialogForDeleteOpen}
             onSubmit={onDelete}
+            onClose={handleDialogForDeleteClose}
           />
         )}
 
         {selectedScholarship && (
           <DialogEdicaoBolsista
-            isOpen={isDialogForEditionOpen}
             item={selectedScholarship}
+            isOpen={isDialogForEditionOpen}
+            onSubmit={onEdit}
             onClose={handleDialogForEditionClose}
+            filterOptions={props.filterOptions}
           />
         )}
       </div>
@@ -280,7 +282,9 @@ function DataGridBolsistas(props) {
 
 DataGridBolsistas.prototypes = {
   data: PropTypes.node,
+  filterOptions: PropTypes.node,
   metadata: PropTypes.node,
+  onEdit: PropTypes.node,
   onDelete: PropTypes.node
 }
 

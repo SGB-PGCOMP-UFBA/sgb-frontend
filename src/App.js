@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { enGB } from 'date-fns/locale';
 import { ToastContainer } from 'react-toastify'
 import RequireAuth from './hooks/requireAuth'
 import {
@@ -17,7 +18,7 @@ import {
 
 export default function App() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
       <BrowserRouter>
         <Routes>
           {/* Rotas públicas */}

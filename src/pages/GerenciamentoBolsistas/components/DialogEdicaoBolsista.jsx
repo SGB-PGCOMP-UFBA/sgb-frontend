@@ -1,33 +1,226 @@
 import React from 'react'
-import { Dialog, DialogTitle, DialogContent, IconButton, TextField, DialogActions, Button } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
+import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Typography, Divider, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers';
+import { SlideUp } from '../../../components/Transitions/SlideUp'
+import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
-function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit }) {
-  console.log(item)
+function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
-    const newAgencyData = new FormData(event.currentTarget)
+    const data = new FormData(event.currentTarget)
+    const entries = Object.fromEntries(data.entries())
 
-    onSubmit(item.id, Object.fromEntries(newAgencyData.entries()))
+    onSubmit({
+      student_email: item.student.email,
+      enrollment_id : item.enrollment.id,
+      scholarship_id: item.id,
+      ...entries
+    })
+
     onClose()
   }
 
+  const advisorsName = filterOptions.advisorNameFilterList.slice(1)
+  const agenciesName = filterOptions.agencyNameFilterList.slice(1)
+
   const dialogContent = (
-    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
-      <TextField
-        required
-        fullWidth
-        id="name"
-        label="Nome"
-        type="text"
-        name="name"
-        defaultValue={item.name}
-        placeholder="Insira o nome da agência"
-      />
-      <DatePicker label="Basic date picker" />
-    </div>
+    <Box
+      className="mt-2"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        minWidth: {
+          xs: '295px',
+          sm: '295px',
+          md: '395px',
+        },
+        maxWidth: {
+          xs: '350px',
+          sm: '350px',
+          md: '695px',
+        },
+        gap: '1.5em',
+      }}>
+      <Box display="flex" flexDirection="column" width="100%">
+        <Typography variant="subtitle1">
+          Matrícula
+        </Typography>
+        <Divider />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            '& > *': {
+              marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: '0.6em',
+              width: '100%',
+              marginTop: '1.2em',
+              '& > *': {
+                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+              },
+            }}
+          >
+            <FormControl fullWidth>
+              <InputLabel id="label-curso">Curso</InputLabel>
+              <Select
+                id="select-curso"
+                label="Curso"
+                name="enrollment_program"
+                labelId="label-curso"
+                defaultValue={item.enrollment.enrollment_program}
+              >
+                <MenuItem value={"MESTRADO"}>Mestrado</MenuItem>
+                <MenuItem value={"DOUTORADO"}>Doutorado</MenuItem>
+              </Select>
+            </FormControl>
+            <DatePicker
+              label="Data de Matrícula"
+              name="enrollment_date"
+              defaultValue={new Date(item.enrollment.enrollment_date)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+            <DatePicker
+              label="Data de Previsão de Defesa"
+              name="defense_prediction_date"
+              defaultValue={new Date(item.enrollment.defense_prediction_date)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <InputLabel id="label-orientador">Orientador</InputLabel>
+              <Select
+                id="select-orientador"
+                label="Orientador"
+                name="advisor_email"
+                labelId="label-orientador"
+                defaultValue={item.advisor.email}
+              >
+                {advisorsName.map((advisor) => (
+                  <MenuItem key={advisor.key} value={advisor.email}>
+                    {advisor.value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box display="flex" flexDirection="column">
+        <Typography variant="subtitle1">
+          Bolsa
+        </Typography>
+        <Divider />
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: '1.2em',
+          '& > *': {
+            marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
+          },
+        }}>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
+            },
+            gap: '0.4em',
+            '& > *': {
+              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+            },
+          }}>
+            <FormControl fullWidth>
+              <InputLabel id="label-agencia">Agência</InputLabel>
+              <Select
+                id="select-agencia"
+                label="Agência"
+                name="agency_id"
+                labelId="label-agencia"
+                defaultValue={item.agency.id}
+              >
+                {agenciesName.map((agency) => (
+                  <MenuItem key={agency.key} value={agency.id}>
+                    {agency.value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="label-status">Situação</InputLabel>
+              <Select
+                id="select-status"
+                label="Situação"
+                name="status"
+                labelId="label-status"
+                defaultValue={item.status}
+              >
+                <MenuItem value={"ON_GOING"}>Em Andamento</MenuItem>
+                <MenuItem value={"FINISHED"}>Finalizado</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              id="input-salary"
+              label="Valor da Bolsa"
+              name="salary"
+              variant="outlined"
+              defaultValue={item.salary !== null ? item.salary : "0,00"}
+              InputProps={{
+                inputComponent: MonetaryBrazilianValueMask,
+              }}
+              fullWidth
+            />
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
+            },
+            gap: '0.4em',
+            '& > *': {
+              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+            },
+          }}>
+            <DatePicker
+              label="Data de Início da Bolsa"
+              name="scholarship_starts_at"
+              defaultValue={new Date(item.scholarship_starts_at)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+            <DatePicker
+              label="Data de Término da Bolsa"
+              name="scholarship_ends_at"
+              defaultValue={new Date(item.scholarship_ends_at)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+            <DatePicker
+              label="Data de Extensão da Bolsa"
+              name="extension_ends_at"
+              minDate={new Date(item.scholarship_ends_at)}
+              defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 
   const dialogActions = (
@@ -63,7 +256,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit }) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogTitle>Editar Bolsista</DialogTitle>
+      <DialogTitle>Editar Bolsista - <b>{item.student.name}</b></DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>

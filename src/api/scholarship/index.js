@@ -54,6 +54,10 @@ export const getScholarships = async (page, limit, filters) => {
   return api.get(url)
 }
 
+export const updateScholarship = async (scholarshipId, scholarship) => {
+  return api.patch(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, scholarship)
+}
+
 export const deleteScholarship = async (scholarshipId) => {
   return api.delete(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`)
 }

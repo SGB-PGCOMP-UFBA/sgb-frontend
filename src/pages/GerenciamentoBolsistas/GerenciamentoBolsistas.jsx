@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../api'
 import { GerenciamentoBolsistasView } from './GerenciamentoBolsistasView'
-import { formattedNow } from '../../helpers/formatters'
+import { formattedNow, parseDate } from '../../helpers/formatters'
 
 const initialStateForAllFilter = {
   key: 'ALL',
@@ -94,33 +94,71 @@ function GerenciamentoBolsistas() {
   }
 
   const getFilterOptions = async () => {
-    const agencyRequest = api.agency.getAgencyFilterList()
-    const advisorRequest = api.advisor.getAdvisorFilterList()
-    const programRequest = api.enrollment.getEnrollmentProgramFilterList()
-    const scholarshipStatusRequest = api.scholarship.getScholarshipStatusFilterList()
+    try {
+      const agencyRequest = api.agency.getAgencyFilterList()
+      const advisorRequest = api.advisor.getAdvisorFilterList()
+      const programRequest = api.enrollment.getEnrollmentProgramFilterList()
+      const scholarshipStatusRequest = api.scholarship.getScholarshipStatusFilterList()
 
-    const response = await Promise.all([
-      scholarshipStatusRequest,
-      agencyRequest,
-      programRequest,
-      advisorRequest
-    ])
+      const response = await Promise.all([
+        scholarshipStatusRequest,
+        agencyRequest,
+        programRequest,
+        advisorRequest
+      ])
 
-    if (response.length > 0) {
-      const scholarshipsList = response[0].data
-      const agencyList = response[1].data
-      const programList = response[2].data
-      const advisorList = response[3].data
+      if (response.length > 0) {
+        const scholarshipsList = response[0].data
+        const agencyList = response[1].data
+        const programList = response[2].data
+        const advisorList = response[3].data
 
-      setFilterOptions({
-        scholarshipStatusFilterList: initialFilterOptions.scholarshipStatusFilterList.concat(scholarshipsList),
-        agencyNameFilterList: initialFilterOptions.agencyNameFilterList.concat(agencyList),
-        programNameFilterList: initialFilterOptions.programNameFilterList.concat(programList),
-        advisorNameFilterList: initialFilterOptions.advisorNameFilterList.concat(advisorList)
-      })
-    } else {
+        setFilterOptions({
+          scholarshipStatusFilterList: initialFilterOptions.scholarshipStatusFilterList.concat(scholarshipsList),
+          agencyNameFilterList: initialFilterOptions.agencyNameFilterList.concat(agencyList),
+          programNameFilterList: initialFilterOptions.programNameFilterList.concat(programList),
+          advisorNameFilterList: initialFilterOptions.advisorNameFilterList.concat(advisorList)
+        })
+      }
+    } catch (error) {
       toast.error(`Não foi possível carregar as opções de filtragem.`)
     }
+  }
+
+  const updateScholarship = async (data) => {
+    try {
+      const updateEnrollment = api.enrollment.updateEnrollment(data.enrollment_id, {
+        advisor_email: data.advisor_email,
+        student_email: data.student_email,
+        enrollment_program: data.enrollment_program,
+        enrollment_date: parseDate(data.enrollment_date),
+        defense_prediction_date: parseDate(data.defense_prediction_date)
+      })
+
+      const updateScholarship = api.scholarship.updateScholarship(data.scholarship_id, {
+        enrollment_id: data.enrollment_id,
+        student_email: data.student_email,
+        status: data.status,
+        agency_id: data.agency_id,
+        scholarship_starts_at: parseDate(data.scholarship_starts_at),
+        scholarship_ends_at: parseDate(data.scholarship_ends_at),
+        extension_ends_at: data.extension_ends_at !== null ? parseDate(data.extension_ends_at) : null,
+        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
+      })
+
+      const response = await Promise.all([
+        updateEnrollment,
+        updateScholarship
+      ])
+
+      if (response.length > 0) {
+        toast.success('Bolsa atualizada com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)
+    }
+
+    await getScholarships({size, page, filters})
   }
 
   const deleteScholarship = async (scholarshipId) => {
@@ -155,6 +193,7 @@ function GerenciamentoBolsistas() {
       handleResetFilters={handleFiltersReset}
       filterOptions={filterOptions}
       isLoading={isLoading}
+      onEditScholarship={updateScholarship}
       onDeleteScholarship={deleteScholarship}
       isDialogForFiltersOpen={isDialogForFiltersOpen}
       handleReportDownload={handleReportDownload}

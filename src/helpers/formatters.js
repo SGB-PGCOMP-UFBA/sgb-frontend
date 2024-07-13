@@ -1,3 +1,5 @@
+import { parse, isValid } from 'date-fns';
+
 export const formatType = (type, courseType, scholarshipDate, sort) => {
   if (type === 'course' && courseType !== '-') {
     return courseType
@@ -46,3 +48,12 @@ export const formatCpf = (tax_id) => {
   }
 }
 
+export function parseDate(dateString, format = "dd/MM/yyyy") {
+  const parsedDate = parse(dateString, format, new Date().toISOString());
+
+  if (isValid(parsedDate)) {
+    return parsedDate;
+  }
+
+  return null;
+}

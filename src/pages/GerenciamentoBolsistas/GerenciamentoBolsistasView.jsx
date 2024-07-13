@@ -7,7 +7,7 @@ import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
 function GerenciamentoBolsistasView(props) {
-  const { isLoading, data, onDeleteScholarship } = props
+  const { isLoading, data, onEditScholarship, onDeleteScholarship } = props
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
@@ -150,7 +150,9 @@ function GerenciamentoBolsistasView(props) {
                 size={props.size}
                 setSize={props.setSize}
                 data={data.items}
+                filterOptions={props.filterOptions}
                 metadata={data.meta}
+                onEdit={onEditScholarship}
                 onDelete={onDeleteScholarship}
               />
             )}
@@ -172,6 +174,7 @@ GerenciamentoBolsistasView.prototypes = {
   handleResetFilters: PropTypes.node,
   filterOptions: PropTypes.node,
   isLoading: PropTypes.boolean,
+  onEditScholarship: PropTypes.node,
   onDeleteScholarship: PropTypes.node,
   isDialogForFiltersOpen: PropTypes.node,
   handleReportDownload: PropTypes.node,
