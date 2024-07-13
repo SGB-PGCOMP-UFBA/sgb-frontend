@@ -13,10 +13,10 @@ function CardBolsasFapesbView(props) {
 
   return (
     <Card sx={sx}>
-      <CardContent>
+      <CardContent className="flex flex-col w-full h-full justify-between">
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3} marginBottom={2}>
           <Stack marginBottom={2}>
-            <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
+            <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={5}>
               FAPESB
             </Typography>
             <Typography variant="h4">{data[LITERAL_ON_GOING].count}</Typography>

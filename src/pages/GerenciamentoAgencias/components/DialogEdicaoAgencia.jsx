@@ -7,8 +7,15 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
     const newAgencyData = new FormData(event.currentTarget)
+    const entries = Object.fromEntries(newAgencyData.entries())
 
-    onSubmit(item.id, Object.fromEntries(newAgencyData.entries()))
+    onSubmit(item.id, {
+      name: entries.name,
+      description: entries.description,
+      masters_degree_awarded_scholarships: Number(entries.masters_degree_awarded_scholarships),
+      doctorate_degree_awarded_scholarships: Number(entries.doctorate_degree_awarded_scholarships)
+    })
+
     onClose()
   }
 
@@ -37,6 +44,41 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         name="description"
         defaultValue={item.description}
         placeholder="Insira a descrição da agência"
+      />
+
+      <TextField
+        fullWidth
+        id="masters_degree_awarded_scholarships"
+        name="masters_degree_awarded_scholarships"
+        label="Bolsas Concedidas Para o Mestrado"
+        type="number"
+        defaultValue={item.masters_degree_awarded_scholarships}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          inputProps: {
+            min: 0,
+            step: 1,
+          },
+        }}
+      />
+
+      <TextField
+        id="doctorate_degree_awarded_scholarships"
+        name="doctorate_degree_awarded_scholarships"
+        label="Bolsas Concedidas Para o Doutorado"
+        type="number"
+        defaultValue={item.doctorate_degree_awarded_scholarships}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          inputProps: {
+            min: 0,
+            step: 1,
+          },
+        }}
       />
     </div>
   )

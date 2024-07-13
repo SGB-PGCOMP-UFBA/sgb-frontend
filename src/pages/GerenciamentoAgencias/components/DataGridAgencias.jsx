@@ -58,14 +58,44 @@ function DataGridAgencias(props) {
       valueGetter: (params) => params.row.description
     },
     {
-      field: 'count_scholarships',
-      headerName: 'Bolsas Alocadas Desde o Início',
+      field: 'masters_degree_awarded_scholarships',
+      headerName: 'Bolsas Concedidas Para o Mestrado',
+      width: 160,
+      align: 'center',
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_awarded_scholarships}</p>,
+      valueGetter: (params) => params.row.masters_degree_awarded_scholarships
+    },
+    {
+      field: 'masters_degree_allocated_scholarships',
+      headerName: 'Bolsas Alocadas no Mestrado',
       width: 150,
       align: 'center',
       filterable: false,
       sortable: false,
-      renderCell: (params) => <p className="overflow-auto">{params.row.scholarshipsCount}</p>,
-      valueGetter: (params) => params.row.scholarshipsCount
+      renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_allocated_scholarships}</p>,
+      valueGetter: (params) => params.row.masters_degree_allocated_scholarships
+    },
+    {
+      field: 'doctorate_degree_awarded_scholarships',
+      headerName: 'Bolsas Concedidas Para o Doutorado',
+      width: 160,
+      align: 'center',
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_awarded_scholarships}</p>,
+      valueGetter: (params) => params.row.doctorate_degree_awarded_scholarships
+    },
+    {
+      field: 'doctorate_degree_allocated_scholarships',
+      headerName: 'Bolsas Alocadas no Doutorado',
+      width: 150,
+      align: 'center',
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_allocated_scholarships}</p>,
+      valueGetter: (params) => params.row.doctorate_degree_allocated_scholarships
     },
     {
       field: 'createdAt',

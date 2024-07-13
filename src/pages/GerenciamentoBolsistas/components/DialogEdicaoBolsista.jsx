@@ -90,13 +90,13 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
               label="Data de Matrícula"
               name="enrollment_date"
               defaultValue={new Date(item.enrollment.enrollment_date)}
-              slotProps={{ textField: { fullWidth: true } }}
+              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
             <DatePicker
               label="Data de Previsão de Defesa"
               name="defense_prediction_date"
               defaultValue={new Date(item.enrollment.defense_prediction_date)}
-              slotProps={{ textField: { fullWidth: true } }}
+              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
           </Box>
           <Box>
@@ -203,20 +203,20 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
               label="Data de Início da Bolsa"
               name="scholarship_starts_at"
               defaultValue={new Date(item.scholarship_starts_at)}
-              slotProps={{ textField: { fullWidth: true } }}
+              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
             <DatePicker
               label="Data de Término da Bolsa"
               name="scholarship_ends_at"
               defaultValue={new Date(item.scholarship_ends_at)}
-              slotProps={{ textField: { fullWidth: true } }}
+              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
             <DatePicker
               label="Data de Extensão da Bolsa"
               name="extension_ends_at"
               minDate={new Date(item.scholarship_ends_at)}
               defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
-              slotProps={{ textField: { fullWidth: true } }}
+              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
           </Box>
         </Box>

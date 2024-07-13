@@ -4,9 +4,9 @@ import { Avatar, Card, CardContent, Stack, Skeleton } from '@mui/material'
 function CardSkeletonOnLoad(props) {
   return (
     <Card sx={props.sx}>
-      <CardContent>
+      <CardContent className="flex flex-col w-full h-full justify-between">
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack sx={{ width: '100%' }}>
+          <Stack sx={{ width: '100%' }} marginBottom={3}>
             <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
             <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
             <Skeleton variant="text" sx={{ fontSize: '1rem' }} />

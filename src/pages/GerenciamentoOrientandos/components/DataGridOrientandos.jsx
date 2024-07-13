@@ -57,7 +57,7 @@ function DataGridOrientandos(props) {
           href={`https://wa.me/${params.row.phone_number}`}
           target="_blank"
           rel="noreferrer"
-          className="text-blue-500 underline"
+          className="text-blue-500"
         >
           {formatPhone(params.row.phone_number)}
         </a>
@@ -76,7 +76,7 @@ function DataGridOrientandos(props) {
           href={`${params.row.link_to_lattes}`}
           target="_blank"
           rel="noreferrer"
-          className="center text-blue-500 underline"
+          className="center text-blue-500"
         >
           {params.row.link_to_lattes}
         </a>

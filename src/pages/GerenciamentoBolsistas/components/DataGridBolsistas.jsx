@@ -96,7 +96,7 @@ function DataGridBolsistas(props) {
           href={`https://wa.me/${params.row.student.phone_number}`}
           target="_blank"
           rel="noreferrer"
-          className="text-blue-500 underline"
+          className="text-blue-500"
         >
           {formatPhone(params.row.student.phone_number)}
         </a>
@@ -113,6 +113,24 @@ function DataGridBolsistas(props) {
       renderCell: (params) =>
         <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{ params.row.student.email ? params.row.student.email : NOT_INFORMED }</p>,
       valueGetter: (params) => params.row.student.email
+    },
+    {
+      field: 'link_to_lattes',
+      headerName: 'Link do Lattes',
+      width: 200,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => (
+        <a
+          href={`${params.row.student.link_to_lattes}`}
+          target="_blank"
+          rel="noreferrer"
+          className="custom-scrollbar whitespace-nowrap overflow-x-auto center text-blue-500"
+        >
+          {params.row.student.link_to_lattes}
+        </a>
+      ),
+      valueGetter: (params) => params.row.student.link_to_lattes
     },
     {
       field: 'agencyName',

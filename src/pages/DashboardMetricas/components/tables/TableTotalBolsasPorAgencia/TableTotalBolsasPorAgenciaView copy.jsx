@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Card, CardContent, Typography } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 
-function TotalBolsasCard(props) {
+function TableTotalBolsasPorAgenciaView(props) {
   const { sx } = props
 
   const columns = [
@@ -53,8 +53,8 @@ function TotalBolsasCard(props) {
   )
 }
 
-TotalBolsasCard.prototypes = {
+TableTotalBolsasPorAgenciaView.prototypes = {
   sx: PropTypes.node
 }
 
-export { TotalBolsasCard }
+export { TableTotalBolsasPorAgenciaView }

@@ -7,7 +7,7 @@ import { CardBolsasCapes } from './components/cards/CardBolsasCapes'
 import { CardBolsasCnpq } from './components/cards/CardBolsasCnpq'
 import { CardBolsasFapesb } from './components/cards/CardBolsasFapesb'
 import { ColumnChartHistogramaBolsas } from './components/charts/ColumnChartHistogramaBolsas'
-import { TotalBolsasCard } from './components/TotalBolsasCard'
+import { TableTotalBolsasPorAgencia } from './components/tables/TableTotalBolsasPorAgencia'
 
 function DashboardMetricasView() {
   return (
@@ -69,7 +69,7 @@ function DashboardMetricasView() {
                       lg={6}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <TotalBolsasCard data={[]} sx={{ height: '100%' }} />
+                      <TableTotalBolsasPorAgencia sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
