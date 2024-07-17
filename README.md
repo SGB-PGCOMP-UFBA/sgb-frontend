@@ -1,6 +1,6 @@
-# Sistema de Acompanhamento de Bolsistas
+# Sistema de Gerenciamento de Bolsas
 
-<p align="center"> 
+<p align="center">
     <img alt = "Languages" src="https://img.shields.io/github/languages/count/boliveira12/MATE85-Acompanhamento-Bolsistas">
     <img alt = "Tamanho" src="https://img.shields.io/github/repo-size/boliveira12/MATE85-Acompanhamento-Bolsistas">
     <img alt = "Commit" src="https://img.shields.io/github/last-commit/boliveira12/MATE85-Acompanhamento-Bolsistas">
@@ -8,20 +8,27 @@
 </p>
 
 ## Links
-[Proposta](https://docs.google.com/presentation/d/1ZFmNTl_J1z1zFfDj0APUG5PGdL459QwKcUtnf4H48xU/edit#slide=id.ge7debf7083_0_0) | 
-[Requisitos](https://docs.google.com/spreadsheets/d/1mP9sHRCpoDyPzAqeXPOXbrTp8NNgGUztj0FgI-nQb7k/edit?usp=sharing) | 
-[Protótipo](https://www.figma.com/file/c2RJlrC3kbbUfr1EI1tzdL/MATE85-Equipe2?node-id=0%3A1) | 
+[Proposta](https://docs.google.com/presentation/d/1ZFmNTl_J1z1zFfDj0APUG5PGdL459QwKcUtnf4H48xU/edit#slide=id.ge7debf7083_0_0) |
+[Requisitos](https://docs.google.com/spreadsheets/d/1mP9sHRCpoDyPzAqeXPOXbrTp8NNgGUztj0FgI-nQb7k/edit?usp=sharing) |
+[Protótipo](https://www.figma.com/file/c2RJlrC3kbbUfr1EI1tzdL/MATE85-Equipe2?node-id=0%3A1) |
 [Versão de desenvolvimento](https://aux-bolsistas.netlify.app/) |
 [Arquitetura](https://docs.google.com/document/d/1jHvPHyMUaWMB04ysHTmhiFuUj_YFKQp_z5WNl_RVveY/edit?usp=sharing) |
 
 ### Sumário
 
--   [Informações comerciais](#informações-comerciais)
--   [Equipe](#equipe)
--   [Especificações técnicas](#especificações-técnicas)
-    -   [Tecnologias utilizadas](#tecnologias-utilizadas)
-    -   [Instruções de instalação](#instruções-de-instalação)
-    -   [Executando o projeto localmente](#executando-o-projeto-localmente)
+- [Sistema de Gerenciamento de Bolsas](#sistema-de-gerenciamento-de-bolsas)
+  - [Links](#links)
+    - [Sumário](#sumário)
+  - [Informações Gerais](#informações-gerais)
+    - [Orientador](#orientador)
+    - [Datas](#datas)
+  - [Equipe](#equipe)
+  - [Especificações técnicas](#especificações-técnicas)
+    - [Tecnologias utilizadas](#tecnologias-utilizadas)
+    - [Instruções de instalação](#instruções-de-instalação)
+      - [Requerimentos](#requerimentos)
+      - [Estrutura dos diretórios](#estrutura-dos-diretórios)
+      - [Scripts](#scripts)
 
 ## Informações Gerais
 

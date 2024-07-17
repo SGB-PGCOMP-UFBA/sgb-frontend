@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { LoginView } from './LoginView'
 import { api } from '../../api'
 import { addUserToLocalStorage, getUserFromLocalStorage } from '../../helpers/auth-user'
-import { IdentificationForm } from './components/IdentificationForm'
-import { LoginForm } from './components/LoginForm'
 
 const initialState = {
   role: 'STUDENT',
@@ -13,56 +11,12 @@ const initialState = {
   password: ''
 }
 
-const steps = ['Identifique-se', 'Dados de Acesso']
-
 function Login() {
   const navigate = useNavigate()
-  const [formErrors, setFormErrors] = useState({})
   const [formValues, setFormValues] = useState(initialState)
-  const [activeStep, setActiveStep] = useState(0)
-
-  const validateForm = () => {
-    const errors = {}
-    if (!formValues.email) {
-      errors.email = 'E-mail é obrigatório'
-    }
-    if (!formValues.password) {
-      errors.password = 'Senha é obrigatória'
-    }
-    setFormErrors(errors)
-    return Object.keys(errors).length === 0
-  }
 
   const handleFormValueChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
-  }
-
-  const handleStepperBack = () => {
-    setActiveStep((prevStep) => prevStep - 1)
-  }
-
-  const handleStepperNext = () => {
-    setActiveStep((prevStep) => prevStep + 1)
-  }
-
-  const pickFormContentByStep = (step) => {
-    switch (step) {
-      case 0:
-        return (
-          <IdentificationForm formValues={formValues} onFormValueChange={handleFormValueChange} />
-        )
-      case 1:
-        return (
-          <LoginForm
-            formValues={formValues}
-            formErrors={formErrors}
-            onFormValueChange={handleFormValueChange}
-          />
-        )
-
-      default:
-        return <div>404: Not Found</div>
-    }
   }
 
   const firstRedirect = (user) => {
@@ -70,14 +24,12 @@ function Login() {
       navigate('/dashboard', { replace: true })
     } else if (user && user.role === 'ADVISOR') {
       navigate('/orientandos', { replace: true })
+    } else if (user && user.role === 'STUDENT') {
+      navigate('/matriculas', { replace: true })
     }
   }
 
   const authenticate = async () => {
-    if (!validateForm()) {
-      return
-    }
-
     try {
       const response = await api.auth.login(formValues)
 
@@ -89,10 +41,10 @@ function Login() {
         firstRedirect(getUserFromLocalStorage())
       }
     } catch (err) {
-      if (err.response.status === 404) {
-        toast.error('Parece que seu login ou senha está incorreto. Tente novamente!')
-      } else {
+      if (err.response.status >= 500) {
         toast.error(`[${err.response.data.statusCode}]: ${err.response.data.message}`)
+      } else {
+        toast.error('Parece que seu login ou senha está incorreto. Tente novamente!')
       }
     }
   }
@@ -105,12 +57,9 @@ function Login() {
 
   return (
     <LoginView
-      steps={steps}
-      activeStep={activeStep}
-      onFormChoose={pickFormContentByStep}
       onSubmit={authenticate}
-      onStepBack={handleStepperBack}
-      onStepNext={handleStepperNext}
+      formValues={formValues}
+      onChangeFormValues={handleFormValueChange}
     />
   )
 }

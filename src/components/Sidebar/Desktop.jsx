@@ -39,7 +39,7 @@ export default function Desktop(props) {
           <Divider className="bg-white" variant="middle" />
           <div className="flex flex-col items-center">
             <a href="/" className="block p-2 text-center font-poppins font-semibold text-white">
-              Sistema de Acompanhamento de Bolsistas
+              Sistema de Gerenciamento de Bolsas
             </a>
             <span className="text-white"> {currentYear} &copy; </span>
           </div>

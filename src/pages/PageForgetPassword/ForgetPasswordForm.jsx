@@ -2,6 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
 import { Button, TextField } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const initialState = {
   email: ''
@@ -20,7 +21,7 @@ function ForgetPasswordForm() {
 
     try {
       await axios.post(`${process.env.REACT_APP_BASE_URL}/v1/password-recovery/request`, { email })
-      toast.success('E-mail enviado com sucesso.')
+      toast.success('Verifique seu e-mail para redefinir a senha.')
     } catch (error) {
       if (!error?.response) {
         toast.error('Sem resposta do servidor.')
@@ -48,6 +49,11 @@ function ForgetPasswordForm() {
           Recuperar senha
         </Button>
       </div>
+      <p className="pt-12 text-center text-base font-normal leading-6">
+        <Link to="/" className="text-blue-600 transition-colors hover:text-blue-800">
+          Lembrou sua senha? Volte e faça login.
+        </Link>
+      </p>
     </form>
   )
 }
