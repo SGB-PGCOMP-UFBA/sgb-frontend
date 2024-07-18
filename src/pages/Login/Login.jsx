@@ -25,7 +25,7 @@ function Login() {
     } else if (user && user.role === 'ADVISOR') {
       navigate('/orientandos', { replace: true })
     } else if (user && user.role === 'STUDENT') {
-      navigate('/matriculas', { replace: true })
+      navigate('/area-do-estudante', { replace: true })
     }
   }
 

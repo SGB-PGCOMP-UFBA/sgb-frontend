@@ -20,8 +20,7 @@ function GerenciamentoOrientandos() {
           toast.error(`[${response.status}]: ${response.data.error}`)
         }
       } catch (error) {
-        console.error('Error fetching students:', error)
-        toast.error('Failed to fetch students. Please try again.')
+        toast.error('Ocorreu um erro ao consultar sua lista de orientandos.')
       } finally {
         setIsLoading(false)
       }

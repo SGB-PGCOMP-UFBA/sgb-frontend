@@ -9,6 +9,7 @@ import {
   Login,
   LoggedUserSettings,
   PageNotFound,
+  PageRegister,
   DashboardMetricas,
   GerenciamentoBolsistas,
   GerenciamentoAgencias,
@@ -23,8 +24,9 @@ export default function App() {
         <Routes>
           {/* Rotas públicas */}
           <Route path="/" element={<Login />} />
+          <Route path="/cadastro-estudante" element={<PageRegister />} />
           <Route path="/esqueci-a-senha" element={<PageForgetPassword />} />
-          <Route path="/settings" element={<LoggedUserSettings />} />
+          <Route path="/configuracoes" element={<LoggedUserSettings />} />
 
           {/* Rotas de usuário administrador */}
           <Route element={<RequireAuth allowedRoles="ADMIN" />}>

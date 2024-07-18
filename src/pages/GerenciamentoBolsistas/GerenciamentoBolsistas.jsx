@@ -69,7 +69,7 @@ function GerenciamentoBolsistas() {
         const url = window.URL.createObjectURL(blob);
 
         // Define o nome do arquivo
-        const filename = 'relatorio_sab_' + formattedNow() + '.pdf'
+        const filename = 'relatorio_sgb_' + formattedNow() + '.pdf'
 
         // Cria um link para download
         const link = document.createElement('a');

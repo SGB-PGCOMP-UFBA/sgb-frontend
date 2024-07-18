@@ -28,7 +28,7 @@ export default function UserMenu(props) {
   }
 
   const handleRedirectToSettings = () => {
-    navigate('/settings', { replace: true })
+    navigate('/configuracoes', { replace: true })
   }
 
   const handleLogout = () => {
