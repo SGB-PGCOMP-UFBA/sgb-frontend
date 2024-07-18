@@ -72,7 +72,7 @@ function ForgetPasswordForm() {
             <Grid item>
               <p className="text-center text-base font-normal leading-6">
                 Lembrou sua senha?{' '}
-                <Link to="/cadastre-se" className="text-base font-normal text-blue-600 transition-colors hover:text-blue-800">
+                <Link to="/cadastro-estudante" className="text-base font-normal text-blue-600 transition-colors hover:text-blue-800">
                   Entrar!
                 </Link>
               </p>

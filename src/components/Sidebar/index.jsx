@@ -40,6 +40,13 @@ export default function Sidebar() {
       path: '/orientandos',
       visible: true,
       availableRoles: ['ADVISOR']
+    },
+    {
+      name: 'Área do Estudante',
+      icon: 'school',
+      path: '/area-do-estudante',
+      visible: true,
+      availableRoles: ['STUDENT']
     }
   ]
 

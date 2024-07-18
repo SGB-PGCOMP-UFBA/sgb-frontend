@@ -10,11 +10,13 @@ import {
   LoggedUserSettings,
   PageNotFound,
   PageRegister,
+  PageRegisterAdvisor,
   DashboardMetricas,
   GerenciamentoBolsistas,
   GerenciamentoAgencias,
   GerenciamentoOrientandos,
-  GerenciamentoOrientadores
+  GerenciamentoOrientadores,
+  AreaDoEstudante
 } from './pages'
 
 export default function App() {
@@ -25,6 +27,7 @@ export default function App() {
           {/* Rotas públicas */}
           <Route path="/" element={<Login />} />
           <Route path="/cadastro-estudante" element={<PageRegister />} />
+          <Route path="/cadastro-orientador" element={<PageRegisterAdvisor />} />
           <Route path="/esqueci-a-senha" element={<PageForgetPassword />} />
           <Route path="/configuracoes" element={<LoggedUserSettings />} />
 
@@ -39,6 +42,11 @@ export default function App() {
           {/* Rotas de usuário orientador */}
           <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
             <Route path="orientandos" element={<GerenciamentoOrientandos />} />
+          </Route>
+
+          {/* Rotas de usuário estudante */}
+          <Route element={<RequireAuth allowedRoles="STUDENT" />}>
+            <Route path="area-do-estudante" element={<AreaDoEstudante />} />
           </Route>
 
           {/* Qualquer rota desconhecida */}
