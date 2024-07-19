@@ -19,7 +19,7 @@ import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'
 
 function ProfileDetailsSection(props) {
   const { user } = props
-  console.log(user)
+
   const [values, setValues] = useState({
     email: user?.email || '',
     name: user?.name || '',

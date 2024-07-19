@@ -9,7 +9,7 @@ import { SettingsPasswordSection } from './components/SettingsPasswordSection'
 function LoggedUserSettingsView(props) {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
-      <Sidebar userType="admin" />
+      <Sidebar />
       <div className="flex w-full flex-col justify-start">
         <MenuAppBar />
         <section className="flex w-full justify-center p-4">

@@ -6,6 +6,10 @@ export const getStudents = async () => {
   return api.get(`${BASE_STUDENT_API_PATH}`)
 }
 
+export const getStudentsByEmail = async (email) => {
+  return api.get(`${BASE_STUDENT_API_PATH}/${email}`)
+}
+
 export const getStudentsByAdvisorId = async (advisorId) => {
   return api.get(`${BASE_STUDENT_API_PATH}/by-advisor/${advisorId}`)
 }

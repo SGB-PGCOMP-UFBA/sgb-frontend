@@ -24,7 +24,7 @@ function GerenciamentoOrientandos() {
       } finally {
         setIsLoading(false)
       }
-    };
+    }
 
     getStudents()
   }, [user.id])
