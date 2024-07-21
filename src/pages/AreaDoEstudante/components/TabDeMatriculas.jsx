@@ -48,7 +48,14 @@ function TabDeMatriculas(props) {
       ) : (
         enrollments.map((enrollment, index) => (
           <TabPanel key={enrollment.enrollment_number} index={index} value={enrollmentTabIndex}>
-            <TabPanelDeMatricula enrollment={enrollment} advisors={props.advisors} agencies={props.agencies} onDelete={props.onDeleteEnrollment} />
+            <TabPanelDeMatricula
+              enrollment={enrollment}
+              advisors={props.advisors}
+              agencies={props.agencies}
+              onCreateNewScholarship={props.onCreateNewScholarship}
+              onDeleteEnrollment={props.onDeleteEnrollment}
+              onDeleteScholarship={props.onDeleteScholarship}
+            />
           </TabPanel>
         ))
       )}

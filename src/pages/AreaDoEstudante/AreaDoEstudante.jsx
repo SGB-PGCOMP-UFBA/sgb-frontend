@@ -72,7 +72,27 @@ function AreaDoEstudante() {
       }
     }
     catch (error) {
-      toast.error('Ocorreu um erro na criação da matrícula')
+      toast.error('Ocorreu um erro na criação da matrícula.')
+    }
+  }
+
+  const handleCreateNewScholarship = async (data) => {
+    try {
+      const response = await api.scholarship.createScholarship({
+        ...data,
+        student_email: student.email,
+        scholarship_starts_at: parseDate(data.scholarship_starts_at),
+        scholarship_ends_at: parseDate(data.scholarship_ends_at),
+        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
+      })
+
+      if ([200, 201].includes(response.status)) {
+        toast.success('Bolsa criada com sucesso.')
+        await getStudent()
+      }
+    }
+    catch (error) {
+      toast.error('Ocorreu um erro na criação da bolsa.')
     }
   }
 
@@ -82,6 +102,17 @@ function AreaDoEstudante() {
     if (response.status === 204) {
       setEnrollmentTabIndex(student.enrollments.length - 2)
       toast.success('Matrícula excluída com sucesso.')
+      await getStudent()
+    } else {
+      toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+  }
+
+  const handleDeleteScholarship = async (scholarshipId) => {
+    const response = await api.scholarship.deleteScholarship(scholarshipId)
+
+    if (response.status === 204) {
+      toast.success('Bolsa excluída com sucesso.')
       await getStudent()
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
@@ -108,7 +139,9 @@ function AreaDoEstudante() {
       handleChangeEnrollmentTab={handleChangeEnrollmentTab}
       onChangeEnrollmentTab={handleChangeEnrollmentTab}
       onCreateNewEnrollment={handleCreateNewEnrollment}
+      onCreateNewScholarship={handleCreateNewScholarship}
       onDeleteEnrollment={handleDeleteEnrollment}
+      onDeleteScholarship={handleDeleteScholarship}
     />
   )
 }

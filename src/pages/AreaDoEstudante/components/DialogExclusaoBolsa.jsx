@@ -3,8 +3,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
-function DialogExclusaoMatricula(props) {
-  const { enrollment, isOpen, onClose, onSubmit } = props
+function DialogExclusaoBolsa(props) {
+  const { scholarship, isOpen, onClose, onSubmit } = props
 
   const submitAndCloseDialog = async (id) => {
     onSubmit(id)
@@ -14,8 +14,8 @@ function DialogExclusaoMatricula(props) {
   const dialogContent = (
     <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
       <p>
-        Você tem certeza que quer apagar o vínculo de matrícula de número{' '}
-        <b>{enrollment.enrollment_number}</b>? Isso também irá apagar as informações de bolsas relacionadas a esta matrícula.
+        Você tem certeza que quer apagar as informações sobre a sua bolsa da{' '}
+        <b>{scholarship.agency.name}</b>?
       </p>
       <br />
       <p>Não será possível recuperar estas informações após a exclusão!</p>
@@ -28,7 +28,7 @@ function DialogExclusaoMatricula(props) {
         Cancelar
       </Button>
       <Button
-        onClick={() => submitAndCloseDialog(enrollment.id)}
+        onClick={() => submitAndCloseDialog(scholarship.id)}
         autoFocus
         variant="contained"
         color="error"
@@ -53,11 +53,11 @@ function DialogExclusaoMatricula(props) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogTitle>Excluir Matrícula</DialogTitle>
+      <DialogTitle>Excluir Bolsa</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
   )
 }
 
-export { DialogExclusaoMatricula }
+export { DialogExclusaoBolsa }

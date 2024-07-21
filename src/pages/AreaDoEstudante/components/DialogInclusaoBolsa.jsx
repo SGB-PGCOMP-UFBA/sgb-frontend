@@ -1,18 +1,28 @@
-import React from 'react'
-import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Grid, OutlinedInput } from '@mui/material'
-import { SlideUp } from '../../../components/Transitions/SlideUp'
+import React, { useState } from 'react'
 import { DatePicker } from '@mui/x-date-pickers';
+import CloseIcon from '@mui/icons-material/Close';
+import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Grid, TextField } from '@mui/material'
+import { SlideUp } from '../../../components/Transitions/SlideUp'
+import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
-function DialogInclusaoMatricula(props) {
-  const { isOpen, onSubmit, onClose, advisors } = props
+function DialogInclusaoBolsa(props) {
+  const { isOpen, onSubmit, onClose, agencies, enrollment } = props
+
+  const [minEndDate, setMinEndDate] = useState(null)
+
+  const handleStartDateChange = (newDate) => {
+    setMinEndDate(newDate)
+  }
 
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const entries = Object.fromEntries(data.entries())
 
-    onSubmit(entries)
+    onSubmit({
+      ...entries,
+      enrollment_number: enrollment.enrollment_number,
+    })
     onClose()
   }
 
@@ -37,60 +47,43 @@ function DialogInclusaoMatricula(props) {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <FormControl required fullWidth>
-            <InputLabel id="label-enrollment_number">Número de Matrícula</InputLabel>
-            <OutlinedInput
-              id="enrollment_number"
-              label="Número de Matrícula"
-              name="enrollment_number"
-              placeholder="Digite a sua matrícula"
-              type="tel"
-              inputProps={{
-                minLength: "9",
-                maxLength: "10",
-              }}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-curso">Curso</InputLabel>
+            <InputLabel id="label-agency">Agência</InputLabel>
             <Select
-              id="select-curso"
-              label="Curso"
-              name="enrollment_program"
-              labelId="label-curso"
+              id="select-agency"
+              label="agency"
+              name="agency_name"
+              labelId="label-agency"
               defaultValue={""}
+              placeholder="Selecione uma agência"
             >
-              <MenuItem disabled value={""}>Selecione um curso</MenuItem>
-              <MenuItem value={"MESTRADO"}>Mestrado</MenuItem>
-              <MenuItem value={"DOUTORADO"}>Doutorado</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-orientador">Orientador</InputLabel>
-            <Select
-              id="select-orientador"
-              label="Orientador"
-              name="advisor_email"
-              labelId="label-orientador"
-              defaultValue={""}
-            >
-              <MenuItem disabled value={""}>Selecione um orientador</MenuItem>
-              {advisors.map((advisor) => (
-                <MenuItem key={advisor.key} value={advisor.email}>
-                  {advisor.value}
+              <MenuItem disabled value={""}>Selecione uma agência</MenuItem>
+              {agencies.map((agency) => (
+                <MenuItem key={agency.key} value={agency.value}>
+                  {agency.value}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
+          <TextField
+            id="input-salary"
+            label="Valor da Bolsa"
+            name="salary"
+            variant="outlined"
+            defaultValue="0,00"
+            InputProps={{
+              inputComponent: MonetaryBrazilianValueMask,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <DatePicker
-            label="Data de Matrícula"
-            name="enrollment_date"
+            label="Data de Início da Bolsa"
+            name="scholarship_starts_at"
             defaultValue={null}
+            onChange={handleStartDateChange}
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -102,8 +95,9 @@ function DialogInclusaoMatricula(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <DatePicker
-            label="Data de Previsão de Defesa"
-            name="defense_prediction_date"
+            label="Data de Término da Bolsa"
+            name="scholarship_ends_at"
+            minDate={minEndDate}
             defaultValue={null}
             slotProps={{
               textField: {
@@ -158,4 +152,4 @@ function DialogInclusaoMatricula(props) {
   )
 }
 
-export { DialogInclusaoMatricula }
+export { DialogInclusaoBolsa }

@@ -2,6 +2,10 @@ import { api } from '../../services/api'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 
+export const createScholarship = async (scholarship) => {
+  return api.post(`${BASE_SCHOLARSHIP_API_PATH}`, scholarship)
+}
+
 export const getScholarshipStatusFilterList = async () => {
   return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`)
 }

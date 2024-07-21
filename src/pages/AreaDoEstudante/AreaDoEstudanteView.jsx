@@ -55,7 +55,9 @@ function AreaDoEstudanteView(props) {
                 student={props.student}
                 advisors={props.advisors}
                 agencies={props.agencies}
+                onCreateNewScholarship={props.onCreateNewScholarship}
                 onDeleteEnrollment={props.onDeleteEnrollment}
+                onDeleteScholarship={props.onDeleteScholarship}
               />
             }
 
@@ -81,7 +83,9 @@ AreaDoEstudanteView.prototypes = {
   advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
   onCreateNewEnrollment: PropTypes.func,
+  onCreateNewScholarship: PropTypes.func,
   onDeleteEnrollment: PropTypes.func,
+  onDeleteScholarship: PropTypes.func,
   onUpdate: PropTypes.func,
   student: PropTypes.shape({
     email: PropTypes.string.isRequired,

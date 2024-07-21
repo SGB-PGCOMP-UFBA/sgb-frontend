@@ -5,27 +5,52 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid, Icon, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
+import { AddCircleOutline } from '@mui/icons-material'
+import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
+import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 
 function TabPanelDeMatricula(props) {
   const { enrollment, advisors, agencies } = props
+  const [scholarship, setScholarship] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [isDialogForDeleteEnrollmentOpen, setIsDialogForDeleteEnrollmentOpen] = useState(false)
+  const [isDialogForDeleteScholarshipOpen, setIsDialogForDeleteScholarshipOpen] = useState(false)
+  const [isDialogForCreateScholarshipOpen, setIsDialogForCreateScholarshipOpen] = useState(false)
+  const scholarships = enrollment.scholarships.sort((a, b) => a.id - b.id)
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)
   }
 
-  const handleDialogForDeleteClose = () => {
+  const handleDialogForDeleteEnrollmentClose = () => {
     setIsDialogForDeleteEnrollmentOpen(false)
   }
 
-  const handleDialogForDeleteOpen = () => {
+  const handleDialogForDeleteEnrollmentOpen = () => {
     setIsDialogForDeleteEnrollmentOpen(true)
+  }
+
+  const handleDialogForDeleteScholarshipClose = () => {
+    setIsDialogForDeleteScholarshipOpen(false)
+  }
+
+  const handleDialogForDeleteScholarshipOpen = (scholarship) => {
+    setIsDialogForDeleteScholarshipOpen(true)
+    setScholarship(scholarship)
+  }
+
+  const handleDialogForCreateScholarshipClose = () => {
+    setIsDialogForCreateScholarshipOpen(false)
+    setScholarship({})
+  }
+
+  const handleDialogForCreateScholarshipOpen = () => {
+    setIsDialogForCreateScholarshipOpen(true)
   }
 
   return (
     <Box width="100%">
-      <Box component="form" onSubmit={() => { }} sx={{ mt: 2 }}>
+      <Box component="form" onSubmit={() => {}} sx={{ mt: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <TextField
@@ -40,6 +65,7 @@ function TabPanelDeMatricula(props) {
               inputProps={{
                 minLength: "9",
                 maxLength: "10",
+                readOnly: true
               }}
             />
           </Grid>
@@ -47,6 +73,7 @@ function TabPanelDeMatricula(props) {
             <FormControl fullWidth>
               <InputLabel id="label-curso">Curso</InputLabel>
               <Select
+                readOnly
                 id="select-curso"
                 label="Curso"
                 name="enrollment_program"
@@ -60,6 +87,7 @@ function TabPanelDeMatricula(props) {
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <DatePicker
+              readOnly
               label="Data da Matrícula"
               name="enrollment_date"
               defaultValue={new Date(enrollment.enrollment_date)}
@@ -68,6 +96,7 @@ function TabPanelDeMatricula(props) {
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <DatePicker
+              readOnly
               label="Data de Previsão da Defesa"
               name="defense_prediction_date"
               defaultValue={new Date(enrollment.defense_prediction_date)}
@@ -78,6 +107,7 @@ function TabPanelDeMatricula(props) {
             <FormControl fullWidth>
               <InputLabel id="label-orientador">Orientador</InputLabel>
               <Select
+                readOnly
                 id="select-orientador"
                 label="Orientador"
                 name="advisor_email"
@@ -94,24 +124,32 @@ function TabPanelDeMatricula(props) {
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2} gap={2} display="flex" alignItems="center" justifyContent="flex-end">
             <Tooltip title="Excluir Matrícula">
-              <IconButton onClick={handleDialogForDeleteOpen}>
+              <IconButton onClick={handleDialogForDeleteEnrollmentOpen}>
                 <Icon sx={{ fontSize: 28 }}>delete</Icon>
               </IconButton>
             </Tooltip>
-            <Button type="submit" autoFocus variant="contained" color="primary" size="small">
-              Salvar
-            </Button>
           </Grid>
         </Grid>
       </Box>
-      <Box paddingTop="6rem">
-        <Typography variant="body1" marginBottom="0.6rem" sx={{ fontWeight: '700' }}>Bolsas de Estudo</Typography>
-        {enrollment.scholarships.length === 0 ? (
+      <Box sx={{ border: '1px solid rgba(224, 224, 224, 1)', borderRadius: '4px', marginTop: 4, padding: 2 }}>
+        <Box display="flex" justifyContent="space-between" sx={{ marginBottom: 2 }}>
+          <Typography variant="body1" marginBottom="0.6rem" sx={{ fontWeight: '700' }}>Bolsas Recebidas</Typography>
+          <Button
+            variant="contained"
+            color="success"
+            startIcon={<AddCircleOutline />}
+            onClick={handleDialogForCreateScholarshipOpen}
+          >
+            Nova Bolsa
+          </Button>
+        </Box>
+
+        {scholarships.length === 0 ? (
           <Typography variant="subtitle2" align="center">Parece que você não tem nenhuma bolsa cadastrada neste curso!</Typography>
         ) : (
-          enrollment.scholarships.map((scholarship, index) => (
-            <Box key={index} component="form" onSubmit={() => { }}>
-              <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+          scholarships.map((scholarship, index) => (
+            <Box key={index} component="form" onSubmit={() => {}} marginBottom={0.6}>
+              <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography sx={{ width: '33%', flexShrink: 0 }}>
                     Vínculo de Bolsa {index + 1}
@@ -130,6 +168,7 @@ function TabPanelDeMatricula(props) {
                             name="agency_id"
                             labelId="label-agencia"
                             defaultValue={scholarship.agency.id}
+                            readOnly
                           >
                             {agencies.map((agency) => (
                               <MenuItem key={agency.key} value={agency.id}>
@@ -141,6 +180,7 @@ function TabPanelDeMatricula(props) {
                       </Grid>
                       <Grid item xs={12} sm={6} md={3} lg={2}>
                         <DatePicker
+                          readOnly
                           label="Data de Início da Bolsa"
                           name="scholarship_starts_at"
                           defaultValue={new Date(scholarship.scholarship_starts_at)}
@@ -149,6 +189,7 @@ function TabPanelDeMatricula(props) {
                       </Grid>
                       <Grid item xs={12} sm={6} md={3} lg={2}>
                         <DatePicker
+                          readOnly
                           label="Data de Término da Bolsa"
                           name="scholarship_ends_at"
                           defaultValue={new Date(scholarship.scholarship_ends_at)}
@@ -157,10 +198,11 @@ function TabPanelDeMatricula(props) {
                       </Grid>
                       <Grid item xs={12} sm={6} md={3} lg={2}>
                         <DatePicker
+                          readOnly
                           label="Bolsa Extentida Até"
                           name="extension_ends_at"
                           minDate={new Date(scholarship.extension_ends_at)}
-                          defaultValue={new Date(scholarship.extension_ends_at)}
+                          defaultValue={scholarship.extension_ends_at !== null ? new Date(scholarship.extension_ends_at) : null}
                           slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
                         />
                       </Grid>
@@ -175,17 +217,15 @@ function TabPanelDeMatricula(props) {
                             inputComponent: MonetaryBrazilianValueMask,
                           }}
                           fullWidth
+                          inputProps={{ readOnly: true }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6} md={3} lg={2} gap={2} display="flex" alignItems="center" justifyContent="flex-end">
                         <Tooltip title="Excluir Bolsa">
-                          <IconButton onClick={() => { }}>
+                          <IconButton onClick={() => handleDialogForDeleteScholarshipOpen(scholarship)}>
                             <Icon sx={{ fontSize: 28 }}>delete</Icon>
                           </IconButton>
                         </Tooltip>
-                        <Button type="submit" autoFocus variant="contained" color="primary" size="small">
-                          Salvar
-                        </Button>
                       </Grid>
                     </Grid>
                   </Box>
@@ -196,11 +236,30 @@ function TabPanelDeMatricula(props) {
         )}
       </Box>
 
+      {isDialogForCreateScholarshipOpen && (
+        <DialogInclusaoBolsa
+          enrollment={enrollment}
+          isOpen={isDialogForCreateScholarshipOpen}
+          onClose={handleDialogForCreateScholarshipClose}
+          onSubmit={props.onCreateNewScholarship}
+          agencies={props.agencies}
+        />
+      )}
+
+      {isDialogForDeleteScholarshipOpen && (
+        <DialogExclusaoBolsa
+          isOpen={isDialogForDeleteScholarshipOpen}
+          onClose={handleDialogForDeleteScholarshipClose}
+          onSubmit={props.onDeleteScholarship}
+          scholarship={scholarship}
+        />
+      )}
+
       {isDialogForDeleteEnrollmentOpen && (
         <DialogExclusaoMatricula
           isOpen={isDialogForDeleteEnrollmentOpen}
-          onClose={handleDialogForDeleteClose}
-          onSubmit={props.onDelete}
+          onClose={handleDialogForDeleteEnrollmentClose}
+          onSubmit={props.onDeleteEnrollment}
           enrollment={enrollment}
         />
       )}
