@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { AreaDoEstudanteView } from './AreaDoEstudanteView'
 import { api } from '../../api'
-import { getUserFromLocalStorage, updateUserFromLocalStorage } from '../../helpers/auth-user'
+import { getUserFromLocalStorage, updateUserFromLocalStorage, removeUserFromLocalStorage } from '../../helpers/auth-user'
 import { parseDate } from '../../helpers/formatters'
 
 function AreaDoEstudante() {
@@ -14,8 +14,8 @@ function AreaDoEstudante() {
   const [enrollmentTabIndex, setEnrollmentTabIndex] = React.useState(0)
 
   const handleChangeEnrollmentTab = (event, newValue) => {
-    setEnrollmentTabIndex(newValue);
-  };
+    setEnrollmentTabIndex(newValue)
+  }
 
   const getAdvisors = async () => {
     try {
@@ -53,6 +53,7 @@ function AreaDoEstudante() {
       }
     } catch (error) {
       toast.error('Ocorreu um erro na consulta de dados do estudante.')
+      removeUserFromLocalStorage()
     }
   }
 

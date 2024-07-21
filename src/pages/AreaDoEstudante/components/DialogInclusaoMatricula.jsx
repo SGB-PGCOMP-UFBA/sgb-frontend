@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Grid, OutlinedInput } from '@mui/material'
 import { SlideUp } from '../../../components/Transitions/SlideUp'
@@ -6,6 +6,12 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 function DialogInclusaoMatricula(props) {
   const { isOpen, onSubmit, onClose, advisors } = props
+
+  const [minEndDate, setMinEndDate] = useState(null)
+
+  const handleStartDateChange = (newDate) => {
+    setMinEndDate(newDate)
+  }
 
   const submitAndCloseDialog = async (event) => {
     event.preventDefault()
@@ -91,6 +97,7 @@ function DialogInclusaoMatricula(props) {
             label="Data de Matrícula"
             name="enrollment_date"
             defaultValue={null}
+            onChange={handleStartDateChange}
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -105,6 +112,7 @@ function DialogInclusaoMatricula(props) {
             label="Data de Previsão de Defesa"
             name="defense_prediction_date"
             defaultValue={null}
+            minDate={minEndDate}
             slotProps={{
               textField: {
                 fullWidth: true,

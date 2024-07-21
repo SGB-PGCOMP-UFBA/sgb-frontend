@@ -26,39 +26,39 @@ function TabDeMatriculas(props) {
 
   return (
     <Box width="100%">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={enrollmentTabIndex} onChange={handleChangeEnrollmentTab}>
-          {enrollments.map((enrollment, index) => (
-            <Tab
-              id={`tab-${index}`}
-              key={index}
-              label={
-                <Box>
-                  <Typography variant="body2" sx={{ fontSize: '0.925rem' }}>{enrollment.enrollment_number}</Typography>
-                  <Typography variant="body2" sx={{ fontSize: '0.750rem' }}>{enrollment.enrollment_program}</Typography>
-                </Box>
-              }
-            />
-          ))}
-        </Tabs>
-      </Box>
-
       {enrollments.length === 0 ? (
         <Typography variant="subtitle2" align="center">Parece que você não está matriculado em nenhum curso!</Typography>
       ) : (
-        enrollments.map((enrollment, index) => (
-          <TabPanel key={enrollment.enrollment_number} index={index} value={enrollmentTabIndex}>
-            <TabPanelDeMatricula
-              enrollment={enrollment}
-              advisors={props.advisors}
-              agencies={props.agencies}
-              onCreateNewScholarship={props.onCreateNewScholarship}
-              onDeleteEnrollment={props.onDeleteEnrollment}
-              onDeleteScholarship={props.onDeleteScholarship}
-            />
-          </TabPanel>
-        ))
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={enrollmentTabIndex} onChange={handleChangeEnrollmentTab}>
+            {enrollments.map((enrollment, index) => (
+              <Tab
+                id={`tab-${index}`}
+                key={index}
+                label={
+                  <Box>
+                    <Typography variant="body2" sx={{ fontSize: '0.925rem' }}>{enrollment.enrollment_number}</Typography>
+                    <Typography variant="body2" sx={{ fontSize: '0.750rem' }}>{enrollment.enrollment_program}</Typography>
+                  </Box>
+                }
+              />
+            ))}
+          </Tabs>
+        </Box>
       )}
+
+      {enrollments.map((enrollment, index) => (
+        <TabPanel key={enrollment.enrollment_number} index={index} value={enrollmentTabIndex}>
+          <TabPanelDeMatricula
+            enrollment={enrollment}
+            advisors={props.advisors}
+            agencies={props.agencies}
+            onCreateNewScholarship={props.onCreateNewScholarship}
+            onDeleteEnrollment={props.onDeleteEnrollment}
+            onDeleteScholarship={props.onDeleteScholarship}
+          />
+        </TabPanel>
+      ))}
 
     </Box>
   )
