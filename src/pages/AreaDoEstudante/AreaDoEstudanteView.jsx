@@ -9,14 +9,14 @@ import { TabDeMatriculas } from './components/TabDeMatriculas'
 import { DialogInclusaoMatricula } from './components/DialogInclusaoMatricula'
 
 function AreaDoEstudanteView(props) {
-  const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
+  const [isDialogForCreateEnrollmentOpen, setIsDialogForCreateEnrollmentOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
-    setIsDialogForCreateOpen(false)
+    setIsDialogForCreateEnrollmentOpen(false)
   }
 
   const handleDialogForCreateOpen = () => {
-    setIsDialogForCreateOpen(true)
+    setIsDialogForCreateEnrollmentOpen(true)
   }
 
   return (
@@ -47,13 +47,24 @@ function AreaDoEstudanteView(props) {
                 </Button>
               </div>
             </div>
-            {props.isLoading ? <Loading /> : <TabDeMatriculas student={props.student} advisors={props.advisors} agencies={props.agencies} />}
+            {props.isLoading ?
+              <Loading /> :
+              <TabDeMatriculas
+                enrollmentTabIndex={props.enrollmentTabIndex}
+                handleChangeEnrollmentTab={props.handleChangeEnrollmentTab}
+                student={props.student}
+                advisors={props.advisors}
+                agencies={props.agencies}
+                onDeleteEnrollment={props.onDeleteEnrollment}
+              />
+            }
 
-            {isDialogForCreateOpen && (
+            {isDialogForCreateEnrollmentOpen && (
               <DialogInclusaoMatricula
-                isOpen={isDialogForCreateOpen}
+                isOpen={isDialogForCreateEnrollmentOpen}
                 onClose={handleDialogForCreateClose}
-                onSubmit={() => {}}
+                onSubmit={props.onCreateNewEnrollment}
+                advisors={props.advisors}
               />
             )}
           </div>
@@ -64,9 +75,13 @@ function AreaDoEstudanteView(props) {
 }
 
 AreaDoEstudanteView.prototypes = {
+  enrollmentTabIndex: PropTypes.number.isRequired,
+  handleChangeEnrollmentTab: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
+  onCreateNewEnrollment: PropTypes.func,
+  onDeleteEnrollment: PropTypes.func,
   onUpdate: PropTypes.func,
   student: PropTypes.shape({
     email: PropTypes.string.isRequired,

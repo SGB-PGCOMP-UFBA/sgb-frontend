@@ -4,7 +4,7 @@ import { Box, Tab, Tabs, Typography } from '@mui/material'
 import { TabPanelDeMatricula } from './TabPanelDeMatricula';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -20,19 +20,15 @@ function TabPanel(props) {
 }
 
 function TabDeMatriculas(props) {
-  const { student } = props
+  const { student, enrollmentTabIndex, handleChangeEnrollmentTab } = props
 
-  const [tableIndex, setTableIndex] = React.useState(0)
-
-  const handleChangeTab = (event, newValue) => {
-    setTableIndex(newValue);
-  };
+  const enrollments = student.enrollments.sort((a, b) => a.id - b.id)
 
   return (
-    <Box width="100%" height="100% !important">
+    <Box width="100%">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tableIndex} onChange={handleChangeTab}>
-          {student.enrollments.map((enrollment, index) => (
+        <Tabs value={enrollmentTabIndex} onChange={handleChangeEnrollmentTab}>
+          {enrollments.map((enrollment, index) => (
             <Tab
               id={`tab-${index}`}
               key={index}
@@ -47,11 +43,15 @@ function TabDeMatriculas(props) {
         </Tabs>
       </Box>
 
-      {student.enrollments.map((enrollment, index) => (
-        <TabPanel key={enrollment.enrollment_number} index={index} value={tableIndex}>
-          <TabPanelDeMatricula enrollment={enrollment} advisors={props.advisors} agencies={props.agencies} />
-        </TabPanel>
-      ))}
+      {enrollments.length === 0 ? (
+        <Typography variant="subtitle2" align="center">Parece que você não está matriculado em nenhum curso!</Typography>
+      ) : (
+        enrollments.map((enrollment, index) => (
+          <TabPanel key={enrollment.enrollment_number} index={index} value={enrollmentTabIndex}>
+            <TabPanelDeMatricula enrollment={enrollment} advisors={props.advisors} agencies={props.agencies} onDelete={props.onDeleteEnrollment} />
+          </TabPanel>
+        ))
+      )}
 
     </Box>
   )
@@ -62,6 +62,7 @@ TabDeMatriculas.prototypes = {
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
   }).isRequired,
+  onDeleteEnrollment: PropTypes.func,
 }
 
 export { TabDeMatriculas }
