@@ -46,7 +46,10 @@ function RegisterForm() {
 
     try {
       const createStudentResponse = await api.student.createStudent({
-        ...values,
+        email: values.email,
+        name: values.name,
+        link_to_lattes: values.link_to_lattes,
+        password: values.password,
         tax_id: values.tax_id.replace(/[^0-9]/g, ''),
         phone_number: values.phone_number.replace(/[^0-9]/g, '')
       })
@@ -69,7 +72,7 @@ function RegisterForm() {
         }
       }
     } catch (error) {
-      toast.error('Erro inesperado. Tente novamente!')
+      toast.error(`${error.response.data.message}`)
     }
   }
 
