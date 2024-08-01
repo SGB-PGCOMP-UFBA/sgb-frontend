@@ -20,29 +20,33 @@ function GerenciamentoOrientadores() {
   const createAdvisor = async (advisor) => {
     const creatingAdvisor = {
       ...advisor,
+      password: Math.random().toString(36).slice(-4),
       tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
       phone_number: advisor.phone_number.replace(/[^0-9]/g, ''),
       notify: true
     }
 
-    const response = await api.advisor.createAdvisor(creatingAdvisor)
-
-    if (response.status === 201) {
-      toast.success('Orientador(a) inserido(a) com sucesso.')
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
+    try {
+      const response = await api.advisor.createAdvisor(creatingAdvisor)
+      if (response.status === 201) {
+        toast.success('Orientador(a) inserido(a) com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`${error.response.data.message}`)
     }
 
     await getAdvisors()
   }
 
   const updateAdvisor = async (payload) => {
-    const response = await api.advisor.updateAdvisor(payload)
 
-    if (response.status === 200) {
-      toast.success('Orientador(a) atualizado(a) com sucesso.')
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
+    try {
+      const response = await api.advisor.updateAdvisor(payload)
+      if (response.status === 200) {
+        toast.success('Orientador(a) atualizado(a) com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`${error.response.data.message}`)
     }
 
     await getAdvisors()
