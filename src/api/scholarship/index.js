@@ -1,13 +1,18 @@
 import { api } from '../../services/api'
+import { buildHeaders } from '../utils/HeaderUtils'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 
 export const createScholarship = async (scholarship) => {
-  return api.post(`${BASE_SCHOLARSHIP_API_PATH}`, scholarship)
+  return api.post(`${BASE_SCHOLARSHIP_API_PATH}`, scholarship, {
+    headers: buildHeaders()
+  })
 }
 
 export const getScholarshipStatusFilterList = async () => {
-  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`)
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`, {
+    headers: buildHeaders()
+  })
 }
 
 export const countOnGoingScholarshipsGroupingByAgencyForCourse = async (programName) => {
@@ -17,11 +22,15 @@ export const countOnGoingScholarshipsGroupingByAgencyForCourse = async (programN
     url += `?programName=${encodeURIComponent(programName)}`
   }
 
-  return api.get(url)
+  return api.get(url, {
+    headers: buildHeaders()
+  })
 }
 
 export const countScholarshipsGroupingByCourseAndYear = async () => {
-  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year`)
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year`, {
+    headers: buildHeaders()
+  })
 }
 
 export const countScholarshipsGroupingByStatusForAgency = async (agencyName) => {
@@ -31,7 +40,9 @@ export const countScholarshipsGroupingByStatusForAgency = async (agencyName) => 
     url += `?agencyName=${encodeURIComponent(agencyName)}`
   }
 
-  return api.get(url)
+  return api.get(url, {
+    headers: buildHeaders()
+  })
 }
 
 export const getScholarships = async (page, limit, filters) => {
@@ -55,13 +66,19 @@ export const getScholarships = async (page, limit, filters) => {
     }
   }
 
-  return api.get(url)
+  return api.get(url, {
+    headers: buildHeaders()
+  })
 }
 
 export const updateScholarship = async (scholarshipId, scholarship) => {
-  return api.patch(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, scholarship)
+  return api.patch(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, scholarship, {
+    headers: buildHeaders()
+  })
 }
 
 export const deleteScholarship = async (scholarshipId) => {
-  return api.delete(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`)
+  return api.delete(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, {
+    headers: buildHeaders()
+  })
 }

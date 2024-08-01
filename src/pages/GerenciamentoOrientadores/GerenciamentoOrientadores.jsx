@@ -8,7 +8,7 @@ function GerenciamentoOrientadores() {
   const [isLoading, setIsLoading] = useState(true)
 
   const getAdvisors = async () => {
-    const response = await api.advisor.getAdvisor()
+    const response = await api.advisor.getAdvisors()
 
     if (response.status === 200) {
       setAdvisors(response.data)
@@ -39,7 +39,6 @@ function GerenciamentoOrientadores() {
   }
 
   const updateAdvisor = async (payload) => {
-
     try {
       const response = await api.advisor.updateAdvisor(payload)
       if (response.status === 200) {
@@ -53,24 +52,26 @@ function GerenciamentoOrientadores() {
   }
 
   const deleteAdvisor = async (advisor) => {
-    const response = await api.advisor.deleteAdvisor(advisor)
-
-    if (response.status === 204) {
-      toast.success('Orientador(a) excluído(a) com sucesso.')
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
+    try {
+      const response = await api.advisor.deleteAdvisor(advisor)
+      if (response.status === 204) {
+        toast.success('Orientador(a) excluído(a) com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`${error.response.data.message}`)
     }
 
     await getAdvisors()
   }
 
   const resetAdvisorPassword = async (payload) => {
-    const response = await api.password.resetPassword(payload)
-
-    if ([200, 201].includes(response.status)) {
-      toast.success('Senha resetada com sucesso.')
-    } else {
-      toast.error(`[${response.status}]: ${response.data.error}`)
+    try {
+      const response = await api.advisor.resetPassword(payload)
+      if ([200, 201].includes(response.status)) {
+        toast.success('Senha resetada com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`${error.response.data.message}`)
     }
   }
 

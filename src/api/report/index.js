@@ -6,7 +6,8 @@ export const downloadPdfReport = async () => {
   return api.get(`${BASE_REPORT_API_PATH}/generate-pdf`, {
     responseType: 'blob',
     headers: {
-      'Content-Type': 'application/pdf'
+      'Content-Type': 'application/pdf',
+      'Authorization': 'Bearer ' + (localStorage.getItem('access_token') || ''),
     },
   })
 }
