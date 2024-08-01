@@ -21,7 +21,8 @@ function GerenciamentoOrientadores() {
     const creatingAdvisor = {
       ...advisor,
       tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
-      phone_number: advisor.phone_number.replace(/[^0-9]/g, '')
+      phone_number: advisor.phone_number.replace(/[^0-9]/g, ''),
+      notify: true
     }
 
     const response = await api.advisor.createAdvisor(creatingAdvisor)
