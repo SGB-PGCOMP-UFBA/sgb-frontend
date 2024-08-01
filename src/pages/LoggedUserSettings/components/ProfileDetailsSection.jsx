@@ -44,9 +44,11 @@ function ProfileDetailsSection(props) {
 
     try {
       if(user && user.role === 'ADMIN') {
+        delete payload.link_to_lattes
         await api.admin.updateAdmin(payload)
       }
       else if(user && user.role === 'ADVISOR') {
+        delete payload.link_to_lattes
         await api.advisor.updateAdvisor(payload)
       }
       else if(user && user.role === 'STUDENT') {
