@@ -20,7 +20,6 @@ function Login() {
   }
 
   const firstRedirect = (user) => {
-    console.log(user)
     if (user && user.role === 'ADMIN') {
       navigate('/dashboard', { replace: true })
     } else if (user && user.role === 'ADVISOR') {
@@ -33,7 +32,6 @@ function Login() {
   const authenticate = async () => {
     try {
       const response = await api.auth.login(formValues)
-      console.log(response)
 
       if ([200, 201].includes(response.status)) {
         toast.success('Autenticado com sucesso.', { autoClose: 1000 })

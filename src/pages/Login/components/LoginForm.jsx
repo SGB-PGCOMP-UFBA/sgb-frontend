@@ -46,6 +46,7 @@ function LoginForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                autoComplete='email'
               />
             </Grid>
             <Grid item xs={12}>
@@ -64,6 +65,7 @@ function LoginForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                autoComplete='current-password'
               />
             </Grid>
             <Grid item xs={12}>
