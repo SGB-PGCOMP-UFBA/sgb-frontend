@@ -1,9 +1,9 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import Loading from '../../../components/Loading'
+import { api } from '../../../api'
 
 const initialState = {
   email: '',
@@ -24,7 +24,7 @@ function ForgetPasswordForm() {
     const { email, role } = values
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/v1/passwords/reset`, { email, role })
+      const response = await api.password.resetPassword({ email, role })
 
       if (response.status === 201) {
         toast.success('Sua nova senha foi enviada para seu e-mail.')
