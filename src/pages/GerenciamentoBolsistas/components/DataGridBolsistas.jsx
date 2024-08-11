@@ -217,7 +217,7 @@ function DataGridBolsistas(props) {
       sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Atualizar Bolsista">
+          <Tooltip title="Editar Bolsista">
             <IconButton onClick={() => handleDialogForEditionOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>

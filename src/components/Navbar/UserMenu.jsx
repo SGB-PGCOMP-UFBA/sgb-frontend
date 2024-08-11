@@ -104,7 +104,7 @@ export default function UserMenu(props) {
       >
         <Box className="py-2 px-5">
           <Typography variant="subtitle1">{user ? user.name : ''}</Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             {user ? user.email : ''}
           </Typography>
         </Box>

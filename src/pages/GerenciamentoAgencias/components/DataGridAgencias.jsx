@@ -35,7 +35,7 @@ function DataGridAgencias(props) {
   }
 
   const hasScholarships = (agency) => {
-    return agency.scholarshipsCount > 0
+    return agency.doctorate_degree_allocated_scholarships > 0 || agency.masters_degree_allocated_scholarships > 0
   }
 
   const columns = [

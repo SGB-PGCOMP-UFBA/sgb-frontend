@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { DatePicker } from '@mui/x-date-pickers'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid, Icon, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material'
-import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
 import { AddCircleOutline } from '@mui/icons-material'
 import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
+import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask'
+import { CustomChip } from '../../../components'
 
 function TabPanelDeMatricula(props) {
   const { enrollment, advisors, agencies } = props
@@ -150,11 +151,12 @@ function TabPanelDeMatricula(props) {
           scholarships.map((scholarship, index) => (
             <Box key={index} component="form" onSubmit={() => {}} marginBottom={0.6}>
               <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                    Vínculo de Bolsa {index + 1}
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>{scholarship.agency.name}</Typography>
+                <AccordionSummary sx={{ display: "flex", alignItems: "center" }} expandIcon={<ExpandMoreIcon />}>
+                  <Box display="flex" flexDirection="row" alignItems="center" sx={{ gap: 4 }} >
+                    <Typography sx={{ flexShrink: 0 }}>Bolsa {index + 1}</Typography>
+                    <Typography sx={{ flexShrink: 0, color: 'text.secondary' }}> Agência de Fomento {scholarship.agency.name}</Typography>
+                    <CustomChip value={scholarship.status} type="status" />
+                  </Box>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Box>

@@ -66,7 +66,8 @@ function GerenciamentoOrientadores() {
 
   const resetAdvisorPassword = async (payload) => {
     try {
-      const response = await api.advisor.resetPassword(payload)
+      const response = await api.password.resetPassword(payload)
+
       if ([200, 201].includes(response.status)) {
         toast.success('Senha resetada com sucesso.')
       }

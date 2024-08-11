@@ -10,7 +10,7 @@ export const getAllEmbedNotifications = async (owner_id, owner_type) => {
 }
 
 export const consumeEmbedNotification = async (embed_notification_id) => {
-  return api.patch(`${BASE_EMBED_NOTIFICATION_API_PATH}/consume/${embed_notification_id}`, {
+  return api.patch(`${BASE_EMBED_NOTIFICATION_API_PATH}/consume/${embed_notification_id}`, {}, {
     headers: buildHeaders()
   })
 }

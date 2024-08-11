@@ -22,9 +22,7 @@ export const getStudentsByAdvisorId = async (advisorId) => {
 }
 
 export const createStudent = async (student) => {
-  return api.post(`${BASE_STUDENT_API_PATH}`, student, {
-    headers: buildHeaders()
-  })
+  return api.post(`${BASE_STUDENT_API_PATH}`, student)
 }
 
 export const updateStudent = async (payload) => {

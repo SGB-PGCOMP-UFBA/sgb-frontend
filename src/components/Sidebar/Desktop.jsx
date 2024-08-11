@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Icon, Divider } from '@mui/material'
 
 export default function Desktop(props) {
@@ -15,7 +15,9 @@ export default function Desktop(props) {
       <div className="flex h-full w-full flex-col justify-between pt-4">
         <div>
           <header className="flex flex-col items-center gap-y-5 px-5 pb-11">
-            <img src="/assets/pgcomp_2.png" alt="Logo" className="block w-52" />
+            <Link to="/dashboard">
+              <img src="/assets/pgcomp_2.png" alt="Logo" className="block w-52" />
+            </Link>
           </header>
           <ul className=" flex w-full flex-col items-center">
             {filteredLinks.map((link) => (
