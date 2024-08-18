@@ -22,7 +22,7 @@ function AreaDoEstudante() {
       const response = await api.advisor.getAdvisorFilterList()
 
       if (response.status === 200) {
-        setAdvisors(response.data.slice(1))
+        setAdvisors(response.data)
       }
     } catch (error) {
       toast.error('Ocorreu um erro na consulta de orientadores.')

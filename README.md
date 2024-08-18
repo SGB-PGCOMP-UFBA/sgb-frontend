@@ -16,7 +16,6 @@
 -   📏 ESLint — Encontre e corrija problemas em seu código.
 -   💖 Prettier — Formatador de código para estilo consistente.
 -   ⚙️ EditorConfig - Manter estilos de codificação consistentes entre editores e IDEs.
--   🗂 Path Mapping — Importar componentes ou imagens pelo caminho absoluto.
 
 ### Instruções de instalação
 
