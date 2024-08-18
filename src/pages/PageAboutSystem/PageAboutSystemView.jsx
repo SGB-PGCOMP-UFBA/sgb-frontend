@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Container, Grid, Typography } from '@mui/material'
 
-function PageRegisterAdvisorView() {
+function PageAboutSystemView() {
   return (
     <Box className="flex h-full w-full p-5 md:p-10">
       <Container component="main" maxWidth="sm">
@@ -18,23 +18,30 @@ function PageRegisterAdvisorView() {
             Sistema de Gerenciamento de Bolsas
           </Typography>
           <Typography component="h1" variant="h6">
-            Acesso de Orientadores
+            Informações Sobre o Sistema
           </Typography>
           <Box sx={{ mt: 2 }}>
             <Grid container direction="column" alignItems="center" justifyContent="flex-start" textAlign="justify" marginTop="3em" marginBottom="3em">
               <Grid item>
                 <Typography component="h1" variant="subtitle1">
-                  Se você orienta ou já orientou algum discente no Programa de Pós-Graduação em Ciência da Computação, provavelmente você já possui um cadastrado realizado com o e-mail da institução.
-                  Se for o caso e você não lembra a sua senha ou não a recebeu por e-mail, tente recuperá-la.
+                  Este sistema foi disponibilizado por <b>Hérson Reis Rezende dos Santos (herson.reis@ufba.br)</b> como trabalho de conclusão de curso do Bacharelado em Ciência da Computação da Universidade Federal da Bahia.
                 </Typography>
                 <br/>
                 <Typography component="h1" variant="subtitle1">
-                  Se for a sua primeira vez orientando um discente no Programa de Pós-Graduação em Ciência da Computação, contate um dos administradores para que realizem o seu cadastro.
-                  Neste caso, você receberá uma mensagem via e-mail com instruções de acesso.
+                  Seu objetivo é facilitar o gerenciamento de bolsas de estudo do Programa de <b>Pós-Graduação</b> em <b>Ciência da Computação</b> da <b>UFBA</b>,
+                  permitindo que discentes possam realizar consultas e acompanhar o progresso de suas bolsas de estudo, mantendo assim um histórico
+                  de atividades que pode ser utilizado pelos gestores do sistema para avaliação e tomada de decisões acerca do programa.
                 </Typography>
                 <br/>
                 <Typography component="h1" variant="subtitle1">
-                  Caso ainda tenha alguma dúvida ou está com algum problema no seu acesso, contate um administrador do sistema para mais informações.
+                  <b>Repositório e documentações</b> disponíveis
+                  <a href="https://github.com/SGB-PGCOMP-UFBA" className="text-base font-normal text-blue-600 transition-colors hover:text-blue-800" target='_blank' rel='noreferrer'>
+                    {' '} aqui.
+                  </a>
+                </Typography>
+                <br/>
+                <Typography component="h1" variant="subtitle1">
+                  Orientador: <b>Frederico Araújo Durão (fdurao@ufba.br)</b>
                 </Typography>
               </Grid>
               <Grid item marginTop="5em">
@@ -50,4 +57,4 @@ function PageRegisterAdvisorView() {
   )
 }
 
-export { PageRegisterAdvisorView }
+export { PageAboutSystemView }

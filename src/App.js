@@ -16,7 +16,8 @@ import {
   GerenciamentoAgencias,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
-  AreaDoEstudante
+  AreaDoEstudante,
+  PageAboutSystem
 } from './pages'
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
         <Routes>
           {/* Rotas públicas */}
           <Route path="/" element={<Login />} />
+          <Route path="/sobre" element={<PageAboutSystem />} />
           <Route path="/cadastro-estudante" element={<PageRegister />} />
           <Route path="/cadastro-orientador" element={<PageRegisterAdvisor />} />
           <Route path="/esqueci-a-senha" element={<PageForgetPassword />} />

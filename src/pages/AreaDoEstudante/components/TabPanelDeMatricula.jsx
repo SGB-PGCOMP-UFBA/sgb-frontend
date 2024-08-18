@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid, Icon, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
 import { AddCircleOutline } from '@mui/icons-material'
+import InfoIcon from '@mui/icons-material/Info'
 import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask'
@@ -51,7 +52,7 @@ function TabPanelDeMatricula(props) {
 
   return (
     <Box width="100%">
-      <Box component="form" onSubmit={() => {}} sx={{ mt: 2 }}>
+      <Box component="form" onSubmit={() => { }} sx={{ mt: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <TextField
@@ -135,21 +136,28 @@ function TabPanelDeMatricula(props) {
       <Box sx={{ border: '1px solid rgba(224, 224, 224, 1)', borderRadius: '4px', marginTop: 4, padding: 2 }}>
         <Box display="flex" justifyContent="space-between" sx={{ marginBottom: 2 }}>
           <Typography variant="body1" marginBottom="0.6rem" sx={{ fontWeight: '700' }}>Bolsas Recebidas</Typography>
-          <Button
-            variant="contained"
-            color="success"
-            startIcon={<AddCircleOutline />}
-            onClick={handleDialogForCreateScholarshipOpen}
-          >
-            Nova Bolsa
-          </Button>
+          <Box display="flex" flexDirection="row" sx={{ gap: 2 }}>
+            <Tooltip title="A edição de bolsas está temporariamente desabilitada. Caso precise realizar algum ajuste, remova a bolsa e cadastre-a novamente.">
+              <IconButton color='info'>
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<AddCircleOutline />}
+              onClick={handleDialogForCreateScholarshipOpen}
+            >
+              Nova Bolsa
+            </Button>
+          </Box>
         </Box>
 
         {scholarships.length === 0 ? (
-          <Typography variant="subtitle2" align="center">Parece que você não tem nenhuma bolsa cadastrada neste curso!</Typography>
+          <Typography variant="subtitle2" align="center">Parece que você não tem nenhuma bolsa vinculada a esta matrícula!</Typography>
         ) : (
           scholarships.map((scholarship, index) => (
-            <Box key={index} component="form" onSubmit={() => {}} marginBottom={0.6}>
+            <Box key={index} component="form" onSubmit={() => { }} marginBottom={0.6}>
               <Accordion expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
                 <AccordionSummary sx={{ display: "flex", alignItems: "center" }} expandIcon={<ExpandMoreIcon />}>
                   <Box display="flex" flexDirection="row" alignItems="center" sx={{ gap: 4 }} >

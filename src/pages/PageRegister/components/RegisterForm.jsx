@@ -90,7 +90,7 @@ function RegisterForm() {
             Sistema de Gerenciamento de Bolsas
           </Typography>
           <Typography component="h1" variant="h6">
-            Sign Up
+            Cadastro
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <Grid container spacing={2}>

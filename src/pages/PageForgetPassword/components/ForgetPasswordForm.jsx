@@ -51,7 +51,7 @@ function ForgetPasswordForm() {
           Sistema de Gerenciamento de Bolsas
         </Typography>
         <Typography component="h1" variant="h6" sx={{ mb: isLoading ? 10 : 2 }}>
-          Password Recovery
+          Recuperar Senha
         </Typography>
         {isLoading ? (
           <Loading />

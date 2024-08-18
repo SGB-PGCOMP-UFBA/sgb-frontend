@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { AddCircleOutline } from '@mui/icons-material'
-import { Button, Icon } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
+import { Button, Icon, IconButton, Tooltip } from '@mui/material'
 import Loading from '../../components/Loading'
 import Sidebar from '../../components/Sidebar'
 import MenuAppBar from '../../components/Navbar'
@@ -37,6 +38,11 @@ function AreaDoEstudanteView(props) {
                 </div>
               </div>
               <div className="flex items-center gap-x-4">
+                <Tooltip title="A edição de matrículas está temporariamente desabilitada. Caso precise realizar algum ajuste, remova a matrícula e cadastre-a novamente. Vale lembrar que as bolsas vinculadas a ela também serão removidas.">
+                  <IconButton color='info'>
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
                 <Button
                   variant="contained"
                   color="success"

@@ -2,6 +2,7 @@ import { Login } from './Login'
 import { LoggedUserSettings } from './LoggedUserSettings'
 import { PageNotFound } from './PageNotFound'
 import { PageRegister } from './PageRegister'
+import { PageAboutSystem } from './PageAboutSystem'
 import { PageRegisterAdvisor } from './PageRegisterAdvisor'
 import { PageForgetPassword } from './PageForgetPassword'
 import { DashboardMetricas } from './DashboardMetricas'
@@ -16,6 +17,7 @@ export {
   LoggedUserSettings,
   PageNotFound,
   PageRegister,
+  PageAboutSystem,
   PageRegisterAdvisor,
   PageForgetPassword,
   DashboardMetricas,

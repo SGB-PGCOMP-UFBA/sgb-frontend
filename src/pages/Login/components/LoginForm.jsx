@@ -25,7 +25,7 @@ function LoginForm(props) {
           Sistema de Gerenciamento de Bolsas
         </Typography>
         <Typography component="h1" variant="h6">
-          Sign In
+          Entrar
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <Grid container spacing={2}>
@@ -114,6 +114,11 @@ function LoginForm(props) {
                   Saiba como acessar!
                 </Link>
               </p>
+            </Grid>
+            <Grid item marginTop="1em">
+              <Link to="/sobre" className="text-base font-normal text-blue-600 leading-6 transition-colors hover:text-blue-800">
+                Sobre o Sistema
+              </Link>
             </Grid>
           </Grid>
         </Box>
