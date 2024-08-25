@@ -9,15 +9,6 @@ export const createScholarship = async (scholarship) => {
   })
 }
 
-export const importScholarships = async (formData) => {
-  return api.post(`${BASE_SCHOLARSHIP_API_PATH}/import-by-csv`, formData, {
-    headers: {
-      ...buildHeaders(),
-      'Content-Type': 'multipart/form-data',
-    }
-  })
-}
-
 export const getScholarshipStatusFilterList = async () => {
   return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`, {
     headers: buildHeaders()
