@@ -6,6 +6,7 @@ import { PageAboutSystem } from './PageAboutSystem'
 import { PageRegisterAdvisor } from './PageRegisterAdvisor'
 import { PageForgetPassword } from './PageForgetPassword'
 import { DashboardMetricas } from './DashboardMetricas'
+import { GerenciamentoDados } from './GerenciamentoDados'
 import { GerenciamentoBolsistas } from './GerenciamentoBolsistas'
 import { GerenciamentoAgencias } from './GerenciamentoAgencias'
 import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
@@ -21,6 +22,7 @@ export {
   PageRegisterAdvisor,
   PageForgetPassword,
   DashboardMetricas,
+  GerenciamentoDados,
   GerenciamentoBolsistas,
   GerenciamentoAgencias,
   GerenciamentoOrientandos,

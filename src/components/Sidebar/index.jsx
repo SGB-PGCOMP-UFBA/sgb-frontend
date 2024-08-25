@@ -47,6 +47,13 @@ export default function Sidebar() {
       path: '/area-do-estudante',
       visible: true,
       availableRoles: ['STUDENT']
+    },
+    {
+      name: 'Gestão de Dados',
+      icon: 'cloud',
+      path: '/gestao-de-dados',
+      visible: true,
+      availableRoles: ['ADMIN']
     }
   ]
 

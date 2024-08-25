@@ -17,7 +17,8 @@ import {
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
   AreaDoEstudante,
-  PageAboutSystem
+  PageAboutSystem,
+  GerenciamentoDados
 } from './pages'
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
             <Route path="agencias" element={<GerenciamentoAgencias />} />
             <Route path="orientadores" element={<GerenciamentoOrientadores />} />
+            <Route path="gestao-de-dados" element={<GerenciamentoDados />} />
           </Route>
 
           {/* Rotas de usuário orientador */}
