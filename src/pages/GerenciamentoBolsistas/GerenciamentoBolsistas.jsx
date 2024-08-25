@@ -49,7 +49,7 @@ function GerenciamentoBolsistas() {
     setFilters(initialFilters)
   }
 
-  const getScholarships = async ({size, page, filters}) => {
+  const getScholarships = async ({ size, page, filters }) => {
     const response = await api.scholarship.getScholarships(page, size, filters)
 
     if (response.status === 200) {
@@ -158,7 +158,7 @@ function GerenciamentoBolsistas() {
       toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)
     }
 
-    await getScholarships({size, page, filters})
+    await getScholarships({ size, page, filters })
   }
 
   const deleteScholarship = async (scholarshipId) => {
@@ -170,11 +170,11 @@ function GerenciamentoBolsistas() {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }
 
-    await getScholarships({size, page, filters})
+    await getScholarships({ size, page, filters })
   }
 
   useEffect(() => {
-    getScholarships({size, page, filters}).finally(() => setIsLoading(false))
+    getScholarships({ size, page, filters }).finally(() => setIsLoading(false))
   }, [size, page, filters])
 
   useEffect(() => {
