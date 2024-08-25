@@ -49,11 +49,13 @@ function GerenciamentoDadosView(props) {
               <Box display="flex" justifyContent="center" width="100%">
                 <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
                   <Typography variant="h3" marginBottom="2rem">Importar Bolsistas</Typography>
-                  <p>Apenas arquivos <b>*.csv</b> são permitidos para importação.</p>
+                  <p style={{ textAlign: 'justify' }}><b>Atenção!</b> Esta ação irá apagar todas as bolsas já cadastradas no sistema e recriar a base com base nas informações contidas no arquivo que está sendo importado.</p>
                   <br/>
                   <FileInput onFileSelected={handleFileSelected} />
                   <br/>
-                  <p style={{ textAlign: 'justify' }}><b>Atenção!</b> Esta ação irá apagar todas as bolsas já cadastradas no sistema e recriar a base com base nas informações contidas no arquivo que está sendo importado.</p>
+                  <p>Apenas arquivos <b>*.csv</b> são permitidos para importação.</p>
+                  <br/>
+                  <p style={{ textAlign: 'justify' }}>Ao clicar em "Importar", você automaticamente fará download de um arquivo <b>*.csv</b>, se tratando de um backup referente ao estado atual da base de dados do sistema. Se preferir, você também pode fazer um backup clicando diretamente no botão "Exportar Bolsistas (CSV)" no canto superior direito da página.</p>
                   <Button variant="outlined" color="success" startIcon={<Upload />} sx={{ marginTop: '2rem' }} onClick={() => onImport(selectedFile)}>
                     Importar
                   </Button>
