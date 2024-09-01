@@ -13,7 +13,8 @@ function GerenciamentoDados() {
       formData.append('file', file)
 
       try {
-        const response = await api.dataManager.importScholarships(formData)
+        await handleExportScholarships()
+        const response = await api.dataManager.importData(formData)
 
         if (response.status === 201) {
           toast.success('Bolsas importadas com sucesso.')
@@ -29,7 +30,7 @@ function GerenciamentoDados() {
 
   const handleExportScholarships = async () => {
     try {
-      const response = await api.dataManager.exportScholarships();
+      const response = await api.dataManager.exportData();
 
       if (response.status === 200) {
         // Cria um Blob a partir dos dados da resposta

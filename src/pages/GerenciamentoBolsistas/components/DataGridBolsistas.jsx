@@ -56,7 +56,7 @@ function DataGridBolsistas(props) {
     {
       field: 'enrollmentNumber',
       headerName: 'Matrícula',
-      width: 100,
+      width: 110,
       filterable: false,
       sortable: false,
       renderCell: (params) => (

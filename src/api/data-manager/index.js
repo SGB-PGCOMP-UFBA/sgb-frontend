@@ -3,8 +3,8 @@ import { buildHeaders } from '../utils/HeaderUtils'
 
 const BASE_DATA_MANAGER_API_PATH = `/v1/data-manager`
 
-export const importScholarships = async (formData) => {
-  return api.post(`${BASE_DATA_MANAGER_API_PATH}/import-scholarships`, formData, {
+export const importData = async (formData) => {
+  return api.post(`${BASE_DATA_MANAGER_API_PATH}/import-data`, formData, {
     headers: {
       ...buildHeaders(),
       'Content-Type': 'multipart/form-data',
@@ -12,8 +12,8 @@ export const importScholarships = async (formData) => {
   })
 }
 
-export const exportScholarships = async () => {
-  return api.get(`${BASE_DATA_MANAGER_API_PATH}/export-scholarships`, {
+export const exportData = async () => {
+  return api.get(`${BASE_DATA_MANAGER_API_PATH}/export-data`, {
     responseType: 'blob',
     headers: {
       ...buildHeaders(),
