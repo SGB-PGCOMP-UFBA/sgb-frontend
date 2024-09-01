@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Box, Button, Icon, Typography } from '@mui/material'
+import { Box, Button, Icon, TextField, Typography } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
@@ -8,7 +8,7 @@ import { FileInput } from '../../components'
 import { Download, Upload } from '@mui/icons-material'
 
 function GerenciamentoDadosView(props) {
-  const { isLoading, onImport, onExport } = props
+  const { isLoading, importErrors, handleErrors, onImport, onExport } = props
   const [selectedFile, setSelectedFile] = useState(null)
 
   const handleFileSelected = (file) => {
@@ -43,20 +43,44 @@ function GerenciamentoDadosView(props) {
                 </Button>
               </div>
             </div>
-            {isLoading ? (
-              <Loading />
-            ) : (
+            {isLoading && (
+              <Box display="column" width="100%">
+                <Typography variant='h5' textAlign="center" marginBottom="2rem">Aguarde enquanto preparamos tudo para você!</Typography>
+                <Loading />
+              </Box>
+            )}
+
+            {!isLoading && importErrors.length > 0 && (
+              <Box display="column" width="100%">
+                <Typography variant='h5' textAlign="center" marginBottom="2rem">Aguarde enquanto preparamos tudo para você!</Typography>
+                <p style={{ textAlign: 'justify' }}><b>Atenção!</b> Encontramos alguns problemas durante a importação do arquivo csv.</p>
+                <p style={{ textAlign: 'justify' }}>Isto não significa que toda a importação tenha falhado, apenas quer dizer que alguns recursos podem não ter sido criados, pois algum campo obrigatório faltou ou até mesmo porque já está cadastrado.</p>
+                <p style={{ textAlign: 'justify' }}>Mais informações abaixo.</p>
+                <TextField
+                  multiline
+                  fullWidth
+                  readOnly
+                  label="Alertas de Importação"
+                  rows={20}
+                  value={importErrors.map(error => JSON.stringify(error, null, 2)).join('\n')}
+                  sx={{ marginTop: 4 }}
+                />
+                <Button variant='contained' onClick={handleErrors} sx={{ marginTop: 2 }}>Concluir Importação</Button>
+              </Box>
+            )}
+
+            {!isLoading && importErrors.length <= 0 && (
               <Box display="flex" justifyContent="center" width="100%">
                 <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
                   <Typography variant="h3" marginBottom="2rem">Importar Bolsistas</Typography>
                   <p style={{ textAlign: 'justify' }}><b>Atenção!</b> Esta ação irá apagar todas as bolsas já cadastradas no sistema e recriar a base de dados levando em consideração as informações contidas no arquivo que está sendo importado.</p>
-                  <br/>
+                  <br />
                   <p style={{ textAlign: 'justify' }}>Ao clicar em "Enviar", você automaticamente fará download de um arquivo <b>*.csv</b>, se tratando de um backup referente ao estado atual da base de dados do sistema. Se preferir, você também pode fazer um backup clicando diretamente no botão "Exportar Bolsistas (CSV)" no canto superior direito da página.</p>
-                  <br/>
+                  <br />
                   <FileInput onFileSelected={handleFileSelected} />
-                  <br/>
+                  <br />
                   <p style={{ textAlign: 'justify' }}>Apenas arquivos <b>*.csv</b> são permitidos para importação. Além disso, esta funcionalidade necessita que o caractere <b>","</b> (comma) seja utilizado como delimitador de campos do csv. <b>Caso algum outro caractere como, por exemplo, o ";" (semicolon) seja utilizado como delimitador, o bom funcionamento da importação não é garantido.</b></p>
-                  <br/>
+                  <br />
                   <Button variant="outlined" color="success" startIcon={<Upload />} sx={{ marginTop: '2rem' }} onClick={() => onImport(selectedFile)}>
                     Enviar
                   </Button>
@@ -72,6 +96,8 @@ function GerenciamentoDadosView(props) {
 
 GerenciamentoDadosView.prototypes = {
   isLoading: PropTypes.boolean,
+  importErrors: PropTypes.array,
+  handleErrors: PropTypes.func,
   onImport: PropTypes.func,
   onExport: PropTypes.func
 }

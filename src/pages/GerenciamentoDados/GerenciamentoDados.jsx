@@ -3,22 +3,28 @@ import { toast } from 'react-toastify'
 import { api } from '../../api'
 import { GerenciamentoDadosView } from './GerenciamentoDadosView'
 import { formattedNow } from '../../helpers/formatters'
+import { delay } from '../../helpers/delay'
 
 function GerenciamentoDados() {
   const [isLoading, setIsLoading] = useState(false)
+  const [importErrors, setImportErrors] = useState([])
 
   const handleImportScholarships = async (file) => {
     if (file) {
+      await handleExportScholarships()
+      setIsLoading(true)
       const formData = new FormData()
       formData.append('file', file)
 
       try {
-        await handleExportScholarships()
+        await delay(5000)
         const response = await api.dataManager.importData(formData)
+        await delay(5000)
 
         if (response.status === 201) {
           toast.success('Bolsas importadas com sucesso.')
           setIsLoading(false)
+          setImportErrors(response.data.errors)
         }
       } catch (error) {
         toast.error(`Erro ao enviar o arquivo: ${error.message}`)
@@ -62,9 +68,15 @@ function GerenciamentoDados() {
     }
   }
 
+  const handleErrors = () => {
+    setImportErrors([])
+  }
+
   return (
     <GerenciamentoDadosView
       isLoading={isLoading}
+      importErrors={importErrors}
+      handleErrors={handleErrors}
       onImport={handleImportScholarships}
       onExport={handleExportScholarships}
     />
