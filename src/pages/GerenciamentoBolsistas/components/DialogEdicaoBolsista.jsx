@@ -4,6 +4,8 @@ import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, 
 import { DatePicker } from '@mui/x-date-pickers';
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
+import { CpfInputMask } from '../../../components/Masks/CpfInputMask';
+import { PhoneInputMask } from '../../../components/Masks/PhoneInputMask';
 
 function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }) {
   const submitAndCloseDialog = async (event) => {
@@ -13,7 +15,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
 
     onSubmit({
       student_email: item.student.email,
-      enrollment_id : item.enrollment.id,
+      enrollment_id: item.enrollment.id,
       scholarship_id: item.id,
       ...entries
     })
@@ -43,6 +45,96 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
         },
         gap: '1.5em',
       }}>
+      <Box display="flex" flexDirection="column" width="100%">
+        <Typography variant="subtitle1">
+          Bolsista
+        </Typography>
+        <Divider />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            '& > *': {
+              marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: '0.6em',
+              width: '100%',
+              marginTop: '1.2em',
+              '& > *': {
+                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+              },
+            }}
+          >
+            <TextField
+              id="input-student-name"
+              label="Nome"
+              name="student_name"
+              variant="outlined"
+              defaultValue={item.student.name}
+              fullWidth
+              inputProps={{ maxLength: 80 }}
+            />
+            <TextField
+              id="input-student-link-to-lattes"
+              label="Link do Lattes"
+              name="student_link_to_lattes"
+              variant="outlined"
+              defaultValue={item.student.link_to_lattes}
+              fullWidth
+              inputProps={{ maxLength: 80 }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                sm: 'column',
+                md: 'row',
+              },
+              gap: '0.6em',
+              width: '100%',
+              '& > *': {
+                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+              },
+            }}
+          >
+            <TextField
+              id="input-student-tax-id"
+              label="CPF"
+              name="student_tax_id"
+              variant="outlined"
+              defaultValue={item.student.tax_id}
+              fullWidth
+              InputProps={{
+                inputComponent: CpfInputMask,
+              }}
+            />
+            <TextField
+              id="input-student-phone"
+              label="Celular"
+              name="student_phone_number"
+              variant="outlined"
+              defaultValue={item.student.phone_number}
+              fullWidth
+              InputProps={{
+                inputComponent: PhoneInputMask,
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+
       <Box display="flex" flexDirection="column" width="100%">
         <Typography variant="subtitle1">
           Matrícula
@@ -185,6 +277,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
                 inputComponent: MonetaryBrazilianValueMask,
               }}
               fullWidth
+              inputProps={{ maxLength: 14 }}
             />
           </Box>
           <Box sx={{

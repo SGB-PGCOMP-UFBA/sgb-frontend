@@ -24,6 +24,7 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
         type="text"
         name="name"
         placeholder="Insira o nome do orientador"
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField
@@ -34,6 +35,7 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
         type="email"
         name="email"
         placeholder="Insira o e-mail do orientador"
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField

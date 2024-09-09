@@ -83,6 +83,7 @@ function ForgetPasswordForm() {
               onChange={handleChangeValues}
               placeholder="Digite seu e-mail"
               helperText="Informe o endereço de e-mail utilizado em seu cadastro"
+              inputProps={{ maxLength: 80 }}
             />
 
             <Button

@@ -76,6 +76,7 @@ function DialogInclusaoBolsa(props) {
               inputComponent: MonetaryBrazilianValueMask,
             }}
             fullWidth
+            inputProps={{ maxLength: 14 }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

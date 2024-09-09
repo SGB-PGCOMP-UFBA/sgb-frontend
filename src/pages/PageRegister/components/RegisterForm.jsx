@@ -104,6 +104,7 @@ function RegisterForm() {
                   name="name"
                   onChange={handleChangeValues}
                   placeholder="Insira o seu nome completo"
+                  inputProps={{ maxLength: 80 }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -142,6 +143,7 @@ function RegisterForm() {
                   name="link_to_lattes"
                   onChange={handleChangeValues}
                   placeholder="Insira o link de seu currículo Lattes"
+                  inputProps={{ maxLength: 80 }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -154,6 +156,7 @@ function RegisterForm() {
                   name="email"
                   onChange={handleChangeValues}
                   placeholder="Insira o seu e-mail"
+                  inputProps={{ maxLength: 80 }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -168,6 +171,7 @@ function RegisterForm() {
                   placeholder="Insira uma senha"
                   error={values.password === null || values.password === ''}
                   helperText={values.password === null || values.password === '' ? 'Digite uma senha válida' : ''}
+                  inputProps={{ minLength: 4, maxLength: 8 }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -182,6 +186,7 @@ function RegisterForm() {
                   placeholder="Digite sua senha novamente"
                   error={values.password !== values.confirm_password}
                   helperText={values.password !== values.confirm_password ? 'As senhas digitadas são diferentes!' : ''}
+                  inputProps={{ minLength: 4, maxLength: 8 }}
                 />
               </Grid>
             </Grid>

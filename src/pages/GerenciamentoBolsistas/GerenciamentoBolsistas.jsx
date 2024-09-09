@@ -127,6 +127,14 @@ function GerenciamentoBolsistas() {
 
   const updateScholarship = async (data) => {
     try {
+      const updateStudent = api.student.updateStudent({
+        current_email: data.student_email,
+        name: data.student_name,
+        tax_id: data.student_tax_id.replace(/[^\d,]/g, ''),
+        phone_number: data.student_phone_number.replace(/[^\d,]/g, ''),
+        link_to_lattes: data.student_link_to_lattes
+      })
+
       const updateEnrollment = api.enrollment.updateEnrollment(data.enrollment_id, {
         advisor_email: data.advisor_email,
         student_email: data.student_email,
@@ -147,12 +155,13 @@ function GerenciamentoBolsistas() {
       })
 
       const response = await Promise.all([
+        updateStudent,
         updateEnrollment,
         updateScholarship
       ])
 
       if (response.length > 0) {
-        toast.success('Bolsa atualizada com sucesso.')
+        toast.success('As informações da bolsa foram atualizadas com sucesso.')
       }
     } catch (error) {
       toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)

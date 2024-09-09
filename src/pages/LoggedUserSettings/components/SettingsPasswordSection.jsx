@@ -85,6 +85,7 @@ function SettingsPasswordSection(props) {
               onChange={(e) => handleChange(e)}
               type="password"
               value={values.new_password}
+              inputProps={{ minLength: 4, maxLength: 8 }}
             />
             <TextField
               fullWidth
@@ -93,6 +94,7 @@ function SettingsPasswordSection(props) {
               onChange={(e) => handleChange(e)}
               type="password"
               value={values.confirm_new_password}
+              inputProps={{ minLength: 4, maxLength: 8 }}
             />
           </Stack>
         </CardContent>

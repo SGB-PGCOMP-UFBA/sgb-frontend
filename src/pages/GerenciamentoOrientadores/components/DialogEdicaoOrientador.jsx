@@ -33,6 +33,7 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
         name="name"
         placeholder="Insira o nome do orientador"
         defaultValue={item.name}
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField
@@ -44,6 +45,7 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }) {
         name="email"
         placeholder="Insira o e-mail do orientador"
         defaultValue={item.email}
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField

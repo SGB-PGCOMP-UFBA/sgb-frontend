@@ -46,6 +46,7 @@ function LoginForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                inputProps={{ maxLength: 80 }}
                 autoComplete='email'
               />
             </Grid>
@@ -65,6 +66,7 @@ function LoginForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                inputProps={{ minLength: 4, maxLength: 8 }}
                 autoComplete='current-password'
               />
             </Grid>

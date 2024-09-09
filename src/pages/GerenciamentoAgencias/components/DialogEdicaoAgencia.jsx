@@ -31,6 +31,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         name="name"
         defaultValue={item.name}
         placeholder="Insira o nome da agência"
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField
@@ -44,6 +45,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }) {
         name="description"
         defaultValue={item.description}
         placeholder="Insira a descrição da agência"
+        inputProps={{ maxLength: 255 }}
       />
 
       <TextField

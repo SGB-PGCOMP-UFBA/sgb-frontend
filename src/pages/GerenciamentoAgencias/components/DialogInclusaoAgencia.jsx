@@ -22,6 +22,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         type="text"
         name="name"
         placeholder="Insira o nome da agência"
+        inputProps={{ maxLength: 80 }}
       />
 
       <TextField
@@ -34,6 +35,7 @@ function DialogInclusaoAgencia({ isOpen, onClose, onSubmit }) {
         type="textarea"
         name="description"
         placeholder="Insira a descrição da agência"
+        inputProps={{ maxLength: 255 }}
       />
     </div>
   )

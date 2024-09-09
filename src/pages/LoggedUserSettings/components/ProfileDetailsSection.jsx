@@ -86,6 +86,7 @@ function ProfileDetailsSection(props) {
                   name="name"
                   onChange={(e) => handleChange(e)}
                   value={values.name}
+                  inputProps={{ maxLength: 80 }}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -95,6 +96,7 @@ function ProfileDetailsSection(props) {
                   name="email"
                   onChange={(e) => handleChange(e)}
                   value={values.email}
+                  inputProps={{ maxLength: 80 }}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -129,6 +131,7 @@ function ProfileDetailsSection(props) {
                     name="link_to_lattes"
                     onChange={(e) => handleChange(e)}
                     value={values.link_to_lattes}
+                    inputProps={{ maxLength: 80 }}
                   />
                 </Grid>
               )}
