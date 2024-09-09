@@ -9,7 +9,6 @@ function GerenciamentoAgencias() {
 
   const getAgencys = async () => {
     const response = await api.agency.getAgencys()
-    console.log(response.data)
 
     if (response.status === 200) {
       setAgencys(response.data)

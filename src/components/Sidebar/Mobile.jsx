@@ -1,18 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Icon } from '@mui/material'
 
 export default function Mobile(props) {
-  const { user, links } = props
-  const [expandSidebar, setExpandSidebar] = useState(true)
-
-  const handleExpandSidebar = () => {
-    setExpandSidebar(!expandSidebar)
-  }
-
-  const filteredLinks = links.filter(
-    (link) => !link.availableRoles || (link.availableRoles.includes(user.role) && link.visible)
-  )
+  const { expandSidebar, links, handleExpandSidebar } = props
 
   return (
     <header className="mb-5 space-y-5 bg-white p-5 pb-2">
@@ -26,7 +17,7 @@ export default function Mobile(props) {
       </div>
       <nav className={`${expandSidebar ? 'h-max' : 'h-0'} transition-all`}>
         <ul className={`${expandSidebar ? 'opacity-1' : 'opacity-0'} transition-all`}>
-          {filteredLinks.map((link) => (
+          {links.map((link) => (
             <li key={link.name} className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>
               <NavLink
                 to={link.path}

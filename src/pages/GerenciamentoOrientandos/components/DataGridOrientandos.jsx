@@ -9,7 +9,7 @@ const NOT_INFORMED = 'Não informado'
 
 function DataGridOrientandos(props) {
   const { data } = props
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(5)
 
   const columns = [
     {

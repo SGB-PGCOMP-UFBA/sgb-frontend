@@ -18,7 +18,7 @@ function DataGridOrientadores(props) {
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState(null)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForDeleteClose = () => {
     setSelectedAdvisor(null)

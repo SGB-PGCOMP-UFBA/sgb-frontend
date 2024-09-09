@@ -67,7 +67,7 @@ function DataGridBolsistas(props) {
     {
       field: 'enrollmentProgram',
       headerName: 'Curso',
-      width: 140,
+      width: 135,
       filterable: false,
       sortable: false,
       renderCell: (params) => (
@@ -78,7 +78,7 @@ function DataGridBolsistas(props) {
     {
       field: 'studentName',
       headerName: 'Nome do Bolsista',
-      width: 220,
+      width: 260,
       filterable: false,
       sortable: false,
       renderCell: (params) =>
@@ -87,7 +87,7 @@ function DataGridBolsistas(props) {
     },
     {
       field: 'student_phone_number',
-      headerName: 'Telefone do Bolsista',
+      headerName: 'Celular',
       width: 130,
       filterable: false,
       sortable: false,
@@ -106,7 +106,7 @@ function DataGridBolsistas(props) {
     },
     {
       field: 'student_email',
-      headerName: 'E-mail do Bolsista',
+      headerName: 'E-mail',
       width: 200,
       filterable: false,
       sortable: false,
@@ -117,7 +117,7 @@ function DataGridBolsistas(props) {
     {
       field: 'link_to_lattes',
       headerName: 'Link do Lattes',
-      width: 200,
+      width: 100,
       filterable: false,
       sortable: false,
       renderCell: (params) => (
@@ -127,7 +127,7 @@ function DataGridBolsistas(props) {
           rel="noreferrer"
           className="custom-scrollbar whitespace-nowrap overflow-x-auto center text-blue-500"
         >
-          {params.row.student.link_to_lattes}
+          Lattes
         </a>
       ),
       valueGetter: (params) => params.row.student.link_to_lattes
@@ -135,7 +135,7 @@ function DataGridBolsistas(props) {
     {
       field: 'agencyName',
       headerName: 'Agência',
-      width: 140,
+      width: 100,
       filterable: false,
       sortable: false,
       renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
@@ -154,7 +154,7 @@ function DataGridBolsistas(props) {
     {
       field: 'active',
       headerName: 'Status',
-      width: 170,
+      width: 160,
       filterable: false,
       sortable: false,
       renderCell: (params) => (

@@ -27,7 +27,7 @@ const initialFilters = {
 function GerenciamentoBolsistas() {
   const [data, setData] = useState({})
   const [page, setPage] = useState(1)
-  const [size, setSize] = useState(10)
+  const [size, setSize] = useState(5)
   const [filterOptions, setFilterOptions] = useState(initialFilterOptions)
   const [filters, setFilters] = useState(initialFilters)
   const [isLoading, setIsLoading] = useState(true)

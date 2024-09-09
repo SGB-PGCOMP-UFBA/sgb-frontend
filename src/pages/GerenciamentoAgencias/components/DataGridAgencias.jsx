@@ -12,7 +12,7 @@ function DataGridAgencias(props) {
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [selectedAgency, setSelectedAgency] = useState(null)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForDeleteClose = () => {
     setSelectedAgency(null)

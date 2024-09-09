@@ -57,7 +57,7 @@ export default function CustomChip(props) {
       label={label}
       className={className}
       style={{
-        borderRadius: '0.4rem'
+        borderRadius: '0.4rem',
       }}
     />
   )
