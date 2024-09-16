@@ -57,3 +57,13 @@ export function parseDate(dateString, format = "dd/MM/yyyy") {
 
   return null;
 }
+
+export function toPascalCase(str) {
+  if (str.trim().length === 0 || str === null || str === undefined) {
+    return ""
+  }
+
+  return str
+    .toLowerCase()
+    .replace(/(?:^|\s|-|_)\S/g, (match) => match.toUpperCase())
+}

@@ -10,9 +10,10 @@ import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask'
 import { CustomChip } from '../../../components'
+import { toPascalCase } from '../../../helpers/formatters'
 
 function TabPanelDeMatricula(props) {
-  const { enrollment, advisors, agencies } = props
+  const { enrollment, agencies } = props
   const [scholarship, setScholarship] = useState({})
   const [expanded, setExpanded] = useState(false)
   const [isDialogForDeleteEnrollmentOpen, setIsDialogForDeleteEnrollmentOpen] = useState(false)
@@ -61,31 +62,23 @@ function TabPanelDeMatricula(props) {
               id="enrollment_number"
               label="Matrícula"
               name="enrollment_number"
-              onChange={() => { }}
-              defaultValue={enrollment.enrollment_number}
-              placeholder="Digite a sua matrícula"
+              defaultValue={enrollment.enrollment_number.trim()}
               inputProps={{
-                minLength: "9",
-                maxLength: "10",
                 readOnly: true
               }}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2}>
-            <FormControl fullWidth>
-              <InputLabel id="label-curso">Curso</InputLabel>
-              <Select
-                readOnly
-                id="select-curso"
-                label="Curso"
-                name="enrollment_program"
-                labelId="label-curso"
-                defaultValue={enrollment.enrollment_program}
-              >
-                <MenuItem value={"MESTRADO"}>Mestrado</MenuItem>
-                <MenuItem value={"DOUTORADO"}>Doutorado</MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              id="enrollment_program"
+              label="Curso"
+              name="enrollment_program"
+              defaultValue={toPascalCase(enrollment.enrollment_program)}
+              inputProps={{
+                readOnly: true
+              }}
+            />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2}>
             <DatePicker
@@ -106,25 +99,54 @@ function TabPanelDeMatricula(props) {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={2}>
-            <FormControl fullWidth>
-              <InputLabel id="label-orientador">Orientador</InputLabel>
-              <Select
-                readOnly
-                id="select-orientador"
-                label="Orientador"
-                name="advisor_email"
-                labelId="label-orientador"
-                defaultValue={enrollment.advisor.email}
-              >
-                {advisors.map((advisor) => (
-                  <MenuItem key={advisor.email} value={advisor.email}>
-                    {advisor.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              id="advisor_name"
+              label="Orientador"
+              name="advisor_name"
+              defaultValue={enrollment.advisor.name}
+              inputProps={{
+                readOnly: true
+              }}
+            />
           </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={2} gap={2} display="flex" alignItems="center" justifyContent="flex-end">
+          <Grid item xs={12} sm={6} md={3} lg={2}>
+            <TextField
+              fullWidth
+              id="advisor_email"
+              label="E-mail do Orientador"
+              name="advisor_email"
+              defaultValue={enrollment.advisor.email}
+              inputProps={{
+                readOnly: true
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3} lg={2}>
+            <TextField
+              fullWidth
+              id="advisor_phone_number"
+              label="Celular do Orientador"
+              name="advisor_phone_number"
+              defaultValue={enrollment.advisor.phone_number ? enrollment.advisor.phone_number : "Não informado"}
+              inputProps={{
+                readOnly: true
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={5} md={2} lg={2}>
+            <TextField
+              fullWidth
+              id="advisor_status"
+              label="Situação do Orientador"
+              name="advisor_status"
+              defaultValue={enrollment.advisor.status === 'ACTIVE' ? 'Em exercício' : 'Inativo'}
+              inputProps={{
+                readOnly: true
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={1} md={1} lg={8} gap={2} display="flex" alignItems="center" justifyContent="flex-end">
             <Tooltip title="Excluir Matrícula">
               <IconButton onClick={handleDialogForDeleteEnrollmentOpen}>
                 <Icon sx={{ fontSize: 28 }}>delete</Icon>
