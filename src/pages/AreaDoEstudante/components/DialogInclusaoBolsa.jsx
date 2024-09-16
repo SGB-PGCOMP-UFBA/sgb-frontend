@@ -146,7 +146,7 @@ function DialogInclusaoBolsa(props) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogTitle>Incluir Matrícula</DialogTitle>
+      <DialogTitle>Incluir Bolsa</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>

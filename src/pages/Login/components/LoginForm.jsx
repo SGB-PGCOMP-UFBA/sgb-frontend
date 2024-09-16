@@ -66,7 +66,7 @@ function LoginForm(props) {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                inputProps={{ minLength: 4, maxLength: 8 }}
+                inputProps={{ maxLength: 8 }}
                 autoComplete='current-password'
               />
             </Grid>
