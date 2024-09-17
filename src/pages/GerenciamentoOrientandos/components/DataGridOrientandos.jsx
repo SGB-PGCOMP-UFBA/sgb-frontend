@@ -1,15 +1,29 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Icon } from '@mui/material'
+import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
-import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
+import { formatCpf, formatPhone } from '../../../helpers/formatters'
 import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
+import { DialogVisualizacaoBolsas } from './DialogVisualizacaoBolsas'
 
 const NOT_INFORMED = 'Não informado'
 
 function DataGridOrientandos(props) {
   const { data } = props
   const [pageSize, setPageSize] = useState(5)
+
+  const [selectedStudent, setSelectedStudent] = useState(null)
+  const [isDialogForScholarshipViewOpen, setIsDialogForScholarshipViewOpen] = useState(false)
+
+  const handleDialogForScholarshipViewClose = () => {
+    setSelectedStudent(null)
+    setIsDialogForScholarshipViewOpen(false)
+  }
+
+  const handleDialogForScholarshipViewOpen = (value) => {
+    setSelectedStudent(value)
+    setIsDialogForScholarshipViewOpen(true)
+  }
 
   const columns = [
     {
@@ -33,7 +47,7 @@ function DataGridOrientandos(props) {
       filterable: false,
       sortable: false,
       renderCell: (params) =>
-        <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
+        <p className="overflow-auto">{params.row.email ? params.row.email : NOT_INFORMED}</p>,
       valueGetter: (params) => params.row.email
     },
     {
@@ -43,16 +57,16 @@ function DataGridOrientandos(props) {
       filterable: false,
       sortable: false,
       renderCell: (params) =>
-        <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
+        <p className="overflow-auto">{params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED}</p>,
       valueGetter: (params) => params.row.tax_id
     },
     {
       field: 'phone_number',
-      headerName: 'Telefone',
+      headerName: 'Celular',
       width: 150,
       filterable: false,
       sortable: false,
-      renderCell: (params) => ( params.row.phone_number ?
+      renderCell: (params) => (params.row.phone_number ?
         <a
           href={`https://wa.me/${params.row.phone_number}`}
           target="_blank"
@@ -67,8 +81,8 @@ function DataGridOrientandos(props) {
     },
     {
       field: 'link_to_lattes',
-      headerName: 'Lattes',
-      width: 300,
+      headerName: 'Link do Lattes',
+      width: 120,
       filterable: false,
       sortable: false,
       renderCell: (params) => (
@@ -78,26 +92,36 @@ function DataGridOrientandos(props) {
           rel="noreferrer"
           className="center text-blue-500"
         >
-          {params.row.link_to_lattes}
+          Lattes
         </a>
       ),
       valueGetter: (params) => params.row.link_to_lattes
     },
     {
-      field: 'created_at',
-      headerName: 'Cadastrado Em',
+      field: 'scholarships_amount',
+      headerName: 'Quantidade de Bolsas',
       width: 150,
       filterable: false,
       sortable: false,
-      renderCell: (params) => formatDate(params.row.created_at)
+      renderCell: (params) => params.row.enrollments.reduce((acc, enrollment) => {
+        return acc + enrollment.scholarships.length;
+      }, 0)
     },
     {
-      field: 'updated_at',
-      headerName: 'Atualizado Em',
-      width: 150,
+      field: 'actions',
+      headerName: 'Ações',
+      width: 130,
       filterable: false,
       sortable: false,
-      renderCell: (params) => formatDate(params.row.updated_at)
+      renderCell: (params) => (
+        <div className="flex items-center gap-x-2 overflow-auto">
+          <Tooltip title="Visualizar Bolsas">
+            <IconButton onClick={() => handleDialogForScholarshipViewOpen(params.row)}>
+              <Icon sx={{ fontSize: 28 }}>visibility</Icon>
+            </IconButton>
+          </Tooltip>
+        </div>
+      )
     }
   ]
 
@@ -140,6 +164,14 @@ function DataGridOrientandos(props) {
             },
           }}
         />
+
+        {selectedStudent && (
+          <DialogVisualizacaoBolsas
+            item={selectedStudent}
+            isOpen={isDialogForScholarshipViewOpen}
+            onClose={handleDialogForScholarshipViewClose}
+          />
+        )}
       </div>
     </div>
   )
