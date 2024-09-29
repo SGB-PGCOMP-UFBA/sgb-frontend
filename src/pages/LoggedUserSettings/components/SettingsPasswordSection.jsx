@@ -34,7 +34,7 @@ function SettingsPasswordSection(props) {
       if(user && user.role === 'ADMIN') {
         await api.admin.updateAdminPassword(values)
       }
-      else if(user && user.role === 'ADVISOR') {
+      else if(user && (user.role === 'ADVISOR' || 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
         await api.advisor.updateAdvisorPassword(values)
       }
       else if(user && user.role === 'STUDENT') {

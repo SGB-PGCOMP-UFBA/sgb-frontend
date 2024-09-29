@@ -35,7 +35,7 @@ export default function App() {
           <Route path="/configuracoes" element={<LoggedUserSettings />} />
 
           {/* Rotas de usuário administrador */}
-          <Route element={<RequireAuth allowedRoles="ADMIN" />}>
+          <Route element={<RequireAuth allowedRoles={["ADMIN", "ADVISOR_WITH_ADMIN_PRIVILEGES"]} />}>
             <Route path="dashboard" element={<DashboardMetricas />} />
             <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
             <Route path="agencias" element={<GerenciamentoAgencias />} />
@@ -44,12 +44,12 @@ export default function App() {
           </Route>
 
           {/* Rotas de usuário orientador */}
-          <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
+          <Route element={<RequireAuth allowedRoles={["ADVISOR"]} />}>
             <Route path="orientandos" element={<GerenciamentoOrientandos />} />
           </Route>
 
           {/* Rotas de usuário estudante */}
-          <Route element={<RequireAuth allowedRoles="STUDENT" />}>
+          <Route element={<RequireAuth allowedRoles={["STUDENT"]} />}>
             <Route path="area-do-estudante" element={<AreaDoEstudante />} />
           </Route>
 

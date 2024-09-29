@@ -64,6 +64,19 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
+  const grantAdminPrivileges = async (advisor) => {
+    try {
+      const response = await api.advisor.grantAdminPrivileges(advisor)
+      if ([200, 201, 204].includes(response.status)) {
+        toast.success('Orientador(a) atualizado(a) com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`${error.response.data.message}`)
+    }
+
+    await getAdvisors()
+  }
+
   const resetAdvisorPassword = async (payload) => {
     try {
       const response = await api.password.resetPassword(payload)
@@ -87,6 +100,7 @@ function GerenciamentoOrientadores() {
       onCreate={createAdvisor}
       onUpdate={updateAdvisor}
       onDelete={deleteAdvisor}
+      onChangeProfile={grantAdminPrivileges}
       onResetPassword={resetAdvisorPassword}
     />
   )

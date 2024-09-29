@@ -17,28 +17,28 @@ export default function Sidebar() {
       icon: 'dashboard',
       path: '/dashboard',
       visible: true,
-      availableRoles: ['ADMIN']
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
       name: 'Bolsistas',
       icon: 'work',
       path: '/bolsistas',
       visible: true,
-      availableRoles: ['ADMIN']
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
       name: 'Orientadores',
       icon: 'people',
       path: '/orientadores',
       visible: true,
-      availableRoles: ['ADMIN']
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
       name: 'Agências',
       icon: 'business',
       path: '/agencias',
       visible: true,
-      availableRoles: ['ADMIN']
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
       name: 'Orientandos',
@@ -59,7 +59,7 @@ export default function Sidebar() {
       icon: 'cloud',
       path: '/gestao-de-dados',
       visible: true,
-      availableRoles: ['ADMIN']
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     }
   ]
 

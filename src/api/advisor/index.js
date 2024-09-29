@@ -38,3 +38,9 @@ export const deleteAdvisor = async (advisorId) => {
     headers: buildHeaders()
   })
 }
+
+export const grantAdminPrivileges = async (advisorId) => {
+  return api.patch(`${BASE_ADVISOR_API_PATH}/grant-admin-privileges/${advisorId}`, {}, {
+    headers: buildHeaders()
+  })
+}

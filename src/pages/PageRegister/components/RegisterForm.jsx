@@ -29,7 +29,7 @@ function RegisterForm() {
   const firstRedirect = (user) => {
     if (user && user.role === 'ADMIN') {
       navigate('/dashboard', { replace: true })
-    } else if (user && user.role === 'ADVISOR') {
+    } else if (user && (user.role === 'ADVISOR' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
       navigate('/orientandos', { replace: true })
     } else if (user && user.role === 'STUDENT') {
       navigate('/area-do-estudante', { replace: true })

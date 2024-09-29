@@ -20,7 +20,7 @@ function Login() {
   }
 
   const firstRedirect = (user) => {
-    if (user && user.role === 'ADMIN') {
+    if (user && (user.role === 'ADMIN' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
       navigate('/dashboard', { replace: true })
     } else if (user && user.role === 'ADVISOR') {
       navigate('/orientandos', { replace: true })

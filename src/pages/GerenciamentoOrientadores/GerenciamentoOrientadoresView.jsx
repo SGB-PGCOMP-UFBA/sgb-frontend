@@ -9,7 +9,7 @@ import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 
 function GerenciamentoOrientadoresView(props) {
-  const { isLoading, data, onCreate, onUpdate, onDelete, onResetPassword } = props
+  const { isLoading, data, onCreate, onUpdate, onDelete, onResetPassword, onChangeProfile } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -58,6 +58,7 @@ function GerenciamentoOrientadoresView(props) {
                 onCreate={onCreate}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
+                onChangeProfile={onChangeProfile}
                 onResetPassword={onResetPassword}
               />
             )}

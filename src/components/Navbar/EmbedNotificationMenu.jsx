@@ -30,7 +30,8 @@ export default function EmbedNotificationMenu(props) {
   }
 
   const getEmbedNotifications = async () => {
-    const response = await api.embedNotification.getAllEmbedNotifications(user.id, user.role)
+    const role = user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES' ? 'ADVISOR' : user.role
+    const response = await api.embedNotification.getAllEmbedNotifications(user.id, role)
 
     if (response.status === 200) {
       setEmbedNotifications(response.data)

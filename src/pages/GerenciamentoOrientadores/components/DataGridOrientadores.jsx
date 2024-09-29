@@ -9,16 +9,28 @@ import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
 import { formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
 import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
+import { DialogHabilitarPerfilAdministrador } from './DialogHabilitarPerfilAdministrador'
 
 const NOT_INFORMED = 'Não informado'
 
 function DataGridOrientadores(props) {
-  const { data, onUpdate, onDelete, onResetPassword } = props
+  const { data, onUpdate, onDelete, onResetPassword, onChangeProfile } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
+  const [isDialogForAdminProfileOpen, setIsDialogForAdminProfileOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState(null)
   const [pageSize, setPageSize] = useState(5)
+
+  const handleDialogForAdminProfileClose = () => {
+    setSelectedAdvisor(null)
+    setIsDialogForAdminProfileOpen(false)
+  }
+
+  const handleDialogForAdminProfileOpen = (value) => {
+    setSelectedAdvisor(value)
+    setIsDialogForAdminProfileOpen(true)
+  }
 
   const handleDialogForDeleteClose = () => {
     setSelectedAdvisor(null)
@@ -142,11 +154,16 @@ function DataGridOrientadores(props) {
     {
       field: 'actions',
       headerName: 'Ações',
-      width: 180,
+      width: 230,
       filterable: false,
       sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
+          <Tooltip title={ params.row.has_admin_privileges ? "Desabilitar Perfil de Administrador" : "Habilitar Perfil de Administrador" }>
+            <IconButton onClick={() => handleDialogForAdminProfileOpen(params.row)}>
+              <Icon sx={{ fontSize: 28, color: params.row.has_admin_privileges ? '#3498db' : 'default'  }}>assignment_ind</Icon>
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Resetar Senha do Orientador">
             <IconButton onClick={() => handleDialogForPasswordResetOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>lock_reset</Icon>
@@ -243,6 +260,15 @@ function DataGridOrientadores(props) {
           item={selectedAdvisor}
           onClose={handleDialogForPasswordResetClose}
           onSubmit={onResetPassword}
+        />
+      )}
+
+      {selectedAdvisor && (
+        <DialogHabilitarPerfilAdministrador
+          isOpen={isDialogForAdminProfileOpen}
+          item={selectedAdvisor}
+          onClose={handleDialogForAdminProfileClose}
+          onSubmit={onChangeProfile}
         />
       )}
     </div>

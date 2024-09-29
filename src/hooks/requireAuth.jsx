@@ -5,7 +5,9 @@ function RequireAuth({ allowedRoles }) {
   const user = getUserFromLocalStorage()
   const location = useLocation()
 
-  if (user && allowedRoles === user.role) {
+  const hasAccess = user && allowedRoles.includes(user.role)
+
+  if (hasAccess) {
     return <Outlet />
   }
 
