@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, TextField, Typography } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 function LoginForm(props) {
   const { formValues, onChangeFormValues, onSubmit } = props
@@ -10,6 +11,14 @@ function LoginForm(props) {
     event.preventDefault()
     onSubmit()
   }
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
+
+  const handleMouseDownPassword = (event) => { event.preventDefault() }
+
+  const handleMouseUpPassword = (event) => { event.preventDefault() }
 
   return (
     <Container component="main" maxWidth="sm">
@@ -55,7 +64,6 @@ function LoginForm(props) {
                 required
                 fullWidth
                 error={false}
-                type="password"
                 id="input-password"
                 name="password"
                 label="Senha"
@@ -63,8 +71,23 @@ function LoginForm(props) {
                 value={formValues.password}
                 onChange={onChangeFormValues}
                 helperText={false ? 'Senha inválida' : ''}
+                type={showPassword ? "text" : "password"}
                 InputLabelProps={{
                   shrink: true,
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
                 }}
                 inputProps={{ maxLength: 8 }}
                 autoComplete='current-password'

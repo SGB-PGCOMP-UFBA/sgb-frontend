@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks';
 import { api } from '../../../api'
 import { addUserToLocalStorage, getUserFromLocalStorage } from '../../../helpers/auth-user'
 import { delay } from '../../../helpers/delay';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const initialState = {
   tax_id: '',
@@ -25,6 +26,18 @@ function RegisterForm() {
   const handleChangeValues = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
+
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  const handleClickShowNewPassword = () => setShowNewPassword((show) => !show)
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show)
+
+  const handleMouseDownNewPassword = (event) => { event.preventDefault() }
+  const handleMouseDownConfirmPassword = (event) => { event.preventDefault() }
+
+  const handleMouseUpNewPassword = (event) => { event.preventDefault() }
+  const handleMouseUpConfirmPassword = (event) => { event.preventDefault() }
 
   const firstRedirect = (user) => {
     if (user && user.role === 'ADMIN') {
@@ -165,13 +178,27 @@ function RegisterForm() {
                   fullWidth
                   name="password"
                   label="Senha"
-                  type="password"
                   id="password"
                   onChange={handleChangeValues}
                   placeholder="Insira uma senha"
                   error={values.password === null || values.password === ''}
                   helperText={values.password === null || values.password === '' ? 'Digite uma senha válida' : ''}
+                  type={showNewPassword ? "text" : "password"}
                   inputProps={{ minLength: 4, maxLength: 8 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowNewPassword}
+                          onMouseDown={handleMouseDownNewPassword}
+                          onMouseUp={handleMouseUpNewPassword}
+                        >
+                          {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -180,13 +207,27 @@ function RegisterForm() {
                   fullWidth
                   name="confirm_password"
                   label="Confirmar Senha"
-                  type="password"
                   id="confirm_password"
                   onChange={handleChangeValues}
                   placeholder="Digite sua senha novamente"
                   error={values.password !== values.confirm_password}
                   helperText={values.password !== values.confirm_password ? 'As senhas digitadas são diferentes!' : ''}
+                  type={showConfirmPassword ? "text" : "password"}
                   inputProps={{ minLength: 4, maxLength: 8 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownConfirmPassword}
+                          onMouseUp={handleMouseUpConfirmPassword}
+                        >
+                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
             </Grid>

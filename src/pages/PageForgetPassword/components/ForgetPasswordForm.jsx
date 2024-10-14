@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import Loading from '../../../components/Loading'
 import { api } from '../../../api'
@@ -11,6 +11,7 @@ const initialState = {
 }
 
 function ForgetPasswordForm() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [values, setValues] = useState(initialState)
 
@@ -28,6 +29,7 @@ function ForgetPasswordForm() {
 
       if (response.status === 201) {
         toast.success('Sua nova senha foi enviada para seu e-mail.')
+        navigate('/', { replace: true })
       }
     } catch (error) {
         toast.error(`${error.response.data.message}`)
