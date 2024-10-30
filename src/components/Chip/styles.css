@@ -40,6 +40,12 @@
     font-weight: bold !important;
 }
 
+.custom-chip-prorrogated {
+  background-color: rgba(182, 114, 12, 0.4) !important;
+  color: rgb(122, 74, 2) !important;
+  font-weight: bold !important;
+}
+
 .custom-chip-inativo {
     background-color: rgba(201, 198, 198, 0.4) !important;
     color: rgb(105, 105, 105) !important;

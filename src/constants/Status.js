@@ -3,5 +3,5 @@ export const StatusEnum = {
   'INACTIVE': 'Inativo',
   'FINISHED': 'Finalizado',
   'ON_GOING': 'Em andamento',
-  'EXTENDED': 'Em andamento (prorrogado)'
+  'EXTENDED': 'Prorrogada'
 }

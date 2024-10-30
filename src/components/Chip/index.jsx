@@ -30,7 +30,7 @@ export default function CustomChip(props) {
       case 'status-on_going':
           return 'custom-chip-ativo'
       case 'status-extended':
-            return 'custom-chip-ativo'
+            return 'custom-chip-prorrogated'
       case 'status-finished':
           return 'custom-chip-inativo'
       default:

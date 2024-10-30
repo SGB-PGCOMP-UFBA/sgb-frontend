@@ -58,7 +58,7 @@ function AreaDoEstudanteView(props) {
             {props.isLoading ? <Loading /> : <DataGridMatriculas data={props.student} agencies={props.agencies} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
 
             <Typography variant="h6" component="h6">Bolsas</Typography>
-            {props.isLoading ? <Loading /> : <DataGridBolsas data={props.student} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
+            {props.isLoading ? <Loading /> : <DataGridBolsas data={props.student} agencies={props.agencies} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
 
             {isDialogForCreateEnrollmentOpen && (
               <DialogInclusaoMatricula
@@ -76,21 +76,19 @@ function AreaDoEstudanteView(props) {
 }
 
 AreaDoEstudanteView.prototypes = {
-  enrollmentTabIndex: PropTypes.number.isRequired,
-  handleChangeEnrollmentTab: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
-  onCreateNewEnrollment: PropTypes.func,
-  onCreateNewScholarship: PropTypes.func,
-  onDeleteEnrollment: PropTypes.func,
-  onDeleteScholarship: PropTypes.func,
-  onUpdateEnrollment: PropTypes.func,
-  onUpdateScholarship: PropTypes.func,
   student: PropTypes.shape({
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
   }).isRequired,
+  onCreateNewEnrollment: PropTypes.func,
+  onCreateNewScholarship: PropTypes.func,
+  onUpdateEnrollment: PropTypes.func,
+  onUpdateScholarship: PropTypes.func,
+  onDeleteEnrollment: PropTypes.func,
+  onDeleteScholarship: PropTypes.func,
 }
 
 export { AreaDoEstudanteView }

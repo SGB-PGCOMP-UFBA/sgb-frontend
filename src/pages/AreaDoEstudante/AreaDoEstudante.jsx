@@ -11,12 +11,6 @@ function AreaDoEstudante() {
   const [advisors, setAdvisors] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const [enrollmentTabIndex, setEnrollmentTabIndex] = React.useState(0)
-
-  const handleChangeEnrollmentTab = (event, newValue) => {
-    setEnrollmentTabIndex(newValue)
-  }
-
   const getAdvisors = async () => {
     try {
       const response = await api.advisor.getAdvisorFilterList()
@@ -69,7 +63,6 @@ function AreaDoEstudante() {
       if ([200, 201].includes(response.status)) {
         toast.success('Matrícula criada com sucesso.')
         await getStudent()
-        setEnrollmentTabIndex(student.enrollments.length)
       }
     }
     catch (error) {
@@ -101,7 +94,6 @@ function AreaDoEstudante() {
     const response = await api.enrollment.deleteEnrollment(enrollmentId)
 
     if (response.status === 204) {
-      setEnrollmentTabIndex(student.enrollments.length - 2)
       toast.success('Matrícula excluída com sucesso.')
       await getStudent()
     } else {
@@ -120,6 +112,52 @@ function AreaDoEstudante() {
     }
   }
 
+  const handleUpdateEnrollment = async (data) => {
+    try {
+      const updateEnrollment = api.enrollment.updateEnrollment(data.enrollment_id, {
+        advisor_email: data.advisor_email,
+        student_email: data.student_email,
+        enrollment_program: data.enrollment_program,
+        enrollment_date: parseDate(data.enrollment_date),
+        defense_prediction_date: parseDate(data.defense_prediction_date)
+      })
+      const response = await Promise.all([ updateEnrollment ])
+
+      if (response.length > 0) {
+        toast.success('As informações da matrícula foram atualizadas com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`Erro ao atualizar a matrícula: ${error.response.data.message}`)
+    }
+
+    await getStudent()
+  }
+
+  const handleUpdateScholarship = async (data) => {
+    try {
+      const updateScholarship = api.scholarship.updateScholarship(data.scholarship_id, {
+        enrollment_id: data.enrollment_id,
+        student_email: data.student_email,
+        status: data.status,
+        agency_id: data.agency_id,
+        scholarship_starts_at: parseDate(data.scholarship_starts_at),
+        scholarship_ends_at: parseDate(data.scholarship_ends_at),
+        extension_ends_at: data.extension_ends_at !== null ? parseDate(data.extension_ends_at) : null,
+        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
+      })
+
+      const response = await Promise.all([ updateScholarship ])
+
+      if (response.length > 0) {
+        toast.success('As informações da bolsa foram atualizadas com sucesso.')
+      }
+    } catch (error) {
+      toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)
+    }
+
+    await getStudent()
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getAdvisors()
@@ -136,11 +174,10 @@ function AreaDoEstudante() {
       student={student}
       advisors={advisors}
       agencies={agencies}
-      enrollmentTabIndex={enrollmentTabIndex}
-      handleChangeEnrollmentTab={handleChangeEnrollmentTab}
-      onChangeEnrollmentTab={handleChangeEnrollmentTab}
       onCreateNewEnrollment={handleCreateNewEnrollment}
       onCreateNewScholarship={handleCreateNewScholarship}
+      onUpdateEnrollment={handleUpdateEnrollment}
+      onUpdateScholarship={handleUpdateScholarship}
       onDeleteEnrollment={handleDeleteEnrollment}
       onDeleteScholarship={handleDeleteScholarship}
     />

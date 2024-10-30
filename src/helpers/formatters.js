@@ -69,6 +69,6 @@ export function toPascalCase(str) {
 }
 
 export function formatBrazilianCurrency(value) {
-  if (typeof value !== 'number' || value === null || value === undefined) return "R$ 0,00";
-  return `R$ ${value.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  if (value === null || value === undefined || value.trim() === "") return "R$ 0,00";
+  return `R$ ${Number(value).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 }

@@ -5,6 +5,7 @@ import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatBrazilianCurrency, formatDate } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
+import { DialogEdicaoBolsa } from './DialogEdicaoBolsa'
 
 const NOT_INFORMED = 'Não informado'
 
@@ -16,7 +17,7 @@ function DataGridBolsas(props) {
       student_id: data.id,
       student_email: data.email,
       enrollment_id: enrollment.id,
-      enrollment_number: enrollment.enrollment_number,
+      enrollment_number: enrollment.enrollment_number.trim(),
       enrollment_program: enrollment.enrollment_program,
     }))
   )
@@ -24,7 +25,18 @@ function DataGridBolsas(props) {
   const [pageSize, setPageSize] = useState(5)
 
   const [selectedScholarship, setSelectedScholarship] = useState(null)
+  const [isDialogForScholarshipUpdateOpen, setIsDialogForScholarshipUpdateOpen] = useState(false)
   const [isDialogForScholarshipDeleteOpen, setIsDialogForScholarshipDeleteOpen] = useState(false)
+
+  const handleDialogForUpdateClose = () => {
+    setSelectedScholarship(null)
+    setIsDialogForScholarshipUpdateOpen(false)
+  }
+
+  const handleDialogForUpdateOpen = (value) => {
+    setSelectedScholarship(value)
+    setIsDialogForScholarshipUpdateOpen(true)
+  }
 
   const handleDialogForDeleteClose = () => {
     setSelectedScholarship(null)
@@ -128,7 +140,7 @@ function DataGridBolsas(props) {
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
           <Tooltip title="Editar Bolsa">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
@@ -182,6 +194,16 @@ function DataGridBolsas(props) {
         />
 
         {selectedScholarship && (
+          <DialogEdicaoBolsa
+            onSubmit={props.onUpdate}
+            item={selectedScholarship}
+            agencies={props.agencies}
+            isOpen={isDialogForScholarshipUpdateOpen}
+            onClose={handleDialogForUpdateClose}
+          />
+        )}
+
+        {selectedScholarship && (
           <DialogExclusaoBolsa
             onSubmit={props.onDelete}
             item={selectedScholarship}
@@ -195,6 +217,7 @@ function DataGridBolsas(props) {
 }
 
 DataGridBolsas.prototypes = {
+  agencies: PropTypes.node.isRequired,
   data: PropTypes.node,
   onUpdate: PropTypes.node,
   onDelete: PropTypes.node,
