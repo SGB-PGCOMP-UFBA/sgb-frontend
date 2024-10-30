@@ -72,7 +72,6 @@ export const getScholarships = async (page, limit, filters) => {
 }
 
 export const updateScholarship = async (scholarshipId, scholarship) => {
-  console.log(scholarship)
   return api.patch(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, scholarship, {
     headers: buildHeaders()
   })

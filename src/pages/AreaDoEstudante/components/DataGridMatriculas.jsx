@@ -6,11 +6,18 @@ import { formatDate, formatPhone } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
 import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
+import { DialogEdicaoMatricula } from './DialogEdicaoMatricula'
 
 const NOT_INFORMED = 'Não informado'
 
 function DataGridMatriculas(props) {
   const { data } = props
+  const enrollments = data.enrollments.flatMap(enrollment => ({
+    ...enrollment,
+    student_email: data.email,
+  })
+  )
+
   const [pageSize, setPageSize] = useState(5)
 
   const [selectedEnrollment, setSelectedEnrollment] = useState(null)
@@ -152,7 +159,7 @@ function DataGridMatriculas(props) {
             </IconButton>
           </Tooltip>
           <Tooltip title="Editar Matrícula">
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
               <Icon sx={{ fontSize: 28 }}>edit</Icon>
             </IconButton>
           </Tooltip>
@@ -170,7 +177,7 @@ function DataGridMatriculas(props) {
     <div>
       <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
         <DataGrid
-          rows={data.enrollments}
+          rows={enrollments}
           columns={columns}
           disableColumnMenu
           isRowSelectable={() => false}
@@ -216,6 +223,16 @@ function DataGridMatriculas(props) {
         )}
 
         {selectedEnrollment && (
+          <DialogEdicaoMatricula
+            onSubmit={props.onUpdate}
+            item={selectedEnrollment}
+            advisors={props.advisors}
+            isOpen={isDialogForEnrollmentUpdateOpen}
+            onClose={handleDialogForUpdateClose}
+          />
+        )}
+
+        {selectedEnrollment && (
           <DialogExclusaoMatricula
             onSubmit={props.onDelete}
             item={selectedEnrollment}
@@ -229,6 +246,7 @@ function DataGridMatriculas(props) {
 }
 
 DataGridMatriculas.prototypes = {
+  advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
   data: PropTypes.node.isRequired,
   onCreateScholarship: PropTypes.node,

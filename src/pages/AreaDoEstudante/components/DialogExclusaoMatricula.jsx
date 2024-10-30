@@ -15,7 +15,7 @@ function DialogExclusaoMatricula(props) {
     <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
       <p>
         Você tem certeza que quer apagar o vínculo de matrícula de número{' '}
-        <b>{item.enrollment_number}</b>? Isso também irá apagar as informações de bolsas relacionadas a esta matrícula.
+        <b>{item.enrollment_number.trim()}</b>? Isso também irá apagar as informações de bolsas relacionadas a esta matrícula.
       </p>
       <br />
       <p>Não será possível recuperar estas informações após a exclusão!</p>

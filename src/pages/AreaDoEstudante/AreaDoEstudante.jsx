@@ -118,6 +118,7 @@ function AreaDoEstudante() {
         advisor_email: data.advisor_email,
         student_email: data.student_email,
         enrollment_program: data.enrollment_program,
+        enrollment_number: data.enrollment_number,
         enrollment_date: parseDate(data.enrollment_date),
         defense_prediction_date: parseDate(data.defense_prediction_date)
       })

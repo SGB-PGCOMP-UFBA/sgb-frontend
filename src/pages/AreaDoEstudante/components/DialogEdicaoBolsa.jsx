@@ -8,8 +8,6 @@ import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazil
 function DialogEdicaoBolsa(props) {
   const { isOpen, onSubmit, onClose, agencies, item } = props
 
-  console.log(item)
-
   const [minEndDate, setMinEndDate] = useState(null)
 
   const handleStartDateChange = (newDate) => {
@@ -181,7 +179,7 @@ function DialogEdicaoBolsa(props) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogTitle>Editar Bolsa (Matrícula {item.enrollment_number} - {item.enrollment_program})</DialogTitle>
+      <DialogTitle>Editar Bolsa (Matrícula {item.enrollment_number.trim()} - {item.enrollment_program})</DialogTitle>
       <DialogContent>{dialogContent}</DialogContent>
       <DialogActions>{dialogActions}</DialogActions>
     </Dialog>
