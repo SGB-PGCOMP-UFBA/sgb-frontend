@@ -2,21 +2,22 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { AddCircleOutline } from '@mui/icons-material'
 import InfoIcon from '@mui/icons-material/Info'
-import { Button, Icon, IconButton, Tooltip } from '@mui/material'
+import { Button, Icon, IconButton, Tooltip, Typography } from '@mui/material'
 import Loading from '../../components/Loading'
 import Sidebar from '../../components/Sidebar'
 import MenuAppBar from '../../components/Navbar'
-import { TabDeMatriculas } from './components/TabDeMatriculas'
 import { DialogInclusaoMatricula } from './components/DialogInclusaoMatricula'
+import { DataGridBolsas } from './components/DataGridBolsas'
+import { DataGridMatriculas } from './components/DataGridMatriculas'
 
 function AreaDoEstudanteView(props) {
   const [isDialogForCreateEnrollmentOpen, setIsDialogForCreateEnrollmentOpen] = useState(false)
 
-  const handleDialogForCreateClose = () => {
+  const handleDialogForCreateEnrollmentClose = () => {
     setIsDialogForCreateEnrollmentOpen(false)
   }
 
-  const handleDialogForCreateOpen = () => {
+  const handleDialogForCreateEnrollmentOpen = () => {
     setIsDialogForCreateEnrollmentOpen(true)
   }
 
@@ -47,30 +48,22 @@ function AreaDoEstudanteView(props) {
                   variant="contained"
                   color="success"
                   startIcon={<AddCircleOutline />}
-                  onClick={() => handleDialogForCreateOpen()}
+                  onClick={() => handleDialogForCreateEnrollmentOpen()}
                 >
                   Nova Matrícula
                 </Button>
               </div>
             </div>
-            {props.isLoading ?
-              <Loading /> :
-              <TabDeMatriculas
-                enrollmentTabIndex={props.enrollmentTabIndex}
-                handleChangeEnrollmentTab={props.handleChangeEnrollmentTab}
-                student={props.student}
-                advisors={props.advisors}
-                agencies={props.agencies}
-                onCreateNewScholarship={props.onCreateNewScholarship}
-                onDeleteEnrollment={props.onDeleteEnrollment}
-                onDeleteScholarship={props.onDeleteScholarship}
-              />
-            }
+            <Typography variant="h6" component="h6">Matrículas</Typography>
+            {props.isLoading ? <Loading /> : <DataGridMatriculas data={props.student} agencies={props.agencies} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
+
+            <Typography variant="h6" component="h6">Bolsas</Typography>
+            {props.isLoading ? <Loading /> : <DataGridBolsas data={props.student} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
 
             {isDialogForCreateEnrollmentOpen && (
               <DialogInclusaoMatricula
                 isOpen={isDialogForCreateEnrollmentOpen}
-                onClose={handleDialogForCreateClose}
+                onClose={handleDialogForCreateEnrollmentClose}
                 onSubmit={props.onCreateNewEnrollment}
                 advisors={props.advisors}
               />
@@ -92,7 +85,8 @@ AreaDoEstudanteView.prototypes = {
   onCreateNewScholarship: PropTypes.func,
   onDeleteEnrollment: PropTypes.func,
   onDeleteScholarship: PropTypes.func,
-  onUpdate: PropTypes.func,
+  onUpdateEnrollment: PropTypes.func,
+  onUpdateScholarship: PropTypes.func,
   student: PropTypes.shape({
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,

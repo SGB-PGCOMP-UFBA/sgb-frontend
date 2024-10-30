@@ -4,7 +4,7 @@ import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton }
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 
 function DialogExclusaoBolsa(props) {
-  const { scholarship, isOpen, onClose, onSubmit } = props
+  const { item, isOpen, onClose, onSubmit } = props
 
   const submitAndCloseDialog = async (id) => {
     onSubmit(id)
@@ -14,8 +14,8 @@ function DialogExclusaoBolsa(props) {
   const dialogContent = (
     <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
       <p>
-        Você tem certeza que quer apagar as informações sobre a sua bolsa da{' '}
-        <b>{scholarship.agency.name}</b>?
+        Você tem certeza que quer apagar sua bolsa da{' '}
+        <b>{item.agency.name}</b>?
       </p>
       <br />
       <p>Não será possível recuperar estas informações após a exclusão!</p>
@@ -28,7 +28,7 @@ function DialogExclusaoBolsa(props) {
         Cancelar
       </Button>
       <Button
-        onClick={() => submitAndCloseDialog(scholarship.id)}
+        onClick={() => submitAndCloseDialog(item.id)}
         autoFocus
         variant="contained"
         color="error"
