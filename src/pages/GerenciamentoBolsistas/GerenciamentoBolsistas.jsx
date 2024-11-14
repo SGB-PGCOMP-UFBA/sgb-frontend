@@ -17,7 +17,7 @@ const initialFilterOptions = {
 }
 
 const initialFilters = {
-  scholarshipStatus: 'ALL',
+  scholarshipStatus: 'ON_GOING',
   agencyName: 'ALL',
   advisorName: 'ALL',
   programName: 'ALL',
