@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Box, Button, FormControl, Icon, InputLabel, MenuItem, Select, Tooltip } from '@mui/material'
+import { Box, Button, FormControl, Icon, InputLabel, MenuItem, Select, TextField, Tooltip } from '@mui/material'
 import { Download, FilterAltOff } from '@mui/icons-material'
 import { DataGridBolsistas } from './components/DataGridBolsistas'
 import Sidebar from '../../components/Sidebar'
@@ -41,6 +41,19 @@ function GerenciamentoBolsistasView(props) {
             </div>
             <Box sx={{ width: '100%', border: '1px solid rgba(224, 224, 224, 1)', borderRadius: '4px', padding: '0.6em', marginTop: '0px !important' }}>
               <div className='flex flex-col gap-4 md:flex-row'>
+                <TextField
+                  id="input-student-name"
+                  name="studentName"
+                  label="Bolsista"
+                  placeholder="Digite o nome do bolsista"
+                  variant="outlined"
+                  onChange={props.setFilters}
+                  value={props.filters.studentName}
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
                 <FormControl fullWidth>
                   <InputLabel id="label-order">Ordenar por</InputLabel>
                   <Select
@@ -51,14 +64,14 @@ function GerenciamentoBolsistasView(props) {
                     onChange={props.setFilters}
                     value={props.filters.orderBy}
                   >
-                    <MenuItem value={"DAT_MATRICULA_ASC"}>Data da Matrícula ↑</MenuItem>
-                    <MenuItem value={"DAT_MATRICULA_DESC"}>Data da Matrícula ↓</MenuItem>
-                    <MenuItem value={"DAT_DEFESA_ASC"}>Previsão de Defesa ↑</MenuItem>
-                    <MenuItem value={"DAT_DEFESA_DESC"}>Previsão de Defesa ↓</MenuItem>
-                    <MenuItem value={"DAT_INICIO_ASC"}>Data de Início da Bolsa ↑</MenuItem>
-                    <MenuItem value={"DAT_INICIO_DESC"}>Data de Início da Bolsa ↓</MenuItem>
-                    <MenuItem value={"DAT_TERMINO_ASC"}>Data de Término da Bolsa ↑</MenuItem>
-                    <MenuItem value={"DAT_TERMINO_DESC"}>Data de Término da Bolsa ↓</MenuItem>
+                    <MenuItem value={"DAT_MATRICULA_ASC"}>Data da Matrícula ↓</MenuItem>
+                    <MenuItem value={"DAT_MATRICULA_DESC"}>Data da Matrícula ↑</MenuItem>
+                    <MenuItem value={"DAT_DEFESA_ASC"}>Previsão de Defesa ↓</MenuItem>
+                    <MenuItem value={"DAT_DEFESA_DESC"}>Previsão de Defesa ↑</MenuItem>
+                    <MenuItem value={"DAT_INICIO_ASC"}>Data de Início da Bolsa ↓</MenuItem>
+                    <MenuItem value={"DAT_INICIO_DESC"}>Data de Início da Bolsa ↑</MenuItem>
+                    <MenuItem value={"DAT_TERMINO_ASC"}>Data de Término da Bolsa ↓</MenuItem>
+                    <MenuItem value={"DAT_TERMINO_DESC"}>Data de Término da Bolsa ↑</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl fullWidth>

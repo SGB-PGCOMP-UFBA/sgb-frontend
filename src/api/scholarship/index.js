@@ -49,6 +49,9 @@ export const getScholarships = async (page, limit, filters) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/paginated?page=${page}&limit=${limit}`
 
   if (filters) {
+    if (filters.studentName) {
+      url += `&studentName=${encodeURIComponent(filters.studentName)}`
+    }
     if (filters.scholarshipStatus) {
       url += `&scholarshipStatus=${encodeURIComponent(filters.scholarshipStatus)}`
     }

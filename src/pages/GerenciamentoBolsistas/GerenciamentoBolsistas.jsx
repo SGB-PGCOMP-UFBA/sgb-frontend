@@ -18,16 +18,17 @@ const initialFilterOptions = {
 
 const initialFilters = {
   scholarshipStatus: 'ON_GOING',
-  agencyName: 'ALL',
+  agencyName: 'CAPES',
   advisorName: 'ALL',
-  programName: 'ALL',
+  programName: 'MESTRADO',
   orderBy: 'DAT_TERMINO_DESC',
+  studentName: '',
 }
 
 function GerenciamentoBolsistas() {
   const [data, setData] = useState({})
   const [page, setPage] = useState(1)
-  const [size, setSize] = useState(5)
+  const [size, setSize] = useState(50)
   const [filterOptions, setFilterOptions] = useState(initialFilterOptions)
   const [filters, setFilters] = useState(initialFilters)
   const [isLoading, setIsLoading] = useState(true)
