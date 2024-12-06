@@ -21,7 +21,7 @@ const initialFilters = {
   agencyName: 'CAPES',
   advisorName: 'ALL',
   programName: 'MESTRADO',
-  orderBy: 'DAT_TERMINO_DESC',
+  orderBy: 'DAT_TERMINO_ASC',
   studentName: '',
 }
 
