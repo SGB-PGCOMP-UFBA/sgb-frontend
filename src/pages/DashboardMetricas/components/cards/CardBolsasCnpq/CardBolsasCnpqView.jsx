@@ -19,7 +19,7 @@ function CardBolsasCnpqView(props) {
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={5}>
               CNPQ
             </Typography>
-            <Typography variant="h4">{data[LITERAL_ON_GOING].count}</Typography>
+            <Typography variant="h4">{data[LITERAL_ON_GOING]?.count || 0}</Typography>
             <Typography variant="subtitle1">bolsas alocadas</Typography>
           </Stack>
           <Avatar
