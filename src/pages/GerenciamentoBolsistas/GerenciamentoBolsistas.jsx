@@ -25,6 +25,15 @@ const initialFilters = {
   studentName: '',
 }
 
+const resetedFilters = {
+  scholarshipStatus: 'ALL',
+  agencyName: 'ALL',
+  advisorName: 'ALL',
+  programName: 'ALL',
+  orderBy: 'DAT_TERMINO_ASC',
+  studentName: '',
+}
+
 function GerenciamentoBolsistas() {
   const [data, setData] = useState({})
   const [page, setPage] = useState(1)
@@ -46,12 +55,15 @@ function GerenciamentoBolsistas() {
     setFilters({ ...filters, [e.target.name]: e.target.value })
   }
 
-  const handleFiltersReset = (e) => {
-    setFilters(initialFilters)
+  const handleFiltersReset = () => {
+    setFilters(resetedFilters)
   }
 
   const getScholarships = async ({ size, page, filters }) => {
-    const response = await api.scholarship.getScholarships(page, size, filters)
+    const trimmedFilters = Object.fromEntries(
+      Object.entries(filters).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value])
+    )
+    const response = await api.scholarship.getScholarships(page, size, trimmedFilters)
 
     if (response.status === 200) {
       setData(response.data)
