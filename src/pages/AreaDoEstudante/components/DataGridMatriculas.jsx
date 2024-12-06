@@ -17,6 +17,7 @@ function DataGridMatriculas(props) {
     student_email: data.email,
   })
   )
+  const hasOnGoingScholarship = enrollments.some(enrollment => enrollment.scholarships.some(scholarship => scholarship.status === 'ON_GOING' || scholarship.status === 'EXTENDED'))
 
   const [pageSize, setPageSize] = useState(5)
 
@@ -153,10 +154,15 @@ function DataGridMatriculas(props) {
       sortable: false,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Adicionar Bolsa">
-            <IconButton onClick={() => handleDialogForScholarshipCreateOpen(params.row)}>
-              <Icon sx={{ fontSize: 28, color: '#2e7d32' }}>bookmark_add</Icon>
-            </IconButton>
+          <Tooltip title={hasOnGoingScholarship ? "Não é possível adicionar uma nova bolsa, pois você já possui uma bolsa em andamento." : "Adicionar Bolsa"}>
+            <span style={{ cursor: hasOnGoingScholarship ? 'not-allowed' : 'pointer' }}>
+              <IconButton
+                onClick={() => handleDialogForScholarshipCreateOpen(params.row)}
+                disabled={hasOnGoingScholarship}
+              >
+                <Icon sx={{ fontSize: 28, color: hasOnGoingScholarship ? 'grey' : '#2e7d32' }}>bookmark_add</Icon>
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title="Editar Matrícula">
             <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
