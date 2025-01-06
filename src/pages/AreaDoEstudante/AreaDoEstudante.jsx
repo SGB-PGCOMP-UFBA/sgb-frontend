@@ -86,7 +86,7 @@ function AreaDoEstudante() {
       }
     }
     catch (error) {
-      toast.error('Ocorreu um erro na criação da bolsa.')
+      toast.error(error.response.data.message ? error.response.data.message : 'Ocorreu um erro na criação da bolsa.')
     }
   }
 
