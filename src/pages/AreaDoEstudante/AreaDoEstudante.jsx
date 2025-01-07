@@ -153,7 +153,7 @@ function AreaDoEstudante() {
         toast.success('As informações da bolsa foram atualizadas com sucesso.')
       }
     } catch (error) {
-      toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)
+      toast.error(error.response.data.message ? error.response.data.message : 'Ocorreu um erro na atualização da bolsa.')
     }
 
     await getStudent()
