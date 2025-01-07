@@ -172,15 +172,6 @@ function DataGridBolsistas(props) {
       valueGetter: (params) => new Date(params.row.enrollment.enrollment_date)
     },
     {
-      field: 'defensePredictionDate',
-      headerName: 'Previsão de Defesa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date),
-      valueGetter: (params) => new Date(params.row.enrollment.defense_prediction_date)
-    },
-    {
       field: 'scholarshipStartsAt',
       headerName: 'Início da Bolsa',
       width: 100,
@@ -197,6 +188,15 @@ function DataGridBolsistas(props) {
       sortable: false,
       renderCell: (params) => formatDate(params.row.scholarship_ends_at),
       valueGetter: (params) => new Date(params.row.scholarship_ends_at)
+    },
+    {
+      field: 'defensePredictionDate',
+      headerName: 'Previsão de Defesa',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date),
+      valueGetter: (params) => new Date(params.row.enrollment.defense_prediction_date)
     },
     {
       field: 'extensionEndsAt',
