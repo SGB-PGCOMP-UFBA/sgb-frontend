@@ -76,6 +76,26 @@ function DataGridBolsistas(props) {
       valueGetter: (params) => params.row.enrollment.enrollment_program
     },
     {
+      field: 'agencyName',
+      headerName: 'Agência',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
+      valueGetter: (params) => params.row.agency.name
+    },
+    {
+      field: 'active',
+      headerName: 'Status',
+      width: 160,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => (
+        <CustomChip value={params.row.status} type="status" />
+      ),
+      valueGetter: (params) => (params.row.status)
+    },
+    {
       field: 'studentName',
       headerName: 'Nome do Bolsista',
       width: 260,
@@ -84,6 +104,73 @@ function DataGridBolsistas(props) {
       renderCell: (params) =>
         <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.student.name}</p>,
       valueGetter: (params) => params.row.student.name
+    },
+    {
+      field: 'advisorName',
+      headerName: 'Nome do Orientador',
+      width: 220,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) =>
+        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor.name}</p>,
+      valueGetter: (params) => params.row.advisor.name
+    },
+    {
+      field: 'scholarshipStartsAt',
+      headerName: 'Início da Bolsa',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => formatDate(params.row.scholarship_starts_at),
+      valueGetter: (params) => new Date(params.row.scholarship_starts_at)
+    },
+    {
+      field: 'scholarshipEndsAt',
+      headerName: 'Término da Bolsa',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => formatDate(params.row.scholarship_ends_at),
+      valueGetter: (params) => new Date(params.row.scholarship_ends_at)
+    },
+    {
+      field: 'extensionEndsAt',
+      headerName: 'Extenção da Bolsa',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) =>
+        params.row.extension_ends_at ? formatDate(params.row.extension_ends_at) : 'N/A',
+      valueGetter: (params) =>
+        params.row.extension_ends_at ? new Date(params.row.extension_ends_at) : null
+    },
+    {
+      field: 'enrollmentDate',
+      headerName: 'Data da Matrícula',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => formatDate(params.row.enrollment.enrollment_date),
+      valueGetter: (params) => new Date(params.row.enrollment.enrollment_date)
+    },
+    {
+      field: 'defensePredictionDate',
+      headerName: 'Previsão de Defesa',
+      width: 100,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date),
+      valueGetter: (params) => new Date(params.row.enrollment.defense_prediction_date)
+    },
+    {
+      field: 'student_email',
+      headerName: 'E-mail',
+      width: 200,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) =>
+        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{ params.row.student.email ? params.row.student.email : NOT_INFORMED }</p>,
+      valueGetter: (params) => params.row.student.email
     },
     {
       field: 'student_phone_number',
@@ -105,16 +192,6 @@ function DataGridBolsistas(props) {
       valueGetter: (params) => params.row.student.phone_number
     },
     {
-      field: 'student_email',
-      headerName: 'E-mail',
-      width: 200,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{ params.row.student.email ? params.row.student.email : NOT_INFORMED }</p>,
-      valueGetter: (params) => params.row.student.email
-    },
-    {
       field: 'link_to_lattes',
       headerName: 'Link do Lattes',
       width: 100,
@@ -131,83 +208,6 @@ function DataGridBolsistas(props) {
         </a>
       ),
       valueGetter: (params) => params.row.student.link_to_lattes
-    },
-    {
-      field: 'agencyName',
-      headerName: 'Agência',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => <CustomChip value={params.row.agency.name} type="agency" />,
-      valueGetter: (params) => params.row.agency.name
-    },
-    {
-      field: 'advisorName',
-      headerName: 'Nome do Orientador',
-      width: 220,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor.name}</p>,
-      valueGetter: (params) => params.row.advisor.name
-    },
-    {
-      field: 'active',
-      headerName: 'Status',
-      width: 160,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => (
-        <CustomChip value={params.row.status} type="status" />
-      ),
-      valueGetter: (params) => (params.row.status)
-    },
-    {
-      field: 'enrollmentDate',
-      headerName: 'Data da Matrícula',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => formatDate(params.row.enrollment.enrollment_date),
-      valueGetter: (params) => new Date(params.row.enrollment.enrollment_date)
-    },
-    {
-      field: 'scholarshipStartsAt',
-      headerName: 'Início da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => formatDate(params.row.scholarship_starts_at),
-      valueGetter: (params) => new Date(params.row.scholarship_starts_at)
-    },
-    {
-      field: 'scholarshipEndsAt',
-      headerName: 'Término da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => formatDate(params.row.scholarship_ends_at),
-      valueGetter: (params) => new Date(params.row.scholarship_ends_at)
-    },
-    {
-      field: 'defensePredictionDate',
-      headerName: 'Previsão de Defesa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => formatDate(params.row.enrollment.defense_prediction_date),
-      valueGetter: (params) => new Date(params.row.enrollment.defense_prediction_date)
-    },
-    {
-      field: 'extensionEndsAt',
-      headerName: 'Extenção da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params) =>
-        params.row.extension_ends_at ? formatDate(params.row.extension_ends_at) : 'N/A',
-      valueGetter: (params) =>
-        params.row.extension_ends_at ? new Date(params.row.extension_ends_at) : null
     },
     {
       field: 'actions',
