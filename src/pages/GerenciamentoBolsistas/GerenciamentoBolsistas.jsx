@@ -30,7 +30,7 @@ const resetedFilters = {
   agencyName: 'ALL',
   advisorName: 'ALL',
   programName: 'ALL',
-  orderBy: 'DAT_TERMINO_ASC',
+  orderBy: 'DAT_TERMINO_DESC',
   studentName: '',
 }
 
