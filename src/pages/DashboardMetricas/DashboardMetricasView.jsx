@@ -8,6 +8,7 @@ import { CardBolsasCnpq } from './components/cards/CardBolsasCnpq'
 import { CardBolsasFapesb } from './components/cards/CardBolsasFapesb'
 import { ColumnChartHistogramaBolsas } from './components/charts/ColumnChartHistogramaBolsas'
 import { TableTotalBolsasPorAgencia } from './components/tables/TableTotalBolsasPorAgencia'
+import { AgencyNames } from 'constants/AgencyNames'
 
 function DashboardMetricasView() {
   return (
@@ -98,6 +99,20 @@ function DashboardMetricasView() {
                     >
                       <ColumnChartHistogramaBolsas sx={{ height: '100%' }} />
                     </Grid>
+                    {Object.values(AgencyNames).map((agencyName) => {
+                      return (
+                        <Grid
+                          key={`ColumnChartHistograma_${agencyName}`}
+                          item
+                          xs={12}
+                          md={6}
+                          lg={6}
+                          sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                        >
+                          <ColumnChartHistogramaBolsas sx={{ height: '100%' }} agencyName={agencyName} />
+                        </Grid>
+                      )
+                    })}
                   </Grid>
                 </Container>
               </Box>

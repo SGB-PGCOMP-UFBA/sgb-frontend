@@ -5,11 +5,14 @@ import { api } from '../../../../../api'
 import { ColumnChartHistogramaBolsasView } from './ColumnChartHistogramaBolsasView'
 
 function ColumnChartHistogramaBolsas(props) {
+  const { agencyName } = props
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
-    const response = await api.scholarship.countScholarshipsGroupingByCourseAndYear()
+    let response
+    if (agencyName) response = await api.scholarship.countScholarshipsGroupingByCourseAndYearFilteringByAgencyName(agencyName)
+    else response = await api.scholarship.countScholarshipsGroupingByCourseAndYear()
 
     if (response.status === 200) {
       setData(response.data)
@@ -23,12 +26,13 @@ function ColumnChartHistogramaBolsas(props) {
   }, [])
 
   return (
-    <ColumnChartHistogramaBolsasView sx={props.sx} isLoading={isLoading} data={data} />
+    <ColumnChartHistogramaBolsasView sx={props.sx} isLoading={isLoading} data={data} agencyName={agencyName}/>
   )
 }
 
 ColumnChartHistogramaBolsas.prototypes = {
-  sx: PropTypes.node
+  sx: PropTypes.node,
+  agencyName: PropTypes.string
 }
 
 export { ColumnChartHistogramaBolsas }

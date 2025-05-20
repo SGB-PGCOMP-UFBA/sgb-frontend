@@ -3,7 +3,9 @@ import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
 function ColumnChartHistogramaBolsasView(props) {
-  const { data } = props
+  const { data, agencyName } = props
+
+  const chartTitle = `Histórico de Bolsas Alocadas por Ano ${agencyName? '- ' + agencyName : ''}`
 
   const years = Object.keys(data)
   const programs = ['MESTRADO', 'DOUTORADO']
@@ -81,7 +83,7 @@ function ColumnChartHistogramaBolsasView(props) {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
-              Histórico de Bolsas Alocadas por Ano
+              {chartTitle}
             </Typography>
           </Stack>
           <Avatar
@@ -103,7 +105,8 @@ function ColumnChartHistogramaBolsasView(props) {
 ColumnChartHistogramaBolsasView.prototypes = {
   sx: PropTypes.node,
   data: PropTypes.node.isRequired,
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool.isRequired,
+  agencyName: PropTypes.string,
 }
 
 export { ColumnChartHistogramaBolsasView }

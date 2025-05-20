@@ -33,6 +33,12 @@ export const countScholarshipsGroupingByCourseAndYear = async () => {
   })
 }
 
+export const countScholarshipsGroupingByCourseAndYearFilteringByAgencyName = async (agencyName) => {
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year/${agencyName}`, {
+    headers: buildHeaders()
+  })
+}
+
 export const countScholarshipsGroupingByStatusForAgency = async (agencyName) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/count/by-agency-and-status`
 
