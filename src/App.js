@@ -14,6 +14,7 @@ import {
   DashboardMetricas,
   GerenciamentoBolsistas,
   GerenciamentoAgencias,
+  GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
   AreaDoEstudante,
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="dashboard" element={<DashboardMetricas />} />
             <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
             <Route path="agencias" element={<GerenciamentoAgencias />} />
+            <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />
             <Route path="orientadores" element={<GerenciamentoOrientadores />} />
             <Route path="gestao-de-dados" element={<GerenciamentoDados />} />
           </Route>

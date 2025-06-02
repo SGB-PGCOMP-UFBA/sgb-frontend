@@ -41,6 +41,13 @@ export default function Sidebar() {
       availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
+      name: 'Alocações',
+      icon: 'location_on',
+      path: '/alocacoes',
+      visible: true,
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
+    },
+    {
       name: 'Orientandos',
       icon: 'people',
       path: '/orientandos',
