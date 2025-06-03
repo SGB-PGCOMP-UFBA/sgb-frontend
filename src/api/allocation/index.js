@@ -3,11 +3,11 @@ import { buildHeaders } from '../utils/HeaderUtils'
 
 const BASE_ALLOCATION_API_PATH = `/v1/allocation`
 
-// export const getAgencyFilterList = async () => {
-//   return api.get(`${BASE_ALLOCATION_API_PATH}/filter-list`, {
-//     headers: buildHeaders()
-//   })
-// }
+export const getAllocationFilterList = async () => {
+  return api.get(`${BASE_ALLOCATION_API_PATH}/filter-list`, {
+    headers: buildHeaders()
+  })
+}
 
 export const getAllocations = async () => {
   return api.get(`${BASE_ALLOCATION_API_PATH}`, {

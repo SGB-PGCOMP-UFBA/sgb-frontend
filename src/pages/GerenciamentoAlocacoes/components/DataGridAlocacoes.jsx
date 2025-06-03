@@ -44,52 +44,52 @@ function DataGridAllocacoes(props) {
     {
       field: 'name',
       headerName: 'Nome da Alocação',
-      minWidth: 500,
+      minWidth: 300,
       filterable: false,
       sortable: false,
       renderCell: (params) => <p className="overflow-auto">{params.row.name}</p>,
       valueGetter: (params) => params.row.name
     },
-    {
-      field: 'masters_degree_awarded_scholarships',
-      headerName: 'Bolsas Concedidas Para o Mestrado',
-      width: 160,
-      align: 'center',
-      filterable: false,
-      sortable: false,
-      renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_awarded_scholarships}</p>,
-      valueGetter: (params) => params.row.masters_degree_awarded_scholarships
-    },
     // {
-    //   field: 'masters_degree_allocated_scholarships',
-    //   headerName: 'Bolsas Alocadas no Mestrado',
-    //   width: 150,
+    //   field: 'masters_degree_awarded_scholarships',
+    //   headerName: 'Bolsas Concedidas Para o Mestrado',
+    //   width: 160,
     //   align: 'center',
     //   filterable: false,
     //   sortable: false,
-    //   renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_allocated_scholarships}</p>,
-    //   valueGetter: (params) => params.row.masters_degree_allocated_scholarships
+    //   renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_awarded_scholarships}</p>,
+    //   valueGetter: (params) => params.row.masters_degree_awarded_scholarships
     // },
     {
-      field: 'doctorate_degree_awarded_scholarships',
-      headerName: 'Bolsas Concedidas Para o Doutorado',
-      width: 160,
+      field: 'masters_degree_allocated_scholarships',
+      headerName: 'Bolsas Alocadas no Mestrado',
+      width: 150,
       align: 'center',
       filterable: false,
       sortable: false,
-      renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_awarded_scholarships}</p>,
-      valueGetter: (params) => params.row.doctorate_degree_awarded_scholarships
+      renderCell: (params) => <p className="overflow-auto">{params.row.masters_degree_allocated_scholarships}</p>,
+      valueGetter: (params) => params.row.masters_degree_allocated_scholarships
     },
     // {
-    //   field: 'doctorate_degree_allocated_scholarships',
-    //   headerName: 'Bolsas Alocadas no Doutorado',
-    //   width: 150,
+    //   field: 'doctorate_degree_awarded_scholarships',
+    //   headerName: 'Bolsas Concedidas Para o Doutorado',
+    //   width: 160,
     //   align: 'center',
     //   filterable: false,
     //   sortable: false,
-    //   renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_allocated_scholarships}</p>,
-    //   valueGetter: (params) => params.row.doctorate_degree_allocated_scholarships
+    //   renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_awarded_scholarships}</p>,
+    //   valueGetter: (params) => params.row.doctorate_degree_awarded_scholarships
     // },
+    {
+      field: 'doctorate_degree_allocated_scholarships',
+      headerName: 'Bolsas Alocadas no Doutorado',
+      width: 150,
+      align: 'center',
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => <p className="overflow-auto">{params.row.doctorate_degree_allocated_scholarships}</p>,
+      valueGetter: (params) => params.row.doctorate_degree_allocated_scholarships
+    },
     {
       field: 'createdAt',
       headerName: 'Criado Em',

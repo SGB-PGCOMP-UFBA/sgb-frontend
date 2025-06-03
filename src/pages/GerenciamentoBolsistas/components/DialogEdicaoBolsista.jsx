@@ -25,6 +25,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
 
   const advisorsName = filterOptions.advisorNameFilterList.slice(1)
   const agenciesName = filterOptions.agencyNameFilterList.slice(1)
+  const allocationsName = filterOptions.allocationNameFilterList.slice(1)
 
   const dialogContent = (
     <Box
@@ -311,6 +312,35 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
               defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
               slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
             />
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'row',
+            },
+            gap: '0.4em',
+            '& > *': {
+              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
+            },
+          }}>
+            <FormControl fullWidth>
+              <InputLabel id="label-agencia">Alocação</InputLabel>
+              <Select
+                id="select-alocacao"
+                label="Alocação"
+                name="allocation_id"
+                labelId="label-alocacao"
+                defaultValue={item.allocation? item.allocation.id : allocationsName[0].id}
+              >
+                {allocationsName.map((allocation) => (
+                  <MenuItem key={allocation.key} value={allocation.id}>
+                    {allocation.value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </Box>
       </Box>

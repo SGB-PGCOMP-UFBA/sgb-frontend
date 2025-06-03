@@ -33,7 +33,7 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }) {
         inputProps={{ maxLength: 80 }}
       />
 
-      <TextField
+      {/* <TextField
         fullWidth
         id="masters_degree_awarded_scholarships"
         name="masters_degree_awarded_scholarships"
@@ -66,7 +66,7 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }) {
             step: 1,
           },
         }}
-      />
+      /> */}
     </div>
   )
 

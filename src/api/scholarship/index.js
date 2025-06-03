@@ -64,6 +64,9 @@ export const getScholarships = async (page, limit, filters) => {
     if (filters.agencyName) {
       url += `&agencyName=${encodeURIComponent(filters.agencyName)}`
     }
+    if (filters.allocationName) {
+      url += `&allocationName=${encodeURIComponent(filters.allocationName)}`
+    }
     if (filters.advisorName) {
       url += `&advisorName=${encodeURIComponent(filters.advisorName)}`
     }
