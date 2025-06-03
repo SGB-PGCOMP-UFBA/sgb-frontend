@@ -8,6 +8,7 @@ import { parseDate } from '../../helpers/formatters'
 function AreaDoEstudante() {
   const [student, setStudent] = useState({})
   const [agencies, setAgencies] = useState([])
+  const [allocations, setAllocations] = useState([])
   const [advisors, setAdvisors] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -32,6 +33,18 @@ function AreaDoEstudante() {
       }
     } catch (error) {
       toast.error('Ocorreu um erro na consulta de agências.')
+    }
+  }
+
+  const getAllocations = async () => {
+    try {
+      const response = await api.allocation.getAllocationFilterList()
+
+      if (response.status === 200) {
+        setAllocations(response.data)
+      }
+    } catch (erro) {
+      toast.error('Ocorreu um erro na consulta de alocações.')
     }
   }
 
@@ -141,6 +154,7 @@ function AreaDoEstudante() {
         student_email: data.student_email,
         status: data.status,
         agency_id: data.agency_id,
+        allocation_id: data.allocation_id,
         scholarship_starts_at: parseDate(data.scholarship_starts_at),
         scholarship_ends_at: parseDate(data.scholarship_ends_at),
         extension_ends_at: data.extension_ends_at !== null ? parseDate(data.extension_ends_at) : null,
@@ -163,6 +177,7 @@ function AreaDoEstudante() {
     const fetchData = async () => {
       await getAdvisors()
       await getAgencies()
+      await getAllocations()
       await getStudent()
       setIsLoading(false)
     }
@@ -175,6 +190,7 @@ function AreaDoEstudante() {
       student={student}
       advisors={advisors}
       agencies={agencies}
+      allocations={allocations}
       onCreateNewEnrollment={handleCreateNewEnrollment}
       onCreateNewScholarship={handleCreateNewScholarship}
       onUpdateEnrollment={handleUpdateEnrollment}

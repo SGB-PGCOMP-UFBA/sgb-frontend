@@ -6,7 +6,7 @@ import { SlideUp } from '../../../components/Transitions/SlideUp'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
 function DialogEdicaoBolsa(props) {
-  const { isOpen, onSubmit, onClose, agencies, item } = props
+  const { isOpen, onSubmit, onClose, agencies, allocations, item } = props
 
   const [minEndDate, setMinEndDate] = useState(null)
 
@@ -141,6 +141,26 @@ function DialogEdicaoBolsa(props) {
             fullWidth
             inputProps={{ maxLength: 14 }}
           />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl required fullWidth>
+            <InputLabel id="label-allocation">Alocação</InputLabel>
+            <Select
+              id="select-allocation"
+              label="allocation"
+              name="allocation_id"
+              labelId="label-allocation"
+              defaultValue={item.allocation ? item.allocation.id : allocations[0].id}
+              placeholder="Selecione uma alocação"
+            >
+              <MenuItem disabled value={""}>Selecione uma alocação</MenuItem>
+              {allocations.map((allocation) => (
+                <MenuItem key={allocation.id} value={allocation.id}>
+                  {allocation.value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </Box>

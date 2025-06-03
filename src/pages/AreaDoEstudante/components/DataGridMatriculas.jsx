@@ -224,6 +224,7 @@ function DataGridMatriculas(props) {
             onClose={handleDialogForScholarshipCreateClose}
             onSubmit={props.onCreateScholarship}
             agencies={props.agencies}
+            allocations={props.allocations}
             enrollment={selectedEnrollment}
           />
         )}
