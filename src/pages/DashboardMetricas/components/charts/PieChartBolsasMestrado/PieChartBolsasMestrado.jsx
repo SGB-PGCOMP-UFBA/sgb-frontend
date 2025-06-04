@@ -20,6 +20,7 @@ const initialState = {
 
 function PieChartBolsasMestrado(props) {
   const [data, setData] = useState(initialState)
+  const [dataTotal, setDataTotal] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
@@ -30,6 +31,9 @@ function PieChartBolsasMestrado(props) {
         response.data[LITERAL_MESTRADO] : initialState
 
       setData(responseData)
+      let total = 0;
+      Object.values(responseData).forEach((value) => total += parseInt(value.count))
+      setDataTotal(total)
     } else {
       toast.error(`[${response.status}]: ${response.data.error}`)
     }
@@ -40,7 +44,7 @@ function PieChartBolsasMestrado(props) {
   }, [])
 
   return (
-    <PieChartBolsasMestradoView sx={props.sx} isLoading={isLoading} data={data} />
+    <PieChartBolsasMestradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal}/>
   )
 }
 
