@@ -9,6 +9,7 @@ import { DashboardMetricas } from './DashboardMetricas'
 import { GerenciamentoDados } from './GerenciamentoDados'
 import { GerenciamentoBolsistas } from './GerenciamentoBolsistas'
 import { GerenciamentoAgencias } from './GerenciamentoAgencias'
+import { GerenciamentoAlocacoes } from './GerenciamentoAlocacoes'
 import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 import { AreaDoEstudante } from './AreaDoEstudante'
@@ -25,6 +26,7 @@ export {
   GerenciamentoDados,
   GerenciamentoBolsistas,
   GerenciamentoAgencias,
+  GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
   AreaDoEstudante

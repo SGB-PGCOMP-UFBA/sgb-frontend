@@ -13,7 +13,8 @@ const initialFilterOptions = {
   scholarshipStatusFilterList: [initialStateForAllFilter],
   agencyNameFilterList: [initialStateForAllFilter],
   advisorNameFilterList: [initialStateForAllFilter],
-  programNameFilterList: [initialStateForAllFilter]
+  programNameFilterList: [initialStateForAllFilter],
+  allocationNameFilterList: [initialStateForAllFilter],
 }
 
 const initialFilters = {
@@ -21,6 +22,7 @@ const initialFilters = {
   agencyName: 'CAPES',
   advisorName: 'ALL',
   programName: 'MESTRADO',
+  allocationName: 'ALL',
   orderBy: 'DAT_TERMINO_ASC',
   studentName: '',
 }
@@ -30,6 +32,7 @@ const resetedFilters = {
   agencyName: 'ALL',
   advisorName: 'ALL',
   programName: 'ALL',
+  allocationName: 'ALL',
   orderBy: 'DAT_TERMINO_DESC',
   studentName: '',
 }
@@ -112,12 +115,14 @@ function GerenciamentoBolsistas() {
       const advisorRequest = api.advisor.getAdvisorFilterList()
       const programRequest = api.enrollment.getEnrollmentProgramFilterList()
       const scholarshipStatusRequest = api.scholarship.getScholarshipStatusFilterList()
+      const allocationRequest = api.allocation.getAllocationFilterList()
 
       const response = await Promise.all([
         scholarshipStatusRequest,
         agencyRequest,
         programRequest,
-        advisorRequest
+        advisorRequest,
+        allocationRequest,
       ])
 
       if (response.length > 0) {
@@ -125,12 +130,14 @@ function GerenciamentoBolsistas() {
         const agencyList = response[1].data
         const programList = response[2].data
         const advisorList = response[3].data
+        const allocationList = response[4].data
 
         setFilterOptions({
           scholarshipStatusFilterList: initialFilterOptions.scholarshipStatusFilterList.concat(scholarshipsList),
           agencyNameFilterList: initialFilterOptions.agencyNameFilterList.concat(agencyList),
           programNameFilterList: initialFilterOptions.programNameFilterList.concat(programList),
-          advisorNameFilterList: initialFilterOptions.advisorNameFilterList.concat(advisorList)
+          advisorNameFilterList: initialFilterOptions.advisorNameFilterList.concat(advisorList),
+          allocationNameFilterList: initialFilterOptions.allocationNameFilterList.concat(allocationList),
         })
       }
     } catch (error) {
@@ -164,7 +171,8 @@ function GerenciamentoBolsistas() {
         scholarship_starts_at: parseDate(data.scholarship_starts_at),
         scholarship_ends_at: parseDate(data.scholarship_ends_at),
         extension_ends_at: data.extension_ends_at !== null ? parseDate(data.extension_ends_at) : null,
-        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
+        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
+        allocation_id: data.allocation_id,
       })
 
       const response = await Promise.all([

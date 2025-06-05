@@ -132,6 +132,17 @@ function DataGridBolsas(props) {
         params.row.extension_ends_at ? new Date(params.row.extension_ends_at) : null
     },
     {
+      field: 'allocationName',
+      headerName: 'Alocação',
+      width: 160,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => (
+        <p className="overflow-auto">{params.row.allocation? params.row.allocation.name : NOT_INFORMED}</p>
+      ),
+      valueGetter: (params) => params.row.allocation?.name
+    },
+    {
       field: 'actions',
       headerName: 'Ações',
       width: 180,
@@ -198,6 +209,7 @@ function DataGridBolsas(props) {
             onSubmit={props.onUpdate}
             item={selectedScholarship}
             agencies={props.agencies}
+            allocations={props.allocations}
             isOpen={isDialogForScholarshipUpdateOpen}
             onClose={handleDialogForUpdateClose}
           />

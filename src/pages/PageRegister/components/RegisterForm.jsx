@@ -136,6 +136,7 @@ function RegisterForm() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  required                  
                   fullWidth
                   id="tax_id"
                   label="CPF"

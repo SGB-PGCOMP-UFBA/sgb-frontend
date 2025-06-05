@@ -55,10 +55,10 @@ function AreaDoEstudanteView(props) {
               </div>
             </div>
             <Typography variant="h6" component="h6">Matrículas</Typography>
-            {props.isLoading ? <Loading /> : <DataGridMatriculas data={props.student} agencies={props.agencies} advisors={props.advisors} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
+            {props.isLoading ? <Loading /> : <DataGridMatriculas data={props.student} agencies={props.agencies} allocations={props.allocations} advisors={props.advisors} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
 
             <Typography variant="h6" component="h6">Bolsas</Typography>
-            {props.isLoading ? <Loading /> : <DataGridBolsas data={props.student} agencies={props.agencies} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
+            {props.isLoading ? <Loading /> : <DataGridBolsas data={props.student} agencies={props.agencies} allocations={props.allocations} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
 
             {isDialogForCreateEnrollmentOpen && (
               <DialogInclusaoMatricula

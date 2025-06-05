@@ -163,6 +163,18 @@ function DataGridBolsistas(props) {
       valueGetter: (params) => new Date(params.row.enrollment.defense_prediction_date)
     },
     {
+      field: 'allocationName',
+      headerName: 'Alocação',
+      width: 130,
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => 
+        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto" >
+          {params.row.allocation?.name ? params.row.allocation.name : NOT_INFORMED}
+        </p>,
+      valueGetter: (params) => params.row.allocation?.name
+    },
+    {
       field: 'student_email',
       headerName: 'E-mail',
       width: 200,

@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
 function PieChartBolsasDoutoradoView(props) {
-  const { data } = props
+  const { data, total } = props
 
   const options = {
     labels:  Object.keys(data),
@@ -43,6 +43,9 @@ function PieChartBolsasDoutoradoView(props) {
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
               Bolsas de Doutorado (Ativas)
+            </Typography>
+            <Typography color="text.primary" textAlign={'center'} variant="h5" marginBottom={2}>
+              {`Total: ${total} Bolsas`}
             </Typography>
           </Stack>
           <Avatar

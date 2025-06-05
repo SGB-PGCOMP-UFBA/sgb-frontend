@@ -1,5 +1,6 @@
 import * as advisorApi from './advisor'
 import * as agencyApi from './agency'
+import * as allocationApi from './allocation'
 import * as passwordApi from './password'
 import * as studentApi from './student'
 import * as enrollmentApi from './enrollment'
@@ -14,6 +15,7 @@ const api = {
   auth: authApi,
   advisor: advisorApi,
   agency: agencyApi,
+  allocation: allocationApi,
   password: passwordApi,
   student: studentApi,
   enrollment: enrollmentApi,

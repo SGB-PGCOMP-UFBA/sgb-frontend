@@ -6,7 +6,7 @@ import { SlideUp } from '../../../components/Transitions/SlideUp'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
 function DialogInclusaoBolsa(props) {
-  const { isOpen, onSubmit, onClose, agencies, enrollment } = props
+  const { isOpen, onSubmit, onClose, agencies, allocations, enrollment } = props
 
   const [minEndDate, setMinEndDate] = useState(null)
 
@@ -108,6 +108,26 @@ function DialogInclusaoBolsa(props) {
               }
             }}
           />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl required fullWidth>
+            <InputLabel id="label-allocation">Alocação</InputLabel>
+            <Select
+              id="select-allocation"
+              label="allocation"
+              name="allocation_name"
+              labelId="label-allocation"
+              defaultValue={""}
+              placeholder="Selecione uma alocação"
+            >
+              <MenuItem disabled value={""}>Selecione uma alocação</MenuItem>
+              {allocations.map((allocation) => (
+                <MenuItem key={allocation.key} value={allocation.value}>
+                  {allocation.value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </Box>
