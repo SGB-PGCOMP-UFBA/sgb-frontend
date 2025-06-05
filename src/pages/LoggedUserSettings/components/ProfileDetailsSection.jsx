@@ -73,7 +73,7 @@ function ProfileDetailsSection(props) {
   }
 
   return (
-    <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+    <form autoComplete="off" onSubmit={handleSubmit}>
       <Card elevation={0} sx={{ border: 1, borderColor: '#e5e7eb' }}>
         <CardHeader subheader="Informações do Usuário" title="Perfil" />
         <CardContent>
@@ -81,6 +81,7 @@ function ProfileDetailsSection(props) {
             <Grid container spacing={3}>
               <Grid xs={12} md={6}>
                 <TextField
+                  required
                   fullWidth
                   label="Name"
                   name="name"
@@ -91,6 +92,7 @@ function ProfileDetailsSection(props) {
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField
+                  required
                   fullWidth
                   label="E-mail"
                   name="email"
@@ -101,6 +103,7 @@ function ProfileDetailsSection(props) {
               </Grid>
               <Grid xs={12} md={6}>
                 <TextField
+                  required
                   fullWidth
                   label="CPF"
                   name="tax_id"
