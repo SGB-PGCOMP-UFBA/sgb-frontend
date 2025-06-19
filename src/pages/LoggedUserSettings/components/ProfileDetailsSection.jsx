@@ -150,7 +150,7 @@ function ProfileDetailsSection(props) {
   )
 }
 
-ProfileDetailsSection.prototypes = {
+ProfileDetailsSection.propTypes = {
   user: PropTypes.node
 }
 

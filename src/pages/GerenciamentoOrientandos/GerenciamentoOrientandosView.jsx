@@ -35,8 +35,8 @@ function GerenciamentoOrientandosView(props) {
   )
 }
 
-GerenciamentoOrientandosView.prototypes = {
-  isLoading: PropTypes.boolean,
+GerenciamentoOrientandosView.propTypes = {
+  isLoading: PropTypes.bool,
   data: PropTypes.node
 }
 

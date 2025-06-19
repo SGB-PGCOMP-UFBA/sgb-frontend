@@ -24,7 +24,8 @@ function PieChartBolsasDoutorado(props) {
   const [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
-    const response = await api.scholarship.countOnGoingScholarshipsGroupingByAgencyForCourse(LITERAL_DOUTORADO)
+    const scholarshipStatus = props.scholarshipStatus ?? null
+    const response = await api.scholarship.countScholarshipsGroupingByAgencyForCourse(LITERAL_DOUTORADO, scholarshipStatus)
 
     if (response.status === 200) {
       const responseData = Object.keys(response.data).length > 0 ?
@@ -44,12 +45,13 @@ function PieChartBolsasDoutorado(props) {
   }, [])
 
   return (
-    <PieChartBolsasDoutoradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal}/>
+    <PieChartBolsasDoutoradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal} scholarshipStatus={props.scholarshipStatus}/>
   )
 }
 
-PieChartBolsasDoutorado.prototypes = {
+PieChartBolsasDoutorado.propTypes = {
   sx: PropTypes.node,
+  scholarshipStatus: PropTypes.string
 }
 
 export { PieChartBolsasDoutorado }

@@ -36,7 +36,7 @@ function CardBolsasFapesb(props) {
   )
 }
 
-CardBolsasFapesb.prototypes = {
+CardBolsasFapesb.propTypes = {
   sx: PropTypes.node,
 }
 

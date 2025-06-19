@@ -36,7 +36,7 @@ function CardBolsasCapes(props) {
   )
 }
 
-CardBolsasCapes.prototypes = {
+CardBolsasCapes.propTypes = {
   sx: PropTypes.node,
 }
 

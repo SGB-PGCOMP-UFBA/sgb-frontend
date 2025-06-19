@@ -310,7 +310,7 @@ function DataGridBolsistas(props) {
   )
 }
 
-DataGridBolsistas.prototypes = {
+DataGridBolsistas.propTypes = {
   data: PropTypes.node,
   filterOptions: PropTypes.node,
   metadata: PropTypes.node,

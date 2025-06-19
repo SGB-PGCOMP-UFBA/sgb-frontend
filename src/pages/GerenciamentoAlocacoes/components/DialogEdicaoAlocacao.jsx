@@ -11,8 +11,8 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }) {
 
     onSubmit(item.id, {
       name: entries.name,
-      masters_degree_awarded_scholarships: Number(entries.masters_degree_awarded_scholarships),
-      doctorate_degree_awarded_scholarships: Number(entries.doctorate_degree_awarded_scholarships)
+      // masters_degree_awarded_scholarships: Number(entries.masters_degree_awarded_scholarships),
+      // doctorate_degree_awarded_scholarships: Number(entries.doctorate_degree_awarded_scholarships)
     })
 
     onClose()

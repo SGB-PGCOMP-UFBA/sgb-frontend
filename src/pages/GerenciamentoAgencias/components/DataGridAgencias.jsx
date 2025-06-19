@@ -211,7 +211,7 @@ function DataGridAgencias(props) {
   )
 }
 
-DataGridAgencias.prototypes = {
+DataGridAgencias.propTypes = {
   data: PropTypes.node,
   onUpdate: PropTypes.node,
   onDelete: PropTypes.node

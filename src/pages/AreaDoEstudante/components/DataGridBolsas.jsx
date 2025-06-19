@@ -228,7 +228,7 @@ function DataGridBolsas(props) {
   )
 }
 
-DataGridBolsas.prototypes = {
+DataGridBolsas.propTypes = {
   agencies: PropTypes.node.isRequired,
   data: PropTypes.node,
   onUpdate: PropTypes.node,
