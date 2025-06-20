@@ -15,15 +15,21 @@ export const getScholarshipStatusFilterList = async () => {
   })
 }
 
-export const countOnGoingScholarshipsGroupingByAgencyForCourse = async (programName) => {
+export const countScholarshipsGroupingByAgencyForCourse = async (programName, scholarshipStatus = null) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/count/by-agency-and-course`
 
   if (programName) {
     url += `?programName=${encodeURIComponent(programName)}`
   }
 
+  if (scholarshipStatus) {
+    if (url.includes('?')) url += '&'
+    else url += '?'
+    url += `scholarshipStatus=${scholarshipStatus}`
+  }
+
   return api.get(url, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 

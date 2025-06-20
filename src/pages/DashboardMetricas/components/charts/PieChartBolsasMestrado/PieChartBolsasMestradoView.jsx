@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts'
 import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
 
 function PieChartBolsasMestradoView(props) {
-  const { data, total } = props
+  const { data, total, scholarshipStatus } = props
 
   const options = {
     labels:  Object.keys(data),
@@ -22,8 +22,8 @@ function PieChartBolsasMestradoView(props) {
       enabled: true,
       y: {
         formatter: function(val, opts) {
-          var total = opts.globals.seriesTotals.reduce((a, b) => a + b, 0);
-          var percentage = (val / total) * 100;
+          const total = opts.globals.seriesTotals.reduce((a, b) => a + b, 0);
+          const percentage = (val / total) * 100;
           return percentage.toPrecision(4) + "%";
         }
       },
@@ -42,7 +42,7 @@ function PieChartBolsasMestradoView(props) {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1} marginBottom={2}>
             <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
-              Bolsas de Mestrado (Ativas)
+              {`Bolsas de Mestrado (${scholarshipStatus ? 'Finalizadas' : 'Ativas'})`}
             </Typography>
             <Typography color="text.primary" textAlign={'center'} variant="h5" marginBottom={2}>
               {`Total: ${total} Bolsas`}
@@ -64,10 +64,12 @@ function PieChartBolsasMestradoView(props) {
   )
 }
 
-PieChartBolsasMestradoView.prototypes = {
+PieChartBolsasMestradoView.propTypes = {
   sx: PropTypes.node,
   data: PropTypes.node.isRequired,
-  isLoading: PropTypes.bool.isRequired
+  total: PropTypes.number,
+  isLoading: PropTypes.bool.isRequired,
+  scholarshipStatus: PropTypes.string,
 }
 
 export { PieChartBolsasMestradoView }

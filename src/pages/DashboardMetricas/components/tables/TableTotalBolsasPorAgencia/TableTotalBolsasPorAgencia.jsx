@@ -28,7 +28,7 @@ function TableTotalBolsasPorAgencia(props) {
   )
 }
 
-TableTotalBolsasPorAgencia.prototypes = {
+TableTotalBolsasPorAgencia.propTypes = {
   sx: PropTypes.node,
 }
 

@@ -44,7 +44,7 @@ export default function FormInput(props) {
   )
 }
 
-FormInput.prototypes = {
+FormInput.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

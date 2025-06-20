@@ -202,7 +202,7 @@ function DataGridAllocacoes(props) {
   )
 }
 
-DataGridAllocacoes.prototypes = {
+DataGridAllocacoes.propTypes = {
   data: PropTypes.node,
   onUpdate: PropTypes.node,
   onDelete: PropTypes.node

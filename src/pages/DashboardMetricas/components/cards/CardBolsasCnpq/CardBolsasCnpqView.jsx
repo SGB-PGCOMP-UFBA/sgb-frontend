@@ -45,7 +45,7 @@ function CardBolsasCnpqView(props) {
   )
 }
 
-CardBolsasCnpqView.prototypes = {
+CardBolsasCnpqView.propTypes = {
   sx: PropTypes.node,
   data: PropTypes.node.isRequired
 }

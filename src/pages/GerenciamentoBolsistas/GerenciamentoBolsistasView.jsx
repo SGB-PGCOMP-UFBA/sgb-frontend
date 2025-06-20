@@ -176,7 +176,7 @@ function GerenciamentoBolsistasView(props) {
   )
 }
 
-GerenciamentoBolsistasView.prototypes = {
+GerenciamentoBolsistasView.propTypes = {
   data: PropTypes.node,
   page: PropTypes.number,
   setPage: PropTypes.node,
@@ -186,7 +186,7 @@ GerenciamentoBolsistasView.prototypes = {
   setFilters: PropTypes.node,
   handleResetFilters: PropTypes.node,
   filterOptions: PropTypes.node,
-  isLoading: PropTypes.boolean,
+  isLoading: PropTypes.bool,
   onEditScholarship: PropTypes.node,
   onDeleteScholarship: PropTypes.node,
   isDialogForFiltersOpen: PropTypes.node,

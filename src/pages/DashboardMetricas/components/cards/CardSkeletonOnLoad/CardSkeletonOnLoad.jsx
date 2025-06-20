@@ -28,7 +28,7 @@ function CardSkeletonOnLoad(props) {
   )
 }
 
-CardSkeletonOnLoad.prototypes = {
+CardSkeletonOnLoad.propTypes = {
   sx: PropTypes.node
 }
 

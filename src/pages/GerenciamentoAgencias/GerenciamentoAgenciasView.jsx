@@ -75,8 +75,8 @@ function GerenciamentoAgenciasView(props) {
   )
 }
 
-GerenciamentoAgenciasView.prototypes = {
-  isLoading: PropTypes.boolean,
+GerenciamentoAgenciasView.propTypes = {
+  isLoading: PropTypes.bool,
   data: PropTypes.node,
   onCreate: PropTypes.node,
   onUpdate: PropTypes.node,

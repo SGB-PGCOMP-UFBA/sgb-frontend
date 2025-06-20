@@ -45,7 +45,7 @@ function CardBolsasCapesView(props) {
   )
 }
 
-CardBolsasCapesView.prototypes = {
+CardBolsasCapesView.propTypes = {
   sx: PropTypes.node,
   data: PropTypes.node.isRequired
 }

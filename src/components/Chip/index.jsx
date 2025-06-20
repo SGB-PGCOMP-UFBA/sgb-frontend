@@ -63,7 +63,7 @@ export default function CustomChip(props) {
   )
 }
 
-CustomChip.prototypes = {
+CustomChip.propTypes = {
   type: PropTypes.oneOf(['agency, program, status']),
   value: PropTypes.string
 }

@@ -36,7 +36,7 @@ function CardBolsasCnpq(props) {
   )
 }
 
-CardBolsasCnpq.prototypes = {
+CardBolsasCnpq.propTypes = {
   sx: PropTypes.node,
 }
 

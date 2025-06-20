@@ -102,7 +102,7 @@ function ColumnChartHistogramaBolsasView(props) {
   )
 }
 
-ColumnChartHistogramaBolsasView.prototypes = {
+ColumnChartHistogramaBolsasView.propTypes = {
   sx: PropTypes.node,
   data: PropTypes.node.isRequired,
   isLoading: PropTypes.bool.isRequired,

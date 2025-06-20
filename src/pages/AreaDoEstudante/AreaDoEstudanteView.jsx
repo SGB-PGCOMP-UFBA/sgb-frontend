@@ -75,7 +75,7 @@ function AreaDoEstudanteView(props) {
   )
 }
 
-AreaDoEstudanteView.prototypes = {
+AreaDoEstudanteView.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
