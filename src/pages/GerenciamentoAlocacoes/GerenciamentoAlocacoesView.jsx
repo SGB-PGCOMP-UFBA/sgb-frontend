@@ -75,8 +75,8 @@ function GerenciamentoAlocacoesView(props) {
   )
 }
 
-GerenciamentoAlocacoesView.prototypes = {
-  isLoading: PropTypes.boolean,
+GerenciamentoAlocacoesView.propTypes = {
+  isLoading: PropTypes.bool,
   data: PropTypes.node,
   onCreate: PropTypes.node,
   onUpdate: PropTypes.node,

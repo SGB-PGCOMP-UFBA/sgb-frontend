@@ -30,7 +30,7 @@ function ColumnChartHistogramaBolsas(props) {
   )
 }
 
-ColumnChartHistogramaBolsas.prototypes = {
+ColumnChartHistogramaBolsas.propTypes = {
   sx: PropTypes.node,
   agencyName: PropTypes.string
 }

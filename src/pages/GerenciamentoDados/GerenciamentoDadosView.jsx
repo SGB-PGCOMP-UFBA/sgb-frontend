@@ -94,8 +94,8 @@ function GerenciamentoDadosView(props) {
   )
 }
 
-GerenciamentoDadosView.prototypes = {
-  isLoading: PropTypes.boolean,
+GerenciamentoDadosView.propTypes = {
+  isLoading: PropTypes.bool,
   importErrors: PropTypes.array,
   handleErrors: PropTypes.func,
   onImport: PropTypes.func,

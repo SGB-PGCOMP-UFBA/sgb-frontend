@@ -9,6 +9,7 @@ function DialogInclusaoBolsa(props) {
   const { isOpen, onSubmit, onClose, agencies, allocations, enrollment } = props
 
   const [minEndDate, setMinEndDate] = useState(null)
+  let [agency, setAgency] = useState('')
 
   const handleStartDateChange = (newDate) => {
     setMinEndDate(newDate)
@@ -58,7 +59,7 @@ function DialogInclusaoBolsa(props) {
             >
               <MenuItem disabled value={""}>Selecione uma agência</MenuItem>
               {agencies.map((agency) => (
-                <MenuItem key={agency.key} value={agency.value}>
+                <MenuItem key={agency.key} value={agency.value} onClick={() => setAgency(agency.value)}>
                   {agency.value}
                 </MenuItem>
               ))}
@@ -79,6 +80,16 @@ function DialogInclusaoBolsa(props) {
             inputProps={{ maxLength: 14 }}
           />
         </Grid>
+        { agency === 'CAPES' &&
+          <Grid item className='flex justify-center'>
+            <p className='font-semibold text-ms text-center'>
+              Coloque as datas de início e fim EXATAS como disposto em&nbsp;
+              <a href="https://sso.capes.gov.br/" target='_blank' rel="noopener noreferrer" className='underline text-blue-400 hover:text-blue-600'>
+                https://sso.capes.gov.br/
+              </a>
+            </p>
+          </Grid>
+        }
         <Grid item xs={12} sm={6}>
           <DatePicker
             label="Data de Início da Bolsa"

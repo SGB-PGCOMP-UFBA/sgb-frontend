@@ -38,7 +38,7 @@ function LoggedUserSettingsView(props) {
   )
 }
 
-LoggedUserSettingsView.prototypes = {
+LoggedUserSettingsView.propTypes = {
   user: PropTypes.node
 }
 

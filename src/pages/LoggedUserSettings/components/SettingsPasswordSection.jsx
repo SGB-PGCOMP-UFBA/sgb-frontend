@@ -175,7 +175,7 @@ function SettingsPasswordSection(props) {
   )
 }
 
-SettingsPasswordSection.prototypes = {
+SettingsPasswordSection.propTypes = {
   user: PropTypes.node
 }
 

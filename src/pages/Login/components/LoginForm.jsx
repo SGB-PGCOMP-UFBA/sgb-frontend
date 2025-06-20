@@ -152,7 +152,7 @@ function LoginForm(props) {
   )
 }
 
-LoginForm.prototypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   formValues: PropTypes.shape({
     email: PropTypes.string.isRequired,

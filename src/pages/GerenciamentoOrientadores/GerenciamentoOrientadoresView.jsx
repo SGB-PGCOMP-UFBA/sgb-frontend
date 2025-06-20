@@ -77,8 +77,8 @@ function GerenciamentoOrientadoresView(props) {
   )
 }
 
-GerenciamentoOrientadoresView.prototypes = {
-  isLoading: PropTypes.boolean,
+GerenciamentoOrientadoresView.propTypes = {
+  isLoading: PropTypes.bool,
   data: PropTypes.node,
   onCreate: PropTypes.node,
   onUpdate: PropTypes.node,

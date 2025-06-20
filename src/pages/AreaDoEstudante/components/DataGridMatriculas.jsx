@@ -252,7 +252,7 @@ function DataGridMatriculas(props) {
   )
 }
 
-DataGridMatriculas.prototypes = {
+DataGridMatriculas.propTypes = {
   advisors: PropTypes.node.isRequired,
   agencies: PropTypes.node.isRequired,
   data: PropTypes.node.isRequired,
