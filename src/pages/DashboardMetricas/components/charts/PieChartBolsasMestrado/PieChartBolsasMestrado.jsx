@@ -45,7 +45,7 @@ function PieChartBolsasMestrado(props) {
   }, [])
 
   return (
-    <PieChartBolsasMestradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal} scholarshipStatus={"FINISHED"}/>
+    <PieChartBolsasMestradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal} scholarshipStatus={props.scholarshipStatus}/>
   )
 }
 
