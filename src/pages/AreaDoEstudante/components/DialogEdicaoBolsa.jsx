@@ -6,12 +6,23 @@ import { SlideUp } from '../../../components/Transitions/SlideUp'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
 function DialogEdicaoBolsa(props) {
-  const { isOpen, onSubmit, onClose, agencies, allocations, item } = props
+  const { isOpen, onSubmit, onClose, agencies, allocations, item, getMaxEndDate } = props
 
-  const [minEndDate, setMinEndDate] = useState(null)
+  const [minEndDate, setMinEndDate] = useState(new Date(item.scholarship_starts_at))
+  const [maxEndDate, setMaxEndDate] = useState(getMaxEndDate(new Date(item.scholarship_starts_at), item.enrollment_program))
+  const [minExtensionEndDate, setMinExtensionEndDate] = useState(new Date(item.scholarship_ends_at))
+  const [maxExtensionEndDate, setMaxExtensionEndDate] = useState(new Date(item.scholarship_ends_at).setMonth(new Date(item.scholarship_ends_at).getMonth() + 6))
 
   const handleStartDateChange = (newDate) => {
     setMinEndDate(newDate)
+    setMaxEndDate(getMaxEndDate(newDate, item.enrollment_program))
+  }
+
+  const handleEndDateChange = (newDate) => {
+    setMinExtensionEndDate(newDate)
+    let maxEndDate = new Date(newDate)
+    maxEndDate.setMonth(maxEndDate.getMonth() + 6)
+    setMaxExtensionEndDate(maxEndDate)
   }
 
   const submitAndCloseDialog = async (event) => {
@@ -104,7 +115,9 @@ function DialogEdicaoBolsa(props) {
             label="Data de Término da Bolsa"
             name="scholarship_ends_at"
             minDate={minEndDate}
+            maxDate={maxEndDate}
             defaultValue={new Date(item.scholarship_ends_at)}
+            onChange={handleEndDateChange}
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -118,7 +131,8 @@ function DialogEdicaoBolsa(props) {
           <DatePicker
             label="Data de Extensão da Bolsa"
             name="extension_ends_at"
-            minDate={new Date(item.scholarship_ends_at)}
+            minDate={minExtensionEndDate}
+            maxDate={maxExtensionEndDate}
             defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
             slotProps={{
               textField: {
