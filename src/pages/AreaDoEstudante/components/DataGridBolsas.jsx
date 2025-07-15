@@ -212,6 +212,7 @@ function DataGridBolsas(props) {
             allocations={props.allocations}
             isOpen={isDialogForScholarshipUpdateOpen}
             onClose={handleDialogForUpdateClose}
+            getMaxEndDate={props.getMaxEndDate}
           />
         )}
 
@@ -233,6 +234,7 @@ DataGridBolsas.propTypes = {
   data: PropTypes.node,
   onUpdate: PropTypes.node,
   onDelete: PropTypes.node,
+  getMaxEndDate: PropTypes.func,
 }
 
 export { DataGridBolsas }

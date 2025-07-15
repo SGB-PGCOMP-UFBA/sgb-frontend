@@ -173,6 +173,16 @@ function AreaDoEstudante() {
     await getStudent()
   }
 
+  const getMaxEndDate = (referenceDate, enrollmentProgram) => {
+    const endYearSum = enrollmentProgram === 'MESTRADO' ? 2 : 4
+    let maxEndDate = new Date(referenceDate)
+    return maxEndDate.setFullYear(
+      maxEndDate.getFullYear() + endYearSum,
+      maxEndDate.getMonth(),
+      maxEndDate.getDate() - 1
+    )
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getAdvisors()
@@ -197,6 +207,7 @@ function AreaDoEstudante() {
       onUpdateScholarship={handleUpdateScholarship}
       onDeleteEnrollment={handleDeleteEnrollment}
       onDeleteScholarship={handleDeleteScholarship}
+      getMaxEndDate={getMaxEndDate}
     />
   )
 }

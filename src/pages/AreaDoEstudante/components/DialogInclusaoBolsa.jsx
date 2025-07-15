@@ -6,13 +6,15 @@ import { SlideUp } from '../../../components/Transitions/SlideUp'
 import MonetaryBrazilianValueMask from '../../../components/Masks/MonetaryBrazilianValueMask';
 
 function DialogInclusaoBolsa(props) {
-  const { isOpen, onSubmit, onClose, agencies, allocations, enrollment } = props
+  const { isOpen, onSubmit, onClose, agencies, allocations, enrollment, getMaxEndDate } = props
 
   const [minEndDate, setMinEndDate] = useState(null)
+  const [maxEndDate, setMaxEndDate] = useState(null)
   let [agency, setAgency] = useState('')
 
   const handleStartDateChange = (newDate) => {
     setMinEndDate(newDate)
+    setMaxEndDate(getMaxEndDate(newDate, enrollment.enrollment_program))
   }
 
   const submitAndCloseDialog = async (event) => {
@@ -110,6 +112,7 @@ function DialogInclusaoBolsa(props) {
             label="Data de Término da Bolsa"
             name="scholarship_ends_at"
             minDate={minEndDate}
+            maxDate={maxEndDate}
             defaultValue={null}
             slotProps={{
               textField: {

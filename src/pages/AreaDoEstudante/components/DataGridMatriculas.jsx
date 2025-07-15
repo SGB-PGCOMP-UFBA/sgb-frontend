@@ -226,6 +226,7 @@ function DataGridMatriculas(props) {
             agencies={props.agencies}
             allocations={props.allocations}
             enrollment={selectedEnrollment}
+            getMaxEndDate={props.getMaxEndDate}
           />
         )}
 
@@ -259,6 +260,7 @@ DataGridMatriculas.propTypes = {
   onCreateScholarship: PropTypes.node,
   onUpdate: PropTypes.node,
   onDelete: PropTypes.node,
+  getMaxEndDate: PropTypes.func,
 }
 
 export { DataGridMatriculas }
