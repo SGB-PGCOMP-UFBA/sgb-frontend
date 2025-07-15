@@ -79,15 +79,6 @@ function DashboardMetricasView() {
                       lg={3}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <PieChartBolsasDoutorado sx={{ height: '100%' }} />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      md={6}
-                      lg={3}
-                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
-                    >
                       <PieChartBolsasMestrado sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
@@ -97,7 +88,7 @@ function DashboardMetricasView() {
                       lg={3}
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
-                      <PieChartBolsasDoutorado sx={{ height: '100%' }} scholarshipStatus={"FINISHED"} />
+                      <PieChartBolsasDoutorado sx={{ height: '100%' }} />
                     </Grid>
                     <Grid
                       item
@@ -107,6 +98,15 @@ function DashboardMetricasView() {
                       sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
                     >
                       <PieChartBolsasMestrado sx={{ height: '100%' }} scholarshipStatus={"FINISHED"} />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      lg={3}
+                      sx={{ marginBottom: '1rem', paddingRight: '1rem' }}
+                    >
+                      <PieChartBolsasDoutorado sx={{ height: '100%' }} scholarshipStatus={"FINISHED"} />
                     </Grid>
                     <Grid
                       item
