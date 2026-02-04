@@ -13,6 +13,7 @@ import { GerenciamentoAlocacoes } from './GerenciamentoAlocacoes'
 import { GerenciamentoOrientandos } from './GerenciamentoOrientandos'
 import { GerenciamentoOrientadores } from './GerenciamentoOrientadores'
 import { AreaDoEstudante } from './AreaDoEstudante'
+import { RelatorioQuadrienal } from './RelatorioQuadrienal'
 
 export {
   Login,
@@ -29,5 +30,6 @@ export {
   GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
-  AreaDoEstudante
+  AreaDoEstudante,
+  RelatorioQuadrienal
 }

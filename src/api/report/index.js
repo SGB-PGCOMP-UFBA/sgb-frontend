@@ -7,7 +7,17 @@ export const downloadPdfReport = async () => {
     responseType: 'blob',
     headers: {
       'Content-Type': 'application/pdf',
-      'Authorization': 'Bearer ' + (localStorage.getItem('access_token') || ''),
+      Authorization: 'Bearer ' + (localStorage.getItem('access_token') || ''),
+    },
+  })
+}
+
+export const quadrennialReport = async (format, body) => {
+  return api.post(`${BASE_REPORT_API_PATH}/quadrennial/${format}`, body, {
+    responseType: 'blob',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + (localStorage.getItem('access_token') || ''),
     },
   })
 }
