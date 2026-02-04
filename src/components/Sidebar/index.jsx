@@ -27,6 +27,13 @@ export default function Sidebar() {
       availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
     },
     {
+      name: 'Quadrienal',
+      icon: 'date_range',
+      path: '/quadrienal',
+      visible: true,
+      availableRoles: ['ADMIN', 'ADVISOR_WITH_ADMIN_PRIVILEGES']
+    },
+    {
       name: 'Orientadores',
       icon: 'people',
       path: '/orientadores',

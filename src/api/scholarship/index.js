@@ -3,19 +3,22 @@ import { buildHeaders } from '../utils/HeaderUtils'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 
-export const createScholarship = async (scholarship) => {
+export const createScholarship = async scholarship => {
   return api.post(`${BASE_SCHOLARSHIP_API_PATH}`, scholarship, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 
 export const getScholarshipStatusFilterList = async () => {
   return api.get(`${BASE_SCHOLARSHIP_API_PATH}/filter-list`, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 
-export const countScholarshipsGroupingByAgencyForCourse = async (programName, scholarshipStatus = null) => {
+export const countScholarshipsGroupingByAgencyForCourse = async (
+  programName,
+  scholarshipStatus = null
+) => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/count/by-agency-and-course`
 
   if (programName) {
@@ -35,17 +38,21 @@ export const countScholarshipsGroupingByAgencyForCourse = async (programName, sc
 
 export const countScholarshipsGroupingByCourseAndYear = async () => {
   return api.get(`${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year`, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 
-export const countScholarshipsGroupingByCourseAndYearFilteringByAgencyName = async (agencyName) => {
-  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year/${agencyName}`, {
-    headers: buildHeaders()
-  })
-}
+export const countScholarshipsGroupingByCourseAndYearFilteringByAgencyName =
+  async agencyName => {
+    return api.get(
+      `${BASE_SCHOLARSHIP_API_PATH}/count/by-course-and-year/${agencyName}`,
+      {
+        headers: buildHeaders(),
+      }
+    )
+  }
 
-export const countScholarshipsGroupingByStatusForAgency = async (agencyName) => {
+export const countScholarshipsGroupingByStatusForAgency = async agencyName => {
   let url = `${BASE_SCHOLARSHIP_API_PATH}/count/by-agency-and-status`
 
   if (agencyName) {
@@ -53,7 +60,7 @@ export const countScholarshipsGroupingByStatusForAgency = async (agencyName) => 
   }
 
   return api.get(url, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 
@@ -65,7 +72,9 @@ export const getScholarships = async (page, limit, filters) => {
       url += `&studentName=${encodeURIComponent(filters.studentName)}`
     }
     if (filters.scholarshipStatus) {
-      url += `&scholarshipStatus=${encodeURIComponent(filters.scholarshipStatus)}`
+      url += `&scholarshipStatus=${encodeURIComponent(
+        filters.scholarshipStatus
+      )}`
     }
     if (filters.agencyName) {
       url += `&agencyName=${encodeURIComponent(filters.agencyName)}`
@@ -85,18 +94,35 @@ export const getScholarships = async (page, limit, filters) => {
   }
 
   return api.get(url, {
-    headers: buildHeaders()
+    headers: buildHeaders(),
   })
 }
 
 export const updateScholarship = async (scholarshipId, scholarship) => {
-  return api.patch(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, scholarship, {
-    headers: buildHeaders()
+  return api.patch(
+    `${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`,
+    scholarship,
+    {
+      headers: buildHeaders(),
+    }
+  )
+}
+
+export const deleteScholarship = async scholarshipId => {
+  return api.delete(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, {
+    headers: buildHeaders(),
   })
 }
 
-export const deleteScholarship = async (scholarshipId) => {
-  return api.delete(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, {
-    headers: buildHeaders()
-  })
+export const countScholarshipsAsReportBetweenDates = async (
+  startDate,
+  endDate
+) => {
+  const url =
+    BASE_SCHOLARSHIP_API_PATH +
+    `/report/all-between-dates?` +
+    `start_period=${startDate}` +
+    `&end_period=${endDate}`
+
+  return api.get(`${url}`, { headers: buildHeaders() })
 }

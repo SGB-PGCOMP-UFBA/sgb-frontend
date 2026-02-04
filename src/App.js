@@ -19,7 +19,8 @@ import {
   GerenciamentoOrientadores,
   AreaDoEstudante,
   PageAboutSystem,
-  GerenciamentoDados
+  GerenciamentoDados,
+  RelatorioQuadrienal
 } from './pages'
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
           <Route element={<RequireAuth allowedRoles={["ADMIN", "ADVISOR_WITH_ADMIN_PRIVILEGES"]} />}>
             <Route path="dashboard" element={<DashboardMetricas />} />
             <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
+            <Route path="quadrienal" element={<RelatorioQuadrienal />} />
             <Route path="agencias" element={<GerenciamentoAgencias />} />
             <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />
             <Route path="orientadores" element={<GerenciamentoOrientadores />} />
