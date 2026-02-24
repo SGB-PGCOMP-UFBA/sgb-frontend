@@ -311,11 +311,11 @@ function DataGridBolsistas(props) {
 }
 
 DataGridBolsistas.propTypes = {
-  data: PropTypes.node,
-  filterOptions: PropTypes.node,
-  metadata: PropTypes.node,
-  onEdit: PropTypes.node,
-  onDelete: PropTypes.node
+  data: PropTypes.array,
+  filterOptions: PropTypes.object,
+  metadata: PropTypes.object,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
 }
 
 export { DataGridBolsistas }
