@@ -126,3 +126,32 @@ export const countScholarshipsAsReportBetweenDates = async (
 
   return api.get(`${url}`, { headers: buildHeaders() })
 }
+
+export const copyFilteredScholarshipsStudentsEmails = async filters => {
+  let url = `${BASE_SCHOLARSHIP_API_PATH}/filtered-students-emails?`
+
+  if (filters) {
+    if (filters.scholarshipStatus) {
+      url += `scholarshipStatus=${encodeURIComponent(
+        filters.scholarshipStatus
+      )}&`
+    }
+    if (filters.agencyName) {
+      url += `agencyName=${encodeURIComponent(filters.agencyName)}&`
+    }
+    if (filters.allocationName) {
+      url += `allocationName=${encodeURIComponent(filters.allocationName)}&`
+    }
+    if (filters.advisorName) {
+      url += `advisorName=${encodeURIComponent(filters.advisorName)}&`
+    }
+    if (filters.programName) {
+      url += `programName=${encodeURIComponent(filters.programName)}`
+    }
+    url = url.replace(/&$/, '')
+  }
+
+  return api.get(url, {
+    headers: buildHeaders(),
+  })
+}

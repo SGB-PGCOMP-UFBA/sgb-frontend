@@ -75,6 +75,26 @@ function GerenciamentoBolsistas() {
     }
   }
 
+  const copyScholarshipStudentsEmails = async () => {
+    const trimmedFilters = Object.fromEntries(
+      Object.entries(filters).map(([key, value]) => [
+        key,
+        typeof value === 'string' ? value.trim() : value,
+      ])
+    )
+    const response =
+      await api.scholarship.copyFilteredScholarshipsStudentsEmails(
+        trimmedFilters
+      )
+
+    if (response.status === 200) {
+      await navigator.clipboard.writeText(response.data)
+      alert('Lista de e-mails copiada com sucesso!')
+    } else {
+      toast.error(`[${response.status}]: ${response.data.error}`)
+    }
+  }
+
   const handleReportDownload = async () => {
     try {
       const response = await api.report.downloadPdfReport();
@@ -229,6 +249,7 @@ function GerenciamentoBolsistas() {
       handleReportDownload={handleReportDownload}
       handleDialogForFiltersOpen={handleDialogForFiltersOpen}
       handleDialogForFiltersClose={handleDialogForFiltersClose}
+      copyScholarshipStudentsEmails={copyScholarshipStudentsEmails}
     />
   )
 }
