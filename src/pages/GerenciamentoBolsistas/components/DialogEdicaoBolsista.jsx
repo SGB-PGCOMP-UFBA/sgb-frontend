@@ -13,14 +13,14 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
     const data = new FormData(event.currentTarget)
     const entries = Object.fromEntries(data.entries())
 
-    onSubmit({
+    const result = await onSubmit({
       student_email: item.student.email,
       enrollment_id: item.enrollment.id,
       scholarship_id: item.id,
-      ...entries
+      ...entries,
     })
 
-    onClose()
+    if (result !== false) onClose()
   }
 
   const advisorsName = filterOptions.advisorNameFilterList.slice(1)
