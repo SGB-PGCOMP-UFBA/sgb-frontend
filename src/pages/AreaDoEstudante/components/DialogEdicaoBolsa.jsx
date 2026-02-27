@@ -30,14 +30,15 @@ function DialogEdicaoBolsa(props) {
     const data = new FormData(event.currentTarget)
     const entries = Object.fromEntries(data.entries())
 
-    onSubmit({
+    const result = await onSubmit({
       ...entries,
       agency_id: entries.agency_id,
       scholarship_id: item.id,
       enrollment_id: item.enrollment_id,
       student_email: item.student_email,
     })
-    onClose()
+
+    if (result !== false) onClose()
   }
 
   const dialogContent = (

@@ -206,6 +206,7 @@ function GerenciamentoBolsistas() {
       }
     } catch (error) {
       toast.error(`Erro ao atualizar a bolsa: ${error.response.data.message}`)
+      return false;
     }
 
     await getScholarships({ size, page, filters })
