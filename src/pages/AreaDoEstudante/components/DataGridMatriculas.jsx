@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { Icon, IconButton, Tooltip } from '@mui/material'
+import { Button, Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatDate, formatPhone } from '../../../helpers/formatters'
 import { CustomChip } from '../../../components'
@@ -153,15 +153,18 @@ function DataGridMatriculas(props) {
       filterable: false,
       sortable: false,
       renderCell: (params) => (
-        <div className="flex items-center gap-x-2 overflow-auto">
+        <div className="flex w-full h-full items-center justify-center gap-x-1">
           <Tooltip title={hasOnGoingScholarship ? "Não é possível adicionar uma nova bolsa, pois você já possui uma bolsa em andamento." : "Adicionar Bolsa"}>
             <span style={{ cursor: hasOnGoingScholarship ? 'not-allowed' : 'pointer' }}>
-              <IconButton
+              <Button
+                size="small"
+                color="primary"
+                className="min-w-0 px-2 py-1 normal-case leading-tight"
                 onClick={() => handleDialogForScholarshipCreateOpen(params.row)}
                 disabled={hasOnGoingScholarship}
               >
-                <Icon sx={{ fontSize: 28, color: hasOnGoingScholarship ? 'grey' : '#2e7d32' }}>bookmark_add</Icon>
-              </IconButton>
+                <span className='capitalize font-bold text-center'>Add<br/>Bolsa</span>
+              </Button>
             </span>
           </Tooltip>
           <Tooltip title="Editar Matrícula">
