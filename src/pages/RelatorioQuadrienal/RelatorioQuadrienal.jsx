@@ -5,13 +5,16 @@ import { RelatorioQuadrienalView } from './RelatorioQuadrienalView'
 import { formattedNow } from '../../helpers/formatters'
 
 function RelatorioQuadrienal() {
+  const todayDate = new Date()
+  todayDate.setMonth(11, 31)
+  const referenceStartDate = new Date(todayDate).setFullYear(todayDate.getFullYear() - 4, 0, 1)
   const [data, setData] = useState()
   const [page, setPage] = useState(1)
   const [size, setSize] = useState(5)
   const [isLoading, setIsLoading] = useState(false)
-  const [minEndDate, setMinEndDate] = useState(null)
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+  const [minEndDate, setMinEndDate] = useState(referenceStartDate)
+  const [startDate, setStartDate] = useState(referenceStartDate)
+  const [endDate, setEndDate] = useState(todayDate)
 
   const handleStartDateChange = newDate => {
     setStartDate(newDate)
