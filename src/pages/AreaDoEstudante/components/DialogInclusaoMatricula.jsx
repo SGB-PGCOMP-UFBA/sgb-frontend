@@ -94,7 +94,7 @@ function DialogInclusaoMatricula(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <DatePicker
-            label="Data de Matrícula"
+            label="Data Primeira Matrícula"
             name="enrollment_date"
             defaultValue={null}
             onChange={handleStartDateChange}

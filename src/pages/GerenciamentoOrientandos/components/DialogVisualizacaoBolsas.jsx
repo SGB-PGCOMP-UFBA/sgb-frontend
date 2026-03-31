@@ -77,7 +77,7 @@ function DialogVisualizacaoBolsas({ item, isOpen, onClose }) {
               />
               <DatePicker
                 readOnly
-                label="Data de Matrícula"
+                label="Data Primeira Matrícula"
                 name="enrollment_date"
                 defaultValue={new Date(enrollment.enrollment_date)}
                 slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
