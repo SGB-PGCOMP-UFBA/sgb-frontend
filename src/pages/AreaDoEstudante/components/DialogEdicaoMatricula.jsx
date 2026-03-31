@@ -97,7 +97,7 @@ function DialogEdicaoMatricula(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <DatePicker
-            label="Data de Matrícula"
+            label="Data Primeira Matrícula"
             name="enrollment_date"
             defaultValue={new Date(item.enrollment_date)}
             onChange={handleStartDateChange}

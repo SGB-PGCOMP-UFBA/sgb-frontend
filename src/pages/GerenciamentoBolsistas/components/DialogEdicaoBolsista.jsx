@@ -180,7 +180,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
               </Select>
             </FormControl>
             <DatePicker
-              label="Data de Matrícula"
+              label="Data Primeira Matrícula"
               name="enrollment_date"
               defaultValue={new Date(item.enrollment.enrollment_date)}
               slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
