@@ -68,7 +68,7 @@ function RegisterForm() {
       })
 
       if ([200, 201].includes(createStudentResponse.status)) {
-        toast.success('Cadastrado realizado com sucesso! Em poucos segundos você será redirecionado.', { autoClose: 2000 })
+        toast.success('Cadastro realizado com sucesso! Em poucos segundos você será redirecionado.', { autoClose: 2000 })
 
         const loginResponse = await api.auth.login({
           email: values.email,

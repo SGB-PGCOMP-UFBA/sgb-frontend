@@ -24,7 +24,7 @@ function PageRegisterAdvisorView() {
             <Grid container direction="column" alignItems="center" justifyContent="flex-start" textAlign="justify" marginTop="3em" marginBottom="3em">
               <Grid item>
                 <Typography component="h1" variant="subtitle1">
-                  Se você orienta ou já orientou algum discente no Programa de Pós-Graduação em Ciência da Computação, provavelmente você já possui um cadastrado realizado com o e-mail da institução.
+                  Se você orienta ou já orientou algum discente no Programa de Pós-Graduação em Ciência da Computação, provavelmente você já possui um cadastro realizado com o e-mail da instituição.
                   Se for o caso e você não lembra a sua senha ou não a recebeu por e-mail, tente recuperá-la.
                 </Typography>
                 <br/>
@@ -34,7 +34,7 @@ function PageRegisterAdvisorView() {
                 </Typography>
                 <br/>
                 <Typography component="h1" variant="subtitle1">
-                  Caso ainda tenha alguma dúvida ou está com algum problema no seu acesso, contate um administrador do sistema para mais informações.
+                  Caso ainda tenha alguma dúvida ou esteja com algum problema no seu acesso, contate um administrador do sistema para mais informações.
                 </Typography>
               </Grid>
               <Grid item marginTop="5em">

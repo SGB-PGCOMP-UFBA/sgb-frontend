@@ -91,7 +91,7 @@ function DialogEdicaoBolsa(props) {
               defaultValue={item.status}
             >
               <MenuItem value={"ON_GOING"}>Em Andamento</MenuItem>
-              <MenuItem value={"EXTENDED"}>Prazo Extendido</MenuItem>
+              <MenuItem value={"EXTENDED"}>Prazo Estendido</MenuItem>
               <MenuItem value={"FINISHED"}>Finalizado</MenuItem>
             </Select>
           </FormControl>
