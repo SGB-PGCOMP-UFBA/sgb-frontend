@@ -122,7 +122,7 @@ function DataGridBolsas(props) {
     },
     {
       field: 'extensionEndsAt',
-      headerName: 'Data de Extenção da Bolsa',
+      headerName: 'Data de Extensão da Bolsa',
       width: 210,
       filterable: false,
       sortable: false,

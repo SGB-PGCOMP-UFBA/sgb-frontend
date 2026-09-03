@@ -135,7 +135,7 @@ function DataGridBolsistas(props) {
     },
     {
       field: 'extensionEndsAt',
-      headerName: 'Extenção da Bolsa',
+      headerName: 'Extensão da Bolsa',
       width: 100,
       filterable: false,
       sortable: false,
@@ -168,7 +168,7 @@ function DataGridBolsistas(props) {
       width: 130,
       filterable: false,
       sortable: false,
-      renderCell: (params) => 
+      renderCell: (params) =>
         <p className="custom-scrollbar whitespace-nowrap overflow-x-auto" >
           {params.row.allocation?.name ? params.row.allocation.name : NOT_INFORMED}
         </p>,

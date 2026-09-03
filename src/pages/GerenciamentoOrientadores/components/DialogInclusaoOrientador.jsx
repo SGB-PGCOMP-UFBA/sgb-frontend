@@ -100,7 +100,7 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }) {
       <DialogTitle>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           Adicionar Orientador
-          <Tooltip title="O(a) orientador(a) receberá no e-mail informado abaixo uma mensagem informando sobre o seu cadastrado bem como a senha para acesso à plataforma.">
+          <Tooltip title="O(a) orientador(a) receberá no e-mail informado abaixo uma mensagem informando sobre o seu cadastro bem como a senha para acesso à plataforma.">
             <IconButton color='info'>
               <InfoIcon />
             </IconButton>
