@@ -1,4 +1,3 @@
-import React from 'react'
 import { useGridApiContext, GridPagination } from '@mui/x-data-grid'
 
 import { Box, Button, Divider } from '@mui/material';

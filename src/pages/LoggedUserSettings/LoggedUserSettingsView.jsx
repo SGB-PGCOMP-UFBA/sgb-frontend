@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import { Icon, Stack } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import MenuAppBar from '../../components/Navbar'

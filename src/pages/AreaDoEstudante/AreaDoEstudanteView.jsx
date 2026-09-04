@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { AddCircleOutline } from '@mui/icons-material'
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
 import InfoIcon from '@mui/icons-material/Info'
 import { Button, Icon, IconButton, Tooltip, Typography } from '@mui/material'
 import Loading from '../../components/Loading'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import DesktopSidebar from './Desktop'
 import MobileSidebar from './Mobile'
 import { getUserFromLocalStorage } from '../../helpers/auth-user'

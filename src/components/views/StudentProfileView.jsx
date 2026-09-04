@@ -1,10 +1,9 @@
-import React from 'react'
 import { AppBar, Button, Card, Dialog, Divider, IconButton, Paper, Toolbar, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { ExpandMore } from '@mui/icons-material'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 import { SlideUp } from '../Transitions/SlideUp'
 import { formatDate } from '../../helpers/formatters'
 

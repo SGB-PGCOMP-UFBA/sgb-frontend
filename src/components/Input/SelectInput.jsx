@@ -1,4 +1,3 @@
-import React from 'react'
 
 export default function SelectInput(props) {
   const { id, label, name, selected, options, handleChange } = props

@@ -8,7 +8,7 @@ import { CardBolsasCnpq } from './components/cards/CardBolsasCnpq'
 import { CardBolsasFapesb } from './components/cards/CardBolsasFapesb'
 import { ColumnChartHistogramaBolsas } from './components/charts/ColumnChartHistogramaBolsas'
 import { TableTotalBolsasPorAgencia } from './components/tables/TableTotalBolsasPorAgencia'
-import { AgencyNames } from 'constants/AgencyNames'
+import { AgencyNames } from '@/constants/AgencyNames'
 
 function DashboardMetricasView() {
   return (

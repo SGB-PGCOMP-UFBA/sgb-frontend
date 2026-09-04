@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import {
   Button,
@@ -17,8 +17,8 @@ import {
   Typography
 } from '@mui/material'
 import { api } from '../../../api'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 function SettingsPasswordSection(props) {
   const { user } = props
   const [values, setValues] = useState({

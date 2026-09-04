@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react"
 import "./styles.css";
 
 export default function FileInput({ accept = ".csv", onFileSelected }) {

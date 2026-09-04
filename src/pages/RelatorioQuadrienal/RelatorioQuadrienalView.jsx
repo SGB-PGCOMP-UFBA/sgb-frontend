@@ -10,13 +10,11 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material'
-import {
-  Description,
-  Download,
-  FilterAltOff,
-  Search,
-  KeyboardArrowDown,
-} from '@mui/icons-material'
+import Description from '@mui/icons-material/Description'
+import Download from '@mui/icons-material/Download'
+import FilterAltOff from '@mui/icons-material/FilterAltOff'
+import Search from '@mui/icons-material/Search'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'

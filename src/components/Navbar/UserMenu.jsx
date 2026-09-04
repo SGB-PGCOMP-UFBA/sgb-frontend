@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Logout, Settings } from '@mui/icons-material'
+import Logout from '@mui/icons-material/Logout'
+import Settings from '@mui/icons-material/Settings'
 import {
   Avatar,
   Box,

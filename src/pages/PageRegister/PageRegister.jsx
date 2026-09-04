@@ -1,4 +1,3 @@
-import React from 'react'
 import { PageRegisterView } from './PageRegisterView'
 
 function PageRegister() {

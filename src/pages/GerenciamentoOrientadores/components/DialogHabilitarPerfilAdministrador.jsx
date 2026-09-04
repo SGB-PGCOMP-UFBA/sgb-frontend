@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import { SlideUp } from '../../../components/Transitions/SlideUp'

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../../../../../api'
 import { CardBolsasCnpqView } from './CardBolsasCnpqView'

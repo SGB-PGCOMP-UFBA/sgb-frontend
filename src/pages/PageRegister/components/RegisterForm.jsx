@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { Box, Button, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
@@ -6,8 +6,8 @@ import { CpfInputMask, PhoneInputMask } from '../../../components/Masks';
 import { api } from '../../../api'
 import { addUserToLocalStorage, getUserFromLocalStorage } from '../../../helpers/auth-user'
 import { delay } from '../../../helpers/delay';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 const initialState = {
   tax_id: '',
   email: '',

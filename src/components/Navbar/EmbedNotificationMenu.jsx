@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Notifications } from '@mui/icons-material'
+import Notifications from '@mui/icons-material/Notifications'
 import {
   Badge,
   Box,

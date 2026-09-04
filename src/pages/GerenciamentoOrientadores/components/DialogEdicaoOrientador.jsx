@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import { CpfInputMask, PhoneInputMask } from '../../../components/Masks'

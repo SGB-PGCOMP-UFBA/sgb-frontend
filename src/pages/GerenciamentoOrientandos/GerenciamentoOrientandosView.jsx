@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import { Icon } from '@mui/material'
 import { DataGridOrientandos } from './components/DataGridOrientandos'
 import Sidebar from '../../components/Sidebar'

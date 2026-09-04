@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Icon, IconButton, Tooltip } from '@mui/material'
 import { DataGrid, ptBR } from '@mui/x-data-grid'
 import { formatCpf, formatPhone } from '../../../helpers/formatters'

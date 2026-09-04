@@ -10,7 +10,9 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material'
-import { ContentCopy, Download, FilterAltOff } from '@mui/icons-material'
+import ContentCopy from '@mui/icons-material/ContentCopy'
+import Download from '@mui/icons-material/Download'
+import FilterAltOff from '@mui/icons-material/FilterAltOff'
 import { DataGridBolsistas } from './components/DataGridBolsistas'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'

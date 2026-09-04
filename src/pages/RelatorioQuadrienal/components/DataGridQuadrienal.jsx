@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types'
-import { React } from 'react'
 
 import './styles.css'
 import { Divider, Grid, Typography } from '@mui/material'
-import { Description } from '@mui/icons-material'
-
+import Description from '@mui/icons-material/Description'
 function DataGridQuadrienal({ data }) {
   const StatusRow = ({ label, counts }) => (
     <div className='flex justify-between border-b border-gray-50 py-1 last:border-0'>

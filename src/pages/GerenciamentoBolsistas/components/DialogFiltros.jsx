@@ -1,6 +1,5 @@
-import React from 'react'
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
-import { FilterAltOff } from '@mui/icons-material'
+import FilterAltOff from '@mui/icons-material/FilterAltOff'
 import CloseIcon from '@mui/icons-material/Close';
 import { SlideUp } from '../../../components/Transitions/SlideUp'
 import { SelectInput } from '../../../components'

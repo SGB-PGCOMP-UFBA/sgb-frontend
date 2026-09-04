@@ -1,4 +1,3 @@
-import React from 'react'
 import { Dialog, DialogTitle, DialogContent, IconButton, TextField, InputAdornment } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { LoggedUserSettingsView } from './LoggedUserSettingsView'
 import { getUserFromLocalStorage } from '../../helpers/auth-user'
 

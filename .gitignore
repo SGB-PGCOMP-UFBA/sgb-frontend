@@ -29,5 +29,4 @@ yarn-error.log*
 # ENV
 .env
 
-#lock
-package-lock.json
+# o lockfile precisa estar versionado para o `npm ci` do CI

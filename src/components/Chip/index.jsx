@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import React from 'react'
 import { Chip } from '@mui/material'
 import { StatusEnum } from '../../constants/Status'
 import './styles.css'

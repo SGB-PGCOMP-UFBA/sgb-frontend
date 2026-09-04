@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Box, Button, Icon, TextField, Typography } from '@mui/material'
 import Sidebar from '../../components/Sidebar'
 import Loading from '../../components/Loading'
 import MenuAppBar from '../../components/Navbar'
 import { FileInput } from '../../components'
-import { Download, Upload } from '@mui/icons-material'
-
+import Download from '@mui/icons-material/Download'
+import Upload from '@mui/icons-material/Upload'
 function GerenciamentoDadosView(props) {
   const { isLoading, importErrors, handleErrors, onImport, onExport } = props
   const [selectedFile, setSelectedFile] = useState(null)

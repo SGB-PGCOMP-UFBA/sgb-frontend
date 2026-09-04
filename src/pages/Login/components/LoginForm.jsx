@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 function LoginForm(props) {
   const { formValues, onChangeFormValues, onSubmit } = props
 
@@ -51,7 +51,7 @@ function LoginForm(props) {
                 placeholder="Digite seu e-mail"
                 value={formValues.email}
                 onChange={onChangeFormValues}
-                helperText={false ? 'E-mail inválido' : ''}
+                helperText=""
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -70,7 +70,7 @@ function LoginForm(props) {
                 placeholder="Digite sua senha"
                 value={formValues.password}
                 onChange={onChangeFormValues}
-                helperText={false ? 'Senha inválida' : ''}
+                helperText=""
                 type={showPassword ? "text" : "password"}
                 InputLabelProps={{
                   shrink: true,

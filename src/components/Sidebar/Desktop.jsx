@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Icon, Divider, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
