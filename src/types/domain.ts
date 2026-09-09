@@ -12,6 +12,13 @@
 /** Data/hora serializada em ISO 8601, como chega do JSON. */
 export type DateString = string
 
+/**
+ * Data ENVIADA para a API. Os DTOs do backend usam `@Type(() => Date)` do
+ * class-transformer, que aceita tanto a string ISO quanto o objeto `Date` que o
+ * axios serializa via JSON.stringify — os dois chegam iguais no servidor.
+ */
+export type DateInput = string | Date
+
 /* -------------------------------------------------------------------------- */
 /* Enums                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -23,6 +30,17 @@ export type ScholarshipStatus =
   | 'FINISHED'
   | 'ON_GOING'
   | 'EXTENDED'
+
+/**
+ * Subconjunto de `ScholarshipStatus` que o backend aceita ao criar ou editar
+ * uma bolsa (`@IsIn(['ON_GOING', 'EXTENDED', 'FINISHED'])` nos DTOs). ACTIVE e
+ * INACTIVE existem apenas como valor lido, nunca escrito pela UI — os selects
+ * de situacao tambem oferecem so estes tres.
+ */
+export type ScholarshipEditableStatus = Extract<
+  ScholarshipStatus,
+  'ON_GOING' | 'EXTENDED' | 'FINISHED'
+>
 
 /** Espelha `core/enums/ProgramEnum` no backend. */
 export type EnrollmentProgram = 'MESTRADO' | 'DOUTORADO'
@@ -227,4 +245,25 @@ export interface ScholarshipDetailedWithFullRelations {
   updated_at: DateString
   agency: AgencySimplified | null
   allocation: AllocationSimplified | null
+}
+
+/* -------------------------------------------------------------------------- */
+/* EmbedNotification                                                           */
+/* -------------------------------------------------------------------------- */
+
+/** Tipo do dono da notificacao: casa com o `role` de quem esta logado. */
+export type NotificationOwnerType = UserRole
+
+export interface EmbedNotificationSimplified {
+  id: number
+  owner_id: number
+  owner_type: NotificationOwnerType
+  created_at: DateString
+  updated_at: DateString
+}
+
+export interface EmbedNotificationDetailed extends EmbedNotificationSimplified {
+  title: string
+  description: string
+  consumed: boolean
 }

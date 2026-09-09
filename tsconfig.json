@@ -8,11 +8,6 @@
 
     "types": ["vite/client", "jest", "node"],
 
-    /* Migracao incremental: .js/.jsx convivem com .ts/.tsx.
-       `checkJs: false` mantem os arquivos JS legados fora do type-check;
-       cada arquivo passa a ser verificado quando for convertido para .ts/.tsx. */
-    "allowJs": true,
-    "checkJs": false,
 
     "strict": true,
     "noUnusedLocals": true,
@@ -31,6 +26,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "vite.config.mjs"],
+  "include": ["src", "vite.config.ts"],
   "exclude": ["node_modules", "build"]
 }

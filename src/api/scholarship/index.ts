@@ -2,28 +2,64 @@ import type { AxiosResponse } from 'axios'
 import { api } from '../../services/api'
 import { buildHeaders } from '../utils/HeaderUtils'
 import type {
+  DateInput,
   EnrollmentProgram,
   FilterOption,
   Page,
   ScholarshipDetailedWithRelations,
-  ScholarshipFilters,
-  ScholarshipStatus
+  ScholarshipEditableStatus,
+  ScholarshipFilters
 } from '../../types'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 
+/**
+ * Os formularios alimentam estes campos com `parseDate`, que devolve `null`
+ * quando o texto digitado nao casa com dd/MM/yyyy. O `null` chega ao servidor e
+ * o `@IsDate()` do DTO o rejeita com erro de validacao — que e o comportamento
+ * atual da tela. O tipo admite `null` para descrever isso, em vez de esconder
+ * o caso com um cast.
+ */
+
+/**
+ * Espelha `CreateScholarshipDto` do backend. A bolsa e criada pelos NOMES da
+ * agencia e da cota e pelo e-mail/matricula do estudante, nao por ids — e assim
+ * que o servico resolve os quatro vinculos.
+ */
 export interface CreateScholarshipPayload {
-  enrollment_id: number
-  agency_id: number
-  allocation_id?: number | null
-  scholarship_starts_at: string
-  scholarship_ends_at: string
-  extension_ends_at?: string | null
+  student_email: string
+  enrollment_number: string
+  /* O backend restringe com `@IsIn(['CAPES','CNPQ','FAPESB','OUTRAS'])`, mas o
+     select e populado com os nomes reais das agencias cadastradas — uma agencia
+     fora dessa lista e enviada e recusada na validacao. */
+  agency_name: string
+  allocation_name: string
+  scholarship_starts_at: DateInput | null
+  scholarship_ends_at: DateInput | null
+  status?: ScholarshipEditableStatus
+  extension_ends_at?: DateInput | null
   salary?: number | null
-  status?: ScholarshipStatus
 }
 
-export type UpdateScholarshipPayload = Partial<CreateScholarshipPayload>
+/**
+ * Espelha `UpdateScholarshipDto`. Diferente da criacao, aqui a agencia e a cota
+ * vao por id, e `enrollment_id`, `student_email` e `status` sao obrigatorios —
+ * nao e um `Partial` de CreateScholarshipPayload.
+ */
+export interface UpdateScholarshipPayload {
+  enrollment_id: number
+  student_email: string
+  status: ScholarshipEditableStatus
+  /* O DTO do backend declara `agency_id: number` mas o decora com
+     `@IsString()`, e os <Select> da UI enviam string. Os dois formatos passam
+     pela validacao; o tipo reflete isso em vez de escolher um. */
+  agency_id?: number | string
+  allocation_id?: number | string | null
+  scholarship_starts_at?: DateInput | null
+  scholarship_ends_at?: DateInput | null
+  extension_ends_at?: DateInput | null
+  salary?: number | null
+}
 
 /** `{ [curso]: { [agencia]: { count } } }` */
 export type CountByAgencyAndCourse = Record<

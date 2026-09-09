@@ -80,3 +80,71 @@ export interface LoginRequest {
   password: string
   role: UserRole
 }
+
+/* -------------------------------------------------------------------------- */
+/* Importacao e exportacao de dados                                            */
+/* -------------------------------------------------------------------------- */
+
+/** Espelha `modules/data-manager/dto/import-error.dto.ts`. */
+export interface ImportError {
+  student_name?: string
+  student_email?: string
+  advisor_email?: string
+  enrollment_number?: string
+  enrollment_program?: string
+  enrollment_date?: string
+  agency_name?: string
+  allocation_name?: string
+  scholarship_start_date?: string
+  scholarship_end_date?: string
+  scholarship_status?: string
+  description: string
+}
+
+/** Espelha `modules/data-manager/dto/list-updates.dto.ts`. */
+export interface ListUpdatesFromImport {
+  student_name?: string
+  student_email?: string
+  description: string
+}
+
+/**
+ * `POST /v1/data-manager/import-data`. O backend responde `{ errors }` quando a
+ * importacao falha na validacao das linhas, e `{ listUpdatesFromImport, ... }`
+ * quando processa o arquivo — dai os dois lados serem opcionais.
+ */
+export interface ImportDataResponse {
+  errors?: ImportError[]
+  listUpdatesFromImport?: ListUpdatesFromImport[]
+  pendingScholarships?: unknown[]
+}
+
+/* -------------------------------------------------------------------------- */
+/* Navegacao                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/** Item do menu lateral, filtrado pelo papel do usuario logado. */
+export interface SidebarLink {
+  name: string
+  /** Nome do icone do Material Icons, renderizado por `<Icon>`. */
+  icon: string
+  path: string
+  visible: boolean
+  availableRoles: UserRole[]
+}
+
+/* -------------------------------------------------------------------------- */
+/* Complementos do usuario armazenado                                          */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * O login nao devolve `link_to_lattes`, mas a Area do Estudante grava esse
+ * campo no usuario do localStorage (`updateUserFromLocalStorage`) assim que
+ * carrega os dados do estudante, e a tela de perfil (`LoggedUserSettings`) o le
+ * de volta. Declarado por merge de interface para nao reescrever o bloco de
+ * autenticacao acima; opcional porque so existe para estudantes, depois dessa
+ * primeira carga.
+ */
+export interface LoginResponse {
+  link_to_lattes?: string
+}

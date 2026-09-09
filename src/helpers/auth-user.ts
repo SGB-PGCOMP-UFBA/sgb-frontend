@@ -23,10 +23,7 @@ export function updateUserFromLocalStorage(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser))
 }
 
-/**
- * Devolve `null` quando nao ha ninguem autenticado. Quem chama precisa tratar
- * esse caso — antes da tipagem isso estourava um TypeError silencioso.
- */
+/** Devolve `null` quando nao ha ninguem autenticado. */
 export function getUserFromLocalStorage(): StoredUser | null {
   const raw = localStorage.getItem(STORAGE_KEY)
 

@@ -14,19 +14,29 @@ export interface CreateStudentPayload {
   link_to_lattes: string
 }
 
+/**
+ * Espelha `UpdateStudentDto`: o estudante e identificado por `current_email`,
+ * nao por id, e todo campo enviado vazio e normalizado para `null` no backend.
+ */
 export interface UpdateStudentPayload {
-  id: number
-  name?: string
-  email?: string
-  tax_id?: string
-  phone_number?: string
-  link_to_lattes?: string
+  current_email: string
+  email?: string | null
+  name?: string | null
+  tax_id?: string | null
+  phone_number?: string | null
+  link_to_lattes?: string | null
 }
 
+/**
+ * Espelha `UpdateStudentPasswordDto`. O backend valida
+ * `confirm_new_password` contra `new_password`, entao os quatro campos sao
+ * obrigatorios.
+ */
 export interface UpdateStudentPasswordPayload {
   email: string
-  password: string
+  current_password: string
   new_password: string
+  confirm_new_password: string
 }
 
 export const getStudents = async (): Promise<

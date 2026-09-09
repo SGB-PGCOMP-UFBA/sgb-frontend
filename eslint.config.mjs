@@ -47,11 +47,8 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.flatConfigs.recommended.rules,
 
-      /* Nos .jsx as props sao documentadas via prop-types; nos .tsx, via tipos. */
       'react/prop-types': 'off',
 
-      /* `catch (error)` sem uso do erro e um padrao corrente aqui e nao e
-         codigo morto; `_` como prefixo marca parametro intencionalmente ocioso. */
       'no-unused-vars': [
         'error',
         {
@@ -86,7 +83,19 @@ export default tseslint.config(
       globals: { ...globals.node }
     }
   },
-
-  /* Sempre por ultimo: desliga regras que conflitam com o Prettier. */
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          caughtErrors: 'none',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_'
+        }
+      ]
+    }
+  },
   prettier
 )
