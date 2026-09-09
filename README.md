@@ -40,8 +40,8 @@ $ npm run start
 
 #### Requerimentos
 
--   Node.js >= 18.20.4
--   NPM >= 10.7.0
+-   Node.js >= 22
+-   NPM >= 10
 
 #### Estrutura dos diretórios
 
@@ -49,12 +49,26 @@ $ npm run start
 -   `.vscode` — Manter estilos de codificação consistentes.
 -   `public` — Aquivos estáticos, como imagens e favicon.
 -   `src` — Código-fonte do aplicativo, incluindo páginas, componentes, estilos.
+-   `src/types` — Tipos de domínio da API, espelhando os mappers do `sgb-backend`.
 
 #### Scripts
 
--   `npm run start` — Inicia o aplicativo no modo de desenvolvimento em http://localhost:3000.
--   `npm run build` — Cria uma compilação de produção otimizada do seu aplicativo.
--   `npm run eject` — Remove a dependência build do projeto.
--   `npm run lint` — Executa o ESLint para todos os arquivos no diretório src.
--   `npm run lint:fix` — Executa o ESLint e corrige erros de formatação para todos os arquivos no diretório src.
--   `npm run start:prod` — Inicia o aplicativo no modo de produção a partir do build gerado coom o `npm run build`.
+-   `npm run dev` — Inicia o aplicativo no modo de desenvolvimento em http://localhost:3000.
+-   `npm run start` — Apelido para `npm run dev`.
+-   `npm run build` — Cria uma compilação de produção otimizada do seu aplicativo em `build/`.
+-   `npm run preview` — Serve localmente o resultado do `npm run build`.
+-   `npm run check-types` — Roda o TypeScript (`tsc --noEmit`) sem gerar arquivos.
+-   `npm run lint` — Executa o ESLint em todo o projeto.
+-   `npm run lint:fix` — Executa o ESLint corrigindo o que for auto-corrigível.
+-   `npm test` — Executa a suíte de testes com Jest.
+-   `npm run start:prod` — Inicia o aplicativo no modo de produção a partir do build gerado com o `npm run build`.
+
+#### TypeScript
+
+O projeto está em migração incremental para TypeScript: arquivos `.js`/`.jsx` e
+`.ts`/`.tsx` convivem (`allowJs: true`). Arquivos JS legados ficam fora do
+type-check (`checkJs: false`) e passam a ser verificados assim que forem
+convertidos. A camada `src/api` e os tipos em `src/types` já estão convertidos.
+
+Variáveis de ambiente seguem o padrão do Vite: precisam do prefixo `VITE_` e são
+lidas via `import.meta.env`, não `process.env`.
