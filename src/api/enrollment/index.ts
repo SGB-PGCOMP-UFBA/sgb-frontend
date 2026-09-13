@@ -1,12 +1,12 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
 import type {
   DateInput,
   EnrollmentDetailed,
   EnrollmentProgram,
   FilterOption
-} from '../../types'
+} from '@/types'
 
 const BASE_ENROLLMENT_API_PATH = `/v1/enrollment`
 

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
+import { api } from '@/api'
 import { RelatorioQuadrienalView } from './RelatorioQuadrienalView'
-import { formattedNow } from '../../helpers/formatters'
-import { formatApiError } from '../../helpers/api-error'
-import type { AgencyScholarshipReport } from '../../api/scholarship'
-import type { QuadrennialReportFormat } from '../../api/report'
+import { formattedNow } from '@/helpers/formatters'
+import { formatApiError } from '@/helpers/api-error'
+import type { AgencyScholarshipReport } from '@/api/scholarship'
+import type { QuadrennialReportFormat } from '@/api/report'
 
 function RelatorioQuadrienal() {
   const todayDate = new Date()

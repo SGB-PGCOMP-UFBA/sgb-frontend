@@ -1,4 +1,4 @@
-import { formatDate, formatPhone } from '../formatters';
+import { formatDate, formatPhone } from '@/helpers/formatters';
 
 describe('formatDate', () => {
   it('should format the date correctly', () => {

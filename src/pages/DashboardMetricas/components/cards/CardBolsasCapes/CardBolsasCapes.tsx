@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import type { SxProps, Theme } from '@mui/material'
-import { api } from '../../../../../api'
-import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
-import { formatApiError } from '../../../../../helpers/api-error'
+import { api } from '@/api'
+import type { CountByAgencyAndStatus } from '@/api/scholarship'
+import { formatApiError } from '@/helpers/api-error'
 import { CardBolsasCapesView } from './CardBolsasCapesView'
-import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
+import { CardSkeletonOnLoad } from '@/pages/DashboardMetricas/components/cards/CardSkeletonOnLoad'
 
 const LITERAL_CAPES = 'CAPES'
 
@@ -16,7 +15,7 @@ const initialState: CountByAgencyAndStatus[string] = {
 }
 
 export interface CardBolsasCapesProps {
-  sx?: SxProps<Theme>
+  className?: string
 }
 
 function CardBolsasCapes(props: CardBolsasCapesProps) {
@@ -38,7 +37,7 @@ function CardBolsasCapes(props: CardBolsasCapesProps) {
   }, [])
 
   return (
-    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCapesView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCapesView className={props.className} isLoading={isLoading} data={data} />
   )
 }
 

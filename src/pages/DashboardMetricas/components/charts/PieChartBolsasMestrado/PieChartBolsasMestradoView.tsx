@@ -1,13 +1,13 @@
 import Chart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
-import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material'
-import type { CountByAgencyAndCourse } from '../../../../../api/scholarship'
-import type { ScholarshipStatus } from '../../../../../types'
+import { MdPieChart } from 'react-icons/md'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
+import type { CountByAgencyAndCourse } from '@/api/scholarship'
+import type { ScholarshipStatus } from '@/types'
 
 export interface PieChartBolsasMestradoViewProps {
-  sx?: SxProps<Theme>
-  /** Contagens do curso por agencia: `{ [agencia]: { count } }`. */
+  className?: string
   data: CountByAgencyAndCourse[string]
   total?: number
   isLoading: boolean
@@ -49,27 +49,23 @@ function PieChartBolsasMestradoView(props: PieChartBolsasMestradoViewProps) {
   const series = Object.keys(data).map(chave => parseInt(String(data[chave].count)))
 
   return (
-    <Card sx={props.sx}>
-      <CardContent>
-        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack spacing={1} marginBottom={2}>
-            <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
+    <Card className={props.className}>
+      <CardContent className="p-6">
+        <div className="flex flex-row items-start justify-between gap-6">
+          <div className="mb-4 flex flex-col gap-2">
+            <h3 className="mb-4 text-2xl font-bold text-foreground">
               {`Bolsas de Mestrado (${scholarshipStatus ? 'Finalizadas' : 'Ativas'})`}
-            </Typography>
-            <Typography color="text.primary" textAlign={'center'} variant="h5" marginBottom={2}>
+            </h3>
+            <p className="mb-4 text-center text-2xl text-foreground">
               {`Total: ${total} Bolsas`}
-            </Typography>
-          </Stack>
-          <Avatar
-            className="bg-gray-400 !bg-gray-400"
-            sx={{
-              height: 56,
-              width: 56
-            }}
-          >
-            <Icon sx={{ fontSize: 32 }}>incomplete_circle</Icon>
+            </p>
+          </div>
+          <Avatar className="h-14 w-14 shrink-0">
+            <AvatarFallback className="bg-gray-400 text-white">
+              <MdPieChart className="h-8 w-8" />
+            </AvatarFallback>
           </Avatar>
-        </Stack>
+        </div>
         <Chart options={options} series={series} type="pie" height={350} />
       </CardContent>
     </Card>

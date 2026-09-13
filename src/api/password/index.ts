@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import type { UserRole } from '../../types'
+import { api } from '@/services/api'
+import type { UserRole } from '@/types'
 
 const BASE_PASSWORD_API_PATH = `/v1/passwords`
 

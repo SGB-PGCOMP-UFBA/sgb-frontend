@@ -1,15 +1,30 @@
-import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Typography, Divider, TextField } from '@mui/material'
-import { DatePicker } from '@mui/x-date-pickers';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import type { ScholarshipFilterOptions } from '../GerenciamentoBolsistas'
+import { DateField } from '@/components/date-field'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CpfInput, MonetaryInput, PhoneInput } from '@/components/ui/masked-input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import type { ScholarshipFilterOptions } from '@/pages/GerenciamentoBolsistas/GerenciamentoBolsistas'
 import type {
   EnrollmentProgram,
   ScholarshipDetailedWithRelations,
   ScholarshipEditableStatus
-} from '../../../types'
-import { CpfMaskInput, MonetaryMaskInput, PhoneMaskInput } from '../../../components/Masks/muiInput'
-import { readFormValues } from '../../../helpers/form-values'
+} from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoBolsistaFormFields {
   student_name: string
@@ -29,7 +44,6 @@ export interface EdicaoBolsistaFormFields {
   allocation_id: string
 }
 
-/** O que o dialogo entrega ao `onSubmit`: o formulario mais os identificadores. */
 export interface EdicaoBolsistaSubmitValues extends EdicaoBolsistaFormFields {
   student_email: string
   enrollment_id: number
@@ -40,7 +54,6 @@ export interface DialogEdicaoBolsistaProps {
   item: ScholarshipDetailedWithRelations
   isOpen: boolean
   onClose: () => void
-  /** Devolve `false` quando a atualizacao falha, e ai o dialogo fica aberto. */
   onSubmit: (data: EdicaoBolsistaSubmitValues) => Promise<false | void>
   filterOptions: ScholarshipFilterOptions
 }
@@ -65,362 +78,214 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
   const agenciesName = filterOptions.agencyNameFilterList.slice(1)
   const allocationsName = filterOptions.allocationNameFilterList.slice(1)
 
-  const dialogContent = (
-    <Box
-      className="mt-2"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        minWidth: {
-          xs: '295px',
-          sm: '295px',
-          md: '395px',
-        },
-        maxWidth: {
-          xs: '350px',
-          sm: '350px',
-          md: '695px',
-        },
-        gap: '1.5em',
-      }}>
-      <Box display="flex" flexDirection="column" width="100%">
-        <Typography variant="subtitle1">
-          Bolsista
-        </Typography>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            '& > *': {
-              marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: {
-                xs: 'column',
-                sm: 'column',
-                md: 'row',
-              },
-              gap: '0.6em',
-              width: '100%',
-              marginTop: '1.2em',
-              '& > *': {
-                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-              },
-            }}
-          >
-            <TextField
-              id="input-student-name"
-              label="Nome"
-              name="student_name"
-              variant="outlined"
-              defaultValue={item.student?.name}
-              fullWidth
-              inputProps={{ maxLength: 80 }}
-            />
-            <TextField
-              id="input-student-link-to-lattes"
-              label="Link do Lattes"
-              name="student_link_to_lattes"
-              variant="outlined"
-              defaultValue={item.student?.link_to_lattes}
-              fullWidth
-              inputProps={{ maxLength: 80 }}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: {
-                xs: 'column',
-                sm: 'column',
-                md: 'row',
-              },
-              gap: '0.6em',
-              width: '100%',
-              '& > *': {
-                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-              },
-            }}
-          >
-            <TextField
-              id="input-student-tax-id"
-              label="CPF"
-              name="student_tax_id"
-              variant="outlined"
-              defaultValue={item.student?.tax_id}
-              fullWidth
-              InputProps={{
-                inputComponent: CpfMaskInput,
-              }}
-            />
-            <TextField
-              id="input-student-phone"
-              label="Celular"
-              name="student_phone_number"
-              variant="outlined"
-              defaultValue={item.student?.phone_number}
-              fullWidth
-              InputProps={{
-                inputComponent: PhoneMaskInput,
-              }}
-            />
-          </Box>
-        </Box>
-      </Box>
-
-      <Box display="flex" flexDirection="column" width="100%">
-        <Typography variant="subtitle1">
-          Matrícula
-        </Typography>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            '& > *': {
-              marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: {
-                xs: 'column',
-                sm: 'column',
-                md: 'row',
-              },
-              gap: '0.6em',
-              width: '100%',
-              marginTop: '1.2em',
-              '& > *': {
-                marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-              },
-            }}
-          >
-            <FormControl fullWidth>
-              <InputLabel id="label-curso">Curso</InputLabel>
-              <Select
-                id="select-curso"
-                label="Curso"
-                name="enrollment_program"
-                labelId="label-curso"
-                defaultValue={item.enrollment?.enrollment_program ?? ''}
-              >
-                <MenuItem value={"MESTRADO"}>Mestrado</MenuItem>
-                <MenuItem value={"DOUTORADO"}>Doutorado</MenuItem>
-              </Select>
-            </FormControl>
-            <DatePicker
-              label="Data Primeira Matrícula"
-              name="enrollment_date"
-              defaultValue={new Date(item.enrollment?.enrollment_date ?? 0)}
-              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
-            />
-            <DatePicker
-              label="Data de Previsão de Defesa"
-              name="defense_prediction_date"
-              defaultValue={new Date(item.enrollment?.defense_prediction_date ?? 0)}
-              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
-            />
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <InputLabel id="label-orientador">Orientador</InputLabel>
-              <Select
-                id="select-orientador"
-                label="Orientador"
-                name="advisor_email"
-                labelId="label-orientador"
-                defaultValue={item.advisor?.email ?? ''}
-              >
-                {advisorsName.map((advisor) => (
-                  <MenuItem key={advisor.key} value={advisor.email}>
-                    {advisor.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </Box>
-      </Box>
-
-      <Box display="flex" flexDirection="column">
-        <Typography variant="subtitle1">
-          Bolsa
-        </Typography>
-        <Divider />
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginTop: '1.2em',
-          '& > *': {
-            marginBottom: { xs: '0.6em', sm: '0.6em', md: '1em' },
-          },
-        }}>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: {
-              xs: 'column',
-              sm: 'column',
-              md: 'row',
-            },
-            gap: '0.4em',
-            '& > *': {
-              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-            },
-          }}>
-            <FormControl fullWidth>
-              <InputLabel id="label-agencia">Agência</InputLabel>
-              <Select
-                id="select-agencia"
-                label="Agência"
-                name="agency_id"
-                labelId="label-agencia"
-                defaultValue={item.agency?.id ?? ''}
-              >
-                {agenciesName.map((agency) => (
-                  <MenuItem key={agency.key} value={agency.id}>
-                    {agency.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel id="label-status">Situação</InputLabel>
-              <Select
-                id="select-status"
-                label="Situação"
-                name="status"
-                labelId="label-status"
-                defaultValue={item.status}
-              >
-                <MenuItem value={"ON_GOING"}>Em Andamento</MenuItem>
-                <MenuItem value={"EXTENDED"}>Prazo Estendido</MenuItem>
-                <MenuItem value={"FINISHED"}>Finalizado</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              id="input-salary"
-              label="Valor da Bolsa"
-              name="salary"
-              variant="outlined"
-              defaultValue={item.salary !== null ? item.salary : "0,00"}
-              InputProps={{
-                inputComponent: MonetaryMaskInput,
-              }}
-              fullWidth
-              inputProps={{ maxLength: 14 }}
-            />
-          </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: {
-              xs: 'column',
-              sm: 'column',
-              md: 'row',
-            },
-            gap: '0.4em',
-            '& > *': {
-              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-            },
-          }}>
-            <DatePicker
-              label="Data de Início da Bolsa"
-              name="scholarship_starts_at"
-              defaultValue={new Date(item.scholarship_starts_at)}
-              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
-            />
-            <DatePicker
-              label="Data de Término da Bolsa"
-              name="scholarship_ends_at"
-              defaultValue={new Date(item.scholarship_ends_at)}
-              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
-            />
-            <DatePicker
-              label="Data de Extensão da Bolsa"
-              name="extension_ends_at"
-              minDate={new Date(item.scholarship_ends_at)}
-              defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
-              slotProps={{ textField: { fullWidth: true, InputLabelProps: { shrink: true } } }}
-            />
-          </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: {
-              xs: 'column',
-              sm: 'column',
-              md: 'row',
-            },
-            gap: '0.4em',
-            '& > *': {
-              marginBottom: { xs: '0.6em', sm: '0.6em', md: 0 },
-            },
-          }}>
-            <FormControl fullWidth>
-              <InputLabel id="label-agencia">Alocação</InputLabel>
-              <Select
-                id="select-alocacao"
-                label="Alocação"
-                name="allocation_id"
-                labelId="label-alocacao"
-                defaultValue={item.allocation? item.allocation.id : allocationsName[0].id}
-              >
-                {allocationsName.map((allocation) => (
-                  <MenuItem key={allocation.key} value={allocation.id}>
-                    {allocation.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button type="submit" autoFocus variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      TransitionComponent={SlideUp}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Editar Bolsista - <b>{item.student?.name}</b></DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[695px]">
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>
+              Editar Bolsista - <b>{item.student?.name}</b>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-6 pt-4">
+            <div className="flex w-full flex-col gap-2">
+              <h3 className="text-base font-medium">Bolsista</h3>
+              <Separator />
+
+              <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="input-student-name">Nome</Label>
+                  <Input
+                    id="input-student-name"
+                    name="student_name"
+                    defaultValue={item.student?.name}
+                    maxLength={80}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="input-student-link-to-lattes">Link do Lattes</Label>
+                  <Input
+                    id="input-student-link-to-lattes"
+                    name="student_link_to_lattes"
+                    defaultValue={item.student?.link_to_lattes}
+                    maxLength={80}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="input-student-tax-id">CPF</Label>
+                  <CpfInput
+                    id="input-student-tax-id"
+                    name="student_tax_id"
+                    defaultValue={item.student?.tax_id}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="input-student-phone">Celular</Label>
+                  <PhoneInput
+                    id="input-student-phone"
+                    name="student_phone_number"
+                    defaultValue={item.student?.phone_number}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full flex-col gap-2">
+              <h3 className="text-base font-medium">Matrícula</h3>
+              <Separator />
+
+              <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="select-curso">Curso</Label>
+                  <Select name="enrollment_program" defaultValue={item.enrollment?.enrollment_program}>
+                    <SelectTrigger id="select-curso">
+                      <SelectValue placeholder="Selecione um curso" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="MESTRADO">Mestrado</SelectItem>
+                      <SelectItem value="DOUTORADO">Doutorado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <DateField
+                  id="enrollment_date"
+                  name="enrollment_date"
+                  label="Data Primeira Matrícula"
+                  defaultValue={new Date(item.enrollment?.enrollment_date ?? 0)}
+                />
+
+                <DateField
+                  id="defense_prediction_date"
+                  name="defense_prediction_date"
+                  label="Data de Previsão de Defesa"
+                  defaultValue={new Date(item.enrollment?.defense_prediction_date ?? 0)}
+                />
+
+                <div className="space-y-1.5 md:col-span-3">
+                  <Label htmlFor="select-orientador">Orientador</Label>
+                  <Select name="advisor_email" defaultValue={item.advisor?.email}>
+                    <SelectTrigger id="select-orientador">
+                      <SelectValue placeholder="Selecione um orientador" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {advisorsName.map((advisor) => (
+                        <SelectItem key={advisor.key} value={advisor.email}>
+                          {advisor.value}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full flex-col gap-2">
+              <h3 className="text-base font-medium">Bolsa</h3>
+              <Separator />
+
+              <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="select-agencia">Agência</Label>
+                  <Select
+                    name="agency_id"
+                    defaultValue={item.agency ? String(item.agency.id) : undefined}
+                  >
+                    <SelectTrigger id="select-agencia">
+                      <SelectValue placeholder="Selecione uma agência" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {agenciesName.map((agency) => (
+                        <SelectItem key={agency.key} value={String(agency.id)}>
+                          {agency.value}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="select-status">Situação</Label>
+                  <Select name="status" defaultValue={item.status}>
+                    <SelectTrigger id="select-status">
+                      <SelectValue placeholder="Selecione uma situação" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ON_GOING">Em Andamento</SelectItem>
+                      <SelectItem value="EXTENDED">Prazo Estendido</SelectItem>
+                      <SelectItem value="FINISHED">Finalizado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="input-salary">Valor da Bolsa</Label>
+                  <MonetaryInput
+                    id="input-salary"
+                    name="salary"
+                    defaultValue={item.salary !== null ? item.salary : '0,00'}
+                    maxLength={14}
+                  />
+                </div>
+
+                <DateField
+                  id="scholarship_starts_at"
+                  name="scholarship_starts_at"
+                  label="Data de Início da Bolsa"
+                  defaultValue={new Date(item.scholarship_starts_at)}
+                />
+
+                <DateField
+                  id="scholarship_ends_at"
+                  name="scholarship_ends_at"
+                  label="Data de Término da Bolsa"
+                  defaultValue={new Date(item.scholarship_ends_at)}
+                />
+
+                <DateField
+                  id="extension_ends_at"
+                  name="extension_ends_at"
+                  label="Data de Extensão da Bolsa"
+                  minDate={new Date(item.scholarship_ends_at)}
+                  defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
+                />
+
+                <div className="space-y-1.5 md:col-span-3">
+                  <Label htmlFor="select-alocacao">Alocação</Label>
+                  <Select
+                    name="allocation_id"
+                    defaultValue={String(item.allocation ? item.allocation.id : allocationsName[0].id)}
+                  >
+                    <SelectTrigger id="select-alocacao">
+                      <SelectValue placeholder="Selecione uma alocação" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {allocationsName.map((allocation) => (
+                        <SelectItem key={allocation.key} value={String(allocation.id)}>
+                          {allocation.value}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="gap-x-4 pt-6">
+            <Button type="button" onClick={onClose} variant="ghost" size="sm">
+              Cancelar
+            </Button>
+            <Button type="submit" size="sm" className="bg-green-600 text-white hover:bg-green-700">
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

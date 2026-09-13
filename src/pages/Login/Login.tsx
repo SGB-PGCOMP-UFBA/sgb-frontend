@@ -3,10 +3,10 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { LoginView } from './LoginView'
-import { api } from '../../api'
-import { addUserToLocalStorage, getUserFromLocalStorage } from '../../helpers/auth-user'
-import type { StoredUser } from '../../helpers/auth-user'
-import type { LoginRequest } from '../../types'
+import { api } from '@/api'
+import { addUserToLocalStorage, getUserFromLocalStorage } from '@/helpers/auth-user'
+import type { StoredUser } from '@/helpers/auth-user'
+import type { FieldChangeEvent, LoginRequest } from '@/types'
 
 function getServerErrorMessage(data: unknown): string {
   const message =
@@ -25,7 +25,7 @@ function Login() {
   const navigate = useNavigate()
   const [formValues, setFormValues] = useState<LoginRequest>(initialState)
 
-  const handleFormValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFormValueChange = (e: FieldChangeEvent) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 

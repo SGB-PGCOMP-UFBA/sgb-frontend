@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { Button, Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR } from '@mui/x-data-grid'
-import type {
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams
-} from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
+import { useMemo, useState } from 'react'
+import { cn } from '@/lib/utils'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { ActionIconButton } from '@/components/action-icon-button'
+import { Pencil, Trash2 } from 'lucide-react'
+import { DataTable } from '@/components/data-table'
+import type { DataTableColumn } from '@/components/data-table/types'
+import { Button } from '@/components/ui/button'
+import { formatDate, formatPhone } from '@/helpers/formatters'
+import { CustomChip } from '@/components'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
 import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
 import type { InclusaoBolsaSubmitValues } from './DialogInclusaoBolsa'
@@ -19,11 +19,10 @@ import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
-} from '../../../types'
+} from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 
-/** Linha da grade: a matricula do estudante acrescida do e-mail dele. */
 export interface MatriculaRow extends EnrollmentDetailedWithFullRelations {
   student_email: string
 }
@@ -41,14 +40,17 @@ export interface DataGridMatriculasProps {
 
 function DataGridMatriculas(props: DataGridMatriculasProps) {
   const { data } = props
-  const enrollments = data.enrollments.flatMap(enrollment => ({
-    ...enrollment,
-    student_email: data.email,
-  })
-  )
-  const hasOnGoingScholarship = enrollments.some(enrollment => enrollment.scholarships.some(scholarship => scholarship.status === 'ON_GOING' || scholarship.status === 'EXTENDED'))
 
-  const [pageSize, setPageSize] = useState(5)
+  const enrollments = useMemo<MatriculaRow[]>(
+    () =>
+      data.enrollments.map(enrollment => ({
+        ...enrollment,
+        student_email: data.email,
+      })),
+    [data]
+  )
+
+  const hasOnGoingScholarship = enrollments.some(enrollment => enrollment.scholarships.some(scholarship => scholarship.status === 'ON_GOING' || scholarship.status === 'EXTENDED'))
 
   const [selectedEnrollment, setSelectedEnrollment] = useState<MatriculaRow | null>(null)
   const [isDialogForScholarshipCreateOpen, setIsDialogForScholarshipCreateOpen] = useState(false)
@@ -85,204 +87,167 @@ function DataGridMatriculas(props: DataGridMatriculasProps) {
     setIsDialogForEnrollmentDeleteOpen(true)
   }
 
-  const columns: GridColDef[] = [
-    {
-      field: 'enrollmentNumber',
-      headerName: 'Matrícula',
-      width: 120,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => (
-        <p className="overflow-auto">{params.row.enrollment_number.trim()}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.enrollment_number.trim()
-    },
-    {
-      field: 'enrollmentProgram',
-      headerName: 'Curso',
-      width: 135,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => (
-        <CustomChip value={params.row.enrollment_program} type="program" />
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.enrollment_program
-    },
-    {
-      field: 'advisorName',
-      headerName: 'Nome do Orientador',
-      width: 250,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor?.name}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.advisor?.name
-    },
-    {
-      field: 'advisorEmail',
-      headerName: 'E-mail do Orientador',
-      width: 190,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor?.email}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.advisor?.email
-    },
-    {
-      field: 'advisorPhoneNumber',
-      headerName: 'Celular do Orientador',
-      width: 170,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => (params.row.advisor?.phone_number ?
-        <a
-          href={`https://wa.me/${params.row.advisor?.phone_number}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-500"
-        >
-          {formatPhone(params.row.advisor?.phone_number)}
-        </a>
-        : <p className="overflow-auto">{NOT_INFORMED}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.advisor?.phone_number
-    },
-    {
-      field: 'advisorStatus',
-      headerName: 'Situação do Orientador',
-      width: 180,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor?.status === 'ACTIVE' ? 'Em exercício' : 'Inativo'}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => params.row.advisor?.email
-    },
-    {
-      field: 'enrollmentDate',
-      headerName: 'Data da Matrícula',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => formatDate(params.row.enrollment_date),
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => new Date(params.row.enrollment_date)
-    },
-    {
-      field: 'defensePredictionDate',
-      headerName: 'Previsão de Defesa',
-      width: 160,
-      filterable: false,
-      sortable: false,
-      /* `defense_prediction_date` e anulavel; `?? 0` mantem o comportamento
-         anterior, em que `new Date(null)` caia em 01/01/1970. */
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => formatDate(params.row.defense_prediction_date ?? 0),
-      valueGetter: (params: GridValueGetterParams<unknown, MatriculaRow>) => new Date(params.row.defense_prediction_date ?? 0)
-    },
-    {
-      field: 'actions',
-      headerName: 'Ações',
-      width: 180,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, MatriculaRow>) => (
-        <div className="flex w-full h-full items-center justify-center gap-x-1">
-          <Tooltip title={hasOnGoingScholarship ? "Não é possível adicionar uma nova bolsa, pois você já possui uma bolsa em andamento." : "Adicionar Bolsa"}>
-            <span style={{ cursor: hasOnGoingScholarship ? 'not-allowed' : 'pointer' }}>
-              <Button
-                size="small"
-                color="primary"
-                className="min-w-0 px-2 py-1 normal-case leading-tight"
-                onClick={() => handleDialogForScholarshipCreateOpen(params.row)}
-                disabled={hasOnGoingScholarship}
-              >
-                <span className='capitalize font-bold text-center'>Add<br/>Bolsa</span>
-              </Button>
-            </span>
-          </Tooltip>
-          <Tooltip title="Editar Matrícula">
-            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>edit</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Excluir Matrícula">
-            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>delete</Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
-      )
-    }
-  ]
+  const columns = useMemo<DataTableColumn<MatriculaRow>[]>(
+    () => [
+      {
+        id: 'enrollmentNumber',
+        header: 'Matrícula',
+        width: 120,
+        cell: (row) => <p className="overflow-auto">{row.enrollment_number.trim()}</p>,
+        csv: (row) => row.enrollment_number.trim()
+      },
+      {
+        id: 'enrollmentProgram',
+        header: 'Curso',
+        width: 135,
+        cell: (row) => <CustomChip value={row.enrollment_program} type="program" />,
+        csv: (row) => row.enrollment_program
+      },
+      {
+        id: 'advisorName',
+        header: 'Nome do Orientador',
+        width: 250,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{row.advisor?.name}</p>
+        ),
+        csv: (row) => row.advisor?.name
+      },
+      {
+        id: 'advisorEmail',
+        header: 'E-mail do Orientador',
+        width: 190,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{row.advisor?.email}</p>
+        ),
+        csv: (row) => row.advisor?.email
+      },
+      {
+        id: 'advisorPhoneNumber',
+        header: 'Celular do Orientador',
+        width: 170,
+        cell: (row) =>
+          row.advisor?.phone_number ? (
+            <a
+              href={`https://wa.me/${row.advisor?.phone_number}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-500"
+            >
+              {formatPhone(row.advisor?.phone_number)}
+            </a>
+          ) : (
+            <p className="overflow-auto">{NOT_INFORMED}</p>
+          ),
+        csv: (row) => row.advisor?.phone_number
+      },
+      {
+        id: 'advisorStatus',
+        header: 'Situação do Orientador',
+        width: 180,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">
+            {row.advisor?.status === 'ACTIVE' ? 'Em exercício' : 'Inativo'}
+          </p>
+        ),
+        csv: (row) => row.advisor?.email
+      },
+      {
+        id: 'enrollmentDate',
+        header: 'Data da Matrícula',
+        width: 150,
+        cell: (row) => formatDate(row.enrollment_date),
+        csv: (row) => formatDate(row.enrollment_date)
+      },
+      {
+        id: 'defensePredictionDate',
+        header: 'Previsão de Defesa',
+        width: 160,
+        cell: (row) => formatDate(row.defense_prediction_date ?? 0),
+        csv: (row) => formatDate(row.defense_prediction_date ?? 0)
+      },
+      {
+        id: 'actions',
+        header: 'Ações',
+        width: 180,
+        cell: (row) => (
+          <div className="flex w-full h-full items-center justify-center gap-x-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn(
+                    'h-auto min-w-0 whitespace-normal px-2 py-1 leading-tight text-primary',
+                    hasOnGoingScholarship && 'cursor-not-allowed opacity-50 hover:bg-transparent'
+                  )}
+                  aria-label="Adicionar Bolsa"
+                  aria-disabled={hasOnGoingScholarship || undefined}
+                  onClick={
+                    hasOnGoingScholarship
+                      ? undefined
+                      : () => handleDialogForScholarshipCreateOpen(row)
+                  }
+                >
+                  <span className="capitalize font-bold text-center">Add<br />Bolsa</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs text-center">
+                {hasOnGoingScholarship
+                  ? 'Não é possível adicionar uma nova bolsa, pois você já possui uma bolsa em andamento.'
+                  : 'Adicionar Bolsa'}
+              </TooltipContent>
+            </Tooltip>
+            <ActionIconButton
+              label="Editar Matrícula"
+              icon={Pencil}
+              onClick={() => handleDialogForUpdateOpen(row)}
+            />
+            <ActionIconButton
+              label="Excluir Matrícula"
+              icon={Trash2}
+              onClick={() => handleDialogForDeleteOpen(row)}
+            />
+          </div>
+        )
+      }
+    ],
+    [hasOnGoingScholarship]
+  )
 
   return (
     <div>
-      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-        <DataGrid
-          rows={enrollments}
-          columns={columns}
-          disableColumnMenu
-          isRowSelectable={() => false}
-          autoHeight
-          pagination
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          sx={{
-            '.MuiDataGrid-columnSeparator': {
-              display: 'none',
-            },
-            '& .MuiDataGrid-columnHeaderTitle': {
-              fontWeight: 'bold',
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-columnHeader': {
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-cell': {
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            },
-          }}
+      <DataTable data={enrollments} columns={columns} csvFileName="matriculas" />
+
+      {isDialogForScholarshipCreateOpen && selectedEnrollment && (
+        <DialogInclusaoBolsa
+          isOpen={isDialogForScholarshipCreateOpen}
+          onClose={handleDialogForScholarshipCreateClose}
+          onSubmit={props.onCreateScholarship}
+          agencies={props.agencies}
+          allocations={props.allocations}
+          enrollment={selectedEnrollment}
+          getMaxEndDate={props.getMaxEndDate}
         />
+      )}
 
-        {isDialogForScholarshipCreateOpen && selectedEnrollment && (
-          <DialogInclusaoBolsa
-            isOpen={isDialogForScholarshipCreateOpen}
-            onClose={handleDialogForScholarshipCreateClose}
-            onSubmit={props.onCreateScholarship}
-            agencies={props.agencies}
-            allocations={props.allocations}
-            enrollment={selectedEnrollment}
-            getMaxEndDate={props.getMaxEndDate}
-          />
-        )}
+      {selectedEnrollment && (
+        <DialogEdicaoMatricula
+          onSubmit={props.onUpdate}
+          item={selectedEnrollment}
+          advisors={props.advisors}
+          isOpen={isDialogForEnrollmentUpdateOpen}
+          onClose={handleDialogForUpdateClose}
+        />
+      )}
 
-        {selectedEnrollment && (
-          <DialogEdicaoMatricula
-            onSubmit={props.onUpdate}
-            item={selectedEnrollment}
-            advisors={props.advisors}
-            isOpen={isDialogForEnrollmentUpdateOpen}
-            onClose={handleDialogForUpdateClose}
-          />
-        )}
-
-        {selectedEnrollment && (
-          <DialogExclusaoMatricula
-            onSubmit={props.onDelete}
-            item={selectedEnrollment}
-            isOpen={isDialogForEnrollmentDeleteOpen}
-            onClose={handleDialogForDeleteClose}
-          />
-        )}
-      </div>
+      {selectedEnrollment && (
+        <DialogExclusaoMatricula
+          onSubmit={props.onDelete}
+          item={selectedEnrollment}
+          isOpen={isDialogForEnrollmentDeleteOpen}
+          onClose={handleDialogForDeleteClose}
+        />
+      )}
     </div>
   )
 }

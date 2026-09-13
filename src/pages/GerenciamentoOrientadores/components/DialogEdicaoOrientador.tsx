@@ -1,16 +1,25 @@
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import type { UpdateAdvisorPayload } from '../../../api/advisor'
-import type { AdvisorDetailed, UserStatus } from '../../../types'
-import { CpfMaskInput, PhoneMaskInput } from '../../../components/Masks/muiInput'
-import { readFormValues } from '../../../helpers/form-values'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import type { UpdateAdvisorPayload } from '@/api/advisor'
+import type { AdvisorDetailed, UserStatus } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
-/**
- * Campos do formulario. Sao todos `TextField` de texto ou `<Select>` — nao ha
- * input de arquivo —, entao o `FormData` devolve apenas strings, com as chaves
- * declaradas em cada `name`.
- */
 export interface EdicaoOrientadorFormFields {
   name: string
   email: string
@@ -26,8 +35,15 @@ export interface DialogEdicaoOrientadorProps {
   onSubmit: (payload: UpdateAdvisorPayload) => void
 }
 
-function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }: DialogEdicaoOrientadorProps) {
-  const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
+function DialogEdicaoOrientador({
+  item,
+  isOpen,
+  onClose,
+  onSubmit,
+}: DialogEdicaoOrientadorProps) {
+  const submitAndCloseDialog = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
     const newFormData = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoOrientadorFormFields>(newFormData)
@@ -44,110 +60,89 @@ function DialogEdicaoOrientador({ item, isOpen, onClose, onSubmit }: DialogEdica
     onClose()
   }
 
-  const dialogContent = (
-    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
-      <TextField
-        required
-        fullWidth
-        id="name"
-        label="Nome"
-        type="text"
-        name="name"
-        placeholder="Insira o nome do orientador"
-        defaultValue={item.name}
-        inputProps={{ maxLength: 80 }}
-      />
-
-      <TextField
-        required
-        fullWidth
-        id="email"
-        label="E-mail"
-        type="email"
-        name="email"
-        placeholder="Insira o e-mail do orientador"
-        defaultValue={item.email}
-        inputProps={{ maxLength: 80 }}
-      />
-
-      <TextField
-        fullWidth
-        id="tax_id"
-        label="CPF"
-        type="text"
-        name="tax_id"
-        placeholder="Insira o CPF do orientador"
-        InputProps={{
-          inputComponent: CpfMaskInput
-        }}
-        defaultValue={item.tax_id}
-      />
-
-      <TextField
-        fullWidth
-        id="phone_number"
-        label="Telefone"
-        type="phone"
-        name="phone_number"
-        placeholder="Insira o telefone do orientador"
-        InputProps={{
-          inputComponent: PhoneMaskInput
-        }}
-        defaultValue={item.phone_number}
-      />
-
-      <FormControl fullWidth required>
-        <InputLabel id="label-status">Situação</InputLabel>
-        <Select
-          labelId="label-status"
-          id="select-status"
-          defaultValue={item.status}
-          label="Situação"
-          name="status"
-        >
-          <MenuItem value={"ACTIVE"}>Ativo(a)</MenuItem>
-          <MenuItem value={"INACTIVE"}>Inativo(a)</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button type="submit" autoFocus variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-      TransitionComponent={SlideUp}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Editar Orientador</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent className='sm:max-w-[595px]'>
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>Editar Orientador</DialogTitle>
+          </DialogHeader>
+
+          <div className='flex flex-col space-y-4 pt-4'>
+            <div className='space-y-1.5'>
+              <Label htmlFor='name'>Nome</Label>
+              <Input
+                required
+                id='name'
+                type='text'
+                name='name'
+                placeholder='Insira o nome do orientador'
+                defaultValue={item.name}
+                maxLength={80}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='email'>E-mail</Label>
+              <Input
+                required
+                id='email'
+                type='email'
+                name='email'
+                placeholder='Insira o e-mail do orientador'
+                defaultValue={item.email}
+                maxLength={80}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='tax_id'>CPF</Label>
+              <CpfInput
+                id='tax_id'
+                name='tax_id'
+                placeholder='Insira o CPF do orientador'
+                defaultValue={item.tax_id ?? undefined}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='phone_number'>Telefone</Label>
+              <PhoneInput
+                id='phone_number'
+                name='phone_number'
+                placeholder='Insira o telefone do orientador'
+                defaultValue={item.phone_number ?? undefined}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='select-status'>Situação</Label>
+              <Select name='status' required defaultValue={item.status}>
+                <SelectTrigger id='select-status'>
+                  <SelectValue placeholder='Selecione uma situação' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='ACTIVE'>Ativo(a)</SelectItem>
+                  <SelectItem value='INACTIVE'>Inativo(a)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter className='gap-x-4 pt-6'>
+            <Button type='button' onClick={onClose} variant='ghost' size='sm'>
+              Cancelar
+            </Button>
+            <Button
+              type='submit'
+              size='sm'
+              className='bg-green-600 text-white hover:bg-green-700'
+            >
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

@@ -1,4 +1,4 @@
-import type { ScholarshipStatus } from '../types'
+import type { ScholarshipStatus } from '@/types'
 
 /**
  * Rotulos em portugues para os status de bolsa.

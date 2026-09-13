@@ -1,31 +1,33 @@
 import {
-  Box,
-  Button,
-  FormControl,
-  Icon,
-  InputLabel,
-  MenuItem,
+  Copy,
+  Download,
+  FilterX
+} from 'lucide-react'
+import { MdWork } from 'react-icons/md'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import AppLayout from '@/components/app-layout'
+import { PageHeader } from '@/components/page-header'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
   Select,
-  TextField,
-  Tooltip,
-} from '@mui/material'
-import ContentCopy from '@mui/icons-material/ContentCopy'
-import Download from '@mui/icons-material/Download'
-import FilterAltOff from '@mui/icons-material/FilterAltOff'
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { DataGridBolsistas } from './components/DataGridBolsistas'
-import Sidebar from '../../components/Sidebar'
-import Loading from '../../components/Loading'
-import MenuAppBar from '../../components/Navbar'
+import Loading from '@/components/loading'
 import type { EdicaoBolsistaSubmitValues } from './components/DialogEdicaoBolsista'
 import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
   ScholarshipPageFilters
 } from './GerenciamentoBolsistas'
-import type { Page, ScholarshipDetailedWithRelations } from '../../types'
+import type { Page, ScholarshipDetailedWithRelations } from '@/types'
 
 export interface GerenciamentoBolsistasViewProps {
-  /** Vazio ate a primeira pagina chegar; a View le `items` e `meta` direto. */
   data: Partial<Page<ScholarshipDetailedWithRelations>>
   page: number
   setPage: (page: number) => void
@@ -36,7 +38,6 @@ export interface GerenciamentoBolsistasViewProps {
   handleResetFilters: () => void
   filterOptions: ScholarshipFilterOptions
   isLoading: boolean
-  /** Devolve `false` quando a atualizacao falha, e ai o dialogo fica aberto. */
   onEditScholarship: (data: EdicaoBolsistaSubmitValues) => Promise<false | void>
   onDeleteScholarship: (scholarshipId: number) => void
   isDialogForFiltersOpen: boolean
@@ -49,224 +50,208 @@ export interface GerenciamentoBolsistasViewProps {
 function GerenciamentoBolsistasView(props: GerenciamentoBolsistasViewProps) {
   const { isLoading, data, onEditScholarship, onDeleteScholarship } = props
 
+  const handleSelectChange = (name: string) => (value: string) => {
+    props.setFilters({ target: { name, value } })
+  }
+
   return (
-    <div className='flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row'>
-      <Sidebar />
-      <div className='flex w-full flex-col justify-start'>
-        <MenuAppBar />
-        <section className='flex w-full justify-center p-4'>
-          <div className='shadow-base h-max w-full space-y-8 rounded-lg bg-white p-6 lg:w-full'>
-            <div className='mb-8 flex justify-between'>
-              <div className='flex items-center gap-x-4'>
-                <div className='rounded-md bg-green-400 p-2 leading-none'>
-                  <Icon sx={{ fontSize: 32 }}>work</Icon>
-                </div>
-                <div>
-                  <h2 className='poppins text-xl font-semibold text-gray-900'>
-                    Bolsistas
-                  </h2>
-                  <p className='poppins font-medium text-gray-500'>
-                    Listagem de Bolsistas do Programa de Pós-Graduação em
-                    Computação
-                  </p>
-                </div>
-              </div>
-              <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
-                <Tooltip title='Baixar PDF com dados anuais'>
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    startIcon={<Download />}
-                    onClick={() => props.handleReportDownload()}
-                    sx={{
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Relatório Anual
-                  </Button>
-                </Tooltip>
+    <AppLayout>
+      <PageHeader
+        title='Bolsistas'
+        description='Listagem de Bolsistas do Programa de Pós-Graduação em Computação'
+        icon={MdWork}
+        iconBackgroundClassName='bg-green-400'
+        actions={
+          <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='outline'
+                  aria-label='Baixar PDF com dados anuais'
+                  className='rounded-lg font-semibold'
+                  onClick={() => props.handleReportDownload()}
+                >
+                  <Download />
+                  Relatório Anual
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Baixar PDF com dados anuais</TooltipContent>
+            </Tooltip>
 
-                <Tooltip title='Copiar lista de e-mails das bolsas exibidas para o clipboard (separados por ,)'>
-                  <Button
-                    variant='contained'
-                    color='secondary'
-                    startIcon={<ContentCopy />}
-                    onClick={() => props.copyScholarshipStudentsEmails()}
-                    sx={{
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      fontWeight: 600,
-                      backgroundColor: '#6366f1',
-                      '&:hover': { backgroundColor: '#4f46e5' },
-                    }}
-                  >
-                    Copiar e-mails
-                  </Button>
-                </Tooltip>
-              </div>
-            </div>
-            <Box
-              sx={{
-                width: '100%',
-                border: '1px solid rgba(224, 224, 224, 1)',
-                borderRadius: '4px',
-                padding: '0.6em',
-                marginTop: '0px !important',
-              }}
-            >
-              <div className='flex flex-col gap-4 md:flex-row'>
-                <TextField
-                  id='input-student-name'
-                  name='studentName'
-                  label='Bolsista'
-                  placeholder='Digite o nome do bolsista'
-                  variant='outlined'
-                  onChange={props.setFilters}
-                  value={props.filters.studentName}
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <FormControl fullWidth>
-                  <InputLabel id='label-order'>Ordenar por</InputLabel>
-                  <Select
-                    id='select-order'
-                    label='Ordenar por'
-                    name='orderBy'
-                    labelId='label-order'
-                    onChange={props.setFilters}
-                    value={props.filters.orderBy}
-                  >
-                    <MenuItem value={'DAT_MATRICULA_ASC'}>
-                      Data da Matrícula ↓
-                    </MenuItem>
-                    <MenuItem value={'DAT_MATRICULA_DESC'}>
-                      Data da Matrícula ↑
-                    </MenuItem>
-                    <MenuItem value={'DAT_DEFESA_ASC'}>
-                      Previsão de Defesa ↓
-                    </MenuItem>
-                    <MenuItem value={'DAT_DEFESA_DESC'}>
-                      Previsão de Defesa ↑
-                    </MenuItem>
-                    <MenuItem value={'DAT_INICIO_ASC'}>
-                      Data de Início da Bolsa ↓
-                    </MenuItem>
-                    <MenuItem value={'DAT_INICIO_DESC'}>
-                      Data de Início da Bolsa ↑
-                    </MenuItem>
-                    <MenuItem value={'DAT_TERMINO_ASC'}>
-                      Data de Término da Bolsa ↓
-                    </MenuItem>
-                    <MenuItem value={'DAT_TERMINO_DESC'}>
-                      Data de Término da Bolsa ↑
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id='label-course'>Curso</InputLabel>
-                  <Select
-                    id='select-course'
-                    label='Curso'
-                    name='programName'
-                    labelId='label-course'
-                    onChange={props.setFilters}
-                    value={props.filters.programName}
-                  >
-                    {props.filterOptions.programNameFilterList.map(course => (
-                      <MenuItem key={course.key} value={course.key}>
-                        {course.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id='label-agencia'>Agência</InputLabel>
-                  <Select
-                    id='select-agencia'
-                    label='Agência'
-                    name='agencyName'
-                    labelId='label-agencia'
-                    onChange={props.setFilters}
-                    value={props.filters.agencyName}
-                  >
-                    {props.filterOptions.agencyNameFilterList.map(agency => (
-                      <MenuItem key={agency.key} value={agency.key}>
-                        {agency.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id='label-status'>Situação da Bolsa</InputLabel>
-                  <Select
-                    id='select-status'
-                    label='Situação da Bolsa'
-                    name='scholarshipStatus'
-                    labelId='label-status'
-                    onChange={props.setFilters}
-                    value={props.filters.scholarshipStatus}
-                  >
-                    {props.filterOptions.scholarshipStatusFilterList.map(
-                      status => (
-                        <MenuItem key={status.key} value={status.key}>
-                          {status.value}
-                        </MenuItem>
-                      )
-                    )}
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                  <InputLabel id='label-advisor'>Nome do Orientador</InputLabel>
-                  <Select
-                    id='select-advisor'
-                    label='Nome do Orientador'
-                    name='advisorName'
-                    labelId='label-advisor'
-                    onChange={props.setFilters}
-                    value={props.filters.advisorName}
-                  >
-                    {props.filterOptions.advisorNameFilterList.map(advisor => (
-                      <MenuItem key={advisor.key} value={advisor.key}>
-                        {advisor.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Tooltip title='Resetar Filtros'>
-                  <Button
-                    variant='contained'
-                    color='error'
-                    onClick={() => props.handleResetFilters()}
-                  >
-                    <FilterAltOff fontSize='medium' />
-                  </Button>
-                </Tooltip>
-              </div>
-            </Box>
-
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <DataGridBolsistas
-                page={props.page}
-                setPage={props.setPage}
-                size={props.size}
-                setSize={props.setSize}
-                data={data.items}
-                filterOptions={props.filterOptions}
-                metadata={data.meta}
-                onEdit={onEditScholarship}
-                onDelete={onDeleteScholarship}
-              />
-            )}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  aria-label='Copiar lista de e-mails das bolsas exibidas para o clipboard (separados por ,)'
+                  className='rounded-lg bg-indigo-500 font-semibold text-white hover:bg-indigo-600'
+                  onClick={() => props.copyScholarshipStudentsEmails()}
+                >
+                  <Copy />
+                  Copiar e-mails
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className='max-w-xs text-center'>
+                Copiar lista de e-mails das bolsas exibidas para o clipboard (separados por ,)
+              </TooltipContent>
+            </Tooltip>
           </div>
-        </section>
+        }
+      />
+      <div className='!mt-0 w-full rounded border border-gray-300 p-[0.6em]'>
+        <div className='flex flex-col gap-4 md:flex-row'>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='input-student-name'>Bolsista</Label>
+            <Input
+              id='input-student-name'
+              name='studentName'
+              placeholder='Digite o nome do bolsista'
+              onChange={props.setFilters}
+              value={props.filters.studentName}
+            />
+          </div>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='select-order'>Ordenar por</Label>
+            <Select
+              value={props.filters.orderBy}
+              onValueChange={handleSelectChange('orderBy')}
+            >
+              <SelectTrigger id='select-order'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='DAT_MATRICULA_ASC'>
+                  Data da Matrícula ↓
+                </SelectItem>
+                <SelectItem value='DAT_MATRICULA_DESC'>
+                  Data da Matrícula ↑
+                </SelectItem>
+                <SelectItem value='DAT_DEFESA_ASC'>
+                  Previsão de Defesa ↓
+                </SelectItem>
+                <SelectItem value='DAT_DEFESA_DESC'>
+                  Previsão de Defesa ↑
+                </SelectItem>
+                <SelectItem value='DAT_INICIO_ASC'>
+                  Data de Início da Bolsa ↓
+                </SelectItem>
+                <SelectItem value='DAT_INICIO_DESC'>
+                  Data de Início da Bolsa ↑
+                </SelectItem>
+                <SelectItem value='DAT_TERMINO_ASC'>
+                  Data de Término da Bolsa ↓
+                </SelectItem>
+                <SelectItem value='DAT_TERMINO_DESC'>
+                  Data de Término da Bolsa ↑
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='select-course'>Curso</Label>
+            <Select
+              value={props.filters.programName}
+              onValueChange={handleSelectChange('programName')}
+            >
+              <SelectTrigger id='select-course'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {props.filterOptions.programNameFilterList.map(course => (
+                  <SelectItem key={course.key} value={course.key}>
+                    {course.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='select-agencia'>Agência</Label>
+            <Select
+              value={props.filters.agencyName}
+              onValueChange={handleSelectChange('agencyName')}
+            >
+              <SelectTrigger id='select-agencia'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {props.filterOptions.agencyNameFilterList.map(agency => (
+                  <SelectItem key={agency.key} value={agency.key}>
+                    {agency.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='select-status'>Situação da Bolsa</Label>
+            <Select
+              value={props.filters.scholarshipStatus}
+              onValueChange={handleSelectChange('scholarshipStatus')}
+            >
+              <SelectTrigger id='select-status'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {props.filterOptions.scholarshipStatusFilterList.map(
+                  status => (
+                    <SelectItem key={status.key} value={status.key}>
+                      {status.value}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='w-full space-y-1.5'>
+            <Label htmlFor='select-advisor'>Nome do Orientador</Label>
+            <Select
+              value={props.filters.advisorName}
+              onValueChange={handleSelectChange('advisorName')}
+            >
+              <SelectTrigger id='select-advisor'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {props.filterOptions.advisorNameFilterList.map(advisor => (
+                  <SelectItem key={advisor.key} value={advisor.key}>
+                    {advisor.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='destructive'
+                size='icon'
+                aria-label='Resetar Filtros'
+                className='shrink-0 self-end'
+                onClick={() => props.handleResetFilters()}
+              >
+                <FilterX />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Resetar Filtros</TooltipContent>
+          </Tooltip>
+        </div>
       </div>
-    </div>
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <DataGridBolsistas
+          page={props.page}
+          setPage={props.setPage}
+          size={props.size}
+          setSize={props.setSize}
+          data={data.items}
+          filterOptions={props.filterOptions}
+          metadata={data.meta}
+          onEdit={onEditScholarship}
+          onDelete={onDeleteScholarship}
+        />
+      )}
+    </AppLayout>
   )
 }
 

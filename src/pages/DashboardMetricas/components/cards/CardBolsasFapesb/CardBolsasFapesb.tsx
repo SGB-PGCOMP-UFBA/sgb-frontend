@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import type { SxProps, Theme } from '@mui/material'
-import { api } from '../../../../../api'
-import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
-import { formatApiError } from '../../../../../helpers/api-error'
+import { api } from '@/api'
+import type { CountByAgencyAndStatus } from '@/api/scholarship'
+import { formatApiError } from '@/helpers/api-error'
 import { CardBolsasFapesbView } from './CardBolsasFapesbView'
-import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
+import { CardSkeletonOnLoad } from '@/pages/DashboardMetricas/components/cards/CardSkeletonOnLoad'
 
 const LITERAL_FAPESB = 'FAPESB'
 
@@ -16,7 +15,7 @@ const initialState: CountByAgencyAndStatus[string] = {
 }
 
 export interface CardBolsasFapesbProps {
-  sx?: SxProps<Theme>
+  className?: string
 }
 
 function CardBolsasFapesb(props: CardBolsasFapesbProps) {
@@ -38,7 +37,7 @@ function CardBolsasFapesb(props: CardBolsasFapesbProps) {
   }, [])
 
   return (
-    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasFapesbView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasFapesbView className={props.className} isLoading={isLoading} data={data} />
   )
 }
 

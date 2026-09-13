@@ -1,13 +1,13 @@
 import Chart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
-import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material'
-import type { CountByCourseAndYear } from '../../../../../api/scholarship'
-import type { AgencyName, EnrollmentProgram } from '../../../../../types'
+import { MdBarChart } from 'react-icons/md'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
+import type { CountByCourseAndYear } from '@/api/scholarship'
+import type { AgencyName, EnrollmentProgram } from '@/types'
 
 export interface ColumnChartHistogramaBolsasViewProps {
-  sx?: SxProps<Theme>
-  /** Contagens por ano e curso: `{ [ano]: { MESTRADO, DOUTORADO } }`. */
+  className?: string
   data: CountByCourseAndYear
   isLoading: boolean
   agencyName?: AgencyName
@@ -89,24 +89,20 @@ function ColumnChartHistogramaBolsasView(props: ColumnChartHistogramaBolsasViewP
   }
 
   return (
-    <Card sx={props.sx}>
-      <CardContent>
-        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack spacing={1} marginBottom={2}>
-            <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={2}>
+    <Card className={props.className}>
+      <CardContent className="p-6">
+        <div className="flex flex-row items-start justify-between gap-6">
+          <div className="mb-4 flex flex-col gap-2">
+            <h3 className="mb-4 text-2xl font-bold text-foreground">
               {chartTitle}
-            </Typography>
-          </Stack>
-          <Avatar
-            className="bg-gray-400 !bg-gray-400"
-            sx={{
-              height: 56,
-              width: 56
-            }}
-          >
-            <Icon sx={{ fontSize: 32 }}>bar_chart</Icon>
+            </h3>
+          </div>
+          <Avatar className="h-14 w-14 shrink-0">
+            <AvatarFallback className="bg-gray-400 text-white">
+              <MdBarChart className="h-8 w-8" />
+            </AvatarFallback>
           </Avatar>
-        </Stack>
+        </div>
         <Chart options={options} series={series} type="bar" height={350} />
       </CardContent>
     </Card>

@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
-import type { AgencyDetailed, IdentifiedFilterOption } from '../../types'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
+import type { AgencyDetailed, IdentifiedFilterOption } from '@/types'
 
 const BASE_AGENCY_API_PATH = `/v1/agency`
 

@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
-import type { StudentDetailedWithFullRelations } from '../../types'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 const BASE_STUDENT_API_PATH = `/v1/student`
 

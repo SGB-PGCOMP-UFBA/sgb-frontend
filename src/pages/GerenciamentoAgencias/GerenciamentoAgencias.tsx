@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
-import { formatApiError } from '../../helpers/api-error'
+import { api } from '@/api'
+import { formatApiError } from '@/helpers/api-error'
 import { GerenciamentoAgenciasView } from './GerenciamentoAgenciasView'
 import type { InclusaoAgenciaFormValues } from './components/DialogInclusaoAgencia'
-import type { UpdateAgencyPayload } from '../../api/agency'
-import type { AgencyDetailed } from '../../types'
+import type { UpdateAgencyPayload } from '@/api/agency'
+import type { AgencyDetailed } from '@/types'
 
 function GerenciamentoAgencias() {
   const [agencys, setAgencys] = useState<AgencyDetailed[]>([])

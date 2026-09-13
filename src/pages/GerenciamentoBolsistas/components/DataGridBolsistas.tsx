@@ -1,21 +1,19 @@
-import { useState } from 'react'
-import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR } from '@mui/x-data-grid'
-import type {
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams
-} from '@mui/x-data-grid'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
+import { useMemo, useState } from 'react'
+import { ActionIconButton } from '@/components/action-icon-button'
+import type { PaginationState } from '@tanstack/react-table'
+import { Pencil, Trash2 } from 'lucide-react'
+import { DataTable } from '@/components/data-table'
+import type { DataTableColumn } from '@/components/data-table/types'
+import { formatDate, formatPhone } from '@/helpers/formatters'
+import { CustomChip } from '@/components'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import { DialogEdicaoBolsista } from './DialogEdicaoBolsista'
 import type { EdicaoBolsistaSubmitValues } from './DialogEdicaoBolsista'
-import type { ScholarshipFilterOptions } from '../GerenciamentoBolsistas'
+import type { ScholarshipFilterOptions } from '@/pages/GerenciamentoBolsistas/GerenciamentoBolsistas'
 import type {
   PageMeta,
   ScholarshipDetailedWithRelations
-} from '../../../types'
+} from '@/types'
 import './styles.css';
 
 const NOT_INFORMED = 'Não informado'
@@ -25,39 +23,33 @@ export interface DataGridBolsistasProps {
   setPage: (page: number) => void
   size: number
   setSize: (size: number) => void
-  /** `undefined` enquanto a primeira pagina nao chega (ou quando ela falha). */
   data: ScholarshipDetailedWithRelations[] | undefined
   filterOptions: ScholarshipFilterOptions
-  /** `undefined` no mesmo caso de `data`. */
   metadata: PageMeta | undefined
-  /** Devolve `false` quando a atualizacao falha, e ai o dialogo fica aberto. */
   onEdit: (data: EdicaoBolsistaSubmitValues) => Promise<false | void>
   onDelete: (scholarshipId: number) => void
-}
-
-interface PaginationChange {
-  currentPage: number
-  itemsPerPage: number
 }
 
 function DataGridBolsistas(props: DataGridBolsistasProps) {
   const { data, metadata, onEdit, onDelete } = props
 
-  /* `metadata` so falta enquanto a primeira pagina nao chega; ate la a
-     paginacao parte do que a tela ja tem em `size`/`page`. */
-  const [paginationModel, setPaginationModel] = useState({
+  const [paginationModel, setPaginationModel] = useState<PaginationState>({
     pageSize: metadata?.itemsPerPage ?? props.size,
-    page: (metadata?.currentPage ?? props.page) - 1
+    pageIndex: (metadata?.currentPage ?? props.page) - 1
   })
 
-  const handlePaginationChange = (newPaginationModel: PaginationChange) => {
+  const handlePaginationChange = (nextPagination: PaginationState) => {
+    const hasPageSizeChanged = nextPagination.pageSize !== paginationModel.pageSize
+    const currentPage = hasPageSizeChanged ? 1 : nextPagination.pageIndex + 1
+    const itemsPerPage = nextPagination.pageSize
+
     setPaginationModel({
-      page: newPaginationModel.currentPage - 1,
-      pageSize: newPaginationModel.itemsPerPage
+      pageIndex: currentPage - 1,
+      pageSize: itemsPerPage
     })
 
-    props.setPage(newPaginationModel.currentPage)
-    props.setSize(newPaginationModel.itemsPerPage)
+    props.setPage(currentPage)
+    props.setSize(itemsPerPage)
   }
 
   const [selectedScholarship, setSelectedScholarship] = useState<ScholarshipDetailedWithRelations | null>(null)
@@ -84,239 +76,179 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
     setIsDialogForEditionOpen(true)
   }
 
-  const columns: GridColDef[] = [
-    {
-      field: 'enrollmentNumber',
-      headerName: 'Matrícula',
-      width: 110,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => (
-        <p className="overflow-auto">{params.row.enrollment?.enrollment_number}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.enrollment?.enrollment_number
-    },
-    {
-      field: 'enrollmentProgram',
-      headerName: 'Curso',
-      width: 135,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => (
-        <CustomChip value={params.row.enrollment?.enrollment_program ?? ''} type="program" />
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.enrollment?.enrollment_program
-    },
-    {
-      field: 'agencyName',
-      headerName: 'Agência',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => <CustomChip value={params.row.agency?.name ?? ''} type="agency" />,
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.agency?.name
-    },
-    {
-      field: 'active',
-      headerName: 'Status',
-      width: 160,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => (
-        <CustomChip value={params.row.status} type="status" />
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => (params.row.status)
-    },
-    {
-      field: 'studentName',
-      headerName: 'Nome do Bolsista',
-      width: 260,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.student?.name}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.student?.name
-    },
-    {
-      field: 'advisorName',
-      headerName: 'Nome do Orientador',
-      width: 220,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{params.row.advisor?.name}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.advisor?.name
-    },
-    {
-      field: 'scholarshipStartsAt',
-      headerName: 'Início da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => formatDate(params.row.scholarship_starts_at),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => new Date(params.row.scholarship_starts_at)
-    },
-    {
-      field: 'scholarshipEndsAt',
-      headerName: 'Término da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => formatDate(params.row.scholarship_ends_at),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => new Date(params.row.scholarship_ends_at)
-    },
-    {
-      field: 'extensionEndsAt',
-      headerName: 'Extensão da Bolsa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) =>
-        params.row.extension_ends_at ? formatDate(params.row.extension_ends_at) : 'N/A',
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) =>
-        params.row.extension_ends_at ? new Date(params.row.extension_ends_at) : null
-    },
-    {
-      field: 'enrollmentDate',
-      headerName: 'Data da Matrícula',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => formatDate(params.row.enrollment?.enrollment_date ?? 0),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => new Date(params.row.enrollment?.enrollment_date ?? 0)
-    },
-    {
-      field: 'defensePredictionDate',
-      headerName: 'Previsão de Defesa',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => formatDate(params.row.enrollment?.defense_prediction_date ?? 0),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => new Date(params.row.enrollment?.defense_prediction_date ?? 0)
-    },
-    {
-      field: 'allocationName',
-      headerName: 'Alocação',
-      width: 130,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto" >
-          {params.row.allocation?.name ? params.row.allocation.name : NOT_INFORMED}
-        </p>,
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.allocation?.name
-    },
-    {
-      field: 'student_email',
-      headerName: 'E-mail',
-      width: 200,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) =>
-        <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{ params.row.student?.email ? params.row.student.email : NOT_INFORMED }</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.student?.email
-    },
-    {
-      field: 'student_phone_number',
-      headerName: 'Celular',
-      width: 130,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => ( params.row.student?.phone_number ?
-        <a
-          href={`https://wa.me/${params.row.student.phone_number}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-500"
-        >
-          {formatPhone(params.row.student.phone_number)}
-        </a>
-        : <p className="overflow-auto">{NOT_INFORMED}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.student?.phone_number
-    },
-    {
-      field: 'link_to_lattes',
-      headerName: 'Link do Lattes',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => (
-        <a
-          href={`${params.row.student?.link_to_lattes}`}
-          target="_blank"
-          rel="noreferrer"
-          className="custom-scrollbar whitespace-nowrap overflow-x-auto center text-blue-500"
-        >
-          Lattes
-        </a>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, ScholarshipDetailedWithRelations>) => params.row.student?.link_to_lattes
-    },
-    {
-      field: 'actions',
-      headerName: 'Ações',
-      width: 130,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, ScholarshipDetailedWithRelations>) => (
-        <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Editar Bolsista">
-            <IconButton onClick={() => handleDialogForEditionOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>edit</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Excluir Bolsa">
-            <IconButton onClick={() => handleDialogForDeleteOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>delete</Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
-      )
-    }
-  ]
+  const columns = useMemo<DataTableColumn<ScholarshipDetailedWithRelations>[]>(
+    () => [
+      {
+        id: 'enrollmentNumber',
+        header: 'Matrícula',
+        width: 110,
+        cell: (row) => <p className="overflow-auto">{row.enrollment?.enrollment_number}</p>,
+        csv: (row) => row.enrollment?.enrollment_number
+      },
+      {
+        id: 'enrollmentProgram',
+        header: 'Curso',
+        width: 135,
+        cell: (row) => <CustomChip value={row.enrollment?.enrollment_program ?? ''} type="program" />,
+        csv: (row) => row.enrollment?.enrollment_program
+      },
+      {
+        id: 'agencyName',
+        header: 'Agência',
+        width: 100,
+        cell: (row) => <CustomChip value={row.agency?.name ?? ''} type="agency" />,
+        csv: (row) => row.agency?.name
+      },
+      {
+        id: 'active',
+        header: 'Status',
+        width: 160,
+        cell: (row) => <CustomChip value={row.status} type="status" />,
+        csv: (row) => row.status
+      },
+      {
+        id: 'studentName',
+        header: 'Nome do Bolsista',
+        width: 260,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{row.student?.name}</p>
+        ),
+        csv: (row) => row.student?.name
+      },
+      {
+        id: 'advisorName',
+        header: 'Nome do Orientador',
+        width: 220,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">{row.advisor?.name}</p>
+        ),
+        csv: (row) => row.advisor?.name
+      },
+      {
+        id: 'scholarshipStartsAt',
+        header: 'Início da Bolsa',
+        width: 100,
+        cell: (row) => formatDate(row.scholarship_starts_at),
+        csv: (row) => formatDate(row.scholarship_starts_at)
+      },
+      {
+        id: 'scholarshipEndsAt',
+        header: 'Término da Bolsa',
+        width: 100,
+        cell: (row) => formatDate(row.scholarship_ends_at),
+        csv: (row) => formatDate(row.scholarship_ends_at)
+      },
+      {
+        id: 'extensionEndsAt',
+        header: 'Extensão da Bolsa',
+        width: 100,
+        cell: (row) => (row.extension_ends_at ? formatDate(row.extension_ends_at) : 'N/A'),
+        csv: (row) => (row.extension_ends_at ? formatDate(row.extension_ends_at) : null)
+      },
+      {
+        id: 'enrollmentDate',
+        header: 'Data da Matrícula',
+        width: 100,
+        cell: (row) => formatDate(row.enrollment?.enrollment_date ?? 0),
+        csv: (row) => formatDate(row.enrollment?.enrollment_date ?? 0)
+      },
+      {
+        id: 'defensePredictionDate',
+        header: 'Previsão de Defesa',
+        width: 100,
+        cell: (row) => formatDate(row.enrollment?.defense_prediction_date ?? 0),
+        csv: (row) => formatDate(row.enrollment?.defense_prediction_date ?? 0)
+      },
+      {
+        id: 'allocationName',
+        header: 'Alocação',
+        width: 130,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">
+            {row.allocation?.name ? row.allocation.name : NOT_INFORMED}
+          </p>
+        ),
+        csv: (row) => row.allocation?.name
+      },
+      {
+        id: 'student_email',
+        header: 'E-mail',
+        width: 200,
+        cell: (row) => (
+          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">
+            {row.student?.email ? row.student.email : NOT_INFORMED}
+          </p>
+        ),
+        csv: (row) => row.student?.email
+      },
+      {
+        id: 'student_phone_number',
+        header: 'Celular',
+        width: 130,
+        cell: (row) => (row.student?.phone_number ?
+          <a
+            href={`https://wa.me/${row.student.phone_number}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500"
+          >
+            {formatPhone(row.student.phone_number)}
+          </a>
+          : <p className="overflow-auto">{NOT_INFORMED}</p>
+        ),
+        csv: (row) => row.student?.phone_number
+      },
+      {
+        id: 'link_to_lattes',
+        header: 'Link do Lattes',
+        width: 100,
+        cell: (row) => (
+          <a
+            href={`${row.student?.link_to_lattes}`}
+            target="_blank"
+            rel="noreferrer"
+            className="custom-scrollbar whitespace-nowrap overflow-x-auto center text-blue-500"
+          >
+            Lattes
+          </a>
+        ),
+        csv: (row) => row.student?.link_to_lattes
+      },
+      {
+        id: 'actions',
+        header: 'Ações',
+        width: 130,
+        cell: (row) => (
+          <div className="flex items-center gap-x-2 overflow-auto">
+            <ActionIconButton
+              label="Editar Bolsista"
+              icon={Pencil}
+              onClick={() => handleDialogForEditionOpen(row)}
+            />
+            <ActionIconButton
+              label="Excluir Bolsa"
+              icon={Trash2}
+              onClick={() => handleDialogForDeleteOpen(row)}
+            />
+          </div>
+        )
+      }
+    ],
+    []
+  )
 
   return (
     <div>
       <div>
-        <DataGrid
-          rows={data ?? []}
+        <DataTable
+          data={data ?? []}
           columns={columns}
-          autoHeight
-          disableColumnMenu
-          isRowSelectable={() => false}
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          pagination
-          paginationMode="server"
-          page={paginationModel.page}
-          pageSize={paginationModel.pageSize}
+          csvFileName="bolsistas"
+          manualPagination
           rowCount={metadata?.totalItems ?? 0}
-          rowsPerPageOptions={[5, 10, 25, 50, 100]}
-          onPageChange={(newPage) => handlePaginationChange({ currentPage: newPage + 1, itemsPerPage: paginationModel.pageSize })}
-          onPageSizeChange={(newPageSize) => handlePaginationChange({ currentPage: 1, itemsPerPage: newPageSize })}
-          sx={{
-            '.MuiDataGrid-columnSeparator': {
-              display: 'none',
-            },
-            '& .MuiDataGrid-columnHeaderTitle': {
-              fontWeight: 'bold',
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-columnHeader': {
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-cell': {
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            },
-          }}
+          pagination={paginationModel}
+          onPaginationChange={handlePaginationChange}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
         />
 
         {selectedScholarship && (

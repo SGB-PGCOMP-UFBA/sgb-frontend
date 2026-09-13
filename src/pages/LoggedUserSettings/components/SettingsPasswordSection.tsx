@@ -1,28 +1,21 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { PasswordField } from '@/components/password-field'
+import { Button } from '@/components/ui/button'
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
-  Divider,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-  Typography
-} from '@mui/material'
-import { api } from '../../../api'
-import type { StoredUser } from '../../../helpers/auth-user'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+  CardTitle
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { api } from '@/api'
+import type { StoredUser } from '@/helpers/auth-user'
 
 export interface SettingsPasswordSectionProps {
-  /** `null` quando nao ha ninguem autenticado no localStorage. */
   user: StoredUser | null
 }
 
@@ -40,22 +33,6 @@ function SettingsPasswordSection(props: SettingsPasswordSectionProps) {
   ) => {
     setValues({ ...values, [event.target.name]: event.target.value })
   }
-
-  const [showPassword, setShowPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show)
-  const handleClickShowNewPassword = () => setShowNewPassword((show) => !show)
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show)
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseDownNewPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-
-  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseUpNewPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseUpConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -100,88 +77,45 @@ function SettingsPasswordSection(props: SettingsPasswordSectionProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card elevation={0} sx={{ border: 1, borderColor: '#e5e7eb' }}>
-        <CardHeader subheader="Atualizar Senha de Acesso" title="Senha" />
-        <Divider />
-        <CardContent>
-          <Stack spacing={3} sx={{ maxWidth: 450 }}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="current_password">Senha Atual</InputLabel>
-            <OutlinedInput
+      <Card className="border-gray-200 shadow-none">
+        <CardHeader>
+          <CardTitle>Senha</CardTitle>
+          <CardDescription>Atualizar Senha de Acesso</CardDescription>
+        </CardHeader>
+        <Separator />
+        <CardContent className="pt-6">
+          <div className="flex max-w-[450px] flex-col gap-6">
+            <PasswordField
               id="current_password"
               name="current_password"
-              type={showPassword ? 'text' : 'password'}
+              label="Senha Atual"
               onChange={(e) => handleChange(e)}
               value={values.current_password}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Senha Atual"
             />
-          </FormControl>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="new_password">Nova Senha</InputLabel>
-            <OutlinedInput
+            <PasswordField
               id="new_password"
               name="new_password"
-              type={showNewPassword ? 'text' : 'password'}
+              label="Nova Senha"
               onChange={(e) => handleChange(e)}
               value={values.new_password}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowNewPassword}
-                    onMouseDown={handleMouseDownNewPassword}
-                    onMouseUp={handleMouseUpNewPassword}
-                    edge="end"
-                  >
-                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Nova Senha"
             />
-          </FormControl>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="confirm_new_password">Confirmar Nova Senha</InputLabel>
-            <OutlinedInput
+            <PasswordField
               id="confirm_new_password"
               name="confirm_new_password"
-              type={showConfirmPassword ? 'text' : 'password'}
+              label="Confirmar Nova Senha"
               onChange={(e) => handleChange(e)}
               value={values.confirm_new_password}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowConfirmPassword}
-                    onMouseDown={handleMouseDownConfirmPassword}
-                    onMouseUp={handleMouseUpConfirmPassword}
-                    edge="end"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Confirmar Nova Senha"
             />
-          </FormControl>
 
-          <Typography variant='caption'>Sua senha deve ter entre 4 e 8 caracteres, incluindo letras e números.</Typography>
-          </Stack>
+            <span className="text-xs text-gray-500">
+              Sua senha deve ter entre 4 e 8 caracteres, incluindo letras e números.
+            </span>
+          </div>
         </CardContent>
-        <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">Salvar Senha</Button>
-        </CardActions>
+        <Separator />
+        <CardFooter className="justify-end pt-6">
+          <Button type="submit">Salvar Senha</Button>
+        </CardFooter>
       </Card>
     </form>
   )

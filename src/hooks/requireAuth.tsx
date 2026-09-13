@@ -1,6 +1,6 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { getUserFromLocalStorage } from '../helpers/auth-user'
-import type { UserRole } from '../types'
+import { getUserFromLocalStorage } from '@/helpers/auth-user'
+import type { UserRole } from '@/types'
 
 export interface RequireAuthProps {
   allowedRoles: UserRole[]

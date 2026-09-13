@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
 import type {
   DateInput,
   EnrollmentProgram,
@@ -9,7 +9,7 @@ import type {
   ScholarshipDetailedWithRelations,
   ScholarshipEditableStatus,
   ScholarshipFilters
-} from '../../types'
+} from '@/types'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
 

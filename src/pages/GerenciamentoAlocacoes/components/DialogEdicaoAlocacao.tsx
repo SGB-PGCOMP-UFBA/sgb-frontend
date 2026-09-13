@@ -1,9 +1,16 @@
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import type { UpdateAllocationPayload } from '../../../api/allocation'
-import type { AllocationDetailed } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import type { UpdateAllocationPayload } from '@/api/allocation'
+import type { AllocationDetailed } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 interface EdicaoAlocacaoFormValues {
   name: string
@@ -31,94 +38,72 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }: DialogEdicaoA
     onClose()
   }
 
-  const dialogContent = (
-    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
-      <TextField
-        // disabled
-        required
-        fullWidth
-        id="name"
-        label="Nome"
-        type="text"
-        name="name"
-        defaultValue={item.name}
-        placeholder="Insira o nome da alocação"
-        inputProps={{ maxLength: 80 }}
-      />
-
-      {/* <TextField
-        fullWidth
-        id="masters_degree_awarded_scholarships"
-        name="masters_degree_awarded_scholarships"
-        label="Bolsas Concedidas Para o Mestrado"
-        type="number"
-        defaultValue={item.masters_degree_awarded_scholarships}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          inputProps: {
-            min: 0,
-            step: 1,
-          },
-        }}
-      />
-
-      <TextField
-        id="doctorate_degree_awarded_scholarships"
-        name="doctorate_degree_awarded_scholarships"
-        label="Bolsas Concedidas Para o Doutorado"
-        type="number"
-        defaultValue={item.doctorate_degree_awarded_scholarships}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          inputProps: {
-            min: 0,
-            step: 1,
-          },
-        }}
-      /> */}
-    </div>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button type="submit" autoFocus variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-      TransitionComponent={SlideUp}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Editar Alocação</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[595px]">
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>Editar Alocação</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex w-full flex-col space-y-4 pt-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Nome</Label>
+              <Input
+                // disabled
+                required
+                id="name"
+                type="text"
+                name="name"
+                defaultValue={item.name}
+                placeholder="Insira o nome da alocação"
+                maxLength={80}
+              />
+            </div>
+
+            {/* <div className="space-y-1.5">
+              <Label htmlFor="masters_degree_awarded_scholarships">
+                Bolsas Concedidas Para o Mestrado
+              </Label>
+              <Input
+                id="masters_degree_awarded_scholarships"
+                name="masters_degree_awarded_scholarships"
+                type="number"
+                defaultValue={item.masters_degree_awarded_scholarships}
+                min={0}
+                step={1}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="doctorate_degree_awarded_scholarships">
+                Bolsas Concedidas Para o Doutorado
+              </Label>
+              <Input
+                id="doctorate_degree_awarded_scholarships"
+                name="doctorate_degree_awarded_scholarships"
+                type="number"
+                defaultValue={item.doctorate_degree_awarded_scholarships}
+                min={0}
+                step={1}
+              />
+            </div> */}
+          </div>
+
+          <DialogFooter className="gap-x-4 pt-6">
+            <Button type="button" onClick={onClose} variant="ghost" size="sm">
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              size="sm"
+              className="bg-green-600 text-white hover:bg-green-700"
+            >
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

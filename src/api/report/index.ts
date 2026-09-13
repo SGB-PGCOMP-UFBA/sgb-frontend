@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import type { AgencyScholarshipReport } from '../scholarship'
+import { api } from '@/services/api'
+import type { AgencyScholarshipReport } from '@/api/scholarship'
 
 const BASE_REPORT_API_PATH = `/v1/report`
 

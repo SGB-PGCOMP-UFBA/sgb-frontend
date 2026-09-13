@@ -1,12 +1,16 @@
-import { Dialog, DialogTitle, DialogContent, IconButton, TextField, InputAdornment } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import WhatsAppIcon from '@mui/icons-material/WhatsApp'
-import CloseIcon from '@mui/icons-material/Close';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import { Copy, MessageCircle, Send } from 'lucide-react'
 import { toast } from 'react-toastify'
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import { formatPhone } from '../../../helpers/formatters'
-import type { ScholarshipDetailedWithRelations } from '../../../types'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { formatPhone } from '@/helpers/formatters'
+import type { ScholarshipDetailedWithRelations } from '@/types'
 
 export interface DialogContatoBolsistaProps {
   item: ScholarshipDetailedWithRelations
@@ -30,91 +34,87 @@ function DialogContatoBolsista({ item, isOpen, onClose }: DialogContatoBolsistaP
     window.open(link, '_blank')
   }
 
-  const dialogContent = (
-    <div className="flex flex-col min-w-[395px] max-w-[595px">
-      <div className="mt-2 flex flex-row font-inter">
-        <TextField
-          id="email"
-          label="E-mail"
-          type="text"
-          name="email"
-          fullWidth
-          value={item.student?.email}
-          InputProps={{
-            /* `readonly` minusculo nao e prop do TextField e nao chega ao input. */
-            readOnly: true,
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => copyEmailToClipboard(item.student?.email ?? '')}
-                edge="end"
-              >
-                <ContentCopyIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
-      <div className="mt-6 flex flex-row font-inter">
-        <TextField
-          id="phone"
-          label="Telefone"
-          type="text"
-          name="phone"
-          fullWidth
-          value={formatPhone(item.student?.phone_number)}
-          InputProps={{
-            readOnly: true,
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => openWhatsApp(item.student?.phone_number ?? '')}
-                edge="end"
-              >
-                <WhatsAppIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
-      <div className="mt-6 flex flex-row font-inter">
-        <TextField
-          id="lattes"
-          label="Lattes"
-          type="text"
-          name="lattes"
-          fullWidth
-          value={item.student?.link_to_lattes}
-          InputProps={{
-            readOnly: true,
-            endAdornment: <InputAdornment position="end">
-              <IconButton
-                onClick={() => openLattes(item.student?.link_to_lattes ?? '')}
-                edge="end"
-              >
-                <SendIcon />
-              </IconButton>
-            </InputAdornment>,
-          }}
-        />
-      </div>
-    </div>
-  )
-
   return (
-    <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Contatos de {item.student?.name.split(' ')[0]}</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="font-inter sm:max-w-[595px]">
+        <DialogHeader>
+          <DialogTitle>Contatos de {item.student?.name.split(' ')[0]}</DialogTitle>
+        </DialogHeader>
+
+        <div className="flex flex-col gap-y-6 pt-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="email">E-mail</Label>
+            <div className="relative">
+              <Input
+                id="email"
+                type="text"
+                name="email"
+                value={item.student?.email ?? ''}
+                readOnly
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Copiar e-mail"
+                onClick={() => copyEmailToClipboard(item.student?.email ?? '')}
+                className="absolute right-0 top-0 h-9 w-9"
+              >
+                <Copy />
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="phone">Telefone</Label>
+            <div className="relative">
+              <Input
+                id="phone"
+                type="text"
+                name="phone"
+                value={formatPhone(item.student?.phone_number) ?? ''}
+                readOnly
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Abrir conversa no WhatsApp"
+                onClick={() => openWhatsApp(item.student?.phone_number ?? '')}
+                className="absolute right-0 top-0 h-9 w-9"
+              >
+                <MessageCircle />
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="lattes">Lattes</Label>
+            <div className="relative">
+              <Input
+                id="lattes"
+                type="text"
+                name="lattes"
+                value={item.student?.link_to_lattes ?? ''}
+                readOnly
+                className="pr-10"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Abrir o currículo Lattes"
+                onClick={() => openLattes(item.student?.link_to_lattes ?? '')}
+                className="absolute right-0 top-0 h-9 w-9"
+              >
+                <Send />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
     </Dialog>
   )
 }

@@ -1,11 +1,11 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
 import type {
   AdvisorDetailed,
   AdvisorFilterOption,
   UserStatus
-} from '../../types'
+} from '@/types'
 
 const BASE_ADVISOR_API_PATH = `/v1/advisor`
 

@@ -1,19 +1,14 @@
-import { useState } from 'react'
-import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR } from '@mui/x-data-grid'
-import type {
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams
-} from '@mui/x-data-grid'
-import { formatCpf, formatPhone } from '../../../helpers/formatters'
-import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
+import { useMemo, useState } from 'react'
+import { ActionIconButton } from '@/components/action-icon-button'
+import { Eye, GraduationCap } from 'lucide-react'
+import { DataTable } from '@/components/data-table'
+import type { DataTableColumn } from '@/components/data-table/types'
+import { formatCpf, formatPhone } from '@/helpers/formatters'
 import { DialogVisualizacaoBolsas } from './DialogVisualizacaoBolsas'
-import type { StudentDetailedWithFullRelations } from '../../../types'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 
-/** Cada linha da grade e um orientando, como devolvido por `getStudentsByAdvisorId`. */
 export type OrientandoRow = StudentDetailedWithFullRelations
 
 export interface DataGridOrientandosProps {
@@ -22,7 +17,6 @@ export interface DataGridOrientandosProps {
 
 function DataGridOrientandos(props: DataGridOrientandosProps) {
   const { data } = props
-  const [pageSize, setPageSize] = useState(5)
 
   const [selectedStudent, setSelectedStudent] = useState<OrientandoRow | null>(null)
   const [isDialogForScholarshipViewOpen, setIsDialogForScholarshipViewOpen] = useState(false)
@@ -37,154 +31,104 @@ function DataGridOrientandos(props: DataGridOrientandosProps) {
     setIsDialogForScholarshipViewOpen(true)
   }
 
-  const columns: GridColDef[] = [
-    {
-      field: 'name',
-      headerName: 'Nome completo',
-      width: 300,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) => (
-        <div className="flex items-center gap-x-2 overflow-hidden">
-          <Icon sx={{ fontSize: 28 }}>school</Icon>
-          {params.row.name}
-        </div>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, OrientandoRow>) => params.row.name
-    },
-    {
-      field: 'email',
-      headerName: 'E-mail',
-      width: 250,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) =>
-        <p className="overflow-auto">{params.row.email ? params.row.email : NOT_INFORMED}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, OrientandoRow>) => params.row.email
-    },
-    {
-      field: 'tax_id',
-      headerName: 'CPF',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) =>
-        <p className="overflow-auto">{params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED}</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, OrientandoRow>) => params.row.tax_id
-    },
-    {
-      field: 'phone_number',
-      headerName: 'Celular',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) => (params.row.phone_number ?
-        <a
-          href={`https://wa.me/${params.row.phone_number}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-500"
-        >
-          {formatPhone(params.row.phone_number)}
-        </a>
-        : <p className="overflow-auto">{NOT_INFORMED}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, OrientandoRow>) => params.row.phone_number
-    },
-    {
-      field: 'link_to_lattes',
-      headerName: 'Link do Lattes',
-      width: 120,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) => (
-        <a
-          href={`${params.row.link_to_lattes}`}
-          target="_blank"
-          rel="noreferrer"
-          className="center text-blue-500"
-        >
-          Lattes
-        </a>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, OrientandoRow>) => params.row.link_to_lattes
-    },
-    {
-      field: 'scholarships_amount',
-      headerName: 'Quantidade de Bolsas',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) => params.row.enrollments.reduce((acc, enrollment) => {
-        return acc + enrollment.scholarships.length;
-      }, 0)
-    },
-    {
-      field: 'actions',
-      headerName: 'Ações',
-      width: 130,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, OrientandoRow>) => (
-        <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title="Visualizar Bolsas">
-            <IconButton onClick={() => handleDialogForScholarshipViewOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>visibility</Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
-      )
-    }
-  ]
+  const columns = useMemo<DataTableColumn<OrientandoRow>[]>(
+    () => [
+      {
+        id: 'name',
+        header: 'Nome completo',
+        width: 300,
+        cell: (row) => (
+          <div className="flex items-center gap-x-2 overflow-hidden">
+            <GraduationCap className="!size-6" />
+            {row.name}
+          </div>
+        ),
+        csv: (row) => row.name
+      },
+      {
+        id: 'email',
+        header: 'E-mail',
+        width: 250,
+        cell: (row) => <p className="overflow-auto">{row.email ? row.email : NOT_INFORMED}</p>,
+        csv: (row) => row.email
+      },
+      {
+        id: 'tax_id',
+        header: 'CPF',
+        width: 150,
+        cell: (row) => <p className="overflow-auto">{row.tax_id ? formatCpf(row.tax_id) : NOT_INFORMED}</p>,
+        csv: (row) => row.tax_id
+      },
+      {
+        id: 'phone_number',
+        header: 'Celular',
+        width: 150,
+        cell: (row) => (row.phone_number ?
+          <a
+            href={`https://wa.me/${row.phone_number}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500"
+          >
+            {formatPhone(row.phone_number)}
+          </a>
+          : <p className="overflow-auto">{NOT_INFORMED}</p>
+        ),
+        csv: (row) => row.phone_number
+      },
+      {
+        id: 'link_to_lattes',
+        header: 'Link do Lattes',
+        width: 120,
+        cell: (row) => (
+          <a
+            href={`${row.link_to_lattes}`}
+            target="_blank"
+            rel="noreferrer"
+            className="center text-blue-500"
+          >
+            Lattes
+          </a>
+        ),
+        csv: (row) => row.link_to_lattes
+      },
+      {
+        id: 'scholarships_amount',
+        header: 'Quantidade de Bolsas',
+        width: 150,
+        cell: (row) => row.enrollments.reduce((acc, enrollment) => {
+          return acc + enrollment.scholarships.length;
+        }, 0)
+      },
+      {
+        id: 'actions',
+        header: 'Ações',
+        width: 130,
+        cell: (row) => (
+          <div className="flex items-center gap-x-2 overflow-auto">
+            <ActionIconButton
+              label="Visualizar Bolsas"
+              icon={Eye}
+              onClick={() => handleDialogForScholarshipViewOpen(row)}
+            />
+          </div>
+        )
+      }
+    ],
+    []
+  )
 
   return (
     <div>
-      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          disableColumnMenu
-          components={{ Footer: DataGridFooterBar }}
-          isRowSelectable={() => false}
-          autoHeight
-          pagination
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          sx={{
-            '.MuiDataGrid-columnSeparator': {
-              display: 'none',
-            },
-            '& .MuiDataGrid-columnHeaderTitle': {
-              fontWeight: 'bold',
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-columnHeader': {
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-cell': {
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            },
-          }}
-        />
+      <DataTable data={data} columns={columns} csvFileName="orientandos" />
 
-        {selectedStudent && (
-          <DialogVisualizacaoBolsas
-            item={selectedStudent}
-            isOpen={isDialogForScholarshipViewOpen}
-            onClose={handleDialogForScholarshipViewClose}
-          />
-        )}
-      </div>
+      {selectedStudent && (
+        <DialogVisualizacaoBolsas
+          item={selectedStudent}
+          isOpen={isDialogForScholarshipViewOpen}
+          onClose={handleDialogForScholarshipViewClose}
+        />
+      )}
     </div>
   )
 }
