@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { ScholarshipDetailedWithRelations } from '../../../types'
+import type { ScholarshipDetailedWithRelations } from '@/types'
 
 export interface DialogExclusaoBolsaProps {
   item: ScholarshipDetailedWithRelations

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import type { AgencyDetailed } from '../../../../../types'
+import type { AgencyDetailed } from '@/types'
 
 export interface TableTotalBolsasPorAgenciaViewProps {
   className?: string

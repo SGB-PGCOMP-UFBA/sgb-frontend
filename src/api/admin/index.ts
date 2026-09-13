@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
 
 const BASE_ADMIN_API_PATH = `/v1/admin`
 

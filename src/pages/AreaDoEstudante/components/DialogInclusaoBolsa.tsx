@@ -18,8 +18,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { MatriculaRow } from './DataGridMatriculas'
-import type { EnrollmentProgram, IdentifiedFilterOption } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface InclusaoBolsaFormFields {
   agency_name: string

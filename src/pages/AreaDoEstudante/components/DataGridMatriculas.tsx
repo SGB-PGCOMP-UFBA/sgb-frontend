@@ -6,8 +6,8 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
 import { Button } from '@/components/ui/button'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
+import { formatDate, formatPhone } from '@/helpers/formatters'
+import { CustomChip } from '@/components'
 import { DialogExclusaoMatricula } from './DialogExclusaoMatricula'
 import { DialogInclusaoBolsa } from './DialogInclusaoBolsa'
 import type { InclusaoBolsaSubmitValues } from './DialogInclusaoBolsa'
@@ -19,7 +19,7 @@ import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
-} from '../../../types'
+} from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 

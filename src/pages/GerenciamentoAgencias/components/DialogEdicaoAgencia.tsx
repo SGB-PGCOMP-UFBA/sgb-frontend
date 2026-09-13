@@ -9,9 +9,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import type { UpdateAgencyPayload } from '../../../api/agency'
-import type { AgencyDetailed } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import type { UpdateAgencyPayload } from '@/api/agency'
+import type { AgencyDetailed } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 interface EdicaoAgenciaFormValues {
   name?: string

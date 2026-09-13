@@ -3,12 +3,12 @@ import { ActionIconButton } from '@/components/action-icon-button'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
-import { formatDate } from '../../../helpers/formatters'
+import { formatDate } from '@/helpers/formatters'
 import { DialogExclusaoAlocacao } from './DialogExclusaoAlocacao'
 import { DialogEdicaoAlocacao } from './DialogEdicaoAlocacao'
 import type { InclusaoAlocacaoFormValues } from './DialogInclusaoAlocacao'
-import type { UpdateAllocationPayload } from '../../../api/allocation'
-import type { AllocationDetailed } from '../../../types'
+import type { UpdateAllocationPayload } from '@/api/allocation'
+import type { AllocationDetailed } from '@/types'
 
 export interface DataGridAllocacoesProps {
   data: AllocationDetailed[]

@@ -9,9 +9,9 @@ import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import Loading from '../../components/loading'
-import { FileInput } from '../../components'
-import type { ImportError } from '../../types'
+import Loading from '@/components/loading'
+import { FileInput } from '@/components'
+import type { ImportError } from '@/types'
 
 export interface GerenciamentoDadosViewProps {
   isLoading: boolean

@@ -18,8 +18,8 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import type { MatriculaRow } from './DataGridMatriculas'
-import type { AdvisorFilterOption, EnrollmentProgram } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import type { AdvisorFilterOption, EnrollmentProgram } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoMatriculaFormFields {
   enrollment_number: string

@@ -3,7 +3,7 @@ import AppLayout from '@/components/app-layout'
 import { PageHeader } from '@/components/page-header'
 import { ProfileDetailsSection } from './components/ProfileDetailsSection'
 import { SettingsPasswordSection } from './components/SettingsPasswordSection'
-import type { StoredUser } from '../../helpers/auth-user'
+import type { StoredUser } from '@/helpers/auth-user'
 
 export interface LoggedUserSettingsViewProps {
   user: StoredUser | null

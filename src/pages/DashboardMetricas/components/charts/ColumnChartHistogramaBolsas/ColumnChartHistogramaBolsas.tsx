@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import type { AxiosResponse } from 'axios'
-import { api } from '../../../../../api'
-import type { CountByCourseAndYear } from '../../../../../api/scholarship'
-import { formatApiError } from '../../../../../helpers/api-error'
-import type { AgencyName } from '../../../../../types'
+import { api } from '@/api'
+import type { CountByCourseAndYear } from '@/api/scholarship'
+import { formatApiError } from '@/helpers/api-error'
+import type { AgencyName } from '@/types'
 import { ColumnChartHistogramaBolsasView } from './ColumnChartHistogramaBolsasView'
 
 export interface ColumnChartHistogramaBolsasProps {

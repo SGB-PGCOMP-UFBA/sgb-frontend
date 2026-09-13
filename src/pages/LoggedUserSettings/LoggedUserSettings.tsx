@@ -1,5 +1,5 @@
 import { LoggedUserSettingsView } from './LoggedUserSettingsView'
-import { getUserFromLocalStorage } from '../../helpers/auth-user'
+import { getUserFromLocalStorage } from '@/helpers/auth-user'
 
 function LoggedUserSettings() {
   const user = getUserFromLocalStorage()

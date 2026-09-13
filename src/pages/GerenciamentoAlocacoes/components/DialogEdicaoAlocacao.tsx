@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import type { UpdateAllocationPayload } from '../../../api/allocation'
-import type { AllocationDetailed } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import type { UpdateAllocationPayload } from '@/api/allocation'
+import type { AllocationDetailed } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 interface EdicaoAlocacaoFormValues {
   name: string

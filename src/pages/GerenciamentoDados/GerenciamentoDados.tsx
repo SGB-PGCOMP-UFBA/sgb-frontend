@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
+import { api } from '@/api'
 import { GerenciamentoDadosView } from './GerenciamentoDadosView'
-import { formattedNow } from '../../helpers/formatters'
-import { delay } from '../../helpers/delay'
-import { formatApiError } from '../../helpers/api-error'
-import type { ImportError } from '../../types'
+import { formattedNow } from '@/helpers/formatters'
+import { delay } from '@/helpers/delay'
+import { formatApiError } from '@/helpers/api-error'
+import type { ImportError } from '@/types'
 
 function GerenciamentoDados() {
   const [isLoading, setIsLoading] = useState(false)

@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
-import Loading from '../../components/loading'
+import Loading from '@/components/loading'
 import { DialogInclusaoMatricula } from './components/DialogInclusaoMatricula'
 import type { InclusaoMatriculaFormValues } from './components/DialogInclusaoMatricula'
 import { DataGridBolsas } from './components/DataGridBolsas'
@@ -21,7 +21,7 @@ import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
-} from '../../types'
+} from '@/types'
 
 const EXCLUSAO_MATRICULA_AVISO =
   'Caso você exclua um registro de matrícula, as bolsas vinculadas a ela também serão apagadas.'

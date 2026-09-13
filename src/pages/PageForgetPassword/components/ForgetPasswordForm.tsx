@@ -8,8 +8,8 @@ import { RoleRadioGroup } from '@/components/role-radio-group'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { api } from '../../../api'
-import type { ResetPasswordPayload } from '../../../api/password'
+import { api } from '@/api'
+import type { ResetPasswordPayload } from '@/api/password'
 
 function getServerErrorMessage(error: unknown): string {
   const data: unknown = axios.isAxiosError(error)

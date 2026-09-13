@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import type { LoginRequest, LoginResponse } from '../../types'
+import { api } from '@/services/api'
+import type { LoginRequest, LoginResponse } from '@/types'
 
 export const login = async (
   data: LoginRequest

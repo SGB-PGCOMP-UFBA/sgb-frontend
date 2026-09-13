@@ -16,9 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { UpdateAdvisorPayload } from '../../../api/advisor'
-import type { AdvisorDetailed, UserStatus } from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+import type { UpdateAdvisorPayload } from '@/api/advisor'
+import type { AdvisorDetailed, UserStatus } from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoOrientadorFormFields {
   name: string

@@ -1,4 +1,4 @@
-import { getUserFromLocalStorage } from '../../helpers/auth-user'
+import { getUserFromLocalStorage } from '@/helpers/auth-user'
 
 /**
  * O index signature e exigido pelo `AxiosRequestHeaders` do axios 0.27,

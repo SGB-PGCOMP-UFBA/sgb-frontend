@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
-import { formatApiError } from '../../helpers/api-error'
+import { api } from '@/api'
+import { formatApiError } from '@/helpers/api-error'
 import { GerenciamentoAlocacoesView } from './GerenciamentoAlocacoesView'
 import type { InclusaoAlocacaoFormValues } from './components/DialogInclusaoAlocacao'
-import type { UpdateAllocationPayload } from '../../api/allocation'
-import type { AllocationDetailed } from '../../types'
+import type { UpdateAllocationPayload } from '@/api/allocation'
+import type { AllocationDetailed } from '@/types'
 
 function GerenciamentoAlocacoes() {
   const [allocations, setAllocations] = useState<AllocationDetailed[]>([])

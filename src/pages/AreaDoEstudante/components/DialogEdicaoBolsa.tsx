@@ -22,8 +22,8 @@ import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   ScholarshipEditableStatus
-} from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+} from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoBolsaFormFields {
   agency_id: string

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AreaDoEstudanteView } from './AreaDoEstudanteView'
-import { api } from '../../api'
-import { getUserFromLocalStorage, updateUserFromLocalStorage, removeUserFromLocalStorage } from '../../helpers/auth-user'
-import { formatApiError } from '../../helpers/api-error'
-import { parseDate } from '../../helpers/formatters'
+import { api } from '@/api'
+import { getUserFromLocalStorage, updateUserFromLocalStorage, removeUserFromLocalStorage } from '@/helpers/auth-user'
+import { formatApiError } from '@/helpers/api-error'
+import { parseDate } from '@/helpers/formatters'
 import type { InclusaoMatriculaFormValues } from './components/DialogInclusaoMatricula'
 import type { InclusaoBolsaSubmitValues } from './components/DialogInclusaoBolsa'
 import type { EdicaoMatriculaSubmitValues } from './components/DialogEdicaoMatricula'
@@ -15,7 +15,7 @@ import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
-} from '../../types'
+} from '@/types'
 
 function extractApiMessage(error: unknown): string | undefined {
   if (!axios.isAxiosError(error)) {

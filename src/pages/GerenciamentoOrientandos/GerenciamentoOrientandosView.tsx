@@ -2,8 +2,8 @@ import { MdPeople } from 'react-icons/md'
 import AppLayout from '@/components/app-layout'
 import { PageHeader } from '@/components/page-header'
 import { DataGridOrientandos } from './components/DataGridOrientandos'
-import Loading from '../../components/loading'
-import type { StudentDetailedWithFullRelations } from '../../types'
+import Loading from '@/components/loading'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 export interface GerenciamentoOrientandosViewProps {
   isLoading: boolean

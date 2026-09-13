@@ -3,8 +3,8 @@ import { ActionIconButton } from '@/components/action-icon-button'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
-import { formatBrazilianCurrency, formatDate } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
+import { formatBrazilianCurrency, formatDate } from '@/helpers/formatters'
+import { CustomChip } from '@/components'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import { DialogEdicaoBolsa } from './DialogEdicaoBolsa'
 import type { EdicaoBolsaSubmitValues } from './DialogEdicaoBolsa'
@@ -13,7 +13,7 @@ import type {
   IdentifiedFilterOption,
   ScholarshipDetailedWithFullRelations,
   StudentDetailedWithFullRelations
-} from '../../../types'
+} from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 

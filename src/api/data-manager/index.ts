@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
-import type { ImportDataResponse } from '../../types'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
+import type { ImportDataResponse } from '@/types'
 
 const BASE_DATA_MANAGER_API_PATH = `/v1/data-manager`
 export const importData = async (

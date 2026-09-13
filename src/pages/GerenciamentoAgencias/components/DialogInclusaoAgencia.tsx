@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { readFormValues } from '../../../helpers/form-values'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface InclusaoAgenciaFormValues {
   name: string

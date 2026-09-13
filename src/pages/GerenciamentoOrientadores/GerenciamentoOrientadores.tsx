@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
-import { formatApiError } from '../../helpers/api-error'
+import { api } from '@/api'
+import { formatApiError } from '@/helpers/api-error'
 import { GerenciamentoOrientadoresView } from './GerenciamentoOrientadoresView'
 import type { InclusaoOrientadorFormValues } from './components/DialogInclusaoOrientador'
 import type {
   CreateAdvisorPayload,
   UpdateAdvisorPayload
-} from '../../api/advisor'
-import type { ResetPasswordPayload } from '../../api/password'
-import type { AdvisorDetailed } from '../../types'
+} from '@/api/advisor'
+import type { ResetPasswordPayload } from '@/api/password'
+import type { AdvisorDetailed } from '@/types'
 
 function extractApiMessage(error: unknown): string | undefined {
   if (!axios.isAxiosError(error)) {

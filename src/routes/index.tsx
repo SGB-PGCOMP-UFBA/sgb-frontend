@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import RequireAuth from '../hooks/requireAuth'
+import RequireAuth from '@/hooks/requireAuth'
 import {
   PageForgetPassword,
   Login,
@@ -17,7 +17,7 @@ import {
   PageAboutSystem,
   GerenciamentoDados,
   RelatorioQuadrienal
-} from '../pages'
+} from '@/pages'
 
 export default function AppRoutes() {
   return (

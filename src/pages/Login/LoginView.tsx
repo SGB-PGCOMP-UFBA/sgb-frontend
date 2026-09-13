@@ -1,5 +1,5 @@
 import { LoginForm } from './components/LoginForm'
-import type { FieldChangeEvent, LoginRequest } from '../../types'
+import type { FieldChangeEvent, LoginRequest } from '@/types'
 
 export interface LoginViewProps {
   onSubmit: () => void

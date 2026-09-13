@@ -14,10 +14,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
 import { Separator } from '@/components/ui/separator'
-import { api } from '../../../api'
-import { updateUserFromLocalStorage } from '../../../helpers/auth-user'
-import type { StoredUser } from '../../../helpers/auth-user'
-import type { FieldChangeEvent } from '../../../types'
+import { api } from '@/api'
+import { updateUserFromLocalStorage } from '@/helpers/auth-user'
+import type { StoredUser } from '@/helpers/auth-user'
+import type { FieldChangeEvent } from '@/types'
 
 export interface ProfileDetailsSectionProps {
   user: StoredUser | null

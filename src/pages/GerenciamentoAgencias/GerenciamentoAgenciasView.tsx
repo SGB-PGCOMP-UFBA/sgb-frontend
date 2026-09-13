@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button'
 import { DataGridAgencias } from './components/DataGridAgencias'
 import { DialogInclusaoAgencia } from './components/DialogInclusaoAgencia'
 import type { InclusaoAgenciaFormValues } from './components/DialogInclusaoAgencia'
-import Loading from '../../components/loading'
-import type { UpdateAgencyPayload } from '../../api/agency'
-import type { AgencyDetailed } from '../../types'
+import Loading from '@/components/loading'
+import type { UpdateAgencyPayload } from '@/api/agency'
+import type { AgencyDetailed } from '@/types'
 
 export interface GerenciamentoAgenciasViewProps {
   isLoading: boolean

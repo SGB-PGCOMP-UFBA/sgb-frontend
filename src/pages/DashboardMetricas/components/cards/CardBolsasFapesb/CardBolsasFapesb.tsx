@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../../../../api'
-import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
-import { formatApiError } from '../../../../../helpers/api-error'
+import { api } from '@/api'
+import type { CountByAgencyAndStatus } from '@/api/scholarship'
+import { formatApiError } from '@/helpers/api-error'
 import { CardBolsasFapesbView } from './CardBolsasFapesbView'
-import { CardSkeletonOnLoad } from '../CardSkeletonOnLoad'
+import { CardSkeletonOnLoad } from '@/pages/DashboardMetricas/components/cards/CardSkeletonOnLoad'
 
 const LITERAL_FAPESB = 'FAPESB'
 

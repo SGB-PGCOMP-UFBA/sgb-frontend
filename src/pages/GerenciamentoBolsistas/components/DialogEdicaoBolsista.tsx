@@ -18,13 +18,13 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import type { ScholarshipFilterOptions } from '../GerenciamentoBolsistas'
+import type { ScholarshipFilterOptions } from '@/pages/GerenciamentoBolsistas/GerenciamentoBolsistas'
 import type {
   EnrollmentProgram,
   ScholarshipDetailedWithRelations,
   ScholarshipEditableStatus
-} from '../../../types'
-import { readFormValues } from '../../../helpers/form-values'
+} from '@/types'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoBolsistaFormFields {
   student_name: string

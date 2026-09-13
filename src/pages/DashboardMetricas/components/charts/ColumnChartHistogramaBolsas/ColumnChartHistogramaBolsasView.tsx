@@ -3,8 +3,8 @@ import type { ApexOptions } from 'apexcharts'
 import { MdBarChart } from 'react-icons/md'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
-import type { CountByCourseAndYear } from '../../../../../api/scholarship'
-import type { AgencyName, EnrollmentProgram } from '../../../../../types'
+import type { CountByCourseAndYear } from '@/api/scholarship'
+import type { AgencyName, EnrollmentProgram } from '@/types'
 
 export interface ColumnChartHistogramaBolsasViewProps {
   className?: string

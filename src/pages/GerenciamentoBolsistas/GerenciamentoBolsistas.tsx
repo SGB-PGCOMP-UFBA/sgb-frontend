@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
-import { formatApiError } from '../../helpers/api-error'
+import { api } from '@/api'
+import { formatApiError } from '@/helpers/api-error'
 import { GerenciamentoBolsistasView } from './GerenciamentoBolsistasView'
-import { formattedNow, parseDate } from '../../helpers/formatters'
+import { formattedNow, parseDate } from '@/helpers/formatters'
 import type { EdicaoBolsistaSubmitValues } from './components/DialogEdicaoBolsista'
 import type {
   AdvisorFilterOption,
@@ -14,7 +14,7 @@ import type {
   Page,
   ScholarshipDetailedWithRelations,
   ScholarshipFilters
-} from '../../types'
+} from '@/types'
 
 function extractApiMessage(error: unknown): string | undefined {
   if (!axios.isAxiosError(error)) {

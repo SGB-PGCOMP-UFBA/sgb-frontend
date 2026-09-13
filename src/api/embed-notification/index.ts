@@ -1,10 +1,10 @@
 import type { AxiosResponse } from 'axios'
-import { api } from '../../services/api'
-import { buildHeaders } from '../utils/HeaderUtils'
+import { api } from '@/services/api'
+import { buildHeaders } from '@/api/utils/HeaderUtils'
 import type {
   EmbedNotificationDetailed,
   NotificationOwnerType
-} from '../../types'
+} from '@/types'
 
 const BASE_EMBED_NOTIFICATION_API_PATH = `/v1/embed-notification`
 

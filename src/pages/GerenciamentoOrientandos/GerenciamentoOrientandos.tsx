@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../api'
+import { api } from '@/api'
 import { GerenciamentoOrientandosView } from './GerenciamentoOrientandosView'
-import { getUserFromLocalStorage } from '../../helpers/auth-user'
-import { formatApiError } from '../../helpers/api-error'
-import type { StudentDetailedWithFullRelations } from '../../types'
+import { getUserFromLocalStorage } from '@/helpers/auth-user'
+import { formatApiError } from '@/helpers/api-error'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 function GerenciamentoOrientandos() {
   const user = getUserFromLocalStorage()
@@ -33,7 +33,7 @@ function GerenciamentoOrientandos() {
     }
 
     getStudents()
-  }, [user?.id])
+  }, [user])
 
   return <GerenciamentoOrientandosView isLoading={isLoading} data={students} />
 }

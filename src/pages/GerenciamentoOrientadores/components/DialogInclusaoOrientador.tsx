@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
-import { readFormValues } from '../../../helpers/form-values'
+import { readFormValues } from '@/helpers/form-values'
 
 export interface InclusaoOrientadorFormValues {
   name: string

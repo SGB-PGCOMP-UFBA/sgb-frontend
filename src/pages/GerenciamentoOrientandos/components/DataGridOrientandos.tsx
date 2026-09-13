@@ -3,9 +3,9 @@ import { ActionIconButton } from '@/components/action-icon-button'
 import { Eye, GraduationCap } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
-import { formatCpf, formatPhone } from '../../../helpers/formatters'
+import { formatCpf, formatPhone } from '@/helpers/formatters'
 import { DialogVisualizacaoBolsas } from './DialogVisualizacaoBolsas'
-import type { StudentDetailedWithFullRelations } from '../../../types'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 

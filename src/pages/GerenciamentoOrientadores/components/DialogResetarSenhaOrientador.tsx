@@ -6,8 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { ResetPasswordPayload } from '../../../api/password'
-import type { AdvisorDetailed } from '../../../types'
+import type { ResetPasswordPayload } from '@/api/password'
+import type { AdvisorDetailed } from '@/types'
 
 export interface DialogResetarSenhaOrientadorProps {
   item: AdvisorDetailed

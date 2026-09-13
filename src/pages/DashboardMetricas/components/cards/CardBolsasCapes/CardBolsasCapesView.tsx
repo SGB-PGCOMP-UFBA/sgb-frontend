@@ -1,7 +1,7 @@
 import { MdWork } from 'react-icons/md'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
-import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
+import type { CountByAgencyAndStatus } from '@/api/scholarship'
 
 const LITERAL_ON_GOING = 'ON_GOING'
 

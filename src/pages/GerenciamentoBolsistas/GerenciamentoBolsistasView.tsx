@@ -18,14 +18,14 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { DataGridBolsistas } from './components/DataGridBolsistas'
-import Loading from '../../components/loading'
+import Loading from '@/components/loading'
 import type { EdicaoBolsistaSubmitValues } from './components/DialogEdicaoBolsista'
 import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
   ScholarshipPageFilters
 } from './GerenciamentoBolsistas'
-import type { Page, ScholarshipDetailedWithRelations } from '../../types'
+import type { Page, ScholarshipDetailedWithRelations } from '@/types'
 
 export interface GerenciamentoBolsistasViewProps {
   data: Partial<Page<ScholarshipDetailedWithRelations>>

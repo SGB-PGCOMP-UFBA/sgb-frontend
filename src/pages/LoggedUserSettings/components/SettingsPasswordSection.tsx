@@ -12,8 +12,8 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { api } from '../../../api'
-import type { StoredUser } from '../../../helpers/auth-user'
+import { api } from '@/api'
+import type { StoredUser } from '@/helpers/auth-user'
 
 export interface SettingsPasswordSectionProps {
   user: StoredUser | null

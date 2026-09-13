@@ -15,10 +15,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import Loading from '../../components/loading'
+import Loading from '@/components/loading'
 import { DataGridQuadrienal } from './components/DataGridQuadrienal'
-import type { AgencyScholarshipReport } from '../../api/scholarship'
-import type { QuadrennialReportFormat } from '../../api/report'
+import type { AgencyScholarshipReport } from '@/api/scholarship'
+import type { QuadrennialReportFormat } from '@/api/report'
 
 export interface RelatorioQuadrienalViewProps {
   data?: AgencyScholarshipReport[]

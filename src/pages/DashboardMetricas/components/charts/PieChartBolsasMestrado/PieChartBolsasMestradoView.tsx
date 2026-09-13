@@ -3,8 +3,8 @@ import type { ApexOptions } from 'apexcharts'
 import { MdPieChart } from 'react-icons/md'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Card, CardContent } from '@/components/ui/card'
-import type { CountByAgencyAndCourse } from '../../../../../api/scholarship'
-import type { ScholarshipStatus } from '../../../../../types'
+import type { CountByAgencyAndCourse } from '@/api/scholarship'
+import type { ScholarshipStatus } from '@/types'
 
 export interface PieChartBolsasMestradoViewProps {
   className?: string

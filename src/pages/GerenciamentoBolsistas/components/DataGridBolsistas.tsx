@@ -4,16 +4,16 @@ import type { PaginationState } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
-import { formatDate, formatPhone } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
+import { formatDate, formatPhone } from '@/helpers/formatters'
+import { CustomChip } from '@/components'
 import { DialogExclusaoBolsa } from './DialogExclusaoBolsa'
 import { DialogEdicaoBolsista } from './DialogEdicaoBolsista'
 import type { EdicaoBolsistaSubmitValues } from './DialogEdicaoBolsista'
-import type { ScholarshipFilterOptions } from '../GerenciamentoBolsistas'
+import type { ScholarshipFilterOptions } from '@/pages/GerenciamentoBolsistas/GerenciamentoBolsistas'
 import type {
   PageMeta,
   ScholarshipDetailedWithRelations
-} from '../../../types'
+} from '@/types'
 import './styles.css';
 
 const NOT_INFORMED = 'Não informado'

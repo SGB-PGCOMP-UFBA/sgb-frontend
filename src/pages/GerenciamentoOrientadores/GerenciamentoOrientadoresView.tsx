@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button'
 import { DataGridOrientadores } from './components/DataGridOrientadores'
 import { DialogInclusaoOrientador } from './components/DialogInclusaoOrientador'
 import type { InclusaoOrientadorFormValues } from './components/DialogInclusaoOrientador'
-import Loading from '../../components/loading'
-import type { UpdateAdvisorPayload } from '../../api/advisor'
-import type { ResetPasswordPayload } from '../../api/password'
-import type { AdvisorDetailed } from '../../types'
+import Loading from '@/components/loading'
+import type { UpdateAdvisorPayload } from '@/api/advisor'
+import type { ResetPasswordPayload } from '@/api/password'
+import type { AdvisorDetailed } from '@/types'
 
 export interface GerenciamentoOrientadoresViewProps {
   isLoading: boolean

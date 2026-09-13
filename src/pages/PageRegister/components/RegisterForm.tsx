@@ -7,15 +7,15 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
-import { api } from '../../../api'
+import { api } from '@/api'
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
-} from '../../../helpers/auth-user'
-import type { StoredUser } from '../../../helpers/auth-user'
-import { delay } from '../../../helpers/delay'
+} from '@/helpers/auth-user'
+import type { StoredUser } from '@/helpers/auth-user'
+import { delay } from '@/helpers/delay'
 import axios from 'axios'
-import type { FieldChangeEvent } from '../../../types'
+import type { FieldChangeEvent } from '@/types'
 
 export interface RegisterFormValues {
   tax_id: string

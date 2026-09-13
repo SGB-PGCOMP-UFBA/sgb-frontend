@@ -3,12 +3,12 @@ import { ActionIconButton } from '@/components/action-icon-button'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/types'
-import { formatDate } from '../../../helpers/formatters'
+import { formatDate } from '@/helpers/formatters'
 import { DialogExclusaoAgencia } from './DialogExclusaoAgencia'
 import { DialogEdicaoAgencia } from './DialogEdicaoAgencia'
 import type { InclusaoAgenciaFormValues } from './DialogInclusaoAgencia'
-import type { UpdateAgencyPayload } from '../../../api/agency'
-import type { AgencyDetailed } from '../../../types'
+import type { UpdateAgencyPayload } from '@/api/agency'
+import type { AgencyDetailed } from '@/types'
 
 export interface DataGridAgenciasProps {
   data: AgencyDetailed[]

@@ -9,8 +9,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { formatDate, toPascalCase } from '../../../helpers/formatters'
-import type { StudentDetailedWithFullRelations } from '../../../types'
+import { formatDate, toPascalCase } from '@/helpers/formatters'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 export interface DialogVisualizacaoBolsasProps {
   item: StudentDetailedWithFullRelations

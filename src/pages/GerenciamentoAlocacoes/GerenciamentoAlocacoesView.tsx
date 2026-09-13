@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button'
 import { DataGridAllocacoes } from './components/DataGridAlocacoes'
 import { DialogInclusaoAlocacao } from './components/DialogInclusaoAlocacao'
 import type { InclusaoAlocacaoFormValues } from './components/DialogInclusaoAlocacao'
-import Loading from '../../components/loading'
-import type { UpdateAllocationPayload } from '../../api/allocation'
-import type { AllocationDetailed } from '../../types'
+import Loading from '@/components/loading'
+import type { UpdateAllocationPayload } from '@/api/allocation'
+import type { AllocationDetailed } from '@/types'
 
 export interface GerenciamentoAlocacoesViewProps {
   isLoading: boolean

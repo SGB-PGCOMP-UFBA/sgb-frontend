@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../../../../api'
-import type { CountByAgencyAndCourse } from '../../../../../api/scholarship'
-import { formatApiError } from '../../../../../helpers/api-error'
-import type { ScholarshipStatus } from '../../../../../types'
+import { api } from '@/api'
+import type { CountByAgencyAndCourse } from '@/api/scholarship'
+import { formatApiError } from '@/helpers/api-error'
+import type { ScholarshipStatus } from '@/types'
 import { PieChartBolsasMestradoView } from './PieChartBolsasMestradoView'
 
 const LITERAL_MESTRADO = 'MESTRADO'

@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import type { AgencyDetailed } from '../../../types'
+import type { AgencyDetailed } from '@/types'
 
 export interface DialogExclusaoAgenciaProps {
   item: AgencyDetailed

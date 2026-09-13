@@ -1,4 +1,4 @@
-import type { LoginResponse } from '../types'
+import type { LoginResponse } from '@/types'
 
 /** Usuario autenticado como fica persistido no localStorage. */
 export type StoredUser = LoginResponse

@@ -1,7 +1,7 @@
 import './styles.css'
 import { FileText } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-import type { AgencyScholarshipReport, DegreeCount } from '../../../api/scholarship'
+import type { AgencyScholarshipReport, DegreeCount } from '@/api/scholarship'
 
 export interface DataGridQuadrienalProps {
   data: AgencyScholarshipReport[]

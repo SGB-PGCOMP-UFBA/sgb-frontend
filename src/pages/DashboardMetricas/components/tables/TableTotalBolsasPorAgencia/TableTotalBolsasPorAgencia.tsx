@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { api } from '../../../../../api'
-import { formatApiError } from '../../../../../helpers/api-error'
-import type { AgencyDetailed } from '../../../../../types'
+import { api } from '@/api'
+import { formatApiError } from '@/helpers/api-error'
+import type { AgencyDetailed } from '@/types'
 import { TableTotalBolsasPorAgenciaView } from './TableTotalBolsasPorAgenciaView'
 
 export interface TableTotalBolsasPorAgenciaProps {

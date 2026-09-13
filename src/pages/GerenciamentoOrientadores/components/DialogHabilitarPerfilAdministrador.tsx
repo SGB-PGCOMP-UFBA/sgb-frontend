@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { AdvisorDetailed } from '../../../types'
+import type { AdvisorDetailed } from '@/types'
 
 export interface DialogHabilitarPerfilAdministradorProps {
   item: AdvisorDetailed
