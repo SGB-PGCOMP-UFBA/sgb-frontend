@@ -40,8 +40,8 @@ $ npm run start
 
 #### Requerimentos
 
--   Node.js >= 22
--   NPM >= 10
+-   Node.js 22.x
+-   NPM 10.x
 
 #### Estrutura dos diretórios
 

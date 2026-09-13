@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import type { SxProps, Theme } from '@mui/material'
 import { api } from '../../../../../api'
 import type { CountByAgencyAndCourse } from '../../../../../api/scholarship'
 import { formatApiError } from '../../../../../helpers/api-error'
@@ -11,18 +10,18 @@ const LITERAL_DOUTORADO = 'DOUTORADO'
 
 const initialState: CountByAgencyAndCourse[string] = {
   CAPES: {
-    count: 0
+    count: 0,
   },
   CNPQ: {
-    count: 0
+    count: 0,
   },
   FAPESB: {
-    count: 0
-  }
+    count: 0,
+  },
 }
 
 export interface PieChartBolsasDoutoradoProps {
-  sx?: SxProps<Theme>
+  className?: string
   scholarshipStatus?: ScholarshipStatus
 }
 
@@ -33,15 +32,23 @@ function PieChartBolsasDoutorado(props: PieChartBolsasDoutoradoProps) {
 
   const getData = async () => {
     const scholarshipStatus = props.scholarshipStatus ?? null
-    const response = await api.scholarship.countScholarshipsGroupingByAgencyForCourse(LITERAL_DOUTORADO, scholarshipStatus)
+    const response =
+      await api.scholarship.countScholarshipsGroupingByAgencyForCourse(
+        LITERAL_DOUTORADO,
+        scholarshipStatus
+      )
 
     if (response.status === 200) {
-      const responseData = Object.keys(response.data).length > 0 ?
-        response.data[LITERAL_DOUTORADO] : initialState
+      const responseData =
+        Object.keys(response.data).length > 0
+          ? response.data[LITERAL_DOUTORADO]
+          : initialState
 
       setData(responseData)
-      let total = 0;
-      Object.values(responseData).forEach((value) => total += parseInt(String(value.count)))
+      let total = 0
+      Object.values(responseData).forEach(
+        value => (total += parseInt(String(value.count)))
+      )
       setDataTotal(total)
     } else {
       toast.error(formatApiError(response.status, response.data))
@@ -50,10 +57,17 @@ function PieChartBolsasDoutorado(props: PieChartBolsasDoutoradoProps) {
 
   useEffect(() => {
     getData().finally(() => setIsLoading(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <PieChartBolsasDoutoradoView sx={props.sx} isLoading={isLoading} data={data} total={dataTotal} scholarshipStatus={props.scholarshipStatus}/>
+    <PieChartBolsasDoutoradoView
+      className={props.className}
+      isLoading={isLoading}
+      data={data}
+      total={dataTotal}
+      scholarshipStatus={props.scholarshipStatus}
+    />
   )
 }
 

@@ -2,23 +2,31 @@ import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
-import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import Loading from '../../../components/Loading'
+import Loading from '@/components/loading'
+import { PublicPageLayout } from '@/components/public-page-layout'
+import { RoleRadioGroup } from '@/components/role-radio-group'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { api } from '../../../api'
 import type { ResetPasswordPayload } from '../../../api/password'
 
 function getServerErrorMessage(error: unknown): string {
-  const data: unknown = axios.isAxiosError(error) ? error.response?.data : undefined
+  const data: unknown = axios.isAxiosError(error)
+    ? error.response?.data
+    : undefined
 
   const message =
-    data && typeof data === 'object' && 'message' in data ? data.message : undefined
+    data && typeof data === 'object' && 'message' in data
+      ? data.message
+      : undefined
 
   return String(message)
 }
 
 const initialState: ResetPasswordPayload = {
   email: '',
-  role: 'STUDENT'
+  role: 'STUDENT',
 }
 
 function ForgetPasswordForm() {
@@ -43,7 +51,7 @@ function ForgetPasswordForm() {
         navigate('/', { replace: true })
       }
     } catch (error) {
-        toast.error(`${getServerErrorMessage(error)}`)
+      toast.error(`${getServerErrorMessage(error)}`)
     } finally {
       setValues(initialState)
       setIsLoading(false)
@@ -51,76 +59,61 @@ function ForgetPasswordForm() {
   }
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <img src="/assets/pgcomp_1.png" alt="PGCOMP" className="max-w-[200px]" />
-        <Typography component="h1" variant="h5" marginBottom="1.4em" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-          Sistema de Gerenciamento de Bolsas
-        </Typography>
-        <Typography component="h1" variant="h6" sx={{ mb: isLoading ? 10 : 2 }}>
-          Recuperar Senha
-        </Typography>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
-            <FormControl sx={{ mt: 2, mb: 4 }}>
-              <FormLabel id="label-radio-buttons-role">Quem é você?</FormLabel>
-              <RadioGroup
-                row
-                id="radio-buttons-role"
-                name="role"
-                defaultValue={initialState.role}
-                onChange={handleChangeValues}
-              >
-                <FormControlLabel value="STUDENT" control={<Radio />} label="Estudante" />
-                <FormControlLabel value="ADVISOR" control={<Radio />} label="Orientador" />
-                <FormControlLabel value="ADMIN" control={<Radio />} label="Administrador" />
-              </RadioGroup>
-            </FormControl>
-
-            <TextField
-              autoFocus
-              required
-              fullWidth
-              id="email"
-              label="E-mail"
-              name="email"
-              type="email"
-              onChange={handleChangeValues}
-              placeholder="Digite seu e-mail"
-              helperText="Informe o endereço de e-mail utilizado em seu cadastro"
-              inputProps={{ maxLength: 80 }}
+    <PublicPageLayout
+      subtitle='Recuperar Senha'
+      contentClassName={isLoading ? 'mt-20 w-full' : 'mt-4 w-full'}
+    >
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <form onSubmit={handleSubmit} className='w-full'>
+          <div className='mb-8 mt-4'>
+            <RoleRadioGroup
+              defaultValue={initialState.role}
+              onValueChange={value =>
+                setValues(current => ({
+                  ...current,
+                  role: value as typeof current.role,
+                }))
+              }
             />
+          </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 6, mb: 2 }}
-            >
-              Enviar
-            </Button>
-            <Grid container justifyContent="flex-end" marginTop="3em" marginBottom="3em">
-              <Grid item>
-                <p className="text-center text-base font-normal leading-6">
-                  Lembrou sua senha?{' '}
-                  <Link to="/" className="text-base font-normal text-blue-600 transition-colors hover:text-blue-800">
-                    Entrar!
-                  </Link>
-                </p>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
-      </Box>
-    </Container>
+          <div className='space-y-1.5'>
+            <Label htmlFor='email'>E-mail</Label>
+            <Input
+              required
+              id='email'
+              name='email'
+              type='email'
+              value={values.email}
+              onChange={handleChangeValues}
+              placeholder='Digite seu e-mail'
+              maxLength={80}
+            />
+            <p className='text-sm text-muted-foreground'>
+              Informe o endereço de e-mail utilizado em seu cadastro
+            </p>
+          </div>
+
+          <Button type='submit' className='mb-4 mt-12 w-full'>
+            Enviar
+          </Button>
+
+          <div className='mb-12 mt-12 flex justify-end'>
+            <p className='text-center text-base font-normal leading-6'>
+              Lembrou sua senha?{' '}
+              <Link
+                to='/'
+                className='text-base font-normal text-blue-600 transition-colors hover:text-blue-800'
+              >
+                Entrar!
+              </Link>
+            </p>
+          </div>
+        </form>
+      )}
+    </PublicPageLayout>
   )
 }
 

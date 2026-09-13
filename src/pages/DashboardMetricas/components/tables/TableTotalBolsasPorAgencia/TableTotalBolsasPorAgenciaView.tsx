@@ -1,14 +1,21 @@
-import { Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
 import type { AgencyDetailed } from '../../../../../types'
 
 export interface TableTotalBolsasPorAgenciaViewProps {
-  sx?: SxProps<Theme>
+  className?: string
   data: AgencyDetailed[]
 }
 
 function TableTotalBolsasPorAgenciaView(props: TableTotalBolsasPorAgenciaViewProps) {
-  const { data, sx } = props
+  const { data, className } = props
 
   const getTotalAllocated = (row: AgencyDetailed) => {
     return Number(row.masters_degree_allocated_scholarships) + Number(row.doctorate_degree_allocated_scholarships)
@@ -23,44 +30,39 @@ function TableTotalBolsasPorAgenciaView(props: TableTotalBolsasPorAgenciaViewPro
   }
 
   return (
-    <Card sx={sx}>
-      <CardContent className="h-full">
-        <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={0.4}>
+    <Card className={className}>
+      <CardContent className="h-full p-6">
+        <h3 className="mb-1 text-2xl font-bold text-foreground">
           Concessão de Bolsas
-        </Typography>
-        <TableContainer>
-          <Table sx={{ minWidth: 650 }} size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold' }} align="left">Modalidade</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Concedidas Mestrado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Alocadas Mestrado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Concedidas Doutorado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Alocadas Doutorado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Total Concedidas</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Total Alocadas</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="center">Bolsas Disponíveis</TableCell>
+        </h3>
+        <Table className="min-w-[650px] [&_td]:p-2 [&_th]:h-10 [&_th]:px-2">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left">Modalidade</TableHead>
+              <TableHead className="text-center">Concedidas Mestrado</TableHead>
+              <TableHead className="text-center">Alocadas Mestrado</TableHead>
+              <TableHead className="text-center">Concedidas Doutorado</TableHead>
+              <TableHead className="text-center">Alocadas Doutorado</TableHead>
+              <TableHead className="text-center">Total Concedidas</TableHead>
+              <TableHead className="text-center">Total Alocadas</TableHead>
+              <TableHead className="text-center">Bolsas Disponíveis</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell className="text-left font-bold">{row.name}</TableCell>
+                <TableCell className="text-center">{row.masters_degree_awarded_scholarships}</TableCell>
+                <TableCell className="text-center">{row.masters_degree_allocated_scholarships}</TableCell>
+                <TableCell className="text-center">{row.doctorate_degree_awarded_scholarships}</TableCell>
+                <TableCell className="text-center">{row.doctorate_degree_allocated_scholarships}</TableCell>
+                <TableCell className="text-center">{getTottalAwarded(row)}</TableCell>
+                <TableCell className="text-center">{getTotalAllocated(row)}</TableCell>
+                <TableCell className="text-center">{getBalance(row)}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">{row.name}</TableCell>
-                  <TableCell align="center">{row.masters_degree_awarded_scholarships}</TableCell>
-                  <TableCell align="center">{row.masters_degree_allocated_scholarships}</TableCell>
-                  <TableCell align="center">{row.doctorate_degree_awarded_scholarships}</TableCell>
-                  <TableCell align="center">{row.doctorate_degree_allocated_scholarships}</TableCell>
-                  <TableCell align="center">{getTottalAwarded(row)}</TableCell>
-                  <TableCell align="center">{getTotalAllocated(row)}</TableCell>
-                  <TableCell align="center">{getBalance(row)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

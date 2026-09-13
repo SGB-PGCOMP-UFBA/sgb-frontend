@@ -1,8 +1,20 @@
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, IconButton } from '@mui/material'
-import FilterAltOff from '@mui/icons-material/FilterAltOff'
-import CloseIcon from '@mui/icons-material/Close';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import { SelectInput } from '../../../components'
+import { FilterX } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
@@ -24,84 +36,93 @@ function DialogFiltros({ filters, setFilters, filterOptions, isOpen, onClose, on
     onClose()
   }
 
-  const dialogContent = (
-    <div className="mt-2 flex min-w-[395px] max-w-[595px] flex-col font-inter">
-      <div className="mb-4">
-        <SelectInput
-          id="select-programName"
-          name="programName"
-          label="Curso"
-          options={filterOptions.programNameFilterList}
-          selected={filters.programName}
-          handleChange={setFilters}
-        />
-      </div>
-
-      <div className="mb-4">
-        <SelectInput
-          id="select-scholarshipStatus"
-          name="scholarshipStatus"
-          label="Status da Bolsa"
-          options={filterOptions.scholarshipStatusFilterList}
-          selected={filters.scholarshipStatus}
-          handleChange={setFilters}
-        />
-      </div>
-
-      <div className="mb-4">
-        <SelectInput
-          id="select-agencyName"
-          name="agencyName"
-          label="Agência"
-          options={filterOptions.agencyNameFilterList}
-          selected={filters.agencyName}
-          handleChange={setFilters}
-        />
-      </div>
-
-      <div className="mb-4">
-        <SelectInput
-          id="select-advisorName"
-          name="advisorName"
-          label="Orientador"
-          options={filterOptions.advisorNameFilterList}
-          selected={filters.advisorName}
-          handleChange={setFilters}
-        />
-      </div>
-    </div>
-  )
-
-  const dialogActions = (
-    <div className="flex flex-row w-full justify-end p-4">
-      <Button
-        variant="contained"
-        color="info"
-        startIcon={<FilterAltOff />}
-        onClick={clearAllFilters}
-      >
-          Limpar Todos Os Filtros
-      </Button>
-    </div>
-  )
+  const handleSelectChange = (name: string) => (value: string) => {
+    setFilters({ target: { name, value } })
+  }
 
   return (
-    <Dialog open={isOpen} onClose={onClose} TransitionComponent={SlideUp}>
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Filtros</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="font-inter sm:max-w-[595px]">
+        <DialogHeader>
+          <DialogTitle>Filtros</DialogTitle>
+        </DialogHeader>
+
+        <div className="flex flex-col pt-2">
+          <div className="mb-4 space-y-1.5">
+            <Label htmlFor="select-programName">Curso</Label>
+            <Select value={filters.programName} onValueChange={handleSelectChange('programName')}>
+              <SelectTrigger id="select-programName">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {filterOptions.programNameFilterList.map((option) => (
+                  <SelectItem key={option.key} value={option.key}>
+                    {option.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mb-4 space-y-1.5">
+            <Label htmlFor="select-scholarshipStatus">Status da Bolsa</Label>
+            <Select
+              value={filters.scholarshipStatus}
+              onValueChange={handleSelectChange('scholarshipStatus')}
+            >
+              <SelectTrigger id="select-scholarshipStatus">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {filterOptions.scholarshipStatusFilterList.map((option) => (
+                  <SelectItem key={option.key} value={option.key}>
+                    {option.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mb-4 space-y-1.5">
+            <Label htmlFor="select-agencyName">Agência</Label>
+            <Select value={filters.agencyName} onValueChange={handleSelectChange('agencyName')}>
+              <SelectTrigger id="select-agencyName">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {filterOptions.agencyNameFilterList.map((option) => (
+                  <SelectItem key={option.key} value={option.key}>
+                    {option.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mb-4 space-y-1.5">
+            <Label htmlFor="select-advisorName">Orientador</Label>
+            <Select value={filters.advisorName} onValueChange={handleSelectChange('advisorName')}>
+              <SelectTrigger id="select-advisorName">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {filterOptions.advisorNameFilterList.map((option) => (
+                  <SelectItem key={option.key} value={option.key}>
+                    {option.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button type="button" onClick={clearAllFilters}>
+            <FilterX />
+            Limpar Todos Os Filtros
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   )
 }

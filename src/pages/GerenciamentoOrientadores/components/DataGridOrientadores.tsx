@@ -1,18 +1,14 @@
-import { useState } from 'react'
-import { Icon, IconButton, Tooltip } from '@mui/material'
-import { DataGrid, ptBR } from '@mui/x-data-grid'
-import type {
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams
-} from '@mui/x-data-grid'
-import { formatCpf, formatPhone } from '../../../helpers/formatters'
+import { useMemo, useState } from 'react'
+import { ActionIconButton } from '@/components/action-icon-button'
+import { KeyRound, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
+import { DataTable } from '@/components/data-table'
+import type { DataTableColumn } from '@/components/data-table/types'
+import { cn } from '@/lib/utils'
+import { formatCpf, formatDate, formatPhone } from '../../../helpers/formatters'
+import { CustomChip } from '../../../components'
 import { DialogExclusaoOrientador } from './DialogExclusaoOrientador'
 import { DialogEdicaoOrientador } from './DialogEdicaoOrientador'
 import { DialogResetarSenhaOrientador } from './DialogResetarSenhaOrientador'
-import { formatDate } from '../../../helpers/formatters'
-import { CustomChip } from '../../../components'
-import DataGridFooterBar from '../../../components/DataGrid/DataGridFooterBar'
 import { DialogHabilitarPerfilAdministrador } from './DialogHabilitarPerfilAdministrador'
 import type { InclusaoOrientadorFormValues } from './DialogInclusaoOrientador'
 import type { UpdateAdvisorPayload } from '../../../api/advisor'
@@ -23,7 +19,6 @@ const NOT_INFORMED = 'Não informado'
 
 export interface DataGridOrientadoresProps {
   data: AdvisorDetailed[]
-  /** Repassada pela View junto das demais acoes; esta grade nao a utiliza. */
   onCreate: (advisor: InclusaoOrientadorFormValues) => void
   onUpdate: (payload: UpdateAdvisorPayload) => void
   onDelete: (advisorId: number) => void
@@ -38,7 +33,6 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
   const [isDialogForAdminProfileOpen, setIsDialogForAdminProfileOpen] = useState(false)
   const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorDetailed | null>(null)
-  const [pageSize, setPageSize] = useState(5)
 
   const handleDialogForAdminProfileClose = () => {
     setSelectedAdvisor(null)
@@ -84,175 +78,119 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
     return advisor.enrollmentsCount > 0
   }
 
-  const columns: GridColDef[] = [
-    {
-      field: 'name',
-      headerName: 'Nome completo',
-      width: 300,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) =>
-        <p className="overflow-auto">{ params.row.name ? params.row.name : NOT_INFORMED }</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.name
-    },
-    {
-      field: 'status',
-      headerName: 'Situação',
-      width: 110,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => <CustomChip value={params.row.status} type="status" />,
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.status
-    },
-    {
-      field: 'email',
-      headerName: 'E-mail',
-      width: 250,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) =>
-        <p className="overflow-auto">{ params.row.email ? params.row.email : NOT_INFORMED }</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.email
-    },
-    {
-      field: 'tax_id',
-      headerName: 'CPF',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) =>
-        <p className="overflow-auto">{ params.row.tax_id ? formatCpf(params.row.tax_id) : NOT_INFORMED }</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.tax_id
-    },
-    {
-      field: 'phone_number',
-      headerName: 'Telefone',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => ( params.row.phone_number ?
-        <a
-          href={`https://wa.me/${params.row.phone_number}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-500 underline"
-        >
-          {formatPhone(params.row.phone_number)}
-        </a>
-        : <p className="overflow-auto">{NOT_INFORMED}</p>
-      ),
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.phone_number
-    },
-    {
-      field: 'count_enrollments',
-      headerName: 'Bolsistas Orientados',
-      align:'center',
-      width: 150,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => <p className="overflow-auto">{ params.row.enrollmentsCount }</p>,
-      valueGetter: (params: GridValueGetterParams<unknown, AdvisorDetailed>) => params.row.enrollmentsCount
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Criado Em',
-      width: 100,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => formatDate(params.row.created_at)
-    },
-    {
-      field: 'updatedAt',
-      headerName: 'Atualizado Em',
-      width: 120,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => formatDate(params.row.updated_at)
-    },
-    {
-      field: 'actions',
-      headerName: 'Ações',
-      width: 230,
-      filterable: false,
-      sortable: false,
-      renderCell: (params: GridRenderCellParams<unknown, AdvisorDetailed>) => (
-        <div className="flex items-center gap-x-2 overflow-auto">
-          <Tooltip title={ params.row.has_admin_privileges ? "Desabilitar Perfil de Administrador" : "Habilitar Perfil de Administrador" }>
-            <IconButton onClick={() => handleDialogForAdminProfileOpen(params.row)}>
-              <Icon sx={{ fontSize: 28, color: params.row.has_admin_privileges ? '#3498db' : 'default'  }}>assignment_ind</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Resetar Senha do Orientador">
-            <IconButton onClick={() => handleDialogForPasswordResetOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>lock_reset</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Editar Orientador">
-            <IconButton onClick={() => handleDialogForUpdateOpen(params.row)}>
-              <Icon sx={{ fontSize: 28 }}>edit</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            title={
-              hasEnrollments(params.row)
-                ? 'Não é possível excluir este(a) orientador(a) pois ele possui bolsistas relacionados a ele.'
-                : 'Excluir Orientador(a)'
-            }
+  const columns = useMemo<DataTableColumn<AdvisorDetailed>[]>(
+    () => [
+      {
+        id: 'name',
+        header: 'Nome completo',
+        width: 300,
+        cell: (row) => <p className="overflow-auto">{row.name ? row.name : NOT_INFORMED}</p>,
+        csv: (row) => row.name
+      },
+      {
+        id: 'status',
+        header: 'Situação',
+        width: 110,
+        cell: (row) => <CustomChip value={row.status} type="status" />,
+        csv: (row) => row.status
+      },
+      {
+        id: 'email',
+        header: 'E-mail',
+        width: 250,
+        cell: (row) => <p className="overflow-auto">{row.email ? row.email : NOT_INFORMED}</p>,
+        csv: (row) => row.email
+      },
+      {
+        id: 'tax_id',
+        header: 'CPF',
+        width: 150,
+        cell: (row) => (
+          <p className="overflow-auto">{row.tax_id ? formatCpf(row.tax_id) : NOT_INFORMED}</p>
+        ),
+        csv: (row) => row.tax_id
+      },
+      {
+        id: 'phone_number',
+        header: 'Telefone',
+        width: 150,
+        cell: (row) => (row.phone_number ?
+          <a
+            href={`https://wa.me/${row.phone_number}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-500 underline"
           >
-            <span>
-              <IconButton
-                onClick={() => handleDialogForDeleteOpen(params.row)}
-                disabled={hasEnrollments(params.row)}
-              >
-                <Icon sx={{ fontSize: 28 }}>delete</Icon>
-              </IconButton>
-            </span>
-          </Tooltip>
-        </div>
-      )
-    }
-  ]
+            {formatPhone(row.phone_number)}
+          </a>
+          : <p className="overflow-auto">{NOT_INFORMED}</p>
+        ),
+        csv: (row) => row.phone_number
+      },
+      {
+        id: 'count_enrollments',
+        header: 'Bolsistas Orientados',
+        width: 150,
+        align: 'center',
+        cell: (row) => <p className="overflow-auto">{row.enrollmentsCount}</p>,
+        csv: (row) => row.enrollmentsCount
+      },
+      {
+        id: 'createdAt',
+        header: 'Criado Em',
+        width: 100,
+        cell: (row) => formatDate(row.created_at)
+      },
+      {
+        id: 'updatedAt',
+        header: 'Atualizado Em',
+        width: 120,
+        cell: (row) => formatDate(row.updated_at)
+      },
+      {
+        id: 'actions',
+        header: 'Ações',
+        width: 230,
+        cell: (row) => {
+          const adminProfileLabel = row.has_admin_privileges
+            ? 'Desabilitar Perfil de Administrador'
+            : 'Habilitar Perfil de Administrador'
+
+          return (
+            <div className="flex items-center gap-x-2 overflow-auto">
+              <ActionIconButton
+                label={adminProfileLabel}
+                icon={ShieldCheck}
+                onClick={() => handleDialogForAdminProfileOpen(row)}
+                iconClassName={cn(row.has_admin_privileges && 'text-[#3498db]')}
+              />
+              <ActionIconButton
+                label="Resetar Senha do Orientador"
+                icon={KeyRound}
+                onClick={() => handleDialogForPasswordResetOpen(row)}
+              />
+              <ActionIconButton
+                label="Editar Orientador"
+                icon={Pencil}
+                onClick={() => handleDialogForUpdateOpen(row)}
+              />
+              <ActionIconButton
+                label={'Excluir Orientador(a)'}
+                disabledReason={hasEnrollments(row) ? 'Não é possível excluir este(a) orientador(a) pois ele possui bolsistas relacionados a ele.' : undefined}
+                icon={Trash2}
+                onClick={() => handleDialogForDeleteOpen(row)}
+              />
+            </div>
+          )
+        }
+      }
+    ],
+    []
+  )
 
   return (
     <div>
-      <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          disableColumnMenu
-          components={{ Footer: DataGridFooterBar }}
-          isRowSelectable={() => false}
-          autoHeight
-          pagination
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          sx={{
-            '.MuiDataGrid-columnSeparator': {
-              display: 'none',
-            },
-            '& .MuiDataGrid-columnHeaderTitle': {
-              fontWeight: 'bold',
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-columnHeader': {
-              whiteSpace: 'normal',
-              wordWrap: 'break-word',
-              lineHeight: '1.2',
-              overflow: 'visible',
-            },
-            '& .MuiDataGrid-cell': {
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            },
-          }}
-        />
-      </div>
+      <DataTable data={data} columns={columns} csvFileName="orientadores" />
 
       {selectedAdvisor && (
         <DialogExclusaoOrientador

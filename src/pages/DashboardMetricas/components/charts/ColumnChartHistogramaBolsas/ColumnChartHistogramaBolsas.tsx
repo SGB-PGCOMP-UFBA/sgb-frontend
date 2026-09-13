@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import type { AxiosResponse } from 'axios'
-import type { SxProps, Theme } from '@mui/material'
 import { api } from '../../../../../api'
 import type { CountByCourseAndYear } from '../../../../../api/scholarship'
 import { formatApiError } from '../../../../../helpers/api-error'
@@ -9,7 +8,7 @@ import type { AgencyName } from '../../../../../types'
 import { ColumnChartHistogramaBolsasView } from './ColumnChartHistogramaBolsasView'
 
 export interface ColumnChartHistogramaBolsasProps {
-  sx?: SxProps<Theme>
+  className?: string
   agencyName?: AgencyName
 }
 
@@ -32,10 +31,11 @@ function ColumnChartHistogramaBolsas(props: ColumnChartHistogramaBolsasProps) {
 
   useEffect(() => {
     getData().finally(() => setIsLoading(false))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <ColumnChartHistogramaBolsasView sx={props.sx} isLoading={isLoading} data={data} agencyName={agencyName}/>
+    <ColumnChartHistogramaBolsasView className={props.className} isLoading={isLoading} data={data} agencyName={agencyName}/>
   )
 }
 

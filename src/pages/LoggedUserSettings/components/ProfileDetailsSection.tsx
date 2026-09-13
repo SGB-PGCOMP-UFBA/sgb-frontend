@@ -1,32 +1,28 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { Button } from '@/components/ui/button'
 import {
-  Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
-  Divider,
-  TextField,
-  Unstable_Grid2 as Grid
-} from '@mui/material'
+  CardTitle
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
+import { Separator } from '@/components/ui/separator'
 import { api } from '../../../api'
 import { updateUserFromLocalStorage } from '../../../helpers/auth-user'
 import type { StoredUser } from '../../../helpers/auth-user'
-import { CpfMaskInput, PhoneMaskInput } from '../../../components/Masks/muiInput'
+import type { FieldChangeEvent } from '../../../types'
 
 export interface ProfileDetailsSectionProps {
-  /** `null` quando nao ha ninguem autenticado no localStorage. */
   user: StoredUser | null
 }
 
-/**
- * Corpo comum das tres rotas de atualizacao de perfil. `link_to_lattes` e
- * opcional porque o proprio fluxo o remove do payload quando o usuario nao e
- * estudante.
- */
 interface ProfileUpdatePayload {
   current_email: string
   email: string
@@ -47,9 +43,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
     link_to_lattes: user?.link_to_lattes || ''
   })
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (event: FieldChangeEvent) => {
     setValues({ ...values, [event.target.name]: event.target.value })
   }
 
@@ -98,78 +92,73 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit}>
-      <Card elevation={0} sx={{ border: 1, borderColor: '#e5e7eb' }}>
-        <CardHeader subheader="Informações do Usuário" title="Perfil" />
+      <Card className="border-gray-200 shadow-none">
+        <CardHeader>
+          <CardTitle>Perfil</CardTitle>
+          <CardDescription>Informações do Usuário</CardDescription>
+        </CardHeader>
         <CardContent>
-          <Box>
-            <Grid container spacing={3}>
-              <Grid xs={12} md={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Name"
-                  name="name"
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="input-name">Name</Label>
+              <Input
+                id="input-name"
+                required
+                name="name"
+                onChange={(e) => handleChange(e)}
+                value={values.name}
+                maxLength={80}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="input-email">E-mail</Label>
+              <Input
+                id="input-email"
+                required
+                name="email"
+                onChange={(e) => handleChange(e)}
+                value={values.email}
+                maxLength={80}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="input-tax-id">CPF</Label>
+              <CpfInput
+                id="input-tax-id"
+                required
+                name="tax_id"
+                onChange={(e) => handleChange(e)}
+                value={values.tax_id}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="input-phone-number">Telefone</Label>
+              <PhoneInput
+                id="input-phone-number"
+                name="phone_number"
+                onChange={(e) => handleChange(e)}
+                value={values.phone_number}
+              />
+            </div>
+            {}
+            {user?.role === 'STUDENT' && (
+              <div className="space-y-1.5">
+                <Label htmlFor="input-link-to-lattes">Link para o Lattes</Label>
+                <Input
+                  id="input-link-to-lattes"
+                  name="link_to_lattes"
                   onChange={(e) => handleChange(e)}
-                  value={values.name}
-                  inputProps={{ maxLength: 80 }}
+                  value={values.link_to_lattes}
+                  maxLength={80}
                 />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="E-mail"
-                  name="email"
-                  onChange={(e) => handleChange(e)}
-                  value={values.email}
-                  inputProps={{ maxLength: 80 }}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="CPF"
-                  name="tax_id"
-                  onChange={(e) => handleChange(e)}
-                  value={values.tax_id}
-                  InputProps={{
-                    inputComponent: CpfMaskInput
-                  }}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Telefone"
-                  name="phone_number"
-                  onChange={(e) => handleChange(e)}
-                  value={values.phone_number}
-                  InputProps={{
-                    inputComponent: PhoneMaskInput
-                  }}
-                />
-              </Grid>
-              {}
-              {user?.role === 'STUDENT' && (
-                <Grid xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Link para o Lattes"
-                    name="link_to_lattes"
-                    onChange={(e) => handleChange(e)}
-                    value={values.link_to_lattes}
-                    inputProps={{ maxLength: 80 }}
-                  />
-                </Grid>
-              )}
-            </Grid>
-          </Box>
+              </div>
+            )}
+          </div>
         </CardContent>
-        <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">Salvar</Button>
-        </CardActions>
+        <Separator />
+        <CardFooter className="justify-end pt-6">
+          <Button type="submit">Salvar</Button>
+        </CardFooter>
       </Card>
     </form>
   )

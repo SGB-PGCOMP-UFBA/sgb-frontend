@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import type { SxProps, Theme } from '@mui/material'
 import { api } from '../../../../../api'
 import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
 import { formatApiError } from '../../../../../helpers/api-error'
@@ -16,7 +15,7 @@ const initialState: CountByAgencyAndStatus[string] = {
 }
 
 export interface CardBolsasCnpqProps {
-  sx?: SxProps<Theme>
+  className?: string
 }
 
 function CardBolsasCnpq(props: CardBolsasCnpqProps) {
@@ -38,7 +37,7 @@ function CardBolsasCnpq(props: CardBolsasCnpqProps) {
   }, [])
 
   return (
-    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCnpqView sx={props.sx} isLoading={isLoading} data={data} />
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCnpqView className={props.className} isLoading={isLoading} data={data} />
   )
 }
 

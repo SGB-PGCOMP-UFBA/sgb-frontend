@@ -1,8 +1,22 @@
 import { useState } from 'react'
-import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Grid, OutlinedInput } from '@mui/material'
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import { DatePicker } from '@mui/x-date-pickers';
+import { DateField } from '@/components/date-field'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import type { AdvisorFilterOption, EnrollmentProgram } from '../../../types'
 import { readFormValues } from '../../../helpers/form-values'
 
@@ -39,146 +53,84 @@ function DialogInclusaoMatricula(props: DialogInclusaoMatriculaProps) {
     onClose()
   }
 
-  const dialogContent = (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        minWidth: {
-          xs: '295px',
-          sm: '295px',
-          md: '395px',
-        },
-        maxWidth: {
-          xs: '350px',
-          sm: '350px',
-          md: '695px',
-        },
-        paddingTop: '1rem'
-      }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-enrollment_number">Número de Matrícula</InputLabel>
-            <OutlinedInput
-              id="enrollment_number"
-              label="Número de Matrícula"
-              name="enrollment_number"
-              placeholder="Digite a sua matrícula"
-              type="tel"
-              inputProps={{
-                minLength: "9",
-                maxLength: "10",
-              }}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-curso">Curso</InputLabel>
-            <Select
-              id="select-curso"
-              label="Curso"
-              name="enrollment_program"
-              labelId="label-curso"
-              defaultValue={""}
-            >
-              <MenuItem disabled value={""}>Selecione um curso</MenuItem>
-              <MenuItem value={"MESTRADO"}>Mestrado</MenuItem>
-              <MenuItem value={"DOUTORADO"}>Doutorado</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-orientador">Orientador</InputLabel>
-            <Select
-              id="select-orientador"
-              label="Orientador"
-              name="advisor_email"
-              labelId="label-orientador"
-              defaultValue={""}
-            >
-              <MenuItem disabled value={""}>Selecione um orientador</MenuItem>
-              {advisors.map((advisor) => (
-                <MenuItem key={advisor.key} value={advisor.email}>
-                  {advisor.value}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Data Primeira Matrícula"
-            name="enrollment_date"
-            defaultValue={null}
-            onChange={handleStartDateChange}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                required: true,
-                InputLabelProps: { shrink: true }
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Data de Previsão de Defesa"
-            name="defense_prediction_date"
-            defaultValue={null}
-            minDate={minEndDate ?? undefined}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                required: true,
-                InputLabelProps: { shrink: true }
-              }
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Box>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button type="submit" variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      TransitionComponent={SlideUp}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Incluir Matrícula</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[695px]">
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>Incluir Matrícula</DialogTitle>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="enrollment_number">Número de Matrícula</Label>
+              <Input
+                id="enrollment_number"
+                name="enrollment_number"
+                placeholder="Digite a sua matrícula"
+                type="tel"
+                required
+                minLength={9}
+                maxLength={10}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="select-curso">Curso</Label>
+              <Select name="enrollment_program" required>
+                <SelectTrigger id="select-curso">
+                  <SelectValue placeholder="Selecione um curso" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MESTRADO">Mestrado</SelectItem>
+                  <SelectItem value="DOUTORADO">Doutorado</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5 sm:col-span-2">
+              <Label htmlFor="select-orientador">Orientador</Label>
+              <Select name="advisor_email" required>
+                <SelectTrigger id="select-orientador">
+                  <SelectValue placeholder="Selecione um orientador" />
+                </SelectTrigger>
+                <SelectContent>
+                  {advisors.map((advisor) => (
+                    <SelectItem key={advisor.key} value={advisor.email}>
+                      {advisor.value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <DateField
+              id="enrollment_date"
+              name="enrollment_date"
+              label="Data Primeira Matrícula"
+              required
+              onChange={handleStartDateChange}
+            />
+
+            <DateField
+              id="defense_prediction_date"
+              name="defense_prediction_date"
+              label="Data de Previsão de Defesa"
+              required
+              minDate={minEndDate ?? undefined}
+            />
+          </div>
+
+          <DialogFooter className="gap-x-4 pt-6">
+            <Button type="button" onClick={onClose} variant="ghost" size="sm">
+              Cancelar
+            </Button>
+            <Button type="submit" size="sm" className="bg-green-600 text-white hover:bg-green-700">
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

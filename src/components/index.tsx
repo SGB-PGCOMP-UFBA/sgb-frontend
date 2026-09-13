@@ -1,7 +1,4 @@
-import FormInput from './Input/FormInput'
-import PasswordInput from './Input/PasswordInput'
-import FileInput from './Input/FileInput/FileInput'
-import SelectInput from './Input/SelectInput'
-import CustomChip from './Chip'
+import FileInput from './file-input'
+import CustomChip from './custom-chip'
 
-export { FormInput, PasswordInput, SelectInput, CustomChip, FileInput }
+export { CustomChip, FileInput }

@@ -1,32 +1,25 @@
-import { Avatar, Card, CardContent, Stack, Skeleton } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export interface CardSkeletonOnLoadProps {
-  sx?: SxProps<Theme>
+  className?: string
 }
 
 function CardSkeletonOnLoad(props: CardSkeletonOnLoadProps) {
   return (
-    <Card sx={props.sx}>
-      <CardContent className="flex flex-col w-full h-full justify-between">
-        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack sx={{ width: '100%' }} marginBottom={3}>
-            <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
-            <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
-            <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          </Stack>
-          <Skeleton variant="circular" sx={{ fontSize: '1rem' }}>
-            <Avatar
-              sx={{
-                height: 56,
-                width: 56
-              }}
-            />
-          </Skeleton>
-        </Stack>
-        <Stack alignItems="center" direction="row" sx={{ mt: 2, width: '100%' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem', width: '100%' }} />
-        </Stack>
+    <Card className={props.className}>
+      <CardContent className="flex h-full w-full flex-col justify-between p-6">
+        <div className="flex flex-row items-start justify-between gap-6">
+          <div className="mb-6 flex w-full flex-col gap-2">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+          <Skeleton className="h-14 w-14 shrink-0 rounded-full" />
+        </div>
+        <div className="mt-4 flex w-full flex-row items-center">
+          <Skeleton className="h-4 w-full" />
+        </div>
       </CardContent>
     </Card>
   )

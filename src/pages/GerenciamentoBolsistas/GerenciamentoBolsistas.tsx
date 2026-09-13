@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import type { SelectChangeEvent } from '@mui/material'
 import { api } from '../../api'
 import { formatApiError } from '../../helpers/api-error'
 import { GerenciamentoBolsistasView } from './GerenciamentoBolsistasView'
@@ -9,6 +8,7 @@ import { formattedNow, parseDate } from '../../helpers/formatters'
 import type { EdicaoBolsistaSubmitValues } from './components/DialogEdicaoBolsista'
 import type {
   AdvisorFilterOption,
+  FieldChangeEvent,
   FilterOption,
   IdentifiedFilterOption,
   Page,
@@ -38,13 +38,12 @@ function extractApiMessage(error: unknown): string | undefined {
 export type ScholarshipPageFilters = Required<ScholarshipFilters>
 
 /**
- * Evento entregue pelos controles de filtro: o `TextField` e o `Select` do MUI
- * na propria tela e o `<select>` nativo do `SelectInput` no dialogo de filtros.
- * Todos expoem `target.name` e `target.value`.
+ * Evento entregue pelos controles de filtro: o `Input` da propria tela e os
+ * `Select` do shadcn aqui e no dialogo de filtros. Todos expoem `target.name` e
+ * `target.value` — os `Select`, que nao emitem evento de DOM, chamam o handler
+ * com um objeto literal.
  */
-export type ScholarshipFilterChangeEvent =
-  | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  | SelectChangeEvent<string>
+export type ScholarshipFilterChangeEvent = FieldChangeEvent
 
 /**
  * Listas que alimentam os <Select> de filtro. Cada uma comeca com o sentinel

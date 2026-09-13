@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import type { SxProps, Theme } from '@mui/material'
 import { api } from '../../../../../api'
 import { formatApiError } from '../../../../../helpers/api-error'
 import type { AgencyDetailed } from '../../../../../types'
 import { TableTotalBolsasPorAgenciaView } from './TableTotalBolsasPorAgenciaView'
 
 export interface TableTotalBolsasPorAgenciaProps {
-  sx?: SxProps<Theme>
+  className?: string
 }
 
 function TableTotalBolsasPorAgencia(props: TableTotalBolsasPorAgenciaProps) {
@@ -18,7 +17,7 @@ function TableTotalBolsasPorAgencia(props: TableTotalBolsasPorAgenciaProps) {
     const response = await api.agency.getAgencys()
 
     if (response.status === 200) {
-      const data = response.data.filter(item => item.name !== "OUTRAS")
+      const data = response.data.filter(item => item.name !== 'OUTRAS')
       setData(data)
     } else {
       toast.error(formatApiError(response.status, response.data))
@@ -30,7 +29,9 @@ function TableTotalBolsasPorAgencia(props: TableTotalBolsasPorAgenciaProps) {
   }, [])
 
   return (
-    !isLoading && <TableTotalBolsasPorAgenciaView data={data} sx={props.sx} />
+    !isLoading && (
+      <TableTotalBolsasPorAgenciaView data={data} className={props.className} />
+    )
   )
 }
 

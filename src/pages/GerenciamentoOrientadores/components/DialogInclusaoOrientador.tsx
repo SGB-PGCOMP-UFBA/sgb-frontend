@@ -1,8 +1,20 @@
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField, Tooltip, IconButton } from '@mui/material'
-import InfoIcon from '@mui/icons-material/Info'
-import CloseIcon from '@mui/icons-material/Close';
-import { SlideUp } from '../../../components/Transitions/SlideUp'
-import { CpfMaskInput, PhoneMaskInput } from '../../../components/Masks/muiInput'
+import { Info } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
 import { readFormValues } from '../../../helpers/form-values'
 
 export interface InclusaoOrientadorFormValues {
@@ -18,8 +30,14 @@ export interface DialogInclusaoOrientadorProps {
   onSubmit: (values: InclusaoOrientadorFormValues) => void
 }
 
-function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }: DialogInclusaoOrientadorProps) {
-  const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
+function DialogInclusaoOrientador({
+  isOpen,
+  onClose,
+  onSubmit,
+}: DialogInclusaoOrientadorProps) {
+  const submitAndCloseDialog = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
     const newAdvisorData = new FormData(event.currentTarget)
 
@@ -27,101 +45,92 @@ function DialogInclusaoOrientador({ isOpen, onClose, onSubmit }: DialogInclusaoO
     onClose()
   }
 
-  const dialogContent = (
-    <div className="mt-2 flex w-full min-w-[395px] max-w-[595px] flex-col space-y-4">
-      <TextField
-        required
-        fullWidth
-        id="name"
-        label="Nome"
-        type="text"
-        name="name"
-        placeholder="Insira o nome do orientador"
-        inputProps={{ maxLength: 80 }}
-      />
-
-      <TextField
-        required
-        fullWidth
-        id="email"
-        label="E-mail"
-        type="email"
-        name="email"
-        placeholder="Insira o e-mail do orientador"
-        inputProps={{ maxLength: 80 }}
-      />
-
-      <TextField
-        fullWidth
-        id="tax_id"
-        label="CPF"
-        type="text"
-        name="tax_id"
-        placeholder="Insira o CPF do orientador"
-        InputProps={{
-          inputComponent: CpfMaskInput
-        }}
-      />
-
-      <TextField
-        fullWidth
-        id="phone_number"
-        label="Telefone"
-        type="phone"
-        name="phone_number"
-        placeholder="Insira o telefone do orientador"
-        InputProps={{
-          inputComponent: PhoneMaskInput
-        }}
-      />
-    </div>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button autoFocus type="submit" variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-      TransitionComponent={SlideUp}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          Adicionar Orientador
-          <Tooltip title="O(a) orientador(a) receberá no e-mail informado abaixo uma mensagem informando sobre o seu cadastro bem como a senha para acesso à plataforma.">
-            <IconButton color='info'>
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
-      </DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent className='sm:max-w-[595px]'>
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>
+              <span className='flex items-center gap-x-2'>
+                Adicionar Orientador
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type='button'
+                      className='text-sky-600'
+                      aria-label='Sobre o cadastro do(a) orientador(a)'
+                    >
+                      <Info className='h-5 w-5' />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className='max-w-xs text-center'>
+                    O(a) orientador(a) receberá no e-mail informado abaixo uma
+                    mensagem informando sobre o seu cadastro bem como a senha
+                    para acesso à plataforma.
+                  </TooltipContent>
+                </Tooltip>
+              </span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className='flex flex-col space-y-4 pt-4'>
+            <div className='space-y-1.5'>
+              <Label htmlFor='name'>Nome</Label>
+              <Input
+                required
+                id='name'
+                type='text'
+                name='name'
+                placeholder='Insira o nome do orientador'
+                maxLength={80}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='email'>E-mail</Label>
+              <Input
+                required
+                id='email'
+                type='email'
+                name='email'
+                placeholder='Insira o e-mail do orientador'
+                maxLength={80}
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='tax_id'>CPF</Label>
+              <CpfInput
+                id='tax_id'
+                name='tax_id'
+                placeholder='Insira o CPF do orientador'
+              />
+            </div>
+
+            <div className='space-y-1.5'>
+              <Label htmlFor='phone_number'>Telefone</Label>
+              <PhoneInput
+                id='phone_number'
+                name='phone_number'
+                placeholder='Insira o telefone do orientador'
+              />
+            </div>
+          </div>
+
+          <DialogFooter className='gap-x-4 pt-6'>
+            <Button type='button' onClick={onClose} variant='ghost' size='sm'>
+              Cancelar
+            </Button>
+            <Button
+              type='submit'
+              size='sm'
+              className='bg-green-600 text-white hover:bg-green-700'
+            >
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

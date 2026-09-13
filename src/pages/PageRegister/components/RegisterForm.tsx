@@ -1,21 +1,22 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
-import { Box, Button, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
-import type { MaskChangeEvent } from '../../../components/Masks'
+import { PublicPageLayout } from '@/components/public-page-layout'
+import { PasswordField } from '@/components/password-field'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
 import { api } from '../../../api'
-import { addUserToLocalStorage, getUserFromLocalStorage } from '../../../helpers/auth-user'
+import {
+  addUserToLocalStorage,
+  getUserFromLocalStorage,
+} from '../../../helpers/auth-user'
 import type { StoredUser } from '../../../helpers/auth-user'
-import { delay } from '../../../helpers/delay';
+import { delay } from '../../../helpers/delay'
 import axios from 'axios'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { CpfMaskInput, PhoneMaskInput } from '../../../components/Masks/muiInput'
+import type { FieldChangeEvent } from '../../../types'
 
-/**
- * Campos do formulario de cadastro. `confirm_password` so existe na tela: o
- * `CreateStudentPayload` enviado para a API e montado em `handleSubmit`.
- */
 export interface RegisterFormValues {
   tax_id: string
   email: string
@@ -27,10 +28,14 @@ export interface RegisterFormValues {
 }
 
 function getServerErrorMessage(error: unknown): string {
-  const data: unknown = axios.isAxiosError(error) ? error.response?.data : undefined
+  const data: unknown = axios.isAxiosError(error)
+    ? error.response?.data
+    : undefined
 
   const message =
-    data && typeof data === 'object' && 'message' in data ? data.message : undefined
+    data && typeof data === 'object' && 'message' in data
+      ? data.message
+      : undefined
 
   return String(message)
 }
@@ -50,28 +55,17 @@ function RegisterForm() {
 
   const [values, setValues] = useState<RegisterFormValues>(initialState)
 
-  const handleChangeValues = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | MaskChangeEvent
-  ) => {
+  const handleChangeValues = (e: FieldChangeEvent) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
-
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-
-  const handleClickShowNewPassword = () => setShowNewPassword((show) => !show)
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show)
-
-  const handleMouseDownNewPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-
-  const handleMouseUpNewPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
-  const handleMouseUpConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault() }
 
   const firstRedirect = (user: StoredUser | null) => {
     if (user && user.role === 'ADMIN') {
       navigate('/dashboard', { replace: true })
-    } else if (user && (user.role === 'ADVISOR' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
+    } else if (
+      user &&
+      (user.role === 'ADVISOR' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')
+    ) {
       navigate('/orientandos', { replace: true })
     } else if (user && user.role === 'STUDENT') {
       navigate('/area-do-estudante', { replace: true })
@@ -93,16 +87,19 @@ function RegisterForm() {
         link_to_lattes: values.link_to_lattes,
         password: values.password,
         tax_id: values.tax_id.replace(/[^0-9]/g, ''),
-        phone_number: values.phone_number.replace(/[^0-9]/g, '')
+        phone_number: values.phone_number.replace(/[^0-9]/g, ''),
       })
 
       if ([200, 201].includes(createStudentResponse.status)) {
-        toast.success('Cadastro realizado com sucesso! Em poucos segundos você será redirecionado.', { autoClose: 2000 })
+        toast.success(
+          'Cadastro realizado com sucesso! Em poucos segundos você será redirecionado.',
+          { autoClose: 2000 }
+        )
 
         const loginResponse = await api.auth.login({
           email: values.email,
           password: values.password,
-          role: 'STUDENT'
+          role: 'STUDENT',
         })
 
         if ([200, 201].includes(loginResponse.status)) {
@@ -119,169 +116,123 @@ function RegisterForm() {
   }
 
   return (
-    <Container component="main" maxWidth="sm">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <img src="/assets/pgcomp_1.png" alt="PGCOMP" className="max-w-[200px]" />
-          <Typography component="h1" variant="h5" marginBottom="1.4em" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-            Sistema de Gerenciamento de Bolsas
-          </Typography>
-          <Typography component="h1" variant="h6">
-            Cadastro
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoFocus
-                  required
-                  fullWidth
-                  id="name"
-                  label="Nome Completo"
-                  name="name"
-                  onChange={handleChangeValues}
-                  placeholder="Insira o seu nome completo"
-                  inputProps={{ maxLength: 80 }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="phone_number"
-                  label="Telefone"
-                  name="phone_number"
-                  onChange={handleChangeValues}
-                  InputProps={{
-                    inputComponent: PhoneMaskInput
-                  }}
-                  placeholder="Insira o seu telefone"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required                  
-                  fullWidth
-                  id="tax_id"
-                  label="CPF"
-                  name="tax_id"
-                  onChange={handleChangeValues}
-                  InputProps={{
-                    inputComponent: CpfMaskInput
-                  }}
-                  placeholder="Insira o seu CPF"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="link_to_lattes"
-                  label="Currículo Lattes"
-                  name="link_to_lattes"
-                  onChange={handleChangeValues}
-                  placeholder="Insira o link de seu currículo Lattes"
-                  inputProps={{ maxLength: 80 }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="E-mail"
-                  type="email"
-                  name="email"
-                  onChange={handleChangeValues}
-                  placeholder="Insira o seu e-mail"
-                  inputProps={{ maxLength: 80 }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Senha"
-                  id="password"
-                  onChange={handleChangeValues}
-                  placeholder="Insira uma senha"
-                  error={values.password === ''}
-                  helperText={values.password === '' ? 'Digite uma senha válida' : ''}
-                  type={showNewPassword ? "text" : "password"}
-                  inputProps={{ minLength: 4, maxLength: 8 }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowNewPassword}
-                          onMouseDown={handleMouseDownNewPassword}
-                          onMouseUp={handleMouseUpNewPassword}
-                        >
-                          {showNewPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirm_password"
-                  label="Confirmar Senha"
-                  id="confirm_password"
-                  onChange={handleChangeValues}
-                  placeholder="Digite sua senha novamente"
-                  error={values.password !== values.confirm_password}
-                  helperText={values.password !== values.confirm_password ? 'As senhas digitadas são diferentes!' : ''}
-                  type={showConfirmPassword ? "text" : "password"}
-                  inputProps={{ minLength: 4, maxLength: 8 }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowConfirmPassword}
-                          onMouseDown={handleMouseDownConfirmPassword}
-                          onMouseUp={handleMouseUpConfirmPassword}
-                        >
-                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+    <PublicPageLayout subtitle='Cadastro'>
+      <form onSubmit={handleSubmit} className='w-full'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+          <div className='space-y-1.5 sm:col-span-2'>
+            <Label htmlFor='name'>Nome Completo</Label>
+            <Input
+              required
+              id='name'
+              name='name'
+              value={values.name}
+              onChange={handleChangeValues}
+              placeholder='Insira o seu nome completo'
+              maxLength={80}
+            />
+          </div>
+
+          <div className='space-y-1.5'>
+            <Label htmlFor='phone_number'>Telefone</Label>
+            <PhoneInput
+              required
+              id='phone_number'
+              name='phone_number'
+              value={values.phone_number}
+              onChange={handleChangeValues}
+              placeholder='Insira o seu telefone'
+            />
+          </div>
+
+          <div className='space-y-1.5'>
+            <Label htmlFor='tax_id'>CPF</Label>
+            <CpfInput
+              required
+              id='tax_id'
+              name='tax_id'
+              value={values.tax_id}
+              onChange={handleChangeValues}
+              placeholder='Insira o seu CPF'
+            />
+          </div>
+
+          <div className='space-y-1.5 sm:col-span-2'>
+            <Label htmlFor='link_to_lattes'>Currículo Lattes</Label>
+            <Input
+              required
+              id='link_to_lattes'
+              name='link_to_lattes'
+              value={values.link_to_lattes}
+              onChange={handleChangeValues}
+              placeholder='Insira o link de seu currículo Lattes'
+              maxLength={80}
+            />
+          </div>
+
+          <div className='space-y-1.5 sm:col-span-2'>
+            <Label htmlFor='email'>E-mail</Label>
+            <Input
+              required
+              id='email'
+              name='email'
+              type='email'
+              value={values.email}
+              onChange={handleChangeValues}
+              placeholder='Insira o seu e-mail'
+              maxLength={80}
+            />
+          </div>
+
+          <PasswordField
+            required
+            id='password'
+            name='password'
+            label='Senha'
+            value={values.password}
+            onChange={handleChangeValues}
+            placeholder='Insira uma senha'
+            minLength={4}
+            maxLength={8}
+            error={
+              values.password === '' ? 'Digite uma senha válida' : undefined
+            }
+          />
+
+          <PasswordField
+            required
+            id='confirm_password'
+            name='confirm_password'
+            label='Confirmar Senha'
+            value={values.confirm_password}
+            onChange={handleChangeValues}
+            placeholder='Digite sua senha novamente'
+            minLength={4}
+            maxLength={8}
+            error={
+              values.password !== values.confirm_password
+                ? 'As senhas digitadas são diferentes!'
+                : undefined
+            }
+          />
+        </div>
+
+        <Button type='submit' className='mb-4 mt-6 w-full'>
+          Enviar
+        </Button>
+
+        <div className='mb-12 mt-12 flex justify-end'>
+          <p className='text-center text-base font-normal leading-6'>
+            Já possui uma conta?{' '}
+            <Link
+              to='/'
+              className='text-base font-normal text-blue-600 transition-colors hover:text-blue-800'
             >
-              Enviar
-            </Button>
-            <Grid container justifyContent="flex-end" marginTop="3em" marginBottom="3em">
-              <Grid item>
-                <p className="text-center text-base font-normal leading-6">
-                  Já possui uma conta?{' '}
-                  <Link to="/" className="text-base font-normal text-blue-600 transition-colors hover:text-blue-800">
-                  Entrar!
-                  </Link>
-                </p>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
+              Entrar!
+            </Link>
+          </p>
+        </div>
+      </form>
+    </PublicPageLayout>
   )
 }
 

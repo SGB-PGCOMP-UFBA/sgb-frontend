@@ -1,18 +1,18 @@
-import { Avatar, Card, CardContent, Stack, Typography, Icon } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material'
+import { MdWork } from 'react-icons/md'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
 import type { CountByAgencyAndStatus } from '../../../../../api/scholarship'
 
 const LITERAL_ON_GOING = 'ON_GOING'
 
 export interface CardBolsasCapesViewProps {
-  sx?: SxProps<Theme>
-  /** Contagens da agencia por status: `{ [status]: { count } }`. */
+  className?: string
   data: CountByAgencyAndStatus[string]
   isLoading: boolean
 }
 
 function CardBolsasCapesView(props: CardBolsasCapesViewProps) {
-  const { data, sx } = props
+  const { data, className } = props
 
   const total_count = Object.values(data).reduce((acc, currentValue) => {
     const valor = parseInt(String(currentValue.count))
@@ -20,34 +20,26 @@ function CardBolsasCapesView(props: CardBolsasCapesViewProps) {
   }, 0)
 
   return (
-    <Card sx={sx}>
-      <CardContent className="flex flex-col w-full h-full justify-between">
-        <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3} marginBottom={2}>
-          <Stack marginBottom={2}>
-            <Typography color="text.primary" fontWeight="bold" variant="h5" marginBottom={5}>
-              CAPES
-            </Typography>
-            <Typography variant="h4">{data[LITERAL_ON_GOING]?.count || 0}</Typography>
-            <Typography variant="subtitle1">bolsas alocadas</Typography>
-          </Stack>
-          <Avatar
-            className="bg-blue-400 !bg-blue-400"
-            sx={{
-              height: 56,
-              width: 56
-            }}
-          >
-            <Icon sx={{ fontSize: 32 }}>work_outline</Icon>
+    <Card className={className}>
+      <CardContent className='flex h-full w-full flex-col justify-between overflow-hidden p-6'>
+        <div className='mb-4 flex flex-row items-start justify-between gap-6'>
+          <div className='mb-4 flex flex-col'>
+            <h3 className='mb-10 text-2xl font-bold text-foreground'>CAPES</h3>
+            <p className='text-3xl'>{data[LITERAL_ON_GOING]?.count || 0}</p>
+            <p className='text-base'>bolsas alocadas</p>
+          </div>
+          <Avatar className='h-14 w-14 shrink-0'>
+            <AvatarFallback className='bg-blue-400 text-white'>
+              <MdWork className='h-8 w-8' />
+            </AvatarFallback>
           </Avatar>
-        </Stack>
-        <Stack alignItems="center" justifyContent="end" direction="row">
-        <Typography color="text.primary" variant="caption" fontWeight="bold">
+        </div>
+        <div className='flex flex-row items-center justify-end'>
+          <span className='text-xs font-bold text-foreground'>
             {total_count}&nbsp;
-          </Typography>
-          <Typography color="text.primary" variant="caption">
-            bolsas desde o início
-          </Typography>
-        </Stack>
+          </span>
+          <span className='text-xs text-foreground'>bolsas desde o início</span>
+        </div>
       </CardContent>
     </Card>
   )

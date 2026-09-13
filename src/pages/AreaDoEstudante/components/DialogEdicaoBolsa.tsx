@@ -1,15 +1,28 @@
 import { useState } from 'react'
-import { DatePicker } from '@mui/x-date-pickers';
-import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, MenuItem, Grid, TextField } from '@mui/material'
-import { SlideUp } from '../../../components/Transitions/SlideUp'
+import { DateField } from '@/components/date-field'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { MonetaryInput } from '@/components/ui/masked-input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import type { BolsaRow } from './DataGridBolsas'
 import type {
   EnrollmentProgram,
   IdentifiedFilterOption,
   ScholarshipEditableStatus
 } from '../../../types'
-import { MonetaryMaskInput } from '../../../components/Masks/muiInput'
 import { readFormValues } from '../../../helpers/form-values'
 
 export interface EdicaoBolsaFormFields {
@@ -22,7 +35,6 @@ export interface EdicaoBolsaFormFields {
   allocation_id: string
 }
 
-/** O que o dialogo entrega ao `onSubmit`: o formulario mais os identificadores. */
 export interface EdicaoBolsaSubmitValues extends EdicaoBolsaFormFields {
   scholarship_id: number
   enrollment_id: number
@@ -32,7 +44,6 @@ export interface EdicaoBolsaSubmitValues extends EdicaoBolsaFormFields {
 export interface DialogEdicaoBolsaProps {
   isOpen: boolean
   onClose: () => void
-  /** Devolve `false` quando a atualizacao falha, e ai o dialogo fica aberto. */
   onSubmit: (data: EdicaoBolsaSubmitValues) => Promise<false | void>
   agencies: IdentifiedFilterOption[]
   allocations: IdentifiedFilterOption[]
@@ -76,182 +87,121 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
     if (result !== false) onClose()
   }
 
-  const dialogContent = (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        minWidth: {
-          xs: '295px',
-          sm: '295px',
-          md: '395px',
-        },
-        maxWidth: {
-          xs: '350px',
-          sm: '350px',
-          md: '695px',
-        },
-        paddingTop: '1rem'
-      }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-agency">Agência</InputLabel>
-            <Select
-              id="select-agency"
-              label="agency"
-              name="agency_id"
-              labelId="label-agency"
-              defaultValue={item.agency?.id ?? ''}
-              placeholder="Selecione uma agência"
-            >
-              <MenuItem disabled value={""}>Selecione uma agência</MenuItem>
-              {agencies.map((agency) => (
-                <MenuItem key={agency.id} value={agency.id}>
-                  {agency.value}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel id="label-status">Situação</InputLabel>
-            <Select
-              id="select-status"
-              label="Situação"
-              name="status"
-              labelId="label-status"
-              defaultValue={item.status}
-            >
-              <MenuItem value={"ON_GOING"}>Em Andamento</MenuItem>
-              <MenuItem value={"EXTENDED"}>Prazo Estendido</MenuItem>
-              <MenuItem value={"FINISHED"}>Finalizado</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Data de Início da Bolsa"
-            name="scholarship_starts_at"
-            defaultValue={new Date(item.scholarship_starts_at)}
-            onChange={handleStartDateChange}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                required: true,
-                InputLabelProps: { shrink: true }
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Data de Término da Bolsa"
-            name="scholarship_ends_at"
-            minDate={minEndDate ?? undefined}
-            maxDate={maxEndDate ?? undefined}
-            defaultValue={new Date(item.scholarship_ends_at)}
-            onChange={handleEndDateChange}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                required: true,
-                InputLabelProps: { shrink: true }
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Data de Extensão da Bolsa"
-            name="extension_ends_at"
-            minDate={minExtensionEndDate ?? undefined}
-            maxDate={maxExtensionEndDate ?? undefined}
-            defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                InputLabelProps: { shrink: true }
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="input-salary"
-            label="Valor da Bolsa"
-            name="salary"
-            variant="outlined"
-            defaultValue={item.salary !== null ? item.salary : "0,00"}
-            InputProps={{
-              inputComponent: MonetaryMaskInput,
-            }}
-            fullWidth
-            inputProps={{ maxLength: 14 }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl required fullWidth>
-            <InputLabel id="label-allocation">Alocação</InputLabel>
-            <Select
-              id="select-allocation"
-              label="allocation"
-              name="allocation_id"
-              labelId="label-allocation"
-              defaultValue={item.allocation ? item.allocation.id : allocations[0].id}
-              placeholder="Selecione uma alocação"
-            >
-              <MenuItem disabled value={""}>Selecione uma alocação</MenuItem>
-              {allocations.map((allocation) => (
-                <MenuItem key={allocation.id} value={allocation.id}>
-                  {allocation.value}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </Box>
-  )
-
-  const dialogActions = (
-    <div className="flex items-center gap-x-4">
-      <Button onClick={onClose} variant="text" color="info" size="small">
-        Cancelar
-      </Button>
-      <Button type="submit" variant="contained" color="success" size="small">
-        Salvar
-      </Button>
-    </div>
-  )
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      TransitionComponent={SlideUp}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => submitAndCloseDialog(event)
-      }}
-    >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogTitle>Editar Bolsa (Matrícula {item.enrollment_number.trim()} - {item.enrollment_program})</DialogTitle>
-      <DialogContent>{dialogContent}</DialogContent>
-      <DialogActions>{dialogActions}</DialogActions>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[695px]">
+        <form onSubmit={submitAndCloseDialog}>
+          <DialogHeader>
+            <DialogTitle>
+              Editar Bolsa (Matrícula {item.enrollment_number.trim()} - {item.enrollment_program})
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="select-agency">Agência</Label>
+              <Select
+                name="agency_id"
+                required
+                defaultValue={item.agency ? String(item.agency.id) : undefined}
+              >
+                <SelectTrigger id="select-agency">
+                  <SelectValue placeholder="Selecione uma agência" />
+                </SelectTrigger>
+                <SelectContent>
+                  {agencies.map((agency) => (
+                    <SelectItem key={agency.id} value={String(agency.id)}>
+                      {agency.value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="select-status">Situação</Label>
+              <Select name="status" defaultValue={item.status}>
+                <SelectTrigger id="select-status">
+                  <SelectValue placeholder="Selecione uma situação" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ON_GOING">Em Andamento</SelectItem>
+                  <SelectItem value="EXTENDED">Prazo Estendido</SelectItem>
+                  <SelectItem value="FINISHED">Finalizado</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <DateField
+              id="scholarship_starts_at"
+              name="scholarship_starts_at"
+              label="Data de Início da Bolsa"
+              required
+              defaultValue={new Date(item.scholarship_starts_at)}
+              onChange={handleStartDateChange}
+            />
+
+            <DateField
+              id="scholarship_ends_at"
+              name="scholarship_ends_at"
+              label="Data de Término da Bolsa"
+              required
+              minDate={minEndDate ?? undefined}
+              maxDate={maxEndDate ?? undefined}
+              defaultValue={new Date(item.scholarship_ends_at)}
+              onChange={handleEndDateChange}
+            />
+
+            <DateField
+              id="extension_ends_at"
+              name="extension_ends_at"
+              label="Data de Extensão da Bolsa"
+              minDate={minExtensionEndDate ?? undefined}
+              maxDate={maxExtensionEndDate ?? undefined}
+              defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
+            />
+
+            <div className="space-y-1.5">
+              <Label htmlFor="input-salary">Valor da Bolsa</Label>
+              <MonetaryInput
+                id="input-salary"
+                name="salary"
+                defaultValue={item.salary !== null ? item.salary : '0,00'}
+                maxLength={14}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="select-allocation">Alocação</Label>
+              <Select
+                name="allocation_id"
+                required
+                defaultValue={String(item.allocation ? item.allocation.id : allocations[0].id)}
+              >
+                <SelectTrigger id="select-allocation">
+                  <SelectValue placeholder="Selecione uma alocação" />
+                </SelectTrigger>
+                <SelectContent>
+                  {allocations.map((allocation) => (
+                    <SelectItem key={allocation.id} value={String(allocation.id)}>
+                      {allocation.value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter className="gap-x-4 pt-6">
+            <Button type="button" onClick={onClose} variant="ghost" size="sm">
+              Cancelar
+            </Button>
+            <Button type="submit" size="sm" className="bg-green-600 text-white hover:bg-green-700">
+              Salvar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }
