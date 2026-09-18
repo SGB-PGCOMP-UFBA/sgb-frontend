@@ -1,9 +1,15 @@
 import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
-import { StatusEnum } from '@/constants/Status'
-import type { ScholarshipStatus } from '@/types'
+import {
+  getScholarshipStatusLabel,
+  getUserStatusLabel
+} from '@/constants/Status'
 
-export type CustomChipType = 'agency' | 'program' | 'status'
+export type CustomChipType =
+  | 'agency'
+  | 'program'
+  | 'status'
+  | 'user-status'
 
 export interface CustomChipProps {
   type: CustomChipType
@@ -45,11 +51,12 @@ const TONE_BY_KEY: Record<string, ChipTone> = {
   'agency-fapesb': 'fapesb',
   'program-doutorado': 'doutorado',
   'program-mestrado': 'mestrado',
-  'status-active': 'ativo',
   'status-inactive': 'inativo',
   'status-on_going': 'ativo',
   'status-extended': 'prorrogated',
-  'status-finished': 'finished'
+  'status-finished': 'finished',
+  'user-status-active': 'ativo',
+  'user-status-inactive': 'inativo'
 }
 
 export default function CustomChip(props: CustomChipProps) {
@@ -58,10 +65,8 @@ export default function CustomChip(props: CustomChipProps) {
   const tone = TONE_BY_KEY[`${type}-${value}`.toLowerCase()] ?? 'default'
 
   const getLabel = () => {
-    if (type === 'status') {
-      const label = StatusEnum[value as ScholarshipStatus]
-      return (label ?? value).toUpperCase()
-    }
+    if (type === 'status') return getScholarshipStatusLabel(value).toUpperCase()
+    if (type === 'user-status') return getUserStatusLabel(value).toUpperCase()
 
     return value.toUpperCase()
   }

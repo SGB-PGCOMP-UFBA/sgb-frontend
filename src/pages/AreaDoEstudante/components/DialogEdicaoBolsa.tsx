@@ -18,16 +18,11 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import type { BolsaRow } from './DataGridBolsas'
-import type {
-  EnrollmentProgram,
-  IdentifiedFilterOption,
-  ScholarshipEditableStatus
-} from '@/types'
+import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
 import { readFormValues } from '@/helpers/form-values'
 
 export interface EdicaoBolsaFormFields {
   agency_id: string
-  status: ScholarshipEditableStatus
   scholarship_starts_at: string
   scholarship_ends_at: string
   extension_ends_at: string
@@ -114,20 +109,6 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
                       {agency.value}
                     </SelectItem>
                   ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="select-status">Situação</Label>
-              <Select name="status" defaultValue={item.status}>
-                <SelectTrigger id="select-status">
-                  <SelectValue placeholder="Selecione uma situação" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ON_GOING">Em Andamento</SelectItem>
-                  <SelectItem value="EXTENDED">Prazo Estendido</SelectItem>
-                  <SelectItem value="FINISHED">Finalizado</SelectItem>
                 </SelectContent>
               </Select>
             </div>

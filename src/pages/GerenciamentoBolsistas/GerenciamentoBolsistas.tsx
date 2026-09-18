@@ -6,6 +6,7 @@ import { formatApiError } from '@/helpers/api-error'
 import { GerenciamentoBolsistasView } from './GerenciamentoBolsistasView'
 import { formattedNow, parseDate } from '@/helpers/formatters'
 import type { EdicaoBolsistaSubmitValues } from './components/DialogEdicaoBolsista'
+import { SCHOLARSHIP_STATUS_FILTER_OPTIONS } from '@/constants/Status'
 import type {
   AdvisorFilterOption,
   FieldChangeEvent,
@@ -30,26 +31,9 @@ function extractApiMessage(error: unknown): string | undefined {
   return undefined
 }
 
-/**
- * Os filtros da tela estao sempre preenchidos — o coringa aceito pelo backend
- * e a string 'ALL', nunca a ausencia do campo —, dai o `Required` sobre o
- * contrato da API, onde todos os campos sao opcionais.
- */
 export type ScholarshipPageFilters = Required<ScholarshipFilters>
 
-/**
- * Evento entregue pelos controles de filtro: o `Input` da propria tela e os
- * `Select` do shadcn aqui e no dialogo de filtros. Todos expoem `target.name` e
- * `target.value` — os `Select`, que nao emitem evento de DOM, chamam o handler
- * com um objeto literal.
- */
 export type ScholarshipFilterChangeEvent = FieldChangeEvent
-
-/**
- * Listas que alimentam os <Select> de filtro. Cada uma comeca com o sentinel
- * "Todos(as)" e e completada pelos mappers `forFilter` do backend, que sao os
- * unicos a trazer `id` (agencia/alocacao) e `email` (orientador).
- */
 export interface ScholarshipFilterOptions {
   scholarshipStatusFilterList: FilterOption[]
   agencyNameFilterList: IdentifiedFilterOption[]
@@ -64,7 +48,10 @@ const initialStateForAllFilter: FilterOption = {
 }
 
 const initialFilterOptions: ScholarshipFilterOptions = {
-  scholarshipStatusFilterList: [initialStateForAllFilter],
+  scholarshipStatusFilterList: [
+    initialStateForAllFilter,
+    ...SCHOLARSHIP_STATUS_FILTER_OPTIONS
+  ],
   agencyNameFilterList: [initialStateForAllFilter as IdentifiedFilterOption],
   advisorNameFilterList: [initialStateForAllFilter as AdvisorFilterOption],
   programNameFilterList: [initialStateForAllFilter],
@@ -194,11 +181,9 @@ function GerenciamentoBolsistas() {
       const agencyRequest = api.agency.getAgencyFilterList()
       const advisorRequest = api.advisor.getAdvisorFilterList()
       const programRequest = api.enrollment.getEnrollmentProgramFilterList()
-      const scholarshipStatusRequest = api.scholarship.getScholarshipStatusFilterList()
       const allocationRequest = api.allocation.getAllocationFilterList()
 
       const response = await Promise.all([
-        scholarshipStatusRequest,
         agencyRequest,
         programRequest,
         advisorRequest,
@@ -206,14 +191,13 @@ function GerenciamentoBolsistas() {
       ])
 
       if (response.length > 0) {
-        const scholarshipsList = response[0].data
-        const agencyList = response[1].data
-        const programList = response[2].data
-        const advisorList = response[3].data
-        const allocationList = response[4].data
+        const agencyList = response[0].data
+        const programList = response[1].data
+        const advisorList = response[2].data
+        const allocationList = response[3].data
 
         setFilterOptions({
-          scholarshipStatusFilterList: initialFilterOptions.scholarshipStatusFilterList.concat(scholarshipsList),
+          scholarshipStatusFilterList: initialFilterOptions.scholarshipStatusFilterList,
           agencyNameFilterList: initialFilterOptions.agencyNameFilterList.concat(agencyList),
           programNameFilterList: initialFilterOptions.programNameFilterList.concat(programList),
           advisorNameFilterList: initialFilterOptions.advisorNameFilterList.concat(advisorList),
@@ -246,7 +230,6 @@ function GerenciamentoBolsistas() {
       const updateScholarship = api.scholarship.updateScholarship(data.scholarship_id, {
         enrollment_id: data.enrollment_id,
         student_email: data.student_email,
-        status: data.status,
         agency_id: data.agency_id,
         scholarship_starts_at: parseDate(data.scholarship_starts_at),
         scholarship_ends_at: parseDate(data.scholarship_ends_at),

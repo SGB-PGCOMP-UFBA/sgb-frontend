@@ -21,8 +21,7 @@ import { Separator } from '@/components/ui/separator'
 import type { ScholarshipFilterOptions } from '@/pages/GerenciamentoBolsistas/GerenciamentoBolsistas'
 import type {
   EnrollmentProgram,
-  ScholarshipDetailedWithRelations,
-  ScholarshipEditableStatus
+  ScholarshipDetailedWithRelations
 } from '@/types'
 import { readFormValues } from '@/helpers/form-values'
 
@@ -36,7 +35,6 @@ export interface EdicaoBolsistaFormFields {
   defense_prediction_date: string
   advisor_email: string
   agency_id: string
-  status: ScholarshipEditableStatus
   salary: string
   scholarship_starts_at: string
   scholarship_ends_at: string
@@ -204,20 +202,6 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
                           {agency.value}
                         </SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="select-status">Situação</Label>
-                  <Select name="status" defaultValue={item.status}>
-                    <SelectTrigger id="select-status">
-                      <SelectValue placeholder="Selecione uma situação" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ON_GOING">Em Andamento</SelectItem>
-                      <SelectItem value="EXTENDED">Prazo Estendido</SelectItem>
-                      <SelectItem value="FINISHED">Finalizado</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

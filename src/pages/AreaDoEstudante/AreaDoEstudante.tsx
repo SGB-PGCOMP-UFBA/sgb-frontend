@@ -199,7 +199,6 @@ function AreaDoEstudante() {
       const updateScholarship = api.scholarship.updateScholarship(data.scholarship_id, {
         enrollment_id: data.enrollment_id,
         student_email: data.student_email,
-        status: data.status,
         agency_id: data.agency_id,
         allocation_id: data.allocation_id,
         scholarship_starts_at: parseDate(data.scholarship_starts_at),
