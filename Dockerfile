@@ -9,11 +9,11 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_BASE_URL_API
+ARG VITE_BASE_URL_API=https://sgb-api.app.ic.ufba.br
 ENV VITE_BASE_URL_API=$VITE_BASE_URL_API
 
 RUN test -n "$VITE_BASE_URL_API" || { \
-      echo "ERRO: o build-arg VITE_BASE_URL_API e obrigatorio." >&2; \
+      echo "ERRO: VITE_BASE_URL_API nao pode ser vazio." >&2; \
       echo "      docker build --build-arg VITE_BASE_URL_API=https://api.exemplo.com ." >&2; \
       exit 1; \
     }
