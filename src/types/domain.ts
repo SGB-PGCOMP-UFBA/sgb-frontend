@@ -1,57 +1,21 @@
-/**
- * Tipos de dominio do SGB, derivados do backend (sgb-backend).
- *
- * IMPORTANTE: estes tipos descrevem o que a API *retorna* — ou seja, a saida dos
- * mappers em `src/modules/<x>/mapper/*.mapper.ts` — e nao as entidades TypeORM.
- * Um mapper `simplified` devolve menos campos que um `detailed`, entao a variante
- * escolhida aqui precisa casar com o endpoint que esta sendo consumido.
- *
- * Datas trafegam como string ISO 8601 no JSON, nunca como `Date`.
- */
-
-/** Data/hora serializada em ISO 8601, como chega do JSON. */
 export type DateString = string
 
-/**
- * Data ENVIADA para a API. Os DTOs do backend usam `@Type(() => Date)` do
- * class-transformer, que aceita tanto a string ISO quanto o objeto `Date` que o
- * axios serializa via JSON.stringify — os dois chegam iguais no servidor.
- */
 export type DateInput = string | Date
 
 /* -------------------------------------------------------------------------- */
 /* Enums                                                                       */
 /* -------------------------------------------------------------------------- */
 
-/** Espelha `core/enums/StatusEnum` no backend. */
 export type ScholarshipStatus =
-  | 'ACTIVE'
   | 'INACTIVE'
-  | 'FINISHED'
   | 'ON_GOING'
   | 'EXTENDED'
+  | 'FINISHED'
 
-/**
- * Subconjunto de `ScholarshipStatus` que o backend aceita ao criar ou editar
- * uma bolsa (`@IsIn(['ON_GOING', 'EXTENDED', 'FINISHED'])` nos DTOs). ACTIVE e
- * INACTIVE existem apenas como valor lido, nunca escrito pela UI — os selects
- * de situacao tambem oferecem so estes tres.
- */
-export type ScholarshipEditableStatus = Extract<
-  ScholarshipStatus,
-  'ON_GOING' | 'EXTENDED' | 'FINISHED'
->
-
-/** Espelha `core/enums/ProgramEnum` no backend. */
 export type EnrollmentProgram = 'MESTRADO' | 'DOUTORADO'
 
-/** Espelha `core/enums/AgencyEnum` no backend. */
 export type AgencyName = 'CAPES' | 'CNPQ' | 'FAPESB' | 'OUTRAS'
 
-/**
- * `ADVISOR_WITH_ADMIN_PRIVILEGES` nao existe como coluna: o AdvisorMapper o
- * deriva de `has_admin_privileges` na hora de responder.
- */
 export type UserRole =
   | 'ADMIN'
   | 'ADVISOR'

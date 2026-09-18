@@ -91,7 +91,7 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
         id: 'status',
         header: 'Situação',
         width: 110,
-        cell: (row) => <CustomChip value={row.status} type="status" />,
+        cell: (row) => <CustomChip value={row.status} type="user-status" />,
         csv: (row) => row.status
       },
       {
