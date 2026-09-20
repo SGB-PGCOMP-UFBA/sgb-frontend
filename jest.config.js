@@ -3,7 +3,7 @@ module.exports = {
 
   testEnvironment: 'jsdom',
 
-  setupFilesAfterEnv: ['<rootDir>/src/utils/tests/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setup.ts'],
 
   // Casa pasta `__tests__` e arquivos com `test`/`spec` no nome.
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
@@ -13,7 +13,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
-    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/__mocks__/fileMock.ts'
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/tests/file.mock.ts'
   },
 
   moduleDirectories: ['node_modules', 'src'],

@@ -49,7 +49,12 @@ $ npm run start
 -   `.vscode` — Manter estilos de codificação consistentes.
 -   `public` — Aquivos estáticos, como imagens e favicon.
 -   `src` — Código-fonte do aplicativo, incluindo páginas, componentes, estilos.
+-   `src/services` — Chamadas HTTP, um domínio da API por pasta.
+-   `src/lib` — Clientes e configuração de terceiros (instância do axios, headers).
 -   `src/types` — Tipos de domínio da API, espelhando os mappers do `sgb-backend`.
+
+As convenções de nome de arquivo, anatomia de pasta e dependência entre camadas
+estão em [`CONVENTIONS.md`](./CONVENTIONS.md).
 
 #### Scripts
 
@@ -68,7 +73,7 @@ $ npm run start
 O projeto está em migração incremental para TypeScript: arquivos `.js`/`.jsx` e
 `.ts`/`.tsx` convivem (`allowJs: true`). Arquivos JS legados ficam fora do
 type-check (`checkJs: false`) e passam a ser verificados assim que forem
-convertidos. A camada `src/api` e os tipos em `src/types` já estão convertidos.
+convertidos. A camada `src/services` e os tipos em `src/types` já estão convertidos.
 
 Variáveis de ambiente seguem o padrão do Vite: precisam do prefixo `VITE_` e são
 lidas via `import.meta.env`, não `process.env`.
