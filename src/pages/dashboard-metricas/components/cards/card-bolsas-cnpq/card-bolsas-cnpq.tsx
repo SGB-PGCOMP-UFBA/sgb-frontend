@@ -1,0 +1,44 @@
+import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { api } from '@/services'
+import type { CountByAgencyAndStatus } from '@/services/scholarship'
+import { formatApiError } from '@/helpers/api-error.helper'
+import { CardBolsasCnpqView } from './card-bolsas-cnpq.view'
+import { CardSkeletonOnLoad } from '@/pages/dashboard-metricas/components/cards/card-skeleton-on-load'
+
+const LITERAL_CNPQ = 'CNPQ'
+
+const initialState: CountByAgencyAndStatus[string] = {
+  ON_GOING: {
+    count: 0
+  }
+}
+
+export interface CardBolsasCnpqProps {
+  className?: string
+}
+
+function CardBolsasCnpq(props: CardBolsasCnpqProps) {
+  const [data, setData] = useState<CountByAgencyAndStatus[string]>(initialState)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const getData = async () => {
+    const response = await api.scholarship.countScholarshipsGroupingByStatusForAgency(LITERAL_CNPQ)
+
+    if (response.status === 200) {
+      setData(response.data[LITERAL_CNPQ] || initialState)
+    } else {
+      toast.error(formatApiError(response.status, response.data))
+    }
+  }
+
+  useEffect(() => {
+    getData().finally(() => setIsLoading(false))
+  }, [])
+
+  return (
+    isLoading ? <CardSkeletonOnLoad /> : <CardBolsasCnpqView className={props.className} isLoading={isLoading} data={data} />
+  )
+}
+
+export { CardBolsasCnpq }

@@ -1,0 +1,12 @@
+import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import AppRoutes from './routes/app-routes'
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+      <ToastContainer />
+    </BrowserRouter>
+  )
+}

@@ -76,7 +76,7 @@ export default tseslint.config(
       'babel.config.js',
       'postcss.config.js',
       'tailwind.config.js',
-      'src/__mocks__/**/*.js'
+      'src/tests/**/*.js'
     ],
     languageOptions: {
       sourceType: 'commonjs',

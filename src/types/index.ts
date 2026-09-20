@@ -1,2 +1,2 @@
-export * from './api'
-export * from './domain'
+export * from './api.type'
+export * from './domain.type'
