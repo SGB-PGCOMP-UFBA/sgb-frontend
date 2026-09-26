@@ -5,6 +5,7 @@ import {
   MdDashboard,
   MdDateRange,
   MdLocationOn,
+  MdManageAccounts,
   MdPeople,
   MdSchool,
   MdWork
@@ -47,6 +48,13 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     name: 'Orientadores',
     icon: MdPeople,
     path: '/orientadores',
+    visible: true,
+    availableRoles: ADMIN_ROLES
+  },
+  {
+    name: 'Usuários',
+    icon: MdManageAccounts,
+    path: '/usuarios',
     visible: true,
     availableRoles: ADMIN_ROLES
   },

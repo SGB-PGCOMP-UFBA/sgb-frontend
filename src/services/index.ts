@@ -10,6 +10,7 @@ import * as adminApi from './admin'
 import * as reportApi from './report'
 import * as embedNotificationApi from './embed-notification'
 import * as dataManagerApi from './data-manager'
+import * as userApi from './user'
 
 const api = {
   auth: authApi,
@@ -23,7 +24,8 @@ const api = {
   admin: adminApi,
   report: reportApi,
   embedNotification: embedNotificationApi,
-  dataManager: dataManagerApi
+  dataManager: dataManagerApi,
+  user: userApi
 }
 
 export { api }

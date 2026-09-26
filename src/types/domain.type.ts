@@ -231,3 +231,29 @@ export interface EmbedNotificationDetailed extends EmbedNotificationSimplified {
   description: string
   consumed: boolean
 }
+
+/* -------------------------------------------------------------------------- */
+/* User (gerenciamento de usuários)                                            */
+/* -------------------------------------------------------------------------- */
+
+/** Usuário de qualquer uma das três bases (estudante, orientador, admin). */
+export interface ManagedUser {
+  id: number
+  role: UserRole
+  name: string
+  email: string
+  tax_id: string | null
+  phone_number: string | null
+  /** Só orientadores e administradores têm situação. */
+  status: UserStatus | null
+  /** Só estudantes têm Lattes. */
+  link_to_lattes: string | null
+  created_at: DateString
+  updated_at: DateString
+}
+
+export interface UserFilters {
+  name?: string
+  email?: string
+  role?: UserRole
+}
