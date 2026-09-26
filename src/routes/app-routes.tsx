@@ -16,7 +16,6 @@ import {
   GerenciamentoUsuarios,
   AreaDoEstudante,
   PageAboutSystem,
-  GerenciamentoDados,
   RelatorioQuadrienal
 } from '@/pages'
 
@@ -40,7 +39,6 @@ export default function AppRoutes() {
         <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />
         <Route path="orientadores" element={<GerenciamentoOrientadores />} />
         <Route path="usuarios" element={<GerenciamentoUsuarios />} />
-        <Route path="gestao-de-dados" element={<GerenciamentoDados />} />
       </Route>
 
       {/* Rotas de usuário orientador */}
