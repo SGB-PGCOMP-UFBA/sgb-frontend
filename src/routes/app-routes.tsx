@@ -13,6 +13,7 @@ import {
   GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
+  GerenciamentoUsuarios,
   AreaDoEstudante,
   PageAboutSystem,
   GerenciamentoDados,
@@ -38,6 +39,7 @@ export default function AppRoutes() {
         <Route path="agencias" element={<GerenciamentoAgencias />} />
         <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />
         <Route path="orientadores" element={<GerenciamentoOrientadores />} />
+        <Route path="usuarios" element={<GerenciamentoUsuarios />} />
         <Route path="gestao-de-dados" element={<GerenciamentoDados />} />
       </Route>
 

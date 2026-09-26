@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AreaDoEstudanteView } from './area-do-estudante.view'
 import { api } from '@/services'
-import { getUserFromLocalStorage, updateUserFromLocalStorage, removeUserFromLocalStorage } from '@/helpers/auth-user.helper'
-import { formatApiError } from '@/helpers/api-error.helper'
+import {
+  getUserFromLocalStorage,
+  updateUserFromLocalStorage,
+  removeUserFromLocalStorage,
+} from '@/helpers/auth-user.helper'
+import { formatApiError, extractApiMessage } from '@/helpers/api-error.helper'
 import { parseDate } from '@/helpers/formatters.helper'
 import type { InclusaoMatriculaFormValues } from './components/dialog-inclusao-matricula'
 import type { InclusaoBolsaSubmitValues } from './components/dialog-inclusao-bolsa'
@@ -14,25 +17,12 @@ import type {
   AdvisorFilterOption,
   EnrollmentProgram,
   IdentifiedFilterOption,
-  StudentDetailedWithFullRelations
+  StudentDetailedWithFullRelations,
 } from '@/types'
 
-function extractApiMessage(error: unknown): string | undefined {
-  if (!axios.isAxiosError(error)) {
-    return undefined
-  }
-
-  const data: unknown = error.response?.data
-
-  if (data && typeof data === 'object' && 'message' in data && typeof data.message === 'string') {
-    return data.message
-  }
-
-  return undefined
-}
-
 function AreaDoEstudante() {
-  const [student, setStudent] = useState<StudentDetailedWithFullRelations | null>(null)
+  const [student, setStudent] =
+    useState<StudentDetailedWithFullRelations | null>(null)
   const [agencies, setAgencies] = useState<IdentifiedFilterOption[]>([])
   const [allocations, setAllocations] = useState<IdentifiedFilterOption[]>([])
   const [advisors, setAdvisors] = useState<AdvisorFilterOption[]>([])
@@ -86,7 +76,9 @@ function AreaDoEstudante() {
 
       if (response.status === 200) {
         setStudent(response.data)
-        updateUserFromLocalStorage({ link_to_lattes: response.data.link_to_lattes })
+        updateUserFromLocalStorage({
+          link_to_lattes: response.data.link_to_lattes,
+        })
       }
     } catch {
       toast.error('Ocorreu um erro na consulta de dados do estudante.')
@@ -94,7 +86,9 @@ function AreaDoEstudante() {
     }
   }
 
-  const handleCreateNewEnrollment = async (data: InclusaoMatriculaFormValues) => {
+  const handleCreateNewEnrollment = async (
+    data: InclusaoMatriculaFormValues
+  ) => {
     if (!student) {
       return
     }
@@ -104,24 +98,23 @@ function AreaDoEstudante() {
         ...data,
         student_email: student.email,
         enrollment_date: parseDate(data.enrollment_date),
-        defense_prediction_date: parseDate(data.defense_prediction_date)
+        defense_prediction_date: parseDate(data.defense_prediction_date),
       }
 
-      const response = await api.enrollment.createEnrollment(
-        payload
-      )
+      const response = await api.enrollment.createEnrollment(payload)
 
       if ([200, 201].includes(response.status)) {
         toast.success('Matrícula criada com sucesso.')
         await getStudent()
       }
-    }
-    catch {
+    } catch {
       toast.error('Ocorreu um erro na criação da matrícula.')
     }
   }
 
-  const handleCreateNewScholarship = async (data: InclusaoBolsaSubmitValues) => {
+  const handleCreateNewScholarship = async (
+    data: InclusaoBolsaSubmitValues
+  ) => {
     if (!student) {
       return
     }
@@ -132,19 +125,16 @@ function AreaDoEstudante() {
         student_email: student.email,
         scholarship_starts_at: parseDate(data.scholarship_starts_at),
         scholarship_ends_at: parseDate(data.scholarship_ends_at),
-        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
+        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
       }
 
-      const response = await api.scholarship.createScholarship(
-        payload
-      )
+      const response = await api.scholarship.createScholarship(payload)
 
       if ([200, 201].includes(response.status)) {
         toast.success('Bolsa criada com sucesso.')
         await getStudent()
       }
-    }
-    catch (error) {
+    } catch (error) {
       const message = extractApiMessage(error)
       toast.error(message ? message : 'Ocorreu um erro na criação da bolsa.')
     }
@@ -174,18 +164,23 @@ function AreaDoEstudante() {
 
   const handleUpdateEnrollment = async (data: EdicaoMatriculaSubmitValues) => {
     try {
-      const updateEnrollment = api.enrollment.updateEnrollment(data.enrollment_id, {
-        advisor_email: data.advisor_email,
-        student_email: data.student_email,
-        enrollment_program: data.enrollment_program,
-        enrollment_number: data.enrollment_number,
-        enrollment_date: parseDate(data.enrollment_date),
-        defense_prediction_date: parseDate(data.defense_prediction_date)
-      })
-      const response = await Promise.all([ updateEnrollment ])
+      const updateEnrollment = api.enrollment.updateEnrollment(
+        data.enrollment_id,
+        {
+          advisor_email: data.advisor_email,
+          student_email: data.student_email,
+          enrollment_program: data.enrollment_program,
+          enrollment_number: data.enrollment_number,
+          enrollment_date: parseDate(data.enrollment_date),
+          defense_prediction_date: parseDate(data.defense_prediction_date),
+        }
+      )
+      const response = await Promise.all([updateEnrollment])
 
       if (response.length > 0) {
-        toast.success('As informações da matrícula foram atualizadas com sucesso.')
+        toast.success(
+          'As informações da matrícula foram atualizadas com sucesso.'
+        )
       }
     } catch (error) {
       toast.error(`Erro ao atualizar a matrícula: ${extractApiMessage(error)}`)
@@ -194,41 +189,56 @@ function AreaDoEstudante() {
     await getStudent()
   }
 
-  const handleUpdateScholarship = async (data: EdicaoBolsaSubmitValues): Promise<false | void> => {
+  const handleUpdateScholarship = async (
+    data: EdicaoBolsaSubmitValues
+  ): Promise<false | void> => {
     try {
-      const updateScholarship = api.scholarship.updateScholarship(data.scholarship_id, {
-        enrollment_id: data.enrollment_id,
-        student_email: data.student_email,
-        agency_id: data.agency_id,
-        allocation_id: data.allocation_id,
-        scholarship_starts_at: parseDate(data.scholarship_starts_at),
-        scholarship_ends_at: parseDate(data.scholarship_ends_at),
-        extension_ends_at: data.extension_ends_at !== null ? parseDate(data.extension_ends_at) : null,
-        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.'))
-      })
+      const updateScholarship = api.scholarship.updateScholarship(
+        data.scholarship_id,
+        {
+          enrollment_id: data.enrollment_id,
+          student_email: data.student_email,
+          agency_id: data.agency_id,
+          allocation_id: data.allocation_id,
+          scholarship_starts_at: parseDate(data.scholarship_starts_at),
+          scholarship_ends_at: parseDate(data.scholarship_ends_at),
+          extension_ends_at:
+            data.extension_ends_at !== null
+              ? parseDate(data.extension_ends_at)
+              : null,
+          salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
+        }
+      )
 
-      const response = await Promise.all([ updateScholarship ])
+      const response = await Promise.all([updateScholarship])
 
       if (response.length > 0) {
         toast.success('As informações da bolsa foram atualizadas com sucesso.')
       }
     } catch (error) {
       const message = extractApiMessage(error)
-      toast.error(message ? message : 'Ocorreu um erro na atualização da bolsa.')
-      return false;
+      toast.error(
+        message ? message : 'Ocorreu um erro na atualização da bolsa.'
+      )
+      return false
     }
 
     await getStudent()
   }
 
-  const getMaxEndDate = (referenceDate: Date | null, enrollmentProgram: EnrollmentProgram): Date => {
+  const getMaxEndDate = (
+    referenceDate: Date | null,
+    enrollmentProgram: EnrollmentProgram
+  ): Date => {
     const endYearSum = enrollmentProgram === 'MESTRADO' ? 2 : 4
     const maxEndDate = new Date(referenceDate ?? 0)
-    return new Date(maxEndDate.setFullYear(
-      maxEndDate.getFullYear() + endYearSum,
-      maxEndDate.getMonth(),
-      maxEndDate.getDate() - 1
-    ))
+    return new Date(
+      maxEndDate.setFullYear(
+        maxEndDate.getFullYear() + endYearSum,
+        maxEndDate.getMonth(),
+        maxEndDate.getDate() - 1
+      )
+    )
   }
 
   useEffect(() => {

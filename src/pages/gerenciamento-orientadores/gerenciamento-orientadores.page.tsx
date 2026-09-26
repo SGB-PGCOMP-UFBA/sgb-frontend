@@ -1,30 +1,15 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
-import { formatApiError } from '@/helpers/api-error.helper'
+import { extractApiMessage, formatApiError } from '@/helpers/api-error.helper'
 import { GerenciamentoOrientadoresView } from './gerenciamento-orientadores.view'
 import type { InclusaoOrientadorFormValues } from './components/dialog-inclusao-orientador'
 import type {
   CreateAdvisorPayload,
-  UpdateAdvisorPayload
+  UpdateAdvisorPayload,
 } from '@/services/advisor'
 import type { ResetPasswordPayload } from '@/services/password'
 import type { AdvisorDetailed } from '@/types'
-
-function extractApiMessage(error: unknown): string | undefined {
-  if (!axios.isAxiosError(error)) {
-    return undefined
-  }
-
-  const data: unknown = error.response?.data
-
-  if (data && typeof data === 'object' && 'message' in data && typeof data.message === 'string') {
-    return data.message
-  }
-
-  return undefined
-}
 
 function GerenciamentoOrientadores() {
   const [advisors, setAdvisors] = useState<AdvisorDetailed[]>([])
@@ -46,7 +31,7 @@ function GerenciamentoOrientadores() {
       password: Math.random().toString(36).slice(-4),
       tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
       phone_number: advisor.phone_number.replace(/[^0-9]/g, ''),
-      notify: true
+      notify: true,
     }
 
     try {

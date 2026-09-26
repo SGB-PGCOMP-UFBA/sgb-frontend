@@ -1,3 +1,25 @@
+import axios from 'axios'
+
+/** Lê a `message` que o backend devolve no corpo de um erro do axios. */
+export function extractApiMessage(error: unknown): string | undefined {
+  if (!axios.isAxiosError(error)) {
+    return undefined
+  }
+
+  const data: unknown = error.response?.data
+
+  if (
+    data &&
+    typeof data === 'object' &&
+    'message' in data &&
+    typeof data.message === 'string'
+  ) {
+    return data.message
+  }
+
+  return undefined
+}
+
 /**
  * Le o campo `error` de um corpo de resposta de erro. Os contratos em `src/api`
  * descrevem so o caso de sucesso, entao esse corpo chega como `unknown`.
