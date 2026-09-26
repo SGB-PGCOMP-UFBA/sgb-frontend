@@ -7,7 +7,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
-import { formatDate } from '@/helpers/formatters.helper'
+import { formatDate, formatCalendarDate } from '@/helpers/formatters.helper'
 import type { StudentDetailedWithFullRelations } from '@/types'
 
 export interface StudentArticle {
@@ -106,7 +106,7 @@ export default function StudentProfileView(props: StudentProfileViewProps) {
                     </span>
                     <ChevronDown className={ACCORDION_ICON_CLASS} />
                   </summary>
-                  <div className="px-4 pb-4">{enrollment.defense_prediction_date}</div>
+                  <div className="px-4 pb-4">{formatCalendarDate(enrollment.defense_prediction_date)}</div>
                 </details>
               ))
             ) : (

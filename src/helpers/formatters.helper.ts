@@ -30,6 +30,41 @@ export const formatDate = (date: string | number | Date): string => {
   return newDate.toLocaleDateString('pt-BR')
 }
 
+/**
+ * Datas sem horário (início e término de bolsa, matrícula, defesa) chegam da
+ * API como meia-noite UTC (`2026-09-26T00:00:00.000Z`). Convertidas direto no
+ * fuso do Brasil viram o dia anterior; por isso aqui só o dia do calendário
+ * é aproveitado, e o `Date` devolvido é meia-noite local desse dia.
+ */
+export function toCalendarDate(
+  value: string | Date | null | undefined
+): Date | null {
+  if (!value) {
+    return null
+  }
+
+  const isoDay =
+    typeof value === 'string'
+      ? value.slice(0, 10)
+      : value.toISOString().slice(0, 10)
+  const [year, month, day] = isoDay.split('-').map(Number)
+
+  if (!year || !month || !day) {
+    return null
+  }
+
+  return new Date(year, month - 1, day)
+}
+
+/** Formata uma data sem horário como dd/MM/yyyy; vazia quando não há data. */
+export function formatCalendarDate(
+  value: string | Date | null | undefined
+): string {
+  const date = toCalendarDate(value)
+
+  return date ? date.toLocaleDateString('pt-BR') : ''
+}
+
 export const formatDateHour = (date: string | number | Date): string => {
   const newDate = new Date(date)
   return newDate.toLocaleString('pt-BR')

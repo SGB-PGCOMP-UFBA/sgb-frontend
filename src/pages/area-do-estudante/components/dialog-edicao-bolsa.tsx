@@ -20,6 +20,7 @@ import {
 import type { BolsaRow } from './data-grid-bolsas'
 import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { toCalendarDate } from '@/helpers/formatters.helper'
 
 export interface EdicaoBolsaFormFields {
   agency_id: string
@@ -49,10 +50,15 @@ export interface DialogEdicaoBolsaProps {
 function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
   const { isOpen, onSubmit, onClose, agencies, allocations, item, getMaxEndDate } = props
 
-  const [minEndDate, setMinEndDate] = useState<Date | null>(new Date(item.scholarship_starts_at))
-  const [maxEndDate, setMaxEndDate] = useState<Date | null>(getMaxEndDate(new Date(item.scholarship_starts_at), item.enrollment_program))
-  const [minExtensionEndDate, setMinExtensionEndDate] = useState<Date | null>(new Date(item.scholarship_ends_at))
-  const [maxExtensionEndDate, setMaxExtensionEndDate] = useState<Date | null>(new Date(new Date(item.scholarship_ends_at).setMonth(new Date(item.scholarship_ends_at).getMonth() + 6)))
+  const [minEndDate, setMinEndDate] = useState<Date | null>(toCalendarDate(item.scholarship_starts_at))
+  const [maxEndDate, setMaxEndDate] = useState<Date | null>(getMaxEndDate(toCalendarDate(item.scholarship_starts_at), item.enrollment_program))
+  const initialEndDate = toCalendarDate(item.scholarship_ends_at)
+  const [minExtensionEndDate, setMinExtensionEndDate] = useState<Date | null>(initialEndDate)
+  const [maxExtensionEndDate, setMaxExtensionEndDate] = useState<Date | null>(
+    initialEndDate
+      ? new Date(new Date(initialEndDate).setMonth(initialEndDate.getMonth() + 6))
+      : null
+  )
 
   const handleStartDateChange = (newDate: Date | null) => {
     setMinEndDate(newDate)
@@ -118,7 +124,7 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
               name="scholarship_starts_at"
               label="Data de Início da Bolsa"
               required
-              defaultValue={new Date(item.scholarship_starts_at)}
+              defaultValue={toCalendarDate(item.scholarship_starts_at)}
               onChange={handleStartDateChange}
             />
 
@@ -129,7 +135,7 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
               required
               minDate={minEndDate ?? undefined}
               maxDate={maxEndDate ?? undefined}
-              defaultValue={new Date(item.scholarship_ends_at)}
+              defaultValue={toCalendarDate(item.scholarship_ends_at)}
               onChange={handleEndDateChange}
             />
 
@@ -139,7 +145,7 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
               label="Data de Extensão da Bolsa"
               minDate={minExtensionEndDate ?? undefined}
               maxDate={maxExtensionEndDate ?? undefined}
-              defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
+              defaultValue={toCalendarDate(item.extension_ends_at)}
             />
 
             <div className="space-y-1.5">

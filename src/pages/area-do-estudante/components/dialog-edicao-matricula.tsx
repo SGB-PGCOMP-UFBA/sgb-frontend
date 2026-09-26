@@ -20,6 +20,7 @@ import {
 import type { MatriculaRow } from './data-grid-matriculas'
 import type { AdvisorFilterOption, EnrollmentProgram } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { toCalendarDate } from '@/helpers/formatters.helper'
 
 export interface EdicaoMatriculaFormFields {
   enrollment_number: string
@@ -125,7 +126,7 @@ function DialogEdicaoMatricula(props: DialogEdicaoMatriculaProps) {
               name="enrollment_date"
               label="Data Primeira Matrícula"
               required
-              defaultValue={new Date(item.enrollment_date)}
+              defaultValue={toCalendarDate(item.enrollment_date)}
               onChange={handleStartDateChange}
             />
 
@@ -135,7 +136,7 @@ function DialogEdicaoMatricula(props: DialogEdicaoMatriculaProps) {
               label="Data de Previsão de Defesa"
               required
               minDate={minEndDate ?? undefined}
-              defaultValue={new Date(item.defense_prediction_date ?? 0)}
+              defaultValue={toCalendarDate(item.defense_prediction_date)}
             />
           </div>
 

@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { formatDate, toPascalCase } from '@/helpers/formatters.helper'
+import { toPascalCase, formatCalendarDate } from '@/helpers/formatters.helper'
 import type { StudentDetailedWithFullRelations } from '@/types'
 
 export interface DialogVisualizacaoBolsasProps {
@@ -18,8 +18,6 @@ export interface DialogVisualizacaoBolsasProps {
   onClose: () => void
 }
 
-const displayDate = (value: string | null): string =>
-  value !== null ? formatDate(value) : ''
 
 function DialogVisualizacaoBolsas({ item, isOpen, onClose }: DialogVisualizacaoBolsasProps) {
   return (
@@ -55,7 +53,7 @@ function DialogVisualizacaoBolsas({ item, isOpen, onClose }: DialogVisualizacaoB
                       readOnly
                       id={`enrollment_date-${index}`}
                       name="enrollment_date"
-                      defaultValue={displayDate(enrollment.enrollment_date)}
+                      defaultValue={formatCalendarDate(enrollment.enrollment_date)}
                     />
                   </div>
 
@@ -67,7 +65,7 @@ function DialogVisualizacaoBolsas({ item, isOpen, onClose }: DialogVisualizacaoB
                       readOnly
                       id={`defense_prediction_date-${index}`}
                       name="defense_prediction_date"
-                      defaultValue={displayDate(enrollment.defense_prediction_date)}
+                      defaultValue={formatCalendarDate(enrollment.defense_prediction_date)}
                     />
                   </div>
                 </div>
@@ -124,7 +122,7 @@ function DialogVisualizacaoBolsas({ item, isOpen, onClose }: DialogVisualizacaoB
                               readOnly
                               id={`scholarship_starts_at-${index}-${scholarshipIndex}`}
                               name="scholarship_starts_at"
-                              defaultValue={displayDate(scholarship.scholarship_starts_at)}
+                              defaultValue={formatCalendarDate(scholarship.scholarship_starts_at)}
                             />
                           </div>
 
@@ -136,7 +134,7 @@ function DialogVisualizacaoBolsas({ item, isOpen, onClose }: DialogVisualizacaoB
                               readOnly
                               id={`scholarship_ends_at-${index}-${scholarshipIndex}`}
                               name="scholarship_ends_at"
-                              defaultValue={displayDate(scholarship.scholarship_ends_at)}
+                              defaultValue={formatCalendarDate(scholarship.scholarship_ends_at)}
                             />
                           </div>
                         </div>
