@@ -6,7 +6,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
 import { Button } from '@/components/ui/button'
-import { formatDate, formatPhone } from '@/helpers/formatters.helper'
+import { formatPhone, formatCalendarDate } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
 import { DialogExclusaoMatricula } from './dialog-exclusao-matricula'
 import { DialogInclusaoBolsa } from './dialog-inclusao-bolsa'
@@ -155,15 +155,15 @@ function DataGridMatriculas(props: DataGridMatriculasProps) {
         id: 'enrollmentDate',
         header: 'Data da Matrícula',
         width: 150,
-        cell: (row) => formatDate(row.enrollment_date),
-        csv: (row) => formatDate(row.enrollment_date)
+        cell: (row) => formatCalendarDate(row.enrollment_date),
+        csv: (row) => formatCalendarDate(row.enrollment_date)
       },
       {
         id: 'defensePredictionDate',
         header: 'Previsão de Defesa',
         width: 160,
-        cell: (row) => formatDate(row.defense_prediction_date ?? 0),
-        csv: (row) => formatDate(row.defense_prediction_date ?? 0)
+        cell: (row) => formatCalendarDate(row.defense_prediction_date),
+        csv: (row) => formatCalendarDate(row.defense_prediction_date)
       },
       {
         id: 'actions',

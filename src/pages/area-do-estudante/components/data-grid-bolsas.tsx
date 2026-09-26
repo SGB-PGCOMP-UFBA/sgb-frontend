@@ -3,7 +3,7 @@ import { ActionIconButton } from '@/components/action-icon-button'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
-import { formatBrazilianCurrency, formatDate } from '@/helpers/formatters.helper'
+import { formatBrazilianCurrency, formatCalendarDate } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
 import { DialogExclusaoBolsa } from './dialog-exclusao-bolsa'
 import { DialogEdicaoBolsa } from './dialog-edicao-bolsa'
@@ -117,23 +117,23 @@ function DataGridBolsas(props: DataGridBolsasProps) {
         id: 'scholarshipStartsAt',
         header: 'Data de Início da Bolsa',
         width: 180,
-        cell: (row) => formatDate(row.scholarship_starts_at),
-        csv: (row) => formatDate(row.scholarship_starts_at)
+        cell: (row) => formatCalendarDate(row.scholarship_starts_at),
+        csv: (row) => formatCalendarDate(row.scholarship_starts_at)
       },
       {
         id: 'scholarshipEndsAt',
         header: 'Data de Término da Bolsa',
         width: 200,
-        cell: (row) => formatDate(row.scholarship_ends_at),
-        csv: (row) => formatDate(row.scholarship_ends_at)
+        cell: (row) => formatCalendarDate(row.scholarship_ends_at),
+        csv: (row) => formatCalendarDate(row.scholarship_ends_at)
       },
       {
         id: 'extensionEndsAt',
         header: 'Data de Extensão da Bolsa',
         width: 210,
         cell: (row) =>
-          row.extension_ends_at ? formatDate(row.extension_ends_at) : NOT_INFORMED,
-        csv: (row) => (row.extension_ends_at ? formatDate(row.extension_ends_at) : null)
+          row.extension_ends_at ? formatCalendarDate(row.extension_ends_at) : NOT_INFORMED,
+        csv: (row) => (row.extension_ends_at ? formatCalendarDate(row.extension_ends_at) : null)
       },
       {
         id: 'allocationName',

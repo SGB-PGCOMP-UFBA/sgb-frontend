@@ -24,6 +24,7 @@ import type {
   ScholarshipDetailedWithRelations
 } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { toCalendarDate } from '@/helpers/formatters.helper'
 
 export interface EdicaoBolsistaFormFields {
   student_name: string
@@ -154,14 +155,14 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
                   id="enrollment_date"
                   name="enrollment_date"
                   label="Data Primeira Matrícula"
-                  defaultValue={new Date(item.enrollment?.enrollment_date ?? 0)}
+                  defaultValue={toCalendarDate(item.enrollment?.enrollment_date)}
                 />
 
                 <DateField
                   id="defense_prediction_date"
                   name="defense_prediction_date"
                   label="Data de Previsão de Defesa"
-                  defaultValue={new Date(item.enrollment?.defense_prediction_date ?? 0)}
+                  defaultValue={toCalendarDate(item.enrollment?.defense_prediction_date)}
                 />
 
                 <div className="space-y-1.5 md:col-span-3">
@@ -220,22 +221,22 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
                   id="scholarship_starts_at"
                   name="scholarship_starts_at"
                   label="Data de Início da Bolsa"
-                  defaultValue={new Date(item.scholarship_starts_at)}
+                  defaultValue={toCalendarDate(item.scholarship_starts_at)}
                 />
 
                 <DateField
                   id="scholarship_ends_at"
                   name="scholarship_ends_at"
                   label="Data de Término da Bolsa"
-                  defaultValue={new Date(item.scholarship_ends_at)}
+                  defaultValue={toCalendarDate(item.scholarship_ends_at)}
                 />
 
                 <DateField
                   id="extension_ends_at"
                   name="extension_ends_at"
                   label="Data de Extensão da Bolsa"
-                  minDate={new Date(item.scholarship_ends_at)}
-                  defaultValue={item.extension_ends_at !== null ? new Date(item.extension_ends_at) : null}
+                  minDate={toCalendarDate(item.scholarship_ends_at) ?? undefined}
+                  defaultValue={toCalendarDate(item.extension_ends_at)}
                 />
 
                 <div className="space-y-1.5 md:col-span-3">

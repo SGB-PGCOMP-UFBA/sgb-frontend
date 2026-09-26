@@ -4,7 +4,7 @@ import type { PaginationState } from '@tanstack/react-table'
 import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
-import { formatDate, formatPhone } from '@/helpers/formatters.helper'
+import { formatPhone, formatCalendarDate } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
 import { DialogExclusaoBolsa } from './dialog-exclusao-bolsa'
 import { DialogEdicaoBolsista } from './dialog-edicao-bolsista'
@@ -128,36 +128,36 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
         id: 'scholarshipStartsAt',
         header: 'Início da Bolsa',
         width: 100,
-        cell: (row) => formatDate(row.scholarship_starts_at),
-        csv: (row) => formatDate(row.scholarship_starts_at)
+        cell: (row) => formatCalendarDate(row.scholarship_starts_at),
+        csv: (row) => formatCalendarDate(row.scholarship_starts_at)
       },
       {
         id: 'scholarshipEndsAt',
         header: 'Término da Bolsa',
         width: 100,
-        cell: (row) => formatDate(row.scholarship_ends_at),
-        csv: (row) => formatDate(row.scholarship_ends_at)
+        cell: (row) => formatCalendarDate(row.scholarship_ends_at),
+        csv: (row) => formatCalendarDate(row.scholarship_ends_at)
       },
       {
         id: 'extensionEndsAt',
         header: 'Extensão da Bolsa',
         width: 100,
-        cell: (row) => (row.extension_ends_at ? formatDate(row.extension_ends_at) : 'N/A'),
-        csv: (row) => (row.extension_ends_at ? formatDate(row.extension_ends_at) : null)
+        cell: (row) => (row.extension_ends_at ? formatCalendarDate(row.extension_ends_at) : 'N/A'),
+        csv: (row) => (row.extension_ends_at ? formatCalendarDate(row.extension_ends_at) : null)
       },
       {
         id: 'enrollmentDate',
         header: 'Data da Matrícula',
         width: 100,
-        cell: (row) => formatDate(row.enrollment?.enrollment_date ?? 0),
-        csv: (row) => formatDate(row.enrollment?.enrollment_date ?? 0)
+        cell: (row) => formatCalendarDate(row.enrollment?.enrollment_date),
+        csv: (row) => formatCalendarDate(row.enrollment?.enrollment_date)
       },
       {
         id: 'defensePredictionDate',
         header: 'Previsão de Defesa',
         width: 100,
-        cell: (row) => formatDate(row.enrollment?.defense_prediction_date ?? 0),
-        csv: (row) => formatDate(row.enrollment?.defense_prediction_date ?? 0)
+        cell: (row) => formatCalendarDate(row.enrollment?.defense_prediction_date),
+        csv: (row) => formatCalendarDate(row.enrollment?.defense_prediction_date)
       },
       {
         id: 'allocationName',
