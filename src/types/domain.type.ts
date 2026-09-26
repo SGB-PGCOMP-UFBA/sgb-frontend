@@ -115,9 +115,7 @@ export interface AllocationSimplified {
 
 export interface AllocationDetailed extends AllocationSimplified {
   scholarshipsSinceBeginning: number
-  masters_degree_awarded_scholarships: number
   masters_degree_allocated_scholarships: number
-  doctorate_degree_awarded_scholarships: number
   doctorate_degree_allocated_scholarships: number
 }
 

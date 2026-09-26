@@ -30,9 +30,7 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }: DialogEdicaoA
     const entries = readFormValues<EdicaoAlocacaoFormValues>(newAgencyData)
 
     onSubmit(item.id, {
-      name: entries.name,
-      // masters_degree_awarded_scholarships: Number(entries.masters_degree_awarded_scholarships),
-      // doctorate_degree_awarded_scholarships: Number(entries.doctorate_degree_awarded_scholarships)
+      name: entries.name
     })
 
     onClose()
@@ -60,34 +58,6 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }: DialogEdicaoA
                 maxLength={80}
               />
             </div>
-
-            {/* <div className="space-y-1.5">
-              <Label htmlFor="masters_degree_awarded_scholarships">
-                Bolsas Concedidas Para o Mestrado
-              </Label>
-              <Input
-                id="masters_degree_awarded_scholarships"
-                name="masters_degree_awarded_scholarships"
-                type="number"
-                defaultValue={item.masters_degree_awarded_scholarships}
-                min={0}
-                step={1}
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <Label htmlFor="doctorate_degree_awarded_scholarships">
-                Bolsas Concedidas Para o Doutorado
-              </Label>
-              <Input
-                id="doctorate_degree_awarded_scholarships"
-                name="doctorate_degree_awarded_scholarships"
-                type="number"
-                defaultValue={item.doctorate_degree_awarded_scholarships}
-                min={0}
-                step={1}
-              />
-            </div> */}
           </div>
 
           <DialogFooter className="gap-x-4 pt-6">

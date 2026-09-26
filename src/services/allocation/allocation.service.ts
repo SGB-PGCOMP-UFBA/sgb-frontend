@@ -7,8 +7,6 @@ const BASE_ALLOCATION_API_PATH = `/v1/allocation`
 
 export interface CreateAllocationPayload {
   name: string
-  masters_degree_awarded_scholarships?: number
-  doctorate_degree_awarded_scholarships?: number
 }
 
 export type UpdateAllocationPayload = Partial<CreateAllocationPayload>
