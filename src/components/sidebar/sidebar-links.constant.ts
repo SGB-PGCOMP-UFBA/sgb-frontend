@@ -1,7 +1,6 @@
 import type { IconType } from 'react-icons'
 import {
   MdBusiness,
-  MdCloud,
   MdDashboard,
   MdDateRange,
   MdLocationOn,
@@ -85,12 +84,5 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     path: '/area-do-estudante',
     visible: true,
     availableRoles: ['STUDENT']
-  },
-  {
-    name: 'Gestão de Dados',
-    icon: MdCloud,
-    path: '/gestao-de-dados',
-    visible: true,
-    availableRoles: ADMIN_ROLES
   }
 ]

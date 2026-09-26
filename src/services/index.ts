@@ -9,7 +9,6 @@ import * as authApi from './auth'
 import * as adminApi from './admin'
 import * as reportApi from './report'
 import * as embedNotificationApi from './embed-notification'
-import * as dataManagerApi from './data-manager'
 import * as userApi from './user'
 
 const api = {
@@ -24,7 +23,6 @@ const api = {
   admin: adminApi,
   report: reportApi,
   embedNotification: embedNotificationApi,
-  dataManager: dataManagerApi,
   user: userApi
 }
 
