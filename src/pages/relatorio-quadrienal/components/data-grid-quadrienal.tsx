@@ -1,7 +1,10 @@
 import './custom-scrollbar.css'
 import { FileText } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-import type { AgencyScholarshipReport, DegreeCount } from '@/services/scholarship'
+import type {
+  AgencyScholarshipReport,
+  DegreeCount,
+} from '@/services/scholarship'
 
 export interface DataGridQuadrienalProps {
   data: AgencyScholarshipReport[]
@@ -29,8 +32,8 @@ function DataGridQuadrienal({ data }: DataGridQuadrienalProps) {
     <div>
       <div className='space-y-6'>
         <h3 className='flex items-center gap-2 text-xl font-medium text-gray-700'>
-          <FileText className='h-6 w-6 text-gray-600' /> Detalhamento por Agência
-          de Fomento
+          <FileText className='h-6 w-6 text-gray-600' /> Detalhamento por
+          Agência de Fomento
         </h3>
 
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -58,24 +61,20 @@ function DataGridQuadrienal({ data }: DataGridQuadrienalProps) {
 
                 <div className='space-y-2'>
                   <StatusRow
-                    label='Bolsas Concluídas'
-                    counts={agency.finishedCount}
+                    label='Bolsas Ativas no Período'
+                    counts={agency.activeCount}
                   />
                   <StatusRow
                     label='Bolsas em Andamento'
                     counts={agency.onGoingCount}
                   />
                   <StatusRow
-                    label='Bolsas Ativas'
-                    counts={agency.activeCount}
-                  />
-                  <StatusRow
                     label='Bolsas Prorrogadas'
                     counts={agency.extendedCount}
                   />
                   <StatusRow
-                    label='Bolsas Inativas'
-                    counts={agency.inactiveCount}
+                    label='Bolsas Finalizadas'
+                    counts={agency.finishedCount}
                   />
                 </div>
               </div>
