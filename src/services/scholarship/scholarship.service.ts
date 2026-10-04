@@ -6,7 +6,7 @@ import type {
   EnrollmentProgram,
   Page,
   ScholarshipDetailedWithRelations,
-  ScholarshipFilters
+  ScholarshipFilters,
 } from '@/types'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
@@ -59,7 +59,6 @@ export interface AgencyScholarshipReport {
   totalMasters: number
   totalPhd: number
   activeCount: DegreeCount
-  inactiveCount: DegreeCount
   finishedCount: DegreeCount
   onGoingCount: DegreeCount
   extendedCount: DegreeCount
@@ -186,19 +185,21 @@ export const deleteScholarship = async (
 }
 
 export const countScholarshipsAsReportBetweenDates = async (
-  startDate: string,
-  endDate: string
+  startDate?: string,
+  endDate?: string
 ): Promise<AxiosResponse<AgencyScholarshipReport[]>> => {
-  const url =
-    BASE_SCHOLARSHIP_API_PATH +
-    `/report/all-between-dates?` +
-    `start_period=${startDate}` +
-    `&end_period=${endDate}`
+  const params = new URLSearchParams()
+  if (startDate) params.set('start_period', startDate)
+  if (endDate) params.set('end_period', endDate)
 
-  return api.get(`${url}`, { headers: buildHeaders() })
+  const query = params.toString()
+  const url =
+    `${BASE_SCHOLARSHIP_API_PATH}/report/all-between-dates` +
+    (query ? `?${query}` : '')
+
+  return api.get(url, { headers: buildHeaders() })
 }
 
-/** Devolve os e-mails ja concatenados por virgula, prontos para copiar. */
 export const copyFilteredScholarshipsStudentsEmails = async (
   filters?: ScholarshipFilters
 ): Promise<AxiosResponse<string>> => {

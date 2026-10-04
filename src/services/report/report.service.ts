@@ -8,8 +8,8 @@ const BASE_REPORT_API_PATH = `/v1/report`
 export type QuadrennialReportFormat = 'pdf' | 'csv'
 
 export interface QuadrennialReportPayload {
-  startDate: string
-  endDate: string
+  startDate?: string
+  endDate?: string
   data: AgencyScholarshipReport[]
 }
 

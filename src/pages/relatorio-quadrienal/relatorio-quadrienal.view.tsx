@@ -17,11 +17,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Loading from '@/components/loading'
 import { DataGridQuadrienal } from './components/data-grid-quadrienal'
+import { ResumoRelatorioQuadrienal } from './components/resumo-relatorio-quadrienal'
 import type { AgencyScholarshipReport } from '@/services/scholarship'
 import type { QuadrennialReportFormat } from '@/services/report'
+import type { ReportTotals } from './utils/relatorio-quadrienal-summary'
 
 export interface RelatorioQuadrienalViewProps {
   data?: AgencyScholarshipReport[]
+  totals: ReportTotals | null
+  summaryText: string | null
+  isSummaryTextVisible: boolean
+  isSummaryTextCopied: boolean
+  handleToggleSummaryText: () => void
+  handleCopySummaryText: () => void
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
   size: number
@@ -39,6 +47,12 @@ export interface RelatorioQuadrienalViewProps {
 
 function RelatorioQuadrienalView({
   data,
+  totals,
+  summaryText,
+  isSummaryTextVisible,
+  isSummaryTextCopied,
+  handleToggleSummaryText,
+  handleCopySummaryText,
   isLoading,
   handleResetDates,
   handleReportDownload,
@@ -78,9 +92,6 @@ function RelatorioQuadrienalView({
                 <DropdownMenuItem onClick={() => onDownload('pdf')}>
                   <FileText /> Baixar em PDF
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem onClick={() => onDownload('xlsx')}>
-                  <Table2 /> Baixar em Excel (XLSX)
-                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -94,7 +105,6 @@ function RelatorioQuadrienalView({
             name='scholarship_starts_at'
             label='Data de Início da Bolsa'
             defaultValue={startDate}
-            required
             onChange={handleStartDateChange}
             className='flex-1'
           />
@@ -105,14 +115,13 @@ function RelatorioQuadrienalView({
             label='Data de Término da Bolsa'
             defaultValue={endDate}
             minDate={minEndDate ?? undefined}
-            required
             onChange={setEndDate}
             className='flex-1'
           />
           <div className='flex gap-2'>
             <Button
               className='whitespace-nowrap'
-              disabled={!startDate || !endDate || isLoading}
+              disabled={isLoading}
               onClick={generateScholarshipsReportByPeriod}
             >
               <Search />
@@ -137,12 +146,23 @@ function RelatorioQuadrienalView({
       {isLoading ? (
         <Loading />
       ) : data && data.length > 0 ? (
-        <DataGridQuadrienal data={data} />
+        <>
+          {totals && (
+            <ResumoRelatorioQuadrienal
+              totals={totals}
+              summaryText={summaryText}
+              isSummaryTextVisible={isSummaryTextVisible}
+              isSummaryTextCopied={isSummaryTextCopied}
+              onToggleSummaryText={handleToggleSummaryText}
+              onCopySummaryText={handleCopySummaryText}
+            />
+          )}
+          <DataGridQuadrienal data={data} />
+        </>
       ) : (
         <div className='rounded-lg border-2 border-dashed border-gray-200 py-20 text-center'>
           <p className='text-gray-400'>
-            Nenhum dado disponível. Selecione as datas e clique em "Gerar
-            Relatório".
+            Nenhum dado disponível. Ajuste as datas e clique em "Gerar".
           </p>
         </div>
       )}
