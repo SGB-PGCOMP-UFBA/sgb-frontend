@@ -8,7 +8,6 @@ import type {
   CreateAdvisorPayload,
   UpdateAdvisorPayload,
 } from '@/services/advisor'
-import type { ResetPasswordPayload } from '@/services/password'
 import type { AdvisorDetailed } from '@/types'
 
 function GerenciamentoOrientadores() {
@@ -85,18 +84,6 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
-  const resetAdvisorPassword = async (payload: ResetPasswordPayload) => {
-    try {
-      const response = await api.password.resetPassword(payload)
-
-      if ([200, 201].includes(response.status)) {
-        toast.success('Senha resetada com sucesso.')
-      }
-    } catch (error) {
-      toast.error(`${extractApiMessage(error)}`)
-    }
-  }
-
   useEffect(() => {
     getAdvisors().finally(() => setIsLoading(false))
   }, [])
@@ -109,7 +96,6 @@ function GerenciamentoOrientadores() {
       onUpdate={updateAdvisor}
       onDelete={deleteAdvisor}
       onChangeProfile={grantAdminPrivileges}
-      onResetPassword={resetAdvisorPassword}
     />
   )
 }
