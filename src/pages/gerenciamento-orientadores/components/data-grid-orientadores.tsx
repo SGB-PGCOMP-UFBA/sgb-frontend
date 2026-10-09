@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ActionIconButton } from '@/components/action-icon-button'
-import { KeyRound, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
+import { Pencil, ShieldCheck, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
 import { cn } from '@/lib/utils'
@@ -8,11 +8,9 @@ import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
 import { DialogExclusaoOrientador } from './dialog-exclusao-orientador'
 import { DialogEdicaoOrientador } from './dialog-edicao-orientador'
-import { DialogResetarSenhaOrientador } from './dialog-resetar-senha-orientador'
 import { DialogHabilitarPerfilAdministrador } from './dialog-habilitar-perfil-administrador'
 import type { InclusaoOrientadorFormValues } from './dialog-inclusao-orientador'
 import type { UpdateAdvisorPayload } from '@/services/advisor'
-import type { ResetPasswordPayload } from '@/services/password'
 import type { AdvisorDetailed } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
@@ -23,15 +21,13 @@ export interface DataGridOrientadoresProps {
   onUpdate: (payload: UpdateAdvisorPayload) => void
   onDelete: (advisorId: number) => void
   onChangeProfile: (advisorId: number) => void
-  onResetPassword: (payload: ResetPasswordPayload) => void
 }
 
 function DataGridOrientadores(props: DataGridOrientadoresProps) {
-  const { data, onUpdate, onDelete, onResetPassword, onChangeProfile } = props
+  const { data, onUpdate, onDelete, onChangeProfile } = props
   const [isDialogForUpdateOpen, setIsDialogForUpdateOpen] = useState(false)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
   const [isDialogForAdminProfileOpen, setIsDialogForAdminProfileOpen] = useState(false)
-  const [isDialogForPasswordResetOpen, setIsDialogForPasswordResetOpen] = useState(false)
   const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorDetailed | null>(null)
 
   const handleDialogForAdminProfileClose = () => {
@@ -62,16 +58,6 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
   const handleDialogForUpdateOpen = (value: AdvisorDetailed) => {
     setSelectedAdvisor(value)
     setIsDialogForUpdateOpen(true)
-  }
-
-  const handleDialogForPasswordResetClose = () => {
-    setSelectedAdvisor(null)
-    setIsDialogForPasswordResetOpen(false)
-  }
-
-  const handleDialogForPasswordResetOpen = (value: AdvisorDetailed) => {
-    setSelectedAdvisor(value)
-    setIsDialogForPasswordResetOpen(true)
   }
 
   const hasEnrollments = (advisor: AdvisorDetailed) => {
@@ -165,11 +151,6 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
                 iconClassName={cn(row.has_admin_privileges && 'text-[#3498db]')}
               />
               <ActionIconButton
-                label="Resetar Senha do Orientador"
-                icon={KeyRound}
-                onClick={() => handleDialogForPasswordResetOpen(row)}
-              />
-              <ActionIconButton
                 label="Editar Orientador"
                 icon={Pencil}
                 onClick={() => handleDialogForUpdateOpen(row)}
@@ -207,15 +188,6 @@ function DataGridOrientadores(props: DataGridOrientadoresProps) {
           item={selectedAdvisor}
           onClose={handleDialogForUpdateClose}
           onSubmit={onUpdate}
-        />
-      )}
-
-      {selectedAdvisor && (
-        <DialogResetarSenhaOrientador
-          isOpen={isDialogForPasswordResetOpen}
-          item={selectedAdvisor}
-          onClose={handleDialogForPasswordResetClose}
-          onSubmit={onResetPassword}
         />
       )}
 

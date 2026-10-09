@@ -9,7 +9,6 @@ import { DialogInclusaoOrientador } from './components/dialog-inclusao-orientado
 import type { InclusaoOrientadorFormValues } from './components/dialog-inclusao-orientador'
 import Loading from '@/components/loading'
 import type { UpdateAdvisorPayload } from '@/services/advisor'
-import type { ResetPasswordPayload } from '@/services/password'
 import type { AdvisorDetailed } from '@/types'
 
 export interface GerenciamentoOrientadoresViewProps {
@@ -19,11 +18,10 @@ export interface GerenciamentoOrientadoresViewProps {
   onUpdate: (payload: UpdateAdvisorPayload) => void
   onDelete: (advisorId: number) => void
   onChangeProfile: (advisorId: number) => void
-  onResetPassword: (payload: ResetPasswordPayload) => void
 }
 
 function GerenciamentoOrientadoresView(props: GerenciamentoOrientadoresViewProps) {
-  const { isLoading, data, onCreate, onUpdate, onDelete, onResetPassword, onChangeProfile } = props
+  const { isLoading, data, onCreate, onUpdate, onDelete, onChangeProfile } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -62,7 +60,6 @@ function GerenciamentoOrientadoresView(props: GerenciamentoOrientadoresViewProps
           onUpdate={onUpdate}
           onDelete={onDelete}
           onChangeProfile={onChangeProfile}
-          onResetPassword={onResetPassword}
         />
       )}
 
