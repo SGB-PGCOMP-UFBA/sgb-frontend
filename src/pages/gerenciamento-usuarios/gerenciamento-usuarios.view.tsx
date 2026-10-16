@@ -1,26 +1,35 @@
+import { UserPlus } from 'lucide-react'
 import { MdManageAccounts } from 'react-icons/md'
 import AppLayout from '@/components/app-layout'
 import Loading from '@/components/loading'
 import { PageHeader } from '@/components/page-header'
+import { Button } from '@/components/ui/button'
 import { DataGridUsuarios } from './components/data-grid-usuarios'
 import { FiltrosUsuarios } from './components/filtros-usuarios'
-import type { EdicaoUsuarioFormValues } from './components/dialog-edicao-usuario'
 import type { ManagedUser, UserFilters } from '@/types'
 
 export interface GerenciamentoUsuariosViewProps {
   isLoading: boolean
   data: ManagedUser[]
-  getEditDisabledReason: (user: ManagedUser) => string | undefined
+  getDisabledReason: (user: ManagedUser) => string | undefined
   onSearch: (filters: UserFilters) => void
-  onUpdate: (user: ManagedUser, values: EdicaoUsuarioFormValues) => void
+  onView: (user: ManagedUser) => void
+  onCreate: () => void
+  onEdit: (user: ManagedUser) => void
+  onToggleStatus: (user: ManagedUser) => void
+  onDelete: (user: ManagedUser) => void
 }
 
 function GerenciamentoUsuariosView({
   isLoading,
   data,
-  getEditDisabledReason,
+  getDisabledReason,
   onSearch,
-  onUpdate,
+  onView,
+  onCreate,
+  onEdit,
+  onToggleStatus,
+  onDelete,
 }: GerenciamentoUsuariosViewProps) {
   return (
     <AppLayout>
@@ -29,6 +38,15 @@ function GerenciamentoUsuariosView({
         description='Visualização e Gestão de Usuários do Sistema'
         icon={MdManageAccounts}
         iconBackgroundClassName='bg-indigo-400'
+        actions={
+          <Button
+            className='bg-indigo-500 text-white hover:bg-indigo-600'
+            onClick={onCreate}
+          >
+            <UserPlus />
+            Novo usuário
+          </Button>
+        }
       />
       <FiltrosUsuarios isLoading={isLoading} onSearch={onSearch} />
       {isLoading ? (
@@ -36,8 +54,11 @@ function GerenciamentoUsuariosView({
       ) : (
         <DataGridUsuarios
           data={data}
-          getEditDisabledReason={getEditDisabledReason}
-          onUpdate={onUpdate}
+          getDisabledReason={getDisabledReason}
+          onView={onView}
+          onEdit={onEdit}
+          onToggleStatus={onToggleStatus}
+          onDelete={onDelete}
         />
       )}
     </AppLayout>

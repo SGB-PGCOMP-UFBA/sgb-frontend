@@ -1,5 +1,6 @@
 import {
   getUserRoleLabel,
+  isUserRole,
   USER_ROLE_FILTER_OPTIONS,
 } from './user-role.constant'
 
@@ -27,4 +28,22 @@ describe('USER_ROLE_FILTER_OPTIONS', () => {
       'STUDENT',
     ])
   })
+})
+
+describe('isUserRole', () => {
+  it.each([
+    ['ADMIN'],
+    ['ADVISOR'],
+    ['ADVISOR_WITH_ADMIN_PRIVILEGES'],
+    ['STUDENT'],
+  ])('reconhece o perfil %s', role => {
+    expect(isUserRole(role)).toBe(true)
+  })
+
+  it.each([['student'], ['SUPERUSER'], [''], [undefined], ['toString']])(
+    'recusa o que não é perfil (%s)',
+    value => {
+      expect(isUserRole(value)).toBe(false)
+    }
+  )
 })

@@ -14,3 +14,10 @@ export const USER_ROLE_FILTER_OPTIONS: FilterOption[] = (
 export function getUserRoleLabel(role: string): string {
   return USER_ROLE_LABELS[role as UserRole] ?? role
 }
+
+export function isUserRole(value: unknown): value is UserRole {
+  return (
+    typeof value === 'string' &&
+    Object.prototype.hasOwnProperty.call(USER_ROLE_LABELS, value)
+  )
+}

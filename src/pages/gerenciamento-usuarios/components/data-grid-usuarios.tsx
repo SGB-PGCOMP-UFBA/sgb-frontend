@@ -1,31 +1,35 @@
 import { useMemo, useState } from 'react'
-import { Pencil } from 'lucide-react'
-import { ActionIconButton } from '@/components/action-icon-button'
 import { CustomChip } from '@/components'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
 import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
-import {
-  DialogEdicaoUsuario,
-  type EdicaoUsuarioFormValues,
-} from './dialog-edicao-usuario'
+import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
+import { DialogSituacaoUsuario } from '@/components/dialog-situacao-usuario'
+import { MenuAcoesUsuario } from './menu-acoes-usuario'
 import type { ManagedUser } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 
 export interface DataGridUsuariosProps {
   data: ManagedUser[]
-  getEditDisabledReason: (user: ManagedUser) => string | undefined
-  onUpdate: (user: ManagedUser, values: EdicaoUsuarioFormValues) => void
+  getDisabledReason: (user: ManagedUser) => string | undefined
+  onView: (user: ManagedUser) => void
+  onEdit: (user: ManagedUser) => void
+  onToggleStatus: (user: ManagedUser) => void
+  onDelete: (user: ManagedUser) => void
 }
 
 function DataGridUsuarios({
   data,
-  getEditDisabledReason,
-  onUpdate,
+  getDisabledReason,
+  onView,
+  onEdit,
+  onToggleStatus,
+  onDelete,
 }: DataGridUsuariosProps) {
-  const [selectedUser, setSelectedUser] = useState<ManagedUser | null>(null)
+  const [statusUser, setStatusUser] = useState<ManagedUser | null>(null)
+  const [deletingUser, setDeletingUser] = useState<ManagedUser | null>(null)
 
   const columns = useMemo<DataTableColumn<ManagedUser>[]>(
     () => [
@@ -101,18 +105,20 @@ function DataGridUsuarios({
       {
         id: 'actions',
         header: 'Ações',
-        width: 80,
+        width: 96,
         cell: row => (
-          <ActionIconButton
-            label='Editar Usuário'
-            disabledReason={getEditDisabledReason(row)}
-            icon={Pencil}
-            onClick={() => setSelectedUser(row)}
+          <MenuAcoesUsuario
+            user={row}
+            disabledReason={getDisabledReason(row)}
+            onView={onView}
+            onEdit={onEdit}
+            onToggleStatus={setStatusUser}
+            onDelete={setDeletingUser}
           />
         ),
       },
     ],
-    [getEditDisabledReason]
+    [getDisabledReason, onView, onEdit]
   )
 
   return (
@@ -124,12 +130,21 @@ function DataGridUsuarios({
         initialPageSize={10}
       />
 
-      {selectedUser && (
-        <DialogEdicaoUsuario
-          isOpen={Boolean(selectedUser)}
-          item={selectedUser}
-          onClose={() => setSelectedUser(null)}
-          onSubmit={onUpdate}
+      {statusUser && (
+        <DialogSituacaoUsuario
+          isOpen={Boolean(statusUser)}
+          item={statusUser}
+          onClose={() => setStatusUser(null)}
+          onConfirm={onToggleStatus}
+        />
+      )}
+
+      {deletingUser && (
+        <DialogExclusaoUsuario
+          isOpen={Boolean(deletingUser)}
+          item={deletingUser}
+          onClose={() => setDeletingUser(null)}
+          onConfirm={onDelete}
         />
       )}
     </div>
