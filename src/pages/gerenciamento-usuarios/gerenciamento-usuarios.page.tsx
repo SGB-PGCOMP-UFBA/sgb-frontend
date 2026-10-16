@@ -1,42 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { AxiosResponse } from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
 import { extractApiMessage, formatApiError } from '@/helpers/api-error.helper'
 import { getUserFromLocalStorage } from '@/helpers/auth-user.helper'
+import { getManageDisabledReason } from '@/helpers/managed-user.helper'
 import { GerenciamentoUsuariosView } from './gerenciamento-usuarios.view'
-import type { EdicaoUsuarioFormValues } from './components/dialog-edicao-usuario'
 import type { ManagedUser, UserFilters } from '@/types'
 
-const onlyDigits = (value: string) => value.replace(/[^0-9]/g, '')
-
-function updateByRole(
-  user: ManagedUser,
-  values: EdicaoUsuarioFormValues
-): Promise<AxiosResponse<unknown>> {
-  const common = {
-    current_email: user.email,
-    name: values.name,
-    email: values.email,
-    tax_id: onlyDigits(values.tax_id),
-    phone_number: onlyDigits(values.phone_number),
-  }
-
-  switch (user.role) {
-    case 'STUDENT':
-      return api.student.updateStudent({
-        ...common,
-        link_to_lattes: values.link_to_lattes,
-      })
-    case 'ADVISOR':
-    case 'ADVISOR_WITH_ADMIN_PRIVILEGES':
-      return api.advisor.updateAdvisor({ ...common, status: values.status })
-    case 'ADMIN':
-      return api.admin.updateAdmin(common)
-  }
-}
-
 function GerenciamentoUsuarios() {
+  const navigate = useNavigate()
   const [users, setUsers] = useState<ManagedUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const filtersRef = useRef<UserFilters>({})
@@ -63,28 +36,52 @@ function GerenciamentoUsuarios() {
     setIsLoading(false)
   }
 
-  const updateUser = async (
-    user: ManagedUser,
-    values: EdicaoUsuarioFormValues
-  ) => {
+  const toggleUserStatus = async (user: ManagedUser) => {
+    const status = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+
     try {
-      const response = await updateByRole(user, values)
-      if (response.status === 200) {
-        toast.success('Usuário(a) atualizado(a) com sucesso.')
-      }
+      await api.user.updateUserStatus(user.role, user.id, status)
+      toast.success(
+        status === 'ACTIVE'
+          ? 'Usuário(a) ativado(a) com sucesso.'
+          : 'Usuário(a) inativado(a) com sucesso.'
+      )
     } catch (error) {
-      toast.error(`${extractApiMessage(error)}`)
+      toast.error(
+        `Erro ao alterar a situação do usuário: ${extractApiMessage(error)}`
+      )
     }
 
     await getUsers()
   }
 
-  // A rota de edição de administrador só aceita quem é ADMIN.
-  const getEditDisabledReason = useCallback(
+  const deleteUser = async (user: ManagedUser) => {
+    try {
+      await api.user.deleteUser(user.role, user.id)
+      toast.success('Usuário(a) excluído(a) com sucesso.')
+    } catch (error) {
+      toast.error(`Erro ao excluir o usuário: ${extractApiMessage(error)}`)
+    }
+
+    await getUsers()
+  }
+
+  const viewUser = useCallback(
+    (user: ManagedUser) => navigate(`/usuarios/${user.role}/${user.id}`),
+    [navigate]
+  )
+
+  /** A edição acontece só na página do usuário, que já abre no formulário. */
+  const editUser = useCallback(
     (user: ManagedUser) =>
-      user.role === 'ADMIN' && loggedUserRole !== 'ADMIN'
-        ? 'Apenas administradores podem editar outros administradores.'
-        : undefined,
+      navigate(`/usuarios/${user.role}/${user.id}`, {
+        state: { startEditing: true },
+      }),
+    [navigate]
+  )
+
+  const getDisabledReason = useCallback(
+    (user: ManagedUser) => getManageDisabledReason(user, loggedUserRole),
     [loggedUserRole]
   )
 
@@ -96,9 +93,13 @@ function GerenciamentoUsuarios() {
     <GerenciamentoUsuariosView
       isLoading={isLoading}
       data={users}
-      getEditDisabledReason={getEditDisabledReason}
+      getDisabledReason={getDisabledReason}
       onSearch={searchUsers}
-      onUpdate={updateUser}
+      onView={viewUser}
+      onCreate={() => navigate('/usuarios/novo')}
+      onEdit={editUser}
+      onToggleStatus={toggleUserStatus}
+      onDelete={deleteUser}
     />
   )
 }
