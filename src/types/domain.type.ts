@@ -213,8 +213,11 @@ export interface ScholarshipDetailedWithFullRelations {
 /* EmbedNotification                                                           */
 /* -------------------------------------------------------------------------- */
 
-/** Tipo do dono da notificacao: casa com o `role` de quem esta logado. */
-export type NotificationOwnerType = UserRole
+/**
+ * Orientador com privilegio de admin recebe as notificacoes como ADVISOR, por
+ * isso o tipo do dono nao e o `UserRole` de quem esta logado.
+ */
+export type NotificationOwnerType = 'STUDENT' | 'ADVISOR' | 'ADMIN'
 
 export interface EmbedNotificationSimplified {
   id: number
