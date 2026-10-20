@@ -12,10 +12,7 @@ import { api } from '@/services'
 import { formatDateHour } from '@/helpers/formatters.helper'
 import { formatApiError } from '@/helpers/api-error.helper'
 import type { StoredUser } from '@/helpers/auth-user.helper'
-import type {
-  EmbedNotificationDetailed,
-  NotificationOwnerType
-} from '@/types'
+import type { EmbedNotificationDetailed } from '@/types'
 
 export interface EmbedNotificationMenuProps {
   user: StoredUser | null
@@ -35,12 +32,7 @@ export default function EmbedNotificationMenu(
       return
     }
 
-    const role: NotificationOwnerType =
-      user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES' ? 'ADVISOR' : user.role
-    const response = await api.embedNotification.getAllEmbedNotifications(
-      user.id,
-      role
-    )
+    const response = await api.embedNotification.getAllEmbedNotifications()
 
     if (response.status === 200) {
       setEmbedNotifications(response.data)
