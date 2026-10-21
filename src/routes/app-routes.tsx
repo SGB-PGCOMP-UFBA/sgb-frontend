@@ -42,7 +42,7 @@ export default function AppRoutes() {
         <Route path="orientadores" element={<GerenciamentoOrientadores />} />
         <Route path="usuarios" element={<GerenciamentoUsuarios />} />
         <Route path="usuarios/novo" element={<CadastroUsuario />} />
-        <Route path="usuarios/:role/:id" element={<DetalhesUsuario />} />
+        <Route path="usuarios/:id" element={<DetalhesUsuario />} />
       </Route>
 
       {/* Rotas de usuário orientador */}

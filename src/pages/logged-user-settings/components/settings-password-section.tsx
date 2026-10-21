@@ -19,14 +19,15 @@ export interface SettingsPasswordSectionProps {
   user: StoredUser | null
 }
 
+const EMPTY_PASSWORD_FORM = {
+  current_password: '',
+  new_password: '',
+  confirm_new_password: ''
+}
+
 function SettingsPasswordSection(props: SettingsPasswordSectionProps) {
   const { user } = props
-  const [values, setValues] = useState({
-    email: user?.email || '',
-    current_password: '',
-    new_password: '',
-    confirm_new_password: ''
-  })
+  const [values, setValues] = useState(EMPTY_PASSWORD_FORM)
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,25 +38,15 @@ function SettingsPasswordSection(props: SettingsPasswordSectionProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!user) {
+      return
+    }
+
     try {
-      setValues({ ...values, email: user?.email ?? '' })
-      if(user && user.role === 'ADMIN') {
-        await api.admin.updateAdminPassword(values)
-      }
-      else if(user && (user.role === 'ADVISOR' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
-        await api.advisor.updateAdvisorPassword(values)
-      }
-      else if(user && user.role === 'STUDENT') {
-        await api.student.updateStudentPassword(values)
-      }
+      await api.user.updatePassword(values)
       toast.success('Senha alterada com sucesso.')
 
-      setValues({
-        email: user?.email || '',
-        current_password: '',
-        new_password: '',
-        confirm_new_password: ''
-      })
+      setValues(EMPTY_PASSWORD_FORM)
     } catch (error) {
       if (axios.isAxiosError(error) && [400, 422].includes(error.response?.status ?? 0)) {
         toast.error(getFirstErrorMessage(error.response?.data))

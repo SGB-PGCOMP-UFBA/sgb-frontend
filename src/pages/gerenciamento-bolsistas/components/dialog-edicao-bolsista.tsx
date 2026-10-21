@@ -44,6 +44,7 @@ export interface EdicaoBolsistaFormFields {
 }
 
 export interface EdicaoBolsistaSubmitValues extends EdicaoBolsistaFormFields {
+  student_id: number
   student_email: string
   enrollment_id: number
   scholarship_id: number
@@ -64,6 +65,7 @@ function DialogEdicaoBolsista({ item, isOpen, onClose, onSubmit, filterOptions }
     const entries = readFormValues<EdicaoBolsistaFormFields>(data)
 
     const result = await onSubmit({
+      student_id: item.student?.id ?? 0,
       student_email: item.student?.email ?? '',
       enrollment_id: item.enrollment?.id ?? 0,
       scholarship_id: item.id,

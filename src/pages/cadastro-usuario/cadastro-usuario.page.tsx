@@ -35,7 +35,7 @@ function CadastroUsuario() {
       toast.success(
         'Usuário(a) criado(a). A senha de acesso foi enviada para o e-mail informado.'
       )
-      navigate(`/usuarios/${response.data.role}/${response.data.id}`, {
+      navigate(`/usuarios/${response.data.id}`, {
         replace: true,
       })
     } catch (error) {

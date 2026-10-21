@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { UpdateAdvisorPayload } from '@/services/advisor'
 import type { AdvisorDetailed, UserStatus } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
 
@@ -28,11 +27,15 @@ export interface EdicaoOrientadorFormFields {
   status: UserStatus
 }
 
+export interface EdicaoOrientadorSubmitValues extends EdicaoOrientadorFormFields {
+  id: number
+}
+
 export interface DialogEdicaoOrientadorProps {
   item: AdvisorDetailed
   isOpen: boolean
   onClose: () => void
-  onSubmit: (payload: UpdateAdvisorPayload) => void
+  onSubmit: (values: EdicaoOrientadorSubmitValues) => void
 }
 
 function DialogEdicaoOrientador({
@@ -48,15 +51,12 @@ function DialogEdicaoOrientador({
     const newFormData = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoOrientadorFormFields>(newFormData)
 
-    const payload: UpdateAdvisorPayload = {
+    onSubmit({
       ...entries,
-      current_email: item.email,
+      id: item.id,
       tax_id: entries.tax_id.replace(/[^0-9]/g, ''),
       phone_number: entries.phone_number.replace(/[^0-9]/g, ''),
-      status: entries.status,
-    }
-
-    onSubmit(payload)
+    })
     onClose()
   }
 

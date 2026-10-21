@@ -7,15 +7,15 @@ import { Button } from '@/components/ui/button'
 import { DataGridOrientadores } from './components/data-grid-orientadores'
 import { DialogInclusaoOrientador } from './components/dialog-inclusao-orientador'
 import type { InclusaoOrientadorFormValues } from './components/dialog-inclusao-orientador'
+import type { EdicaoOrientadorSubmitValues } from './components/dialog-edicao-orientador'
 import Loading from '@/components/loading'
-import type { UpdateAdvisorPayload } from '@/services/advisor'
 import type { AdvisorDetailed } from '@/types'
 
 export interface GerenciamentoOrientadoresViewProps {
   isLoading: boolean
   data: AdvisorDetailed[]
   onCreate: (advisor: InclusaoOrientadorFormValues) => void
-  onUpdate: (payload: UpdateAdvisorPayload) => void
+  onUpdate: (values: EdicaoOrientadorSubmitValues) => void
   onDelete: (advisorId: number) => void
   onChangeProfile: (advisorId: number) => void
 }

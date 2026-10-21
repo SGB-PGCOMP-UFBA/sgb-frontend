@@ -18,7 +18,7 @@ function GerenciamentoOrientandos() {
           return
         }
 
-        const response = await api.student.getStudentsByAdvisorId(user.id)
+        const response = await api.user.getStudentsByAdvisor(user.id)
 
         if (response.status === 200) {
           setStudents(response.data)

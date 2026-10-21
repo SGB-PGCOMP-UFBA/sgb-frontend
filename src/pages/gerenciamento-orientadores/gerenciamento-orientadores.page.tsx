@@ -4,10 +4,7 @@ import { api } from '@/services'
 import { extractApiMessage, formatApiError } from '@/helpers/api-error.helper'
 import { GerenciamentoOrientadoresView } from './gerenciamento-orientadores.view'
 import type { InclusaoOrientadorFormValues } from './components/dialog-inclusao-orientador'
-import type {
-  CreateAdvisorPayload,
-  UpdateAdvisorPayload,
-} from '@/services/advisor'
+import type { EdicaoOrientadorSubmitValues } from './components/dialog-edicao-orientador'
 import type { AdvisorDetailed } from '@/types'
 
 function GerenciamentoOrientadores() {
@@ -15,7 +12,7 @@ function GerenciamentoOrientadores() {
   const [isLoading, setIsLoading] = useState(true)
 
   const getAdvisors = async () => {
-    const response = await api.advisor.getAdvisors()
+    const response = await api.user.getAdvisors()
 
     if (response.status === 200) {
       setAdvisors(response.data)
@@ -24,17 +21,17 @@ function GerenciamentoOrientadores() {
     }
   }
 
+  /** A senha é gerada pelo backend e enviada por e-mail ao orientador. */
   const createAdvisor = async (advisor: InclusaoOrientadorFormValues) => {
-    const creatingAdvisor: CreateAdvisorPayload = {
-      ...advisor,
-      password: Math.random().toString(36).slice(-4),
-      tax_id: advisor.tax_id.replace(/[^0-9]/g, ''),
-      phone_number: advisor.phone_number.replace(/[^0-9]/g, ''),
-      notify: true,
-    }
-
     try {
-      const response = await api.advisor.createAdvisor(creatingAdvisor)
+      const response = await api.user.createUser({
+        role: 'ADVISOR',
+        name: advisor.name,
+        email: advisor.email,
+        tax_id: advisor.tax_id.replace(/[^0-9]/g, '') || null,
+        phone_number: advisor.phone_number.replace(/[^0-9]/g, '') || null,
+        link_to_lattes: null,
+      })
       if (response.status === 201) {
         toast.success('Orientador(a) inserido(a) com sucesso.')
       }
@@ -45,12 +42,23 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
-  const updateAdvisor = async (payload: UpdateAdvisorPayload) => {
+  const updateAdvisor = async (values: EdicaoOrientadorSubmitValues) => {
+    const current = advisors.find((advisor) => advisor.id === values.id)
+
     try {
-      const response = await api.advisor.updateAdvisor(payload)
-      if (response.status === 200) {
-        toast.success('Orientador(a) atualizado(a) com sucesso.')
+      await api.user.updateUser(values.id, {
+        name: values.name,
+        email: values.email,
+        tax_id: values.tax_id || null,
+        phone_number: values.phone_number || null,
+        link_to_lattes: null,
+      })
+
+      if (current && current.status !== values.status) {
+        await api.user.updateUserStatus(values.id, values.status)
       }
+
+      toast.success('Orientador(a) atualizado(a) com sucesso.')
     } catch (error) {
       toast.error(`${extractApiMessage(error)}`)
     }
@@ -60,7 +68,7 @@ function GerenciamentoOrientadores() {
 
   const deleteAdvisor = async (advisor: number) => {
     try {
-      const response = await api.advisor.deleteAdvisor(advisor)
+      const response = await api.user.deleteUser(advisor)
       if (response.status === 204) {
         toast.success('Orientador(a) excluído(a) com sucesso.')
       }
@@ -73,7 +81,7 @@ function GerenciamentoOrientadores() {
 
   const grantAdminPrivileges = async (advisor: number) => {
     try {
-      const response = await api.advisor.grantAdminPrivileges(advisor)
+      const response = await api.user.toggleAdminPrivileges(advisor)
       if ([200, 201, 204].includes(response.status)) {
         toast.success('Orientador(a) atualizado(a) com sucesso.')
       }

@@ -81,7 +81,7 @@ function RegisterForm() {
     }
 
     try {
-      const createStudentResponse = await api.student.createStudent({
+      const createStudentResponse = await api.user.signUp({
         email: values.email,
         name: values.name,
         link_to_lattes: values.link_to_lattes,
