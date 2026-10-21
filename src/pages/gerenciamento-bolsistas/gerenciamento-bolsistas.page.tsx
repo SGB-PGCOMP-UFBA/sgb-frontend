@@ -184,7 +184,7 @@ function GerenciamentoBolsistas() {
   const getFilterOptions = async () => {
     try {
       const agencyRequest = api.agency.getAgencyFilterList()
-      const advisorRequest = api.advisor.getAdvisorFilterList()
+      const advisorRequest = api.user.getAdvisorFilterList()
       const programRequest = api.enrollment.getEnrollmentProgramFilterList()
       const allocationRequest = api.allocation.getAllocationFilterList()
 
@@ -225,9 +225,9 @@ function GerenciamentoBolsistas() {
     data: EdicaoBolsistaSubmitValues
   ): Promise<false | void> => {
     try {
-      const updateStudent = api.student.updateStudent({
-        current_email: data.student_email,
+      const updateStudent = api.user.updateUser(data.student_id, {
         name: data.student_name,
+        email: data.student_email,
         tax_id: data.student_tax_id.replace(/[^\d,]/g, ''),
         phone_number: data.student_phone_number.replace(/[^\d,]/g, ''),
         link_to_lattes: data.student_link_to_lattes,

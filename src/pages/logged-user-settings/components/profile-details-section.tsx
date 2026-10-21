@@ -23,15 +23,6 @@ export interface ProfileDetailsSectionProps {
   user: StoredUser | null
 }
 
-interface ProfileUpdatePayload {
-  current_email: string
-  email: string
-  name: string
-  tax_id: string
-  phone_number: string
-  link_to_lattes?: string
-}
-
 function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
   const { user } = props
 
@@ -50,25 +41,21 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const payload: ProfileUpdatePayload = {
-      ...values,
-      current_email: user?.email || '',
+    if (!user) {
+      return
+    }
+
+    const isStudent = user.role === 'STUDENT'
+    const payload = {
+      name: values.name,
+      email: values.email,
       tax_id: values.tax_id.replace(/[^0-9]/g, ''),
-      phone_number: values.phone_number.replace(/[^0-9]/g, '')
+      phone_number: values.phone_number.replace(/[^0-9]/g, ''),
+      ...(isStudent && { link_to_lattes: values.link_to_lattes })
     }
 
     try {
-      if(user && user.role === 'ADMIN') {
-        delete payload.link_to_lattes
-        await api.admin.updateAdmin(payload)
-      }
-      else if(user && (user.role === 'ADVISOR' || user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES')) {
-        delete payload.link_to_lattes
-        await api.advisor.updateAdvisor(payload)
-      }
-      else if(user && user.role === 'STUDENT') {
-        await api.student.updateStudent(payload)
-      }
+      await api.user.updateProfile(payload)
       toast.success('Informações alteradas com sucesso.')
       updateUserFromLocalStorage(payload)
     } catch (error) {

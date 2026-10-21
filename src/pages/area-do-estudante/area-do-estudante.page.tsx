@@ -30,7 +30,7 @@ function AreaDoEstudante() {
 
   const getAdvisors = async () => {
     try {
-      const response = await api.advisor.getAdvisorFilterList()
+      const response = await api.user.getAdvisorFilterList()
 
       if (response.status === 200) {
         setAdvisors(response.data)
@@ -72,7 +72,7 @@ function AreaDoEstudante() {
     }
 
     try {
-      const response = await api.student.getStudentsByEmail(user.email)
+      const response = await api.user.getStudent(user.id)
 
       if (response.status === 200) {
         setStudent(response.data)

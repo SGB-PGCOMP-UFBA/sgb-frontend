@@ -4,7 +4,6 @@ import { toast } from 'react-toastify'
 import { api } from '@/services'
 import { extractApiMessage } from '@/helpers/api-error.helper'
 import { getUserFromLocalStorage } from '@/helpers/auth-user.helper'
-import { isUserRole } from '@/constants/user-role.constant'
 import {
   getManageDisabledReason,
   toManagedUserPayload,
@@ -20,9 +19,8 @@ function DetalhesUsuario() {
   const startEditing = Boolean(
     (location.state as { startEditing?: boolean } | null)?.startEditing
   )
-  const role = isUserRole(params.role) ? params.role : null
   const id = Number(params.id)
-  const isValidRoute = role !== null && Number.isInteger(id) && id > 0
+  const isValidRoute = Number.isInteger(id) && id > 0
 
   const [user, setUser] = useState<ManagedUser | null>(null)
   const [isLoading, setIsLoading] = useState(isValidRoute)
@@ -34,7 +32,6 @@ function DetalhesUsuario() {
 
     try {
       const response = await api.user.updateUser(
-        user.role,
         user.id,
         toManagedUserPayload(user.role, values)
       )
@@ -51,11 +48,7 @@ function DetalhesUsuario() {
     const status = target.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
 
     try {
-      const response = await api.user.updateUserStatus(
-        target.role,
-        target.id,
-        status
-      )
+      const response = await api.user.updateUserStatus(target.id, status)
       setUser(response.data)
       toast.success(
         status === 'ACTIVE'
@@ -71,7 +64,7 @@ function DetalhesUsuario() {
 
   const deleteUser = async (target: ManagedUser) => {
     try {
-      await api.user.deleteUser(target.role, target.id)
+      await api.user.deleteUser(target.id)
       toast.success('Usuário(a) excluído(a) com sucesso.')
       navigate('/usuarios')
     } catch (error) {
@@ -80,18 +73,18 @@ function DetalhesUsuario() {
   }
 
   useEffect(() => {
-    if (!role || !isValidRoute) return
+    if (!isValidRoute) return
 
     setIsLoading(true)
     api.user
-      .getUser(role, id)
+      .getUser(id)
       .then(response => setUser(response.data))
       .catch(error => {
         setUser(null)
         toast.error(`Erro ao buscar o usuário: ${extractApiMessage(error)}`)
       })
       .finally(() => setIsLoading(false))
-  }, [role, id, isValidRoute])
+  }, [id, isValidRoute])
 
   return (
     <DetalhesUsuarioView

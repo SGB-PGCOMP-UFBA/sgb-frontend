@@ -8,9 +8,9 @@ import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
 import { DialogExclusaoOrientador } from './dialog-exclusao-orientador'
 import { DialogEdicaoOrientador } from './dialog-edicao-orientador'
+import type { EdicaoOrientadorSubmitValues } from './dialog-edicao-orientador'
 import { DialogHabilitarPerfilAdministrador } from './dialog-habilitar-perfil-administrador'
 import type { InclusaoOrientadorFormValues } from './dialog-inclusao-orientador'
-import type { UpdateAdvisorPayload } from '@/services/advisor'
 import type { AdvisorDetailed } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
@@ -18,7 +18,7 @@ const NOT_INFORMED = 'Não informado'
 export interface DataGridOrientadoresProps {
   data: AdvisorDetailed[]
   onCreate: (advisor: InclusaoOrientadorFormValues) => void
-  onUpdate: (payload: UpdateAdvisorPayload) => void
+  onUpdate: (values: EdicaoOrientadorSubmitValues) => void
   onDelete: (advisorId: number) => void
   onChangeProfile: (advisorId: number) => void
 }

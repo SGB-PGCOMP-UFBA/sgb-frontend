@@ -40,7 +40,7 @@ function GerenciamentoUsuarios() {
     const status = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
 
     try {
-      await api.user.updateUserStatus(user.role, user.id, status)
+      await api.user.updateUserStatus(user.id, status)
       toast.success(
         status === 'ACTIVE'
           ? 'Usuário(a) ativado(a) com sucesso.'
@@ -57,7 +57,7 @@ function GerenciamentoUsuarios() {
 
   const deleteUser = async (user: ManagedUser) => {
     try {
-      await api.user.deleteUser(user.role, user.id)
+      await api.user.deleteUser(user.id)
       toast.success('Usuário(a) excluído(a) com sucesso.')
     } catch (error) {
       toast.error(`Erro ao excluir o usuário: ${extractApiMessage(error)}`)
@@ -67,14 +67,14 @@ function GerenciamentoUsuarios() {
   }
 
   const viewUser = useCallback(
-    (user: ManagedUser) => navigate(`/usuarios/${user.role}/${user.id}`),
+    (user: ManagedUser) => navigate(`/usuarios/${user.id}`),
     [navigate]
   )
 
   /** A edição acontece só na página do usuário, que já abre no formulário. */
   const editUser = useCallback(
     (user: ManagedUser) =>
-      navigate(`/usuarios/${user.role}/${user.id}`, {
+      navigate(`/usuarios/${user.id}`, {
         state: { startEditing: true },
       }),
     [navigate]
