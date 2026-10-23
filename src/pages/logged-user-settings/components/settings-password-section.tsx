@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/services'
+import { isClientError } from '@/helpers/api-error.helper'
 import type { StoredUser } from '@/helpers/auth-user.helper'
 
 export interface SettingsPasswordSectionProps {
@@ -48,7 +49,7 @@ function SettingsPasswordSection(props: SettingsPasswordSectionProps) {
 
       setValues(EMPTY_PASSWORD_FORM)
     } catch (error) {
-      if (axios.isAxiosError(error) && [400, 422].includes(error.response?.status ?? 0)) {
+      if (axios.isAxiosError(error) && isClientError(error.response?.status)) {
         toast.error(getFirstErrorMessage(error.response?.data))
       } else {
         toast.error('Erro inesperado. Tente novamente!')

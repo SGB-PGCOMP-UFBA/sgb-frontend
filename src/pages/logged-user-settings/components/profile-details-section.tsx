@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label'
 import { CpfInput, PhoneInput } from '@/components/ui/masked-input'
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/services'
+import { isClientError } from '@/helpers/api-error.helper'
 import { updateUserFromLocalStorage } from '@/helpers/auth-user.helper'
 import type { StoredUser } from '@/helpers/auth-user.helper'
 import type { FieldChangeEvent } from '@/types'
@@ -59,7 +60,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
       toast.success('Informações alteradas com sucesso.')
       updateUserFromLocalStorage(payload)
     } catch (error) {
-      if (axios.isAxiosError(error) && [400, 422].includes(error.response?.status ?? 0)) {
+      if (axios.isAxiosError(error) && isClientError(error.response?.status)) {
         toast.error(getFirstErrorMessage(error.response?.data))
       } else {
         toast.error('Erro inesperado. Tente novamente!')
