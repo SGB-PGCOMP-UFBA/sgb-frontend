@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import type { UpdateAgencyPayload } from '@/services/agency'
 import type { AgencyDetailed } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 
 interface EdicaoAgenciaFormValues {
   name?: string
@@ -28,8 +29,14 @@ export interface DialogEdicaoAgenciaProps {
 }
 
 function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }: DialogEdicaoAgenciaProps) {
+  const { formProps, hasChanges } = useFormChanges()
+
   const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      onClose()
+      return
+    }
     const newAgencyData = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoAgenciaFormValues>(newAgencyData)
 
@@ -46,7 +53,7 @@ function DialogEdicaoAgencia({ item, isOpen, onClose, onSubmit }: DialogEdicaoAg
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[595px]">
-        <form onSubmit={submitAndCloseDialog}>
+        <form {...formProps} onSubmit={submitAndCloseDialog}>
           <DialogHeader>
             <DialogTitle>Editar Agência</DialogTitle>
           </DialogHeader>

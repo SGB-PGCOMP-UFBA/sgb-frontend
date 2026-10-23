@@ -21,7 +21,7 @@ function PageHeader({
   className
 }: PageHeaderProps) {
   return (
-    <div className={cn('mb-8 flex justify-between', className)}>
+    <div className={cn('mb-8 flex flex-wrap items-center justify-between gap-4', className)}>
       <div className="flex items-center gap-x-4">
         <div className={cn('rounded-md p-2 leading-none text-white', iconBackgroundClassName)}>
           <Icon className={cn('h-8 w-8', iconClassName)} />

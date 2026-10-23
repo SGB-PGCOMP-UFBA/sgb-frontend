@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/select'
 import type { AdvisorDetailed, UserStatus } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 
 export interface EdicaoOrientadorFormFields {
   name: string
@@ -44,10 +45,16 @@ function DialogEdicaoOrientador({
   onClose,
   onSubmit,
 }: DialogEdicaoOrientadorProps) {
+  const { formProps, hasChanges } = useFormChanges()
+
   const submitAndCloseDialog = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      onClose()
+      return
+    }
     const newFormData = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoOrientadorFormFields>(newFormData)
 
@@ -63,7 +70,7 @@ function DialogEdicaoOrientador({
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent className='sm:max-w-[595px]'>
-        <form onSubmit={submitAndCloseDialog}>
+        <form {...formProps} onSubmit={submitAndCloseDialog}>
           <DialogHeader>
             <DialogTitle>Editar Orientador</DialogTitle>
           </DialogHeader>

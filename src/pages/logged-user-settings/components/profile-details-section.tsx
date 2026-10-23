@@ -17,6 +17,7 @@ import { Separator } from '@/components/ui/separator'
 import { api } from '@/services'
 import { isClientError } from '@/helpers/api-error.helper'
 import { updateUserFromLocalStorage } from '@/helpers/auth-user.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 import type { StoredUser } from '@/helpers/auth-user.helper'
 import type { FieldChangeEvent } from '@/types'
 
@@ -39,10 +40,13 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
     setValues({ ...values, [event.target.name]: event.target.value })
   }
 
+  const { formProps, hasChanges, resetChanges } = useFormChanges()
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.currentTarget
 
-    if (!user) {
+    if (!user || !hasChanges(form)) {
       return
     }
 
@@ -59,6 +63,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
       await api.user.updateProfile(payload)
       toast.success('Informações alteradas com sucesso.')
       updateUserFromLocalStorage(payload)
+      resetChanges(form)
     } catch (error) {
       if (axios.isAxiosError(error) && isClientError(error.response?.status)) {
         toast.error(getFirstErrorMessage(error.response?.data))
@@ -79,7 +84,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
   }
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit}>
+    <form {...formProps} autoComplete="off" onSubmit={handleSubmit}>
       <Card className="border-gray-200 shadow-none">
         <CardHeader>
           <CardTitle>Perfil</CardTitle>

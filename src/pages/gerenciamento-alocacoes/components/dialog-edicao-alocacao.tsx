@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import type { UpdateAllocationPayload } from '@/services/allocation'
 import type { AllocationDetailed } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 
 interface EdicaoAlocacaoFormValues {
   name: string
@@ -24,8 +25,14 @@ export interface DialogEdicaoAlocacaoProps {
 }
 
 function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }: DialogEdicaoAlocacaoProps) {
+  const { formProps, hasChanges } = useFormChanges()
+
   const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      onClose()
+      return
+    }
     const newAgencyData = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoAlocacaoFormValues>(newAgencyData)
 
@@ -39,7 +46,7 @@ function DialogEdicaoAlocacao({ item, isOpen, onClose, onSubmit }: DialogEdicaoA
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[595px]">
-        <form onSubmit={submitAndCloseDialog}>
+        <form {...formProps} onSubmit={submitAndCloseDialog}>
           <DialogHeader>
             <DialogTitle>Editar Alocação</DialogTitle>
           </DialogHeader>
