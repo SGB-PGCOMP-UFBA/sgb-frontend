@@ -20,6 +20,7 @@ import {
 import type { BolsaRow } from './data-grid-bolsas'
 import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 import { toCalendarDate } from '@/helpers/formatters.helper'
 
 export interface EdicaoBolsaFormFields {
@@ -72,8 +73,14 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
     setMaxExtensionEndDate(maxEndDate)
   }
 
+  const { formProps, hasChanges } = useFormChanges()
+
   const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      onClose()
+      return
+    }
     const data = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoBolsaFormFields>(data)
 
@@ -91,7 +98,7 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[695px]">
-        <form onSubmit={submitAndCloseDialog}>
+        <form {...formProps} onSubmit={submitAndCloseDialog}>
           <DialogHeader>
             <DialogTitle>
               Editar Bolsa (Matrícula {item.enrollment_number.trim()} - {item.enrollment_program})

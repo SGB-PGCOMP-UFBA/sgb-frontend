@@ -20,6 +20,7 @@ import {
 import type { MatriculaRow } from './data-grid-matriculas'
 import type { AdvisorFilterOption, EnrollmentProgram } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 import { toCalendarDate } from '@/helpers/formatters.helper'
 
 export interface EdicaoMatriculaFormFields {
@@ -52,8 +53,14 @@ function DialogEdicaoMatricula(props: DialogEdicaoMatriculaProps) {
     setMinEndDate(newDate)
   }
 
+  const { formProps, hasChanges } = useFormChanges()
+
   const submitAndCloseDialog = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      onClose()
+      return
+    }
     const data = new FormData(event.currentTarget)
     const entries = readFormValues<EdicaoMatriculaFormFields>(data)
 
@@ -68,7 +75,7 @@ function DialogEdicaoMatricula(props: DialogEdicaoMatriculaProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[695px]">
-        <form onSubmit={submitAndCloseDialog}>
+        <form {...formProps} onSubmit={submitAndCloseDialog}>
           <DialogHeader>
             <DialogTitle>Editar Matrícula</DialogTitle>
           </DialogHeader>

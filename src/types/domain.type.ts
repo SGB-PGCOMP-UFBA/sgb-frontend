@@ -195,6 +195,27 @@ export interface ScholarshipDetailedWithRelations {
   advisor: AdvisorDetailed | null
 }
 
+/** Pessoa vinculada a uma bolsa no resumo, so com o necessario para o link. */
+export interface ScholarshipPersonSummary {
+  id: number
+  name: string
+}
+
+/** Resumo de bolsa usado nas listagens da pagina do usuario. */
+export interface ScholarshipSummary {
+  id: number
+  status: ScholarshipStatus
+  scholarship_starts_at: DateString
+  scholarship_ends_at: DateString
+  extension_ends_at: DateString | null
+  agency_name: string | null
+  allocation_name: string | null
+  enrollment_number: string | null
+  enrollment_program: EnrollmentProgram | null
+  student: ScholarshipPersonSummary | null
+  advisor: ScholarshipPersonSummary | null
+}
+
 /** Igual ao anterior, porem sem `enrollment`, `student` e `advisor`. */
 export interface ScholarshipDetailedWithFullRelations {
   id: number

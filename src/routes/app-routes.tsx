@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Navigate, Routes, Route, useParams } from 'react-router-dom'
 import RequireAuth from '@/components/require-auth'
 import {
   PageForgetPassword,
@@ -8,18 +8,25 @@ import {
   PageRegister,
   PageRegisterAdvisor,
   DashboardMetricas,
-  GerenciamentoBolsistas,
+  GerenciamentoBolsas,
   GerenciamentoAgencias,
   GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
   GerenciamentoUsuarios,
   DetalhesUsuario,
+  DetalhesBolsa,
   CadastroUsuario,
   AreaDoEstudante,
   PageAboutSystem,
   RelatorioQuadrienal
 } from '@/pages'
+
+/** Links antigos de /bolsistas/:id continuam abrindo a bolsa. */
+function RedirectBolsista() {
+  const { id } = useParams()
+  return <Navigate to={`/bolsas/${id}`} replace />
+}
 
 export default function AppRoutes() {
   return (
@@ -35,7 +42,10 @@ export default function AppRoutes() {
       {/* Rotas de usuário administrador */}
       <Route element={<RequireAuth allowedRoles={["ADMIN", "ADVISOR_WITH_ADMIN_PRIVILEGES"]} />}>
         <Route path="dashboard" element={<DashboardMetricas />} />
-        <Route path="bolsistas" element={<GerenciamentoBolsistas />} />
+        <Route path="bolsas" element={<GerenciamentoBolsas />} />
+        <Route path="bolsas/:id" element={<DetalhesBolsa />} />
+        <Route path="bolsistas" element={<Navigate to="/bolsas" replace />} />
+        <Route path="bolsistas/:id" element={<RedirectBolsista />} />
         <Route path="quadrienal" element={<RelatorioQuadrienal />} />
         <Route path="agencias" element={<GerenciamentoAgencias />} />
         <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />

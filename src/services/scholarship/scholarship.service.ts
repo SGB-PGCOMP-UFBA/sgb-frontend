@@ -7,6 +7,7 @@ import type {
   Page,
   ScholarshipDetailedWithRelations,
   ScholarshipFilters,
+  ScholarshipSummary,
 } from '@/types'
 
 const BASE_SCHOLARSHIP_API_PATH = `/v1/scholarship`
@@ -159,6 +160,22 @@ export const getScholarships = async (
   }
 
   return api.get(url, {
+    headers: buildHeaders(),
+  })
+}
+
+export const getScholarship = async (
+  scholarshipId: number
+): Promise<AxiosResponse<ScholarshipDetailedWithRelations>> => {
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/${scholarshipId}`, {
+    headers: buildHeaders(),
+  })
+}
+
+export const getScholarshipsByUser = async (
+  userId: number
+): Promise<AxiosResponse<ScholarshipSummary[]>> => {
+  return api.get(`${BASE_SCHOLARSHIP_API_PATH}/by-user/${userId}`, {
     headers: buildHeaders(),
   })
 }

@@ -17,17 +17,16 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { DataGridBolsistas } from './components/data-grid-bolsistas'
+import { DataGridBolsas } from './components/data-grid-bolsas'
 import Loading from '@/components/loading'
-import type { EdicaoBolsistaSubmitValues } from './components/dialog-edicao-bolsista'
 import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
   ScholarshipPageFilters
-} from './gerenciamento-bolsistas.page'
+} from './gerenciamento-bolsas.page'
 import type { Page, ScholarshipDetailedWithRelations } from '@/types'
 
-export interface GerenciamentoBolsistasViewProps {
+export interface GerenciamentoBolsasViewProps {
   data: Partial<Page<ScholarshipDetailedWithRelations>>
   page: number
   setPage: (page: number) => void
@@ -38,7 +37,6 @@ export interface GerenciamentoBolsistasViewProps {
   handleResetFilters: () => void
   filterOptions: ScholarshipFilterOptions
   isLoading: boolean
-  onEditScholarship: (data: EdicaoBolsistaSubmitValues) => Promise<false | void>
   onDeleteScholarship: (scholarshipId: number) => void
   isDialogForFiltersOpen: boolean
   handleReportDownload: () => void
@@ -47,8 +45,8 @@ export interface GerenciamentoBolsistasViewProps {
   copyScholarshipStudentsEmails: () => void
 }
 
-function GerenciamentoBolsistasView(props: GerenciamentoBolsistasViewProps) {
-  const { isLoading, data, onEditScholarship, onDeleteScholarship } = props
+function GerenciamentoBolsasView(props: GerenciamentoBolsasViewProps) {
+  const { isLoading, data, onDeleteScholarship } = props
 
   const handleSelectChange = (name: string) => (value: string) => {
     props.setFilters({ target: { name, value } })
@@ -57,8 +55,8 @@ function GerenciamentoBolsistasView(props: GerenciamentoBolsistasViewProps) {
   return (
     <AppLayout>
       <PageHeader
-        title='Bolsistas'
-        description='Listagem de Bolsistas do Programa de Pós-Graduação em Computação'
+        title='Bolsas'
+        description='Listagem de Bolsas do Programa de Pós-Graduação em Computação'
         icon={MdWork}
         iconBackgroundClassName='bg-green-400'
         actions={
@@ -239,15 +237,13 @@ function GerenciamentoBolsistasView(props: GerenciamentoBolsistasViewProps) {
       {isLoading ? (
         <Loading />
       ) : (
-        <DataGridBolsistas
+        <DataGridBolsas
           page={props.page}
           setPage={props.setPage}
           size={props.size}
           setSize={props.setSize}
           data={data.items}
-          filterOptions={props.filterOptions}
           metadata={data.meta}
-          onEdit={onEditScholarship}
           onDelete={onDeleteScholarship}
         />
       )}
@@ -255,4 +251,4 @@ function GerenciamentoBolsistasView(props: GerenciamentoBolsistasViewProps) {
   )
 }
 
-export { GerenciamentoBolsistasView }
+export { GerenciamentoBolsasView }

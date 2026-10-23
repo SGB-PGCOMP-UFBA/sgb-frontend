@@ -19,7 +19,7 @@ import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
   ScholarshipPageFilters
-} from '@/pages/gerenciamento-bolsistas'
+} from '@/pages/gerenciamento-bolsas'
 
 export interface DialogFiltrosProps {
   filters: ScholarshipPageFilters

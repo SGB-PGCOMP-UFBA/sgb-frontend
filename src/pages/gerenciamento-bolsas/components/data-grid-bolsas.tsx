@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react'
-import { ActionIconButton } from '@/components/action-icon-button'
+import { useNavigate } from 'react-router-dom'
 import type { PaginationState } from '@tanstack/react-table'
-import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
-import { formatPhone, formatCalendarDate } from '@/helpers/formatters.helper'
+import { formatCalendarDate } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
-import { DialogExclusaoBolsa } from './dialog-exclusao-bolsa'
-import { DialogEdicaoBolsista } from './dialog-edicao-bolsista'
-import type { EdicaoBolsistaSubmitValues } from './dialog-edicao-bolsista'
-import type { ScholarshipFilterOptions } from '@/pages/gerenciamento-bolsistas'
+import { DialogExclusaoBolsa } from '@/components/dialog-exclusao-bolsa'
+import { MenuAcoesBolsa } from './menu-acoes-bolsa'
 import type {
   PageMeta,
   ScholarshipDetailedWithRelations
@@ -18,20 +15,19 @@ import './custom-scrollbar.css';
 
 const NOT_INFORMED = 'Não informado'
 
-export interface DataGridBolsistasProps {
+export interface DataGridBolsasProps {
   page: number
   setPage: (page: number) => void
   size: number
   setSize: (size: number) => void
   data: ScholarshipDetailedWithRelations[] | undefined
-  filterOptions: ScholarshipFilterOptions
   metadata: PageMeta | undefined
-  onEdit: (data: EdicaoBolsistaSubmitValues) => Promise<false | void>
   onDelete: (scholarshipId: number) => void
 }
 
-function DataGridBolsistas(props: DataGridBolsistasProps) {
-  const { data, metadata, onEdit, onDelete } = props
+function DataGridBolsas(props: DataGridBolsasProps) {
+  const { data, metadata, onDelete } = props
+  const navigate = useNavigate()
 
   const [paginationModel, setPaginationModel] = useState<PaginationState>({
     pageSize: metadata?.itemsPerPage ?? props.size,
@@ -54,7 +50,6 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
 
   const [selectedScholarship, setSelectedScholarship] = useState<ScholarshipDetailedWithRelations | null>(null)
   const [isDialogForDeleteOpen, setIsDialogForDeleteOpen] = useState(false)
-  const [isDialogForEditionOpen, setIsDialogForEditionOpen] = useState(false)
 
   const handleDialogForDeleteClose = () => {
     setSelectedScholarship(null)
@@ -64,16 +59,6 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
   const handleDialogForDeleteOpen = (value: ScholarshipDetailedWithRelations) => {
     setSelectedScholarship(value)
     setIsDialogForDeleteOpen(true)
-  }
-
-  const handleDialogForEditionClose = () => {
-    setSelectedScholarship(null)
-    setIsDialogForEditionOpen(false)
-  }
-
-  const handleDialogForEditionOpen = (value: ScholarshipDetailedWithRelations) => {
-    setSelectedScholarship(value)
-    setIsDialogForEditionOpen(true)
   }
 
   const columns = useMemo<DataTableColumn<ScholarshipDetailedWithRelations>[]>(
@@ -171,70 +156,25 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
         csv: (row) => row.allocation?.name
       },
       {
-        id: 'student_email',
-        header: 'E-mail',
-        width: 200,
-        cell: (row) => (
-          <p className="custom-scrollbar whitespace-nowrap overflow-x-auto">
-            {row.student?.email ? row.student.email : NOT_INFORMED}
-          </p>
-        ),
-        csv: (row) => row.student?.email
-      },
-      {
-        id: 'student_phone_number',
-        header: 'Celular',
-        width: 130,
-        cell: (row) => (row.student?.phone_number ?
-          <a
-            href={`https://wa.me/${row.student.phone_number}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-500"
-          >
-            {formatPhone(row.student.phone_number)}
-          </a>
-          : <p className="overflow-auto">{NOT_INFORMED}</p>
-        ),
-        csv: (row) => row.student?.phone_number
-      },
-      {
-        id: 'link_to_lattes',
-        header: 'Link do Lattes',
-        width: 100,
-        cell: (row) => (
-          <a
-            href={`${row.student?.link_to_lattes}`}
-            target="_blank"
-            rel="noreferrer"
-            className="custom-scrollbar whitespace-nowrap overflow-x-auto center text-blue-500"
-          >
-            Lattes
-          </a>
-        ),
-        csv: (row) => row.student?.link_to_lattes
-      },
-      {
         id: 'actions',
         header: 'Ações',
-        width: 130,
+        width: 80,
         cell: (row) => (
-          <div className="flex items-center gap-x-2 overflow-auto">
-            <ActionIconButton
-              label="Editar Bolsista"
-              icon={Pencil}
-              onClick={() => handleDialogForEditionOpen(row)}
-            />
-            <ActionIconButton
-              label="Excluir Bolsa"
-              icon={Trash2}
-              onClick={() => handleDialogForDeleteOpen(row)}
-            />
-          </div>
+          <MenuAcoesBolsa
+            scholarship={row}
+            onView={(scholarship) => navigate(`/bolsas/${scholarship.id}`)}
+            onViewUser={(userId) => navigate(`/usuarios/${userId}`)}
+            onEdit={(scholarship) =>
+              navigate(`/bolsas/${scholarship.id}`, {
+                state: { startEditing: true }
+              })
+            }
+            onDelete={handleDialogForDeleteOpen}
+          />
         )
       }
     ],
-    []
+    [navigate]
   )
 
   return (
@@ -243,7 +183,7 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
         <DataTable
           data={data ?? []}
           columns={columns}
-          csvFileName="bolsistas"
+          csvFileName="bolsas"
           manualPagination
           rowCount={metadata?.totalItems ?? 0}
           pagination={paginationModel}
@@ -259,19 +199,9 @@ function DataGridBolsistas(props: DataGridBolsistasProps) {
             onClose={handleDialogForDeleteClose}
           />
         )}
-
-        {selectedScholarship && (
-          <DialogEdicaoBolsista
-            item={selectedScholarship}
-            isOpen={isDialogForEditionOpen}
-            onSubmit={onEdit}
-            onClose={handleDialogForEditionClose}
-            filterOptions={props.filterOptions}
-          />
-        )}
       </div>
     </div>
   )
 }
 
-export { DataGridBolsistas }
+export { DataGridBolsas }

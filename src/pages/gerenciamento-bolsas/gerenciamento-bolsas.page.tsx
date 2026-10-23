@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
-import { extractApiMessage, formatApiError } from '@/helpers/api-error.helper'
-import { GerenciamentoBolsistasView } from './gerenciamento-bolsistas.view'
-import { formattedNow, parseDate } from '@/helpers/formatters.helper'
-import type { EdicaoBolsistaSubmitValues } from './components/dialog-edicao-bolsista'
+import { formatApiError } from '@/helpers/api-error.helper'
+import { GerenciamentoBolsasView } from './gerenciamento-bolsas.view'
+import { formattedNow } from '@/helpers/formatters.helper'
+import {
+  readScholarshipListFilters,
+  toScholarshipListParams,
+  type ScholarshipListFilters,
+} from '@/helpers/scholarship.helper'
 import { SCHOLARSHIP_STATUS_FILTER_OPTIONS } from '@/constants/status.constant'
 import type {
   AdvisorFilterOption,
@@ -16,7 +21,7 @@ import type {
   ScholarshipFilters,
 } from '@/types'
 
-export type ScholarshipPageFilters = Required<ScholarshipFilters>
+export type ScholarshipPageFilters = ScholarshipListFilters
 
 export type ScholarshipFilterChangeEvent = FieldChangeEvent
 export interface ScholarshipFilterOptions {
@@ -45,33 +50,13 @@ const initialFilterOptions: ScholarshipFilterOptions = {
   ],
 }
 
-const initialFilters: ScholarshipPageFilters = {
-  scholarshipStatus: 'ON_GOING',
-  agencyName: 'CAPES',
-  advisorName: 'ALL',
-  programName: 'MESTRADO',
-  allocationName: 'ALL',
-  orderBy: 'DAT_TERMINO_ASC',
-  studentName: '',
-}
-
-const resetedFilters: ScholarshipPageFilters = {
-  scholarshipStatus: 'ALL',
-  agencyName: 'ALL',
-  advisorName: 'ALL',
-  programName: 'ALL',
-  allocationName: 'ALL',
-  orderBy: 'DAT_TERMINO_DESC',
-  studentName: '',
-}
-
 interface GetScholarshipsParams {
   size: number
   page: number
   filters: ScholarshipPageFilters
 }
 
-function GerenciamentoBolsistas() {
+function GerenciamentoBolsas() {
   const [data, setData] = useState<
     Partial<Page<ScholarshipDetailedWithRelations>>
   >({})
@@ -79,7 +64,12 @@ function GerenciamentoBolsistas() {
   const [size, setSize] = useState(5)
   const [filterOptions, setFilterOptions] =
     useState<ScholarshipFilterOptions>(initialFilterOptions)
-  const [filters, setFilters] = useState<ScholarshipPageFilters>(initialFilters)
+  // Os filtros moram na URL: qualquer link /bolsas?... ja abre filtrado.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const filters = useMemo(
+    () => readScholarshipListFilters(searchParams),
+    [searchParams]
+  )
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogForFiltersOpen, setIsDialogForFiltersOpen] = useState(false)
 
@@ -92,11 +82,14 @@ function GerenciamentoBolsistas() {
   }
 
   const handleFiltersValueChange = (e: ScholarshipFilterChangeEvent) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value })
+    setSearchParams(
+      toScholarshipListParams({ ...filters, [e.target.name]: e.target.value }),
+      { replace: true }
+    )
   }
 
   const handleFiltersReset = () => {
-    setFilters(resetedFilters)
+    setSearchParams({}, { replace: true })
   }
 
   const getScholarships = async ({
@@ -221,63 +214,6 @@ function GerenciamentoBolsistas() {
     }
   }
 
-  const updateScholarship = async (
-    data: EdicaoBolsistaSubmitValues
-  ): Promise<false | void> => {
-    try {
-      const updateStudent = api.user.updateUser(data.student_id, {
-        name: data.student_name,
-        email: data.student_email,
-        tax_id: data.student_tax_id.replace(/[^\d,]/g, ''),
-        phone_number: data.student_phone_number.replace(/[^\d,]/g, ''),
-        link_to_lattes: data.student_link_to_lattes,
-      })
-
-      const updateEnrollment = api.enrollment.updateEnrollment(
-        data.enrollment_id,
-        {
-          advisor_email: data.advisor_email,
-          student_email: data.student_email,
-          enrollment_program: data.enrollment_program,
-          enrollment_date: parseDate(data.enrollment_date),
-          defense_prediction_date: parseDate(data.defense_prediction_date),
-        }
-      )
-
-      const updateScholarship = api.scholarship.updateScholarship(
-        data.scholarship_id,
-        {
-          enrollment_id: data.enrollment_id,
-          student_email: data.student_email,
-          agency_id: data.agency_id,
-          scholarship_starts_at: parseDate(data.scholarship_starts_at),
-          scholarship_ends_at: parseDate(data.scholarship_ends_at),
-          extension_ends_at:
-            data.extension_ends_at !== null
-              ? parseDate(data.extension_ends_at)
-              : null,
-          salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
-          allocation_id: data.allocation_id,
-        }
-      )
-
-      const response = await Promise.all([
-        updateStudent,
-        updateEnrollment,
-        updateScholarship,
-      ])
-
-      if (response.length > 0) {
-        toast.success('As informações da bolsa foram atualizadas com sucesso.')
-      }
-    } catch (error) {
-      toast.error(`Erro ao atualizar a bolsa: ${extractApiMessage(error)}`)
-      return false
-    }
-
-    await getScholarships({ size, page, filters })
-  }
-
   const deleteScholarship = async (scholarshipId: number) => {
     const response = await api.scholarship.deleteScholarship(scholarshipId)
 
@@ -299,7 +235,7 @@ function GerenciamentoBolsistas() {
   }, [])
 
   return (
-    <GerenciamentoBolsistasView
+    <GerenciamentoBolsasView
       data={data}
       page={page}
       setPage={setPage}
@@ -310,7 +246,6 @@ function GerenciamentoBolsistas() {
       handleResetFilters={handleFiltersReset}
       filterOptions={filterOptions}
       isLoading={isLoading}
-      onEditScholarship={updateScholarship}
       onDeleteScholarship={deleteScholarship}
       isDialogForFiltersOpen={isDialogForFiltersOpen}
       handleReportDownload={handleReportDownload}
@@ -321,4 +256,4 @@ function GerenciamentoBolsistas() {
   )
 }
 
-export { GerenciamentoBolsistas }
+export { GerenciamentoBolsas }

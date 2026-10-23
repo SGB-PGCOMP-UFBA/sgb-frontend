@@ -7,6 +7,8 @@ import { CustomChip } from '@/components'
 import { PageHeader } from '@/components/page-header'
 import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
 import { DialogSituacaoUsuario } from '@/components/dialog-situacao-usuario'
+import { DetailSection } from '@/components/detail-section'
+import { InfoItem } from '@/components/info-item'
 import { UserFormFields } from '@/components/user-form-fields'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,11 +19,15 @@ import {
 import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { readFormValues } from '@/helpers/form-values.helper'
+import { useFormChanges } from '@/hooks/use-form-changes'
 import {
   isAdvisorRole,
   isStudentRole,
   type ManagedUserFormValues,
 } from '@/helpers/managed-user.helper'
+import { filterActiveScholarships } from '@/helpers/scholarship.helper'
+import type { UserScholarshipsState } from '@/hooks/use-user-scholarships'
+import { ResumoBolsasUsuario } from './components/resumo-bolsas-usuario'
 import type { ManagedUser } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
@@ -35,6 +41,10 @@ export interface DetalhesUsuarioViewProps {
   onUpdate: (values: ManagedUserFormValues) => Promise<boolean>
   onToggleStatus: (user: ManagedUser) => void
   onDelete: (user: ManagedUser) => void
+  /** Bolsas do usuario; ausente para administradores. */
+  scholarships?: UserScholarshipsState
+  /** Abre a pagina de bolsas filtrada por este usuario. */
+  onViewScholarships: () => void
 }
 
 interface ActionButtonProps {
@@ -73,15 +83,6 @@ function ActionButton({
   )
 }
 
-function InfoItem({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className='space-y-1'>
-      <dt className='text-xs font-medium uppercase text-gray-500'>{label}</dt>
-      <dd className='break-words text-sm text-gray-900'>{value}</dd>
-    </div>
-  )
-}
-
 function DetalhesUsuarioView({
   isLoading,
   user,
@@ -91,15 +92,23 @@ function DetalhesUsuarioView({
   onUpdate,
   onToggleStatus,
   onDelete,
+  scholarships,
+  onViewScholarships,
 }: DetalhesUsuarioViewProps) {
   const [isEditingRequested, setIsEditing] = useState(startEditing)
   const isEditing = isEditingRequested && !disabledReason
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false)
+  const { formProps, hasChanges } = useFormChanges()
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!hasChanges(event.currentTarget)) {
+      setIsEditing(false)
+      return
+    }
+
     const values = readFormValues<ManagedUserFormValues>(
       new FormData(event.currentTarget)
     )
@@ -180,9 +189,9 @@ function DetalhesUsuarioView({
         }
       />
 
-      <section className='rounded-xl border border-gray-200 p-5'>
+      <DetailSection>
         {isEditing ? (
-          <form onSubmit={submit}>
+          <form {...formProps} onSubmit={submit}>
             <UserFormFields
               role={user.role}
               defaultValues={user}
@@ -261,7 +270,18 @@ function DetalhesUsuarioView({
             />
           </dl>
         )}
-      </section>
+      </DetailSection>
+
+      {scholarships && (
+        <DetailSection title='Bolsas' className='mt-4'>
+          <ResumoBolsasUsuario
+            scholarships={scholarships.scholarships}
+            isLoading={scholarships.isLoading}
+            hasError={scholarships.hasError}
+            onViewScholarships={onViewScholarships}
+          />
+        </DetailSection>
+      )}
 
       {isStatusDialogOpen && (
         <DialogSituacaoUsuario
@@ -278,6 +298,10 @@ function DetalhesUsuarioView({
           item={user}
           onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={onDelete}
+          activeScholarships={filterActiveScholarships(
+            scholarships?.scholarships ?? []
+          )}
+          isCheckingScholarships={scholarships?.isLoading}
         />
       )}
     </AppLayout>

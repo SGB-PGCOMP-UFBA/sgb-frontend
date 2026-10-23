@@ -6,13 +6,14 @@ import { PageAboutSystem } from './page-about-system'
 import { PageRegisterAdvisor } from './page-register-advisor'
 import { PageForgetPassword } from './page-forget-password'
 import { DashboardMetricas } from './dashboard-metricas'
-import { GerenciamentoBolsistas } from './gerenciamento-bolsistas'
+import { GerenciamentoBolsas } from './gerenciamento-bolsas'
 import { GerenciamentoAgencias } from './gerenciamento-agencias'
 import { GerenciamentoAlocacoes } from './gerenciamento-alocacoes'
 import { GerenciamentoOrientandos } from './gerenciamento-orientandos'
 import { GerenciamentoOrientadores } from './gerenciamento-orientadores'
 import { GerenciamentoUsuarios } from './gerenciamento-usuarios'
 import { DetalhesUsuario } from './detalhes-usuario'
+import { DetalhesBolsa } from './detalhes-bolsa'
 import { CadastroUsuario } from './cadastro-usuario'
 import { AreaDoEstudante } from './area-do-estudante'
 import { RelatorioQuadrienal } from './relatorio-quadrienal'
@@ -26,13 +27,14 @@ export {
   PageRegisterAdvisor,
   PageForgetPassword,
   DashboardMetricas,
-  GerenciamentoBolsistas,
+  GerenciamentoBolsas,
   GerenciamentoAgencias,
   GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
   GerenciamentoOrientadores,
   GerenciamentoUsuarios,
   DetalhesUsuario,
+  DetalhesBolsa,
   CadastroUsuario,
   AreaDoEstudante,
   RelatorioQuadrienal,

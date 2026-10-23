@@ -9,6 +9,8 @@ import {
   toManagedUserPayload,
   type ManagedUserFormValues,
 } from '@/helpers/managed-user.helper'
+import { buildScholarshipListUrl } from '@/helpers/scholarship.helper'
+import { useUserScholarships } from '@/hooks/use-user-scholarships'
 import { DetalhesUsuarioView } from './detalhes-usuario.view'
 import type { ManagedUser } from '@/types'
 
@@ -26,6 +28,8 @@ function DetalhesUsuario() {
   const [isLoading, setIsLoading] = useState(isValidRoute)
 
   const loggedUserRole = getUserFromLocalStorage()?.role
+  const hasScholarships = Boolean(user && user.role !== 'ADMIN')
+  const scholarships = useUserScholarships(hasScholarships ? id : null)
 
   const updateUser = async (values: ManagedUserFormValues) => {
     if (!user) return false
@@ -98,6 +102,17 @@ function DetalhesUsuario() {
       onUpdate={updateUser}
       onToggleStatus={toggleUserStatus}
       onDelete={deleteUser}
+      scholarships={hasScholarships ? scholarships : undefined}
+      onViewScholarships={() => {
+        if (!user) return
+        navigate(
+          buildScholarshipListUrl(
+            user.role === 'STUDENT'
+              ? { studentName: user.name }
+              : { advisorName: user.name }
+          )
+        )
+      }}
     />
   )
 }

@@ -6,6 +6,8 @@ import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
 import { DialogSituacaoUsuario } from '@/components/dialog-situacao-usuario'
+import { filterActiveScholarships } from '@/helpers/scholarship.helper'
+import { useUserScholarships } from '@/hooks/use-user-scholarships'
 import { MenuAcoesUsuario } from './menu-acoes-usuario'
 import type { ManagedUser } from '@/types'
 
@@ -30,6 +32,9 @@ function DataGridUsuarios({
 }: DataGridUsuariosProps) {
   const [statusUser, setStatusUser] = useState<ManagedUser | null>(null)
   const [deletingUser, setDeletingUser] = useState<ManagedUser | null>(null)
+  const deletingScholarships = useUserScholarships(
+    deletingUser && deletingUser.role !== 'ADMIN' ? deletingUser.id : null
+  )
 
   const columns = useMemo<DataTableColumn<ManagedUser>[]>(
     () => [
@@ -145,6 +150,10 @@ function DataGridUsuarios({
           item={deletingUser}
           onClose={() => setDeletingUser(null)}
           onConfirm={onDelete}
+          activeScholarships={filterActiveScholarships(
+            deletingScholarships.scholarships
+          )}
+          isCheckingScholarships={deletingScholarships.isLoading}
         />
       )}
     </div>

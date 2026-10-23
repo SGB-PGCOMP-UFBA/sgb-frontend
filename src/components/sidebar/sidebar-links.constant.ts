@@ -30,9 +30,9 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     availableRoles: ADMIN_ROLES
   },
   {
-    name: 'Bolsistas',
+    name: 'Bolsas',
     icon: MdWork,
-    path: '/bolsistas',
+    path: '/bolsas',
     visible: true,
     availableRoles: ADMIN_ROLES
   },
