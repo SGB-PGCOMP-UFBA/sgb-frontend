@@ -48,7 +48,10 @@ export function extractApiError(data: unknown): string {
   return 'Erro desconhecido'
 }
 
-/** Monta a mensagem completa no formato ja usado pelos toasts do projeto. */
 export function formatApiError(status: number, data: unknown): string {
   return `[${status}]: ${extractApiError(data)}`
+}
+
+export function isClientError(status: number | undefined): boolean {
+  return status !== undefined && status >= 400 && status < 500
 }
