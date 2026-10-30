@@ -128,6 +128,11 @@ export const signUp = async (
   return api.post(`${BASE_USER_API_PATH}/signup`, payload)
 }
 
+/** Cadastro atual de quem esta logado, com os campos que o login nao traz. */
+export const getProfile = async (): Promise<AxiosResponse<ManagedUser>> => {
+  return api.get(`${BASE_USER_API_PATH}/me`, { headers: buildHeaders() })
+}
+
 export const updateProfile = async (
   payload: UpdateProfilePayload
 ): Promise<AxiosResponse<ManagedUser>> => {
