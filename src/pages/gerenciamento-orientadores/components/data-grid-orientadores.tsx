@@ -20,7 +20,7 @@ export interface DataGridOrientadoresProps {
   onCreate: (advisor: InclusaoOrientadorFormValues) => void
   onUpdate: (values: EdicaoOrientadorSubmitValues) => void
   onDelete: (advisorId: number) => void
-  onChangeProfile: (advisorId: number) => void
+  onChangeProfile: (advisorId: number, enabled: boolean) => void
 }
 
 function DataGridOrientadores(props: DataGridOrientadoresProps) {

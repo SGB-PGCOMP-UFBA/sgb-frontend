@@ -79,9 +79,9 @@ function GerenciamentoOrientadores() {
     await getAdvisors()
   }
 
-  const grantAdminPrivileges = async (advisor: number) => {
+  const changeAdminPrivileges = async (advisor: number, enabled: boolean) => {
     try {
-      const response = await api.user.toggleAdminPrivileges(advisor)
+      const response = await api.user.setAdminPrivileges(advisor, enabled)
       if ([200, 201, 204].includes(response.status)) {
         toast.success('Orientador(a) atualizado(a) com sucesso.')
       }
@@ -103,7 +103,7 @@ function GerenciamentoOrientadores() {
       onCreate={createAdvisor}
       onUpdate={updateAdvisor}
       onDelete={deleteAdvisor}
-      onChangeProfile={grantAdminPrivileges}
+      onChangeProfile={changeAdminPrivileges}
     />
   )
 }

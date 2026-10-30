@@ -100,13 +100,17 @@ export const updateUserStatus = async (
   )
 }
 
-/** Liga o privilégio de administrador do orientador, ou desliga se já tiver. */
-export const toggleAdminPrivileges = async (
-  id: number
+/**
+ * Grava o privilégio de administrador desejado para o orientador. Repetir a
+ * chamada com o mesmo valor não desfaz a anterior.
+ */
+export const setAdminPrivileges = async (
+  id: number,
+  enabled: boolean
 ): Promise<AxiosResponse<ManagedUser>> => {
   return api.patch(
     `${userPath(id)}/admin-privileges`,
-    {},
+    { has_admin_privileges: enabled },
     { headers: buildHeaders() }
   )
 }

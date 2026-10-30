@@ -37,15 +37,18 @@ describe('user.service', () => {
       '/v1/user/advisors/10/students',
     ],
     ['getStudent', () => userApi.getStudent(7), 'get', '/v1/user/students/7'],
-  ] as const)('%s chama a rota do usuário pelo id', async (_name, call, method, path) => {
-    await call()
+  ] as const)(
+    '%s chama a rota do usuário pelo id',
+    async (_name, call, method, path) => {
+      await call()
 
-    expect(http[method]).toHaveBeenCalledWith(path, AUTH)
-  })
+      expect(http[method]).toHaveBeenCalledWith(path, AUTH)
+    }
+  )
 
-  it('updateUserStatus e toggleAdminPrivileges usam o id na rota', async () => {
+  it('updateUserStatus e setAdminPrivileges usam o id na rota', async () => {
     await userApi.updateUserStatus(7, 'INACTIVE')
-    await userApi.toggleAdminPrivileges(7)
+    await userApi.setAdminPrivileges(7, true)
 
     expect(http.patch).toHaveBeenCalledWith(
       '/v1/user/7/status',
@@ -54,10 +57,23 @@ describe('user.service', () => {
     )
     expect(http.patch).toHaveBeenCalledWith(
       '/v1/user/7/admin-privileges',
-      {},
+      { has_admin_privileges: true },
       AUTH
     )
   })
+
+  it.each([[true], [false]])(
+    'setAdminPrivileges manda o estado desejado (%s), e não pede para alternar',
+    async enabled => {
+      await userApi.setAdminPrivileges(7, enabled)
+
+      expect(http.patch).toHaveBeenCalledWith(
+        '/v1/user/7/admin-privileges',
+        { has_admin_privileges: enabled },
+        AUTH
+      )
+    }
+  )
 
   it('updateProfile e updatePassword agem sobre quem está logado', async () => {
     await userApi.updateProfile({ name: 'Ana' })
@@ -67,7 +83,11 @@ describe('user.service', () => {
       confirm_new_password: 'b',
     })
 
-    expect(http.patch).toHaveBeenCalledWith('/v1/user/me', { name: 'Ana' }, AUTH)
+    expect(http.patch).toHaveBeenCalledWith(
+      '/v1/user/me',
+      { name: 'Ana' },
+      AUTH
+    )
     expect(http.patch).toHaveBeenCalledWith(
       '/v1/user/me/password',
       { current_password: 'a', new_password: 'b', confirm_new_password: 'b' },

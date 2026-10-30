@@ -12,7 +12,8 @@ export interface DialogHabilitarPerfilAdministradorProps {
   item: AdvisorDetailed
   isOpen: boolean
   onClose: () => void
-  onSubmit: (advisorId: number) => void
+  /** Recebe o estado desejado: o oposto do que o diálogo mostra. */
+  onSubmit: (advisorId: number, enabled: boolean) => void
 }
 
 function DialogHabilitarPerfilAdministrador({
@@ -22,7 +23,7 @@ function DialogHabilitarPerfilAdministrador({
   onSubmit,
 }: DialogHabilitarPerfilAdministradorProps) {
   const submitAndCloseDialog = async () => {
-    onSubmit(item.id)
+    onSubmit(item.id, !item.has_admin_privileges)
     onClose()
   }
 
