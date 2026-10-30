@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Button } from '@/components/ui/button'
@@ -19,38 +19,82 @@ import { isClientError } from '@/helpers/api-error.helper'
 import { updateUserFromLocalStorage } from '@/helpers/auth-user.helper'
 import { useFormChanges } from '@/hooks/use-form-changes'
 import type { StoredUser } from '@/helpers/auth-user.helper'
-import type { FieldChangeEvent } from '@/types'
+import type { FieldChangeEvent, ManagedUser } from '@/types'
 
 export interface ProfileDetailsSectionProps {
   user: StoredUser | null
 }
 
+type ProfileValues = {
+  name: string
+  email: string
+  tax_id: string
+  phone_number: string
+  link_to_lattes: string
+}
+
+function toProfileValues(profile: ManagedUser): ProfileValues {
+  return {
+    name: profile.name,
+    email: profile.email,
+    tax_id: profile.tax_id ?? '',
+    phone_number: profile.phone_number ?? '',
+    link_to_lattes: profile.link_to_lattes ?? ''
+  }
+}
+
+type ProfileLoad = 'loading' | 'loaded' | 'failed'
+
+/**
+ * O formulario so aparece com o cadastro vindo de `GET /v1/user/me`. O
+ * usuario guardado no login nao tem todos os campos (o Lattes, por exemplo),
+ * e um campo vazio enviado no salvar apaga o valor gravado.
+ */
 function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
   const { user } = props
 
-  const [values, setValues] = useState({
-    email: user?.email || '',
-    name: user?.name || '',
-    tax_id: user?.tax_id || '',
-    phone_number: user?.phone_number || '',
-    link_to_lattes: user?.link_to_lattes || ''
-  })
+  const [values, setValues] = useState<ProfileValues | null>(null)
+  const [load, setLoad] = useState<ProfileLoad>('loading')
+
+  const userId = user?.id
+
+  useEffect(() => {
+    if (userId === undefined) return
+
+    let active = true
+    api.user
+      .getProfile()
+      .then(response => {
+        if (!active) return
+        setValues(toProfileValues(response.data))
+        setLoad('loaded')
+      })
+      .catch(() => {
+        if (active) setLoad('failed')
+      })
+
+    return () => {
+      active = false
+    }
+  }, [userId])
 
   const handleChange = (event: FieldChangeEvent) => {
-    setValues({ ...values, [event.target.name]: event.target.value })
+    setValues(current =>
+      current && { ...current, [event.target.name]: event.target.value }
+    )
   }
 
   const { formProps, hasChanges, resetChanges } = useFormChanges()
+  const isStudent = user?.role === 'STUDENT'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
 
-    if (!user || !hasChanges(form)) {
+    if (!user || !values || !hasChanges(form)) {
       return
     }
 
-    const isStudent = user.role === 'STUDENT'
     const payload = {
       name: values.name,
       email: values.email,
@@ -62,7 +106,11 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
     try {
       await api.user.updateProfile(payload)
       toast.success('Informações alteradas com sucesso.')
-      updateUserFromLocalStorage(payload)
+      updateUserFromLocalStorage({
+        ...payload,
+        tax_id: payload.tax_id || null,
+        phone_number: payload.phone_number || null
+      })
       resetChanges(form)
     } catch (error) {
       if (axios.isAxiosError(error) && isClientError(error.response?.status)) {
@@ -81,6 +129,29 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
       return String(message[0]);
     }
     return String(message);
+  }
+
+  if (load !== 'loaded' || !values) {
+    return (
+      <Card className="border-gray-200 shadow-none">
+        <CardHeader>
+          <CardTitle>Perfil</CardTitle>
+          <CardDescription>Informações do Usuário</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {load === 'failed' ? (
+            <p className="text-sm text-red-600">
+              Não foi possível carregar o seu perfil. Recarregue a página para
+              tentar de novo.
+            </p>
+          ) : (
+            <p role="status" className="text-sm text-gray-500">
+              Carregando perfil...
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -118,7 +189,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
               <Label htmlFor="input-tax-id">CPF</Label>
               <CpfInput
                 id="input-tax-id"
-                required
+                required={isStudent}
                 name="tax_id"
                 onChange={(e) => handleChange(e)}
                 value={values.tax_id}
@@ -133,8 +204,7 @@ function ProfileDetailsSection(props: ProfileDetailsSectionProps) {
                 value={values.phone_number}
               />
             </div>
-            {}
-            {user?.role === 'STUDENT' && (
+            {isStudent && (
               <div className="space-y-1.5">
                 <Label htmlFor="input-link-to-lattes">Link para o Lattes</Label>
                 <Input
