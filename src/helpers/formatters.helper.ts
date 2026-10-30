@@ -1,4 +1,5 @@
-import { parse, isValid } from 'date-fns'
+import { format as dateFnsFormat, parse, isValid } from 'date-fns'
+import type { ApiDate } from '@/types'
 
 /** Chaves usadas pelos <Select> de filtro do dashboard. */
 export type FormatTypeKind = 'course' | 'scholarship' | 'sort'
@@ -32,9 +33,9 @@ export const formatDate = (date: string | number | Date): string => {
 
 /**
  * Datas sem horário (início e término de bolsa, matrícula, defesa) chegam da
- * API como meia-noite UTC (`2026-09-26T00:00:00.000Z`). Convertidas direto no
- * fuso do Brasil viram o dia anterior; por isso aqui só o dia do calendário
- * é aproveitado, e o `Date` devolvido é meia-noite local desse dia.
+ * API como dia de calendário (`2026-09-26`). Respostas antigas podiam trazer
+ * horário (`2026-09-26T03:00:00.000Z`); delas também só o dia é aproveitado.
+ * O `Date` devolvido é meia-noite local desse dia, sem conversão de fuso.
  */
 export function toCalendarDate(
   value: string | Date | null | undefined
@@ -43,17 +44,37 @@ export function toCalendarDate(
     return null
   }
 
-  const isoDay =
-    typeof value === 'string'
-      ? value.slice(0, 10)
-      : value.toISOString().slice(0, 10)
-  const [year, month, day] = isoDay.split('-').map(Number)
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime())
+      ? null
+      : new Date(value.getFullYear(), value.getMonth(), value.getDate())
+  }
+
+  const [year, month, day] = value.slice(0, 10).split('-').map(Number)
 
   if (!year || !month || !day) {
     return null
   }
 
   return new Date(year, month - 1, day)
+}
+
+/**
+ * Dia de calendário no formato que a API espera (`yyyy-MM-dd`), montado com o
+ * dia local. Nunca use `toISOString()` para datas sem horário: ele converte
+ * para UTC e, a leste de Brasília, volta um dia.
+ */
+export function toApiDate(date: Date | null | undefined): ApiDate | null {
+  if (!date || Number.isNaN(date.getTime())) return null
+
+  return dateFnsFormat(date, 'yyyy-MM-dd')
+}
+
+/** Campo `dd/MM/yyyy` do formulário direto para `yyyy-MM-dd`; null se vazio. */
+export function formDateToApi(
+  value: string | null | undefined
+): ApiDate | null {
+  return value ? toApiDate(parseDate(value)) : null
 }
 
 /** Formata uma data sem horário como dd/MM/yyyy; vazia quando não há data. */

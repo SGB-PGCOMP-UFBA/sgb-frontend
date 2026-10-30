@@ -2,7 +2,7 @@ import type { AxiosResponse } from 'axios'
 import { api } from '@/lib/api'
 import { buildHeaders } from '@/lib/api-headers'
 import type {
-  DateInput,
+  ApiDate,
   EnrollmentDetailed,
   EnrollmentProgram,
   FilterOption
@@ -25,10 +25,10 @@ const BASE_ENROLLMENT_API_PATH = `/v1/enrollment`
 export interface CreateEnrollmentPayload {
   student_email: string
   advisor_email: string
-  enrollment_date: DateInput | null
+  enrollment_date: ApiDate | null
   enrollment_number: string
   enrollment_program: EnrollmentProgram
-  defense_prediction_date?: DateInput | null
+  defense_prediction_date?: ApiDate | null
 }
 
 /**
@@ -43,8 +43,8 @@ export interface UpdateEnrollmentPayload {
   student_email: string
   advisor_email: string
   enrollment_program?: EnrollmentProgram
-  enrollment_date?: DateInput | null
-  defense_prediction_date?: DateInput | null
+  enrollment_date?: ApiDate | null
+  defense_prediction_date?: ApiDate | null
   enrollment_number?: string
 }
 

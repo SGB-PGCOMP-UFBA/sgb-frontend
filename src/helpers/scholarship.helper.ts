@@ -1,4 +1,4 @@
-import { formatCalendarDate, parseDate } from '@/helpers/formatters.helper'
+import { formatCalendarDate, formDateToApi } from '@/helpers/formatters.helper'
 import type { UpdateEnrollmentPayload } from '@/services/enrollment'
 import type { UpdateScholarshipPayload } from '@/services/scholarship'
 import type {
@@ -84,8 +84,8 @@ export function toScholarshipUpdatePayloads(
       student_email: student.email,
       advisor_email: values.advisor_email,
       enrollment_program: values.enrollment_program,
-      enrollment_date: parseDate(values.enrollment_date),
-      defense_prediction_date: parseDate(values.defense_prediction_date),
+      enrollment_date: formDateToApi(values.enrollment_date),
+      defense_prediction_date: formDateToApi(values.defense_prediction_date),
     },
     scholarship: {
       enrollment_id: enrollment.id,
@@ -93,9 +93,9 @@ export function toScholarshipUpdatePayloads(
       agency_id: values.agency_id,
       allocation_id: values.allocation_id || null,
       salary: parseMoney(values.salary),
-      scholarship_starts_at: parseDate(values.scholarship_starts_at),
-      scholarship_ends_at: parseDate(values.scholarship_ends_at),
-      extension_ends_at: parseDate(values.extension_ends_at),
+      scholarship_starts_at: formDateToApi(values.scholarship_starts_at),
+      scholarship_ends_at: formDateToApi(values.scholarship_ends_at),
+      extension_ends_at: formDateToApi(values.extension_ends_at),
     },
   }
 }

@@ -2,7 +2,7 @@ import type { AxiosResponse } from 'axios'
 import { api } from '@/lib/api'
 import { buildHeaders } from '@/lib/api-headers'
 import type {
-  DateInput,
+  ApiDate,
   EnrollmentProgram,
   Page,
   ScholarshipDetailedWithRelations,
@@ -17,9 +17,9 @@ export interface CreateScholarshipPayload {
   enrollment_number: string
   agency_name: string
   allocation_name: string
-  scholarship_starts_at: DateInput | null
-  scholarship_ends_at: DateInput | null
-  extension_ends_at?: DateInput | null
+  scholarship_starts_at: ApiDate | null
+  scholarship_ends_at: ApiDate | null
+  extension_ends_at?: ApiDate | null
   salary?: number | null
 }
 
@@ -28,9 +28,9 @@ export interface UpdateScholarshipPayload {
   student_email: string
   agency_id?: number | string
   allocation_id?: number | string | null
-  scholarship_starts_at?: DateInput | null
-  scholarship_ends_at?: DateInput | null
-  extension_ends_at?: DateInput | null
+  scholarship_starts_at?: ApiDate | null
+  scholarship_ends_at?: ApiDate | null
+  extension_ends_at?: ApiDate | null
   salary?: number | null
 }
 
