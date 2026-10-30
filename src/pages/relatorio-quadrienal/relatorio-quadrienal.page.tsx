@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
 import { RelatorioQuadrienalView } from './relatorio-quadrienal.view'
-import { formattedNow } from '@/helpers/formatters.helper'
+import { formattedNow, toApiDate } from '@/helpers/formatters.helper'
 import { extractApiMessage, formatApiError } from '@/helpers/api-error.helper'
 import type { AgencyScholarshipReport } from '@/services/scholarship'
 import type { QuadrennialReportFormat } from '@/services/report'
@@ -37,8 +37,8 @@ function RelatorioQuadrienal() {
     try {
       const response =
         await api.scholarship.countScholarshipsAsReportBetweenDates(
-          period.startDate?.toISOString(),
-          period.endDate?.toISOString()
+          toApiDate(period.startDate) ?? undefined,
+          toApiDate(period.endDate) ?? undefined
         )
 
       if (response.status === 200) {

@@ -82,7 +82,7 @@ describe('toScholarshipUpdatePayloads', () => {
       student_email: 'igor@ufba.br',
       advisor_email: 'caio@ufba.br',
       enrollment_program: 'MESTRADO',
-      enrollment_date: new Date(2024, 2, 1),
+      enrollment_date: '2024-03-01',
       defense_prediction_date: null,
     })
     expect(payloads?.scholarship).toEqual({
@@ -91,8 +91,8 @@ describe('toScholarshipUpdatePayloads', () => {
       agency_id: '1',
       allocation_id: '2',
       salary: 2100.5,
-      scholarship_starts_at: new Date(2026, 6, 15),
-      scholarship_ends_at: new Date(2027, 4, 11),
+      scholarship_starts_at: '2026-07-15',
+      scholarship_ends_at: '2027-05-11',
       extension_ends_at: null,
     })
   })

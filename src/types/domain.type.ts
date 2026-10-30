@@ -1,6 +1,10 @@
 export type DateString = string
 
-export type DateInput = string | Date
+/**
+ * Data sem horário enviada à API: dia de calendário `yyyy-MM-dd`, sem fuso.
+ * Monte com `toApiDate` ou `formDateToApi`.
+ */
+export type ApiDate = string
 
 /* -------------------------------------------------------------------------- */
 /* Enums                                                                       */
@@ -148,7 +152,8 @@ export interface EnrollmentDetailedWithRelations extends EnrollmentDetailed {
   scholarships: ScholarshipDetailed[]
 }
 
-export interface EnrollmentDetailedWithFullRelations extends EnrollmentDetailed {
+export interface EnrollmentDetailedWithFullRelations
+  extends EnrollmentDetailed {
   advisor: AdvisorDetailed | null
   scholarships: ScholarshipDetailedWithFullRelations[]
 }

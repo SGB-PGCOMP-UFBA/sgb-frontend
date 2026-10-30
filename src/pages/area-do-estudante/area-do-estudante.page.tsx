@@ -8,7 +8,7 @@ import {
   removeUserFromLocalStorage,
 } from '@/helpers/auth-user.helper'
 import { formatApiError, extractApiMessage } from '@/helpers/api-error.helper'
-import { parseDate } from '@/helpers/formatters.helper'
+import { formDateToApi } from '@/helpers/formatters.helper'
 import type { InclusaoMatriculaFormValues } from './components/dialog-inclusao-matricula'
 import type { InclusaoBolsaSubmitValues } from './components/dialog-inclusao-bolsa'
 import type { EdicaoMatriculaSubmitValues } from './components/dialog-edicao-matricula'
@@ -97,8 +97,8 @@ function AreaDoEstudante() {
       const payload = {
         ...data,
         student_email: student.email,
-        enrollment_date: parseDate(data.enrollment_date),
-        defense_prediction_date: parseDate(data.defense_prediction_date),
+        enrollment_date: formDateToApi(data.enrollment_date),
+        defense_prediction_date: formDateToApi(data.defense_prediction_date),
       }
 
       const response = await api.enrollment.createEnrollment(payload)
@@ -123,8 +123,8 @@ function AreaDoEstudante() {
       const payload = {
         ...data,
         student_email: student.email,
-        scholarship_starts_at: parseDate(data.scholarship_starts_at),
-        scholarship_ends_at: parseDate(data.scholarship_ends_at),
+        scholarship_starts_at: formDateToApi(data.scholarship_starts_at),
+        scholarship_ends_at: formDateToApi(data.scholarship_ends_at),
         salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
       }
 
@@ -171,8 +171,8 @@ function AreaDoEstudante() {
           student_email: data.student_email,
           enrollment_program: data.enrollment_program,
           enrollment_number: data.enrollment_number,
-          enrollment_date: parseDate(data.enrollment_date),
-          defense_prediction_date: parseDate(data.defense_prediction_date),
+          enrollment_date: formDateToApi(data.enrollment_date),
+          defense_prediction_date: formDateToApi(data.defense_prediction_date),
         }
       )
       const response = await Promise.all([updateEnrollment])
@@ -200,12 +200,9 @@ function AreaDoEstudante() {
           student_email: data.student_email,
           agency_id: data.agency_id,
           allocation_id: data.allocation_id,
-          scholarship_starts_at: parseDate(data.scholarship_starts_at),
-          scholarship_ends_at: parseDate(data.scholarship_ends_at),
-          extension_ends_at:
-            data.extension_ends_at !== null
-              ? parseDate(data.extension_ends_at)
-              : null,
+          scholarship_starts_at: formDateToApi(data.scholarship_starts_at),
+          scholarship_ends_at: formDateToApi(data.scholarship_ends_at),
+          extension_ends_at: formDateToApi(data.extension_ends_at),
           salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
         }
       )
