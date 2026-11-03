@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AvisoDuracaoBolsa } from '@/components/aviso-duracao-bolsa'
 import { DateField } from '@/components/date-field'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,7 +19,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import type { BolsaRow } from './data-grid-bolsas'
-import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
+import type { IdentifiedFilterOption } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
 import { useFormChanges } from '@/hooks/use-form-changes'
 import { toCalendarDate } from '@/helpers/formatters.helper'
@@ -45,15 +46,15 @@ export interface DialogEdicaoBolsaProps {
   agencies: IdentifiedFilterOption[]
   allocations: IdentifiedFilterOption[]
   item: BolsaRow
-  getMaxEndDate: (referenceDate: Date | null, enrollmentProgram: EnrollmentProgram) => Date
 }
 
 function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
-  const { isOpen, onSubmit, onClose, agencies, allocations, item, getMaxEndDate } = props
+  const { isOpen, onSubmit, onClose, agencies, allocations, item } = props
 
+  // O termino nao tem limite: passar da duracao do curso so gera aviso.
   const [minEndDate, setMinEndDate] = useState<Date | null>(toCalendarDate(item.scholarship_starts_at))
-  const [maxEndDate, setMaxEndDate] = useState<Date | null>(getMaxEndDate(toCalendarDate(item.scholarship_starts_at), item.enrollment_program))
   const initialEndDate = toCalendarDate(item.scholarship_ends_at)
+  const [endsAt, setEndsAt] = useState<Date | null>(initialEndDate)
   const [minExtensionEndDate, setMinExtensionEndDate] = useState<Date | null>(initialEndDate)
   const [maxExtensionEndDate, setMaxExtensionEndDate] = useState<Date | null>(
     initialEndDate
@@ -63,10 +64,10 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
 
   const handleStartDateChange = (newDate: Date | null) => {
     setMinEndDate(newDate)
-    setMaxEndDate(getMaxEndDate(newDate, item.enrollment_program))
   }
 
   const handleEndDateChange = (newDate: Date | null) => {
+    setEndsAt(newDate)
     setMinExtensionEndDate(newDate)
     const maxEndDate = new Date(newDate ?? 0)
     maxEndDate.setMonth(maxEndDate.getMonth() + 6)
@@ -141,9 +142,15 @@ function DialogEdicaoBolsa(props: DialogEdicaoBolsaProps) {
               label="Data de Término da Bolsa"
               required
               minDate={minEndDate ?? undefined}
-              maxDate={maxEndDate ?? undefined}
               defaultValue={toCalendarDate(item.scholarship_ends_at)}
               onChange={handleEndDateChange}
+              hint={
+                <AvisoDuracaoBolsa
+                  startsAt={minEndDate}
+                  endsAt={endsAt}
+                  program={item.enrollment_program}
+                />
+              }
             />
 
             <DateField

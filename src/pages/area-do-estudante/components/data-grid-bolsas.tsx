@@ -31,7 +31,6 @@ export interface DataGridBolsasProps {
   allocations: IdentifiedFilterOption[]
   onUpdate: (data: EdicaoBolsaSubmitValues) => Promise<false | void>
   onDelete: (scholarshipId: number) => void
-  getMaxEndDate: (referenceDate: Date | null, enrollmentProgram: EnrollmentProgram) => Date
 }
 
 function DataGridBolsas(props: DataGridBolsasProps) {
@@ -179,7 +178,6 @@ function DataGridBolsas(props: DataGridBolsasProps) {
           allocations={props.allocations}
           isOpen={isDialogForScholarshipUpdateOpen}
           onClose={handleDialogForUpdateClose}
-          getMaxEndDate={props.getMaxEndDate}
         />
       )}
 

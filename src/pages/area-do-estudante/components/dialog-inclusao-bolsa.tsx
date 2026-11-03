@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AvisoDuracaoBolsa } from '@/components/aviso-duracao-bolsa'
 import { DateField } from '@/components/date-field'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { MatriculaRow } from './data-grid-matriculas'
-import type { EnrollmentProgram, IdentifiedFilterOption } from '@/types'
+import type { IdentifiedFilterOption } from '@/types'
 import { readFormValues } from '@/helpers/form-values.helper'
 
 export interface InclusaoBolsaFormFields {
@@ -40,10 +41,6 @@ export interface DialogInclusaoBolsaProps {
   agencies: IdentifiedFilterOption[]
   allocations: IdentifiedFilterOption[]
   enrollment: MatriculaRow
-  getMaxEndDate: (
-    referenceDate: Date | null,
-    enrollmentProgram: EnrollmentProgram
-  ) => Date
 }
 
 function DialogInclusaoBolsa(props: DialogInclusaoBolsaProps) {
@@ -54,17 +51,12 @@ function DialogInclusaoBolsa(props: DialogInclusaoBolsaProps) {
     agencies,
     allocations,
     enrollment,
-    getMaxEndDate,
   } = props
 
-  const [minEndDate, setMinEndDate] = useState<Date | null>(null)
-  const [maxEndDate, setMaxEndDate] = useState<Date | null>(null)
+  // O termino nao tem limite: passar da duracao do curso so gera aviso.
+  const [startsAt, setStartsAt] = useState<Date | null>(null)
+  const [endsAt, setEndsAt] = useState<Date | null>(null)
   const [agency, setAgency] = useState('')
-
-  const handleStartDateChange = (newDate: Date | null) => {
-    setMinEndDate(newDate)
-    setMaxEndDate(getMaxEndDate(newDate, enrollment.enrollment_program))
-  }
 
   const submitAndCloseDialog = async (
     event: React.FormEvent<HTMLFormElement>
@@ -139,7 +131,7 @@ function DialogInclusaoBolsa(props: DialogInclusaoBolsaProps) {
               name='scholarship_starts_at'
               label='Data de Início da Bolsa'
               required
-              onChange={handleStartDateChange}
+              onChange={setStartsAt}
             />
 
             <DateField
@@ -147,8 +139,15 @@ function DialogInclusaoBolsa(props: DialogInclusaoBolsaProps) {
               name='scholarship_ends_at'
               label='Data de Término da Bolsa'
               required
-              minDate={minEndDate ?? undefined}
-              maxDate={maxEndDate ?? undefined}
+              minDate={startsAt ?? undefined}
+              onChange={setEndsAt}
+              hint={
+                <AvisoDuracaoBolsa
+                  startsAt={startsAt}
+                  endsAt={endsAt}
+                  program={enrollment.enrollment_program}
+                />
+              }
             />
 
             <div className='space-y-1.5'>

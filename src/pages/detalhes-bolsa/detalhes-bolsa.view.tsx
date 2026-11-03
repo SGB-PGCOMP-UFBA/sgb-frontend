@@ -7,6 +7,7 @@ import { CustomChip } from '@/components'
 import { PageHeader } from '@/components/page-header'
 import { DetailSection } from '@/components/detail-section'
 import { InfoItem } from '@/components/info-item'
+import { AvisoDuracaoBolsa } from '@/components/aviso-duracao-bolsa'
 import { DialogExclusaoBolsa } from '@/components/dialog-exclusao-bolsa'
 import { Button } from '@/components/ui/button'
 import {
@@ -202,7 +203,17 @@ function DetalhesBolsaView({
               />
               <InfoItem
                 label='Término'
-                value={formatCalendarDate(scholarship.scholarship_ends_at)}
+                value={
+                  <>
+                    {formatCalendarDate(scholarship.scholarship_ends_at)}
+                    <AvisoDuracaoBolsa
+                      className='mt-1'
+                      startsAt={scholarship.scholarship_starts_at}
+                      endsAt={scholarship.scholarship_ends_at}
+                      program={scholarship.enrollment?.enrollment_program}
+                    />
+                  </>
+                }
               />
               <InfoItem
                 label='Extensão'

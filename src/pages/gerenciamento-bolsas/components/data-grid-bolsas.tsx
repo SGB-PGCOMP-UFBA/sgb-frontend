@@ -5,6 +5,7 @@ import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
 import { formatCalendarDate } from '@/helpers/formatters.helper'
 import { CustomChip } from '@/components'
+import { AvisoDuracaoBolsa } from '@/components/aviso-duracao-bolsa'
 import { DialogExclusaoBolsa } from '@/components/dialog-exclusao-bolsa'
 import { MenuAcoesBolsa } from './menu-acoes-bolsa'
 import type {
@@ -120,7 +121,17 @@ function DataGridBolsas(props: DataGridBolsasProps) {
         id: 'scholarshipEndsAt',
         header: 'Término da Bolsa',
         width: 100,
-        cell: (row) => formatCalendarDate(row.scholarship_ends_at),
+        cell: (row) => (
+          <span className="inline-flex items-center gap-1.5">
+            {formatCalendarDate(row.scholarship_ends_at)}
+            <AvisoDuracaoBolsa
+              variant="icon"
+              startsAt={row.scholarship_starts_at}
+              endsAt={row.scholarship_ends_at}
+              program={row.enrollment?.enrollment_program}
+            />
+          </span>
+        ),
         csv: (row) => formatCalendarDate(row.scholarship_ends_at)
       },
       {

@@ -16,7 +16,6 @@ import type { EdicaoMatriculaSubmitValues } from './dialog-edicao-matricula'
 import type {
   AdvisorFilterOption,
   EnrollmentDetailedWithFullRelations,
-  EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
 } from '@/types'
@@ -35,7 +34,6 @@ export interface DataGridMatriculasProps {
   onCreateScholarship: (data: InclusaoBolsaSubmitValues) => void
   onUpdate: (data: EdicaoMatriculaSubmitValues) => void
   onDelete: (enrollmentId: number) => void
-  getMaxEndDate: (referenceDate: Date | null, enrollmentProgram: EnrollmentProgram) => Date
 }
 
 function DataGridMatriculas(props: DataGridMatriculasProps) {
@@ -226,7 +224,6 @@ function DataGridMatriculas(props: DataGridMatriculasProps) {
           agencies={props.agencies}
           allocations={props.allocations}
           enrollment={selectedEnrollment}
-          getMaxEndDate={props.getMaxEndDate}
         />
       )}
 

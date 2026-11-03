@@ -21,6 +21,8 @@ export interface DateFieldProps {
   required?: boolean
   disabled?: boolean
   onChange?: (date: Date | null) => void
+  /** Texto de apoio logo abaixo do campo, como um aviso. */
+  hint?: React.ReactNode
   className?: string
 }
 
@@ -36,6 +38,7 @@ function DateField({
   required,
   disabled,
   onChange,
+  hint,
   className,
 }: DateFieldProps) {
   const [date, setDate] = useState<Date | null>(defaultValue ?? null)
@@ -90,6 +93,8 @@ function DateField({
           />
         </PopoverContent>
       </Popover>
+
+      {hint}
     </div>
   )
 }
