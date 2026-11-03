@@ -57,13 +57,16 @@ const options: ScholarshipFormOptions = {
   isLoading: false,
 }
 
-function renderForm(overrides: Partial<ScholarshipFormOptions> = {}) {
+function renderForm(
+  overrides: Partial<ScholarshipFormOptions> = {},
+  scholarshipOverrides: Partial<ScholarshipDetailedWithRelations> = {}
+) {
   const onCancel = jest.fn()
   const onSubmit = jest.fn().mockResolvedValue(true)
 
   render(
     <FormularioBolsa
-      scholarship={scholarship}
+      scholarship={{ ...scholarship, ...scholarshipOverrides }}
       options={{ ...options, ...overrides }}
       onCancel={onCancel}
       onSubmit={onSubmit}
@@ -147,6 +150,37 @@ describe('FormularioBolsa', () => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({ salary: 'R$ 2.500' })
       )
+    })
+  })
+
+  describe('duração da bolsa', () => {
+    const LONGER = { scholarship_ends_at: '2029-01-01' }
+
+    it('passando da duração do curso, avisa abaixo do término sem bloquear o salvar', () => {
+      renderForm({}, LONGER)
+
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Duração acima dos 2 anos esperados para mestrado (término esperado em 14/07/2028).'
+      )
+      expect(screen.getByRole('button', { name: 'Salvar' })).toBeEnabled()
+    })
+
+    it('com duração mais curta que a do curso, não avisa', () => {
+      renderForm()
+
+      expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    })
+
+    it('ao trocar o curso, recalcula o aviso', () => {
+      renderForm({}, LONGER)
+      const form = screen.getByRole('form', { name: 'Editar bolsa' })
+      const program = form.querySelector(
+        'select[name="enrollment_program"]'
+      ) as HTMLSelectElement
+
+      fireEvent.change(program, { target: { value: 'DOUTORADO' } })
+
+      expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
   })
 })

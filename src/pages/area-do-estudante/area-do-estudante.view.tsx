@@ -18,7 +18,6 @@ import type { EdicaoMatriculaSubmitValues } from './components/dialog-edicao-mat
 import type { InclusaoBolsaSubmitValues } from './components/dialog-inclusao-bolsa'
 import type {
   AdvisorFilterOption,
-  EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
 } from '@/types'
@@ -38,7 +37,6 @@ export interface AreaDoEstudanteViewProps {
   onUpdateScholarship: (data: EdicaoBolsaSubmitValues) => Promise<false | void>
   onDeleteEnrollment: (enrollmentId: number) => void
   onDeleteScholarship: (scholarshipId: number) => void
-  getMaxEndDate: (referenceDate: Date | null, enrollmentProgram: EnrollmentProgram) => Date
 }
 
 function AreaDoEstudanteView(props: AreaDoEstudanteViewProps) {
@@ -87,10 +85,10 @@ function AreaDoEstudanteView(props: AreaDoEstudanteViewProps) {
         }
       />
       <h3 className="text-xl font-medium text-gray-900">Matrículas</h3>
-      {props.isLoading ? <Loading /> : props.student && <DataGridMatriculas data={props.student} agencies={props.agencies} allocations={props.allocations} advisors={props.advisors} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} getMaxEndDate={props.getMaxEndDate} />}
+      {props.isLoading ? <Loading /> : props.student && <DataGridMatriculas data={props.student} agencies={props.agencies} allocations={props.allocations} advisors={props.advisors} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
 
       <h3 className="text-xl font-medium text-gray-900">Bolsas</h3>
-      {props.isLoading ? <Loading /> : props.student && <DataGridBolsas data={props.student} agencies={props.agencies} allocations={props.allocations} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} getMaxEndDate={props.getMaxEndDate} />}
+      {props.isLoading ? <Loading /> : props.student && <DataGridBolsas data={props.student} agencies={props.agencies} allocations={props.allocations} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
 
       {isDialogForCreateEnrollmentOpen && (
         <DialogInclusaoMatricula

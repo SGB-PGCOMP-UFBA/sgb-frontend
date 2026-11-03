@@ -15,7 +15,6 @@ import type { EdicaoMatriculaSubmitValues } from './components/dialog-edicao-mat
 import type { EdicaoBolsaSubmitValues } from './components/dialog-edicao-bolsa'
 import type {
   AdvisorFilterOption,
-  EnrollmentProgram,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations,
 } from '@/types'
@@ -223,21 +222,6 @@ function AreaDoEstudante() {
     await getStudent()
   }
 
-  const getMaxEndDate = (
-    referenceDate: Date | null,
-    enrollmentProgram: EnrollmentProgram
-  ): Date => {
-    const endYearSum = enrollmentProgram === 'MESTRADO' ? 2 : 4
-    const maxEndDate = new Date(referenceDate ?? 0)
-    return new Date(
-      maxEndDate.setFullYear(
-        maxEndDate.getFullYear() + endYearSum,
-        maxEndDate.getMonth(),
-        maxEndDate.getDate() - 1
-      )
-    )
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       await getAdvisors()
@@ -262,7 +246,6 @@ function AreaDoEstudante() {
       onUpdateScholarship={handleUpdateScholarship}
       onDeleteEnrollment={handleDeleteEnrollment}
       onDeleteScholarship={handleDeleteScholarship}
-      getMaxEndDate={getMaxEndDate}
     />
   )
 }

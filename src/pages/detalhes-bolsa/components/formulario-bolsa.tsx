@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AvisoDuracaoBolsa } from '@/components/aviso-duracao-bolsa'
 import { DateField } from '@/components/date-field'
 import { DetailSection } from '@/components/detail-section'
 import { InfoItem } from '@/components/info-item'
@@ -58,10 +59,16 @@ function FormularioBolsa({
   onSubmit,
 }: FormularioBolsaProps) {
   const [isSaving, setIsSaving] = useState(false)
+  const { enrollment, student, advisor, agency, allocation } = scholarship
+  const [startsAt, setStartsAt] = useState(
+    toCalendarDate(scholarship.scholarship_starts_at)
+  )
   const [endsAt, setEndsAt] = useState(
     toCalendarDate(scholarship.scholarship_ends_at)
   )
-  const { enrollment, student, advisor, agency, allocation } = scholarship
+  const [program, setProgram] = useState<string | undefined>(
+    enrollment?.enrollment_program
+  )
   const advisors = selectableAdvisors(options.advisors, advisor?.id)
   const { formProps, hasChanges } = useFormChanges()
 
@@ -155,6 +162,7 @@ function FormularioBolsa({
             label='Início'
             required
             defaultValue={toCalendarDate(scholarship.scholarship_starts_at)}
+            onChange={setStartsAt}
           />
 
           <DateField
@@ -164,6 +172,13 @@ function FormularioBolsa({
             required
             defaultValue={endsAt}
             onChange={setEndsAt}
+            hint={
+              <AvisoDuracaoBolsa
+                startsAt={startsAt}
+                endsAt={endsAt}
+                program={program}
+              />
+            }
           />
 
           <DateField
@@ -188,6 +203,7 @@ function FormularioBolsa({
             <Select
               name='enrollment_program'
               defaultValue={enrollment?.enrollment_program}
+              onValueChange={setProgram}
               required
             >
               <SelectTrigger id='edit-program'>
