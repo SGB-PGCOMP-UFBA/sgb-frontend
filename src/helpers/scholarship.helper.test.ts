@@ -114,10 +114,16 @@ describe('toScholarshipUpdatePayloads', () => {
 })
 
 describe('filtros da página de bolsas na URL', () => {
-  it('sem parâmetros, começa tudo em Todos e sem busca', () => {
-    expect(readScholarshipListFilters(new URLSearchParams())).toEqual(
-      DEFAULT_SCHOLARSHIP_LIST_FILTERS
-    )
+  it('sem parâmetros, abre nas bolsas em andamento, as que terminam antes primeiro', () => {
+    expect(readScholarshipListFilters(new URLSearchParams())).toEqual({
+      scholarshipStatus: 'ON_GOING',
+      agencyName: 'ALL',
+      advisorName: 'ALL',
+      programName: 'ALL',
+      allocationName: 'ALL',
+      orderBy: 'DAT_TERMINO_ASC',
+      studentName: '',
+    })
   })
 
   it('lê cada filtro do seu parâmetro', () => {
@@ -138,13 +144,23 @@ describe('filtros da página de bolsas na URL', () => {
     })
   })
 
-  it('status ou curso inválidos voltam para Todos', () => {
+  it('status ou curso inválidos voltam para o padrão', () => {
     const filters = readScholarshipListFilters(
       new URLSearchParams('status=QUALQUER&curso=GRADUACAO')
     )
 
-    expect(filters.scholarshipStatus).toBe('ALL')
+    expect(filters.scholarshipStatus).toBe('ON_GOING')
     expect(filters.programName).toBe('ALL')
+  })
+
+  it('"Todos" no status vai para a URL e volta, já que não é o padrão', () => {
+    const params = toScholarshipListParams({
+      ...DEFAULT_SCHOLARSHIP_LIST_FILTERS,
+      scholarshipStatus: 'ALL',
+    })
+
+    expect(params.toString()).toBe('status=ALL')
+    expect(readScholarshipListFilters(params).scholarshipStatus).toBe('ALL')
   })
 
   it('só grava na URL o que difere do padrão', () => {
@@ -177,5 +193,8 @@ describe('filtros da página de bolsas na URL', () => {
       '/bolsas?bolsista=Jo%C3%A3o'
     )
     expect(buildScholarshipListUrl({})).toBe('/bolsas')
+    expect(
+      buildScholarshipListUrl({ advisorName: 'Ana', scholarshipStatus: 'ALL' })
+    ).toBe('/bolsas?orientador=Ana&status=ALL')
   })
 })

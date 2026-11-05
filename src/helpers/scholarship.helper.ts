@@ -103,14 +103,17 @@ export function toScholarshipUpdatePayloads(
 /** Filtros da pagina de bolsas, todos sempre preenchidos. */
 export type ScholarshipListFilters = Required<ScholarshipFilters>
 
-/** Tudo em "Todos" e sem busca: a pagina abre sem esconder nenhuma bolsa. */
+/**
+ * A pagina abre nas bolsas em andamento, as que terminam antes primeiro. O
+ * restante fica em "Todos" e sem busca. "Resetar filtros" volta para ca.
+ */
 export const DEFAULT_SCHOLARSHIP_LIST_FILTERS: ScholarshipListFilters = {
-  scholarshipStatus: 'ALL',
+  scholarshipStatus: 'ON_GOING',
   agencyName: 'ALL',
   advisorName: 'ALL',
   programName: 'ALL',
   allocationName: 'ALL',
-  orderBy: 'DAT_TERMINO_DESC',
+  orderBy: 'DAT_TERMINO_ASC',
   studentName: '',
 }
 
@@ -125,7 +128,8 @@ const SCHOLARSHIP_LIST_PARAMS: Record<keyof ScholarshipListFilters, string> = {
   orderBy: 'ordem',
 }
 
-const STATUS_VALUES = ['INACTIVE', 'ON_GOING', 'EXTENDED', 'FINISHED']
+// "ALL" tambem vai para a URL, ja que o padrao do status nao e "Todos".
+const STATUS_VALUES = ['ALL', 'INACTIVE', 'ON_GOING', 'EXTENDED', 'FINISHED']
 const PROGRAM_VALUES = ['MESTRADO', 'DOUTORADO']
 
 /** Status ou curso que nao existem caem no padrao, em vez de quebrar a busca. */

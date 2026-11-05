@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef, type CSSProperties } from 'react'
 import {
   createPaginatedRowModel,
   rowPaginationFeature,
@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { exportRowsAsCsv } from './export-csv.util'
+import { useAvailableHeight, useElementHeight } from './use-available-height'
 import type { DataTableColumn } from './data-table.type'
 
 const features = tableFeatures({
@@ -59,6 +60,17 @@ function DataTable<T extends RowData>({
   onPaginationChange,
   emptyMessage = 'Nenhum resultado encontrado.'
 }: DataTableProps<T>) {
+  const tableRef = useRef<HTMLDivElement>(null)
+  const footerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLTableSectionElement>(null)
+  const maxHeight = useAvailableHeight(tableRef, footerRef)
+  // O trilho do scroll vertical comeca abaixo do cabecalho (ver index.css).
+  const headerHeight = useElementHeight(headerRef)
+  const scrollStyle = {
+    maxHeight,
+    '--data-table-header-height': `${headerHeight}px`
+  } as CSSProperties
+
   const tableColumns = useMemo<ColumnDef<typeof features, T>[]>(
     () =>
       columns.map((column) => ({
@@ -101,64 +113,70 @@ function DataTable<T extends RowData>({
 
   return (
     <div className="w-full min-w-0 bg-white">
-      {/* `w-max min-w-full` deixa a tabela passar da largura do container para
-          que o scroll horizontal aconteca dentro dela, e nao na pagina. */}
-      <Table className="w-max min-w-full">
-        <TableHeader>
-          {table.getHeaderGroups().map((group) => (
-            <TableRow key={group.id}>
-              {group.headers.map((header) => {
-                const column = columns.find((item) => item.id === header.column.id)
+      {/* `w-max min-w-full` deixa a tabela passar da largura do container e a
+          altura maxima (o que sobra da tela) limita as linhas: os dois
+          scrolls acontecem dentro da tabela, e nao na pagina. */}
+      <div ref={tableRef} style={scrollStyle} className="flex flex-col">
+        <Table className="w-max min-w-full" containerClassName="data-table-scroll min-h-0">
+          <TableHeader ref={headerRef}>
+            {table.getHeaderGroups().map((group) => (
+              <TableRow key={group.id}>
+                {group.headers.map((header) => {
+                  const column = columns.find((item) => item.id === header.column.id)
 
-                return (
-                  <TableHead
-                    key={header.id}
-                    style={{
-                      width: column?.width,
-                      minWidth: column?.minWidth ?? column?.width
-                    }}
-                    className={cn(
-                      'whitespace-normal break-words leading-tight',
-                      column?.align === 'center' && 'text-center',
-                      column?.align === 'right' && 'text-right'
-                    )}
-                  >
-                    {column?.header}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                {emptyMessage}
-              </TableCell>
-            </TableRow>
-          ) : (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    className={cn(
-                      'overflow-hidden text-ellipsis whitespace-nowrap',
-                      column.align === 'center' && 'text-center',
-                      column.align === 'right' && 'text-right'
-                    )}
-                  >
-                    {column.cell(row.original)}
-                  </TableCell>
-                ))}
+                  return (
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        width: column?.width,
+                        minWidth: column?.minWidth ?? column?.width
+                      }}
+                      className={cn(
+                        // Cabecalho fixo no topo enquanto as linhas rolam; a
+                        // sombra faz o papel da borda, que some com o sticky.
+                        'sticky top-0 z-10 bg-white shadow-[inset_0_-1px_0_hsl(var(--border))]',
+                        'whitespace-normal break-words leading-tight',
+                        column?.align === 'center' && 'text-center',
+                        column?.align === 'right' && 'text-right'
+                      )}
+                    >
+                      {column?.header}
+                    </TableHead>
+                  )
+                })}
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      className={cn(
+                        'overflow-hidden text-ellipsis whitespace-nowrap',
+                        column.align === 'center' && 'text-center',
+                        column.align === 'right' && 'text-right'
+                      )}
+                    >
+                      {column.cell(row.original)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
-      <div className="flex flex-col items-end border-t">
+      <div ref={footerRef} className="flex flex-col items-end border-t">
         <div className="flex w-full flex-wrap items-center justify-between gap-2 p-2">
           <Button
             variant="outline"

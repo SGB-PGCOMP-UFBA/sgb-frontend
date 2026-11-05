@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { CustomChip } from '@/components'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
+import { LIST_PAGE_SIZE } from '@/constants/pagination.constant'
 import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
@@ -132,7 +133,7 @@ function DataGridUsuarios({
         data={data}
         columns={columns}
         csvFileName='usuarios'
-        initialPageSize={10}
+        initialPageSize={LIST_PAGE_SIZE}
       />
 
       {statusUser && (
