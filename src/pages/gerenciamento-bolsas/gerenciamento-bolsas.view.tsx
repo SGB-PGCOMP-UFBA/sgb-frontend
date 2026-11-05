@@ -18,13 +18,18 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { DataGridBolsas } from './components/data-grid-bolsas'
+import { ResumoVagasLivres } from './components/resumo-vagas-livres'
 import Loading from '@/components/loading'
 import type {
   ScholarshipFilterChangeEvent,
   ScholarshipFilterOptions,
   ScholarshipPageFilters
 } from './gerenciamento-bolsas.page'
-import type { Page, ScholarshipDetailedWithRelations } from '@/types'
+import type {
+  AgencyDetailed,
+  Page,
+  ScholarshipDetailedWithRelations
+} from '@/types'
 
 export interface GerenciamentoBolsasViewProps {
   data: Partial<Page<ScholarshipDetailedWithRelations>>
@@ -33,6 +38,7 @@ export interface GerenciamentoBolsasViewProps {
   size: number
   setSize: (size: number) => void
   filters: ScholarshipPageFilters
+  agencies: AgencyDetailed[]
   setFilters: (event: ScholarshipFilterChangeEvent) => void
   handleResetFilters: () => void
   filterOptions: ScholarshipFilterOptions
@@ -59,6 +65,13 @@ function GerenciamentoBolsasView(props: GerenciamentoBolsasViewProps) {
         description='Listagem de Bolsas do Programa de Pós-Graduação em Computação'
         icon={MdWork}
         iconBackgroundClassName='bg-green-400'
+        details={
+          <ResumoVagasLivres
+            agencies={props.agencies}
+            agencyName={props.filters.agencyName}
+            programName={props.filters.programName}
+          />
+        }
         actions={
           <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
             <Tooltip>

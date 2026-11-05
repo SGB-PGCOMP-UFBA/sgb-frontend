@@ -107,9 +107,10 @@ function DetalhesUsuario() {
         if (!user) return
         navigate(
           buildScholarshipListUrl(
+            // Todas as situacoes: o resumo do usuario conta tambem as finalizadas.
             user.role === 'STUDENT'
-              ? { studentName: user.name }
-              : { advisorName: user.name }
+              ? { studentName: user.name, scholarshipStatus: 'ALL' }
+              : { advisorName: user.name, scholarshipStatus: 'ALL' }
           )
         )
       }}

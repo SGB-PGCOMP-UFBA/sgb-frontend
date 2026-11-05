@@ -8,6 +8,8 @@ export interface PageHeaderProps {
   iconBackgroundClassName?: string
   iconClassName?: string
   actions?: React.ReactNode
+  /** Conteudo extra logo abaixo da descricao, como um resumo. */
+  details?: React.ReactNode
   className?: string
 }
 
@@ -18,6 +20,7 @@ function PageHeader({
   iconBackgroundClassName,
   iconClassName,
   actions,
+  details,
   className
 }: PageHeaderProps) {
   return (
@@ -29,6 +32,7 @@ function PageHeader({
         <div>
           <h2 className="poppins text-xl font-semibold text-gray-900">{title}</h2>
           <p className="poppins font-medium text-gray-500">{description}</p>
+          {details}
         </div>
       </div>
       {actions}

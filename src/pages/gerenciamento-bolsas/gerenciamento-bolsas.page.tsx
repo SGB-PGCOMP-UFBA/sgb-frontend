@@ -11,8 +11,10 @@ import {
   type ScholarshipListFilters,
 } from '@/helpers/scholarship.helper'
 import { SCHOLARSHIP_STATUS_FILTER_OPTIONS } from '@/constants/status.constant'
+import { LIST_PAGE_SIZE } from '@/constants/pagination.constant'
 import type {
   AdvisorFilterOption,
+  AgencyDetailed,
   FieldChangeEvent,
   FilterOption,
   IdentifiedFilterOption,
@@ -61,7 +63,9 @@ function GerenciamentoBolsas() {
     Partial<Page<ScholarshipDetailedWithRelations>>
   >({})
   const [page, setPage] = useState(1)
-  const [size, setSize] = useState(5)
+  const [size, setSize] = useState(LIST_PAGE_SIZE)
+  // Vagas concedidas e ocupadas por agencia, para o resumo de vagas livres.
+  const [agencies, setAgencies] = useState<AgencyDetailed[]>([])
   const [filterOptions, setFilterOptions] =
     useState<ScholarshipFilterOptions>(initialFilterOptions)
   // Os filtros moram na URL: qualquer link /bolsas?... ja abre filtrado.
@@ -234,6 +238,14 @@ function GerenciamentoBolsas() {
     getFilterOptions()
   }, [])
 
+  useEffect(() => {
+    // Sem as agencias o resumo so nao aparece; a listagem segue normal.
+    api.agency
+      .getAgencys()
+      .then(response => setAgencies(response.data))
+      .catch(() => setAgencies([]))
+  }, [])
+
   return (
     <GerenciamentoBolsasView
       data={data}
@@ -242,6 +254,7 @@ function GerenciamentoBolsas() {
       size={size}
       setSize={setSize}
       filters={filters}
+      agencies={agencies}
       setFilters={handleFiltersValueChange}
       handleResetFilters={handleFiltersReset}
       filterOptions={filterOptions}

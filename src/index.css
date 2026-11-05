@@ -65,3 +65,43 @@ input[type=number] {
 html, body, #root {
   height: 100%;
 }
+
+/* Scroll da aplicacao: fino, arredondado e sem trilho aparente. */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(215 20% 80%);
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(215 16% 62%);
+  }
+
+  /* Nas tabelas, o scroll vertical fica so ao lado das linhas, abaixo do
+     cabecalho fixo. */
+  .data-table-scroll::-webkit-scrollbar-track:vertical {
+    margin-top: var(--data-table-header-height, 0px);
+  }
+}
+
+/* Firefox nao tem os pseudo-elementos acima; fica o scroll fino padrao.
+   No Chrome, scrollbar-color/width desligariam os estilos acima, por isso so
+   entram aqui. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(215 20% 80%) transparent;
+  }
+}
