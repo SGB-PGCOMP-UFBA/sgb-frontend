@@ -23,3 +23,31 @@ global.ResizeObserver = class {
   unobserve() {}
   disconnect() {}
 }
+
+// IntersectionObserver não existe no jsdom e é usado pelo scroll infinito.
+// O teste que precisa disparar a interseção pega a instância em `instances`.
+class IntersectionObserverStub {
+  static instances: IntersectionObserverStub[] = []
+  callback: IntersectionObserverCallback
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback
+    IntersectionObserverStub.instances.push(this)
+  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return []
+  }
+  trigger(isIntersecting = true) {
+    this.callback(
+      [{ isIntersecting } as IntersectionObserverEntry],
+      this as unknown as IntersectionObserver
+    )
+  }
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  value: IntersectionObserverStub,
+})

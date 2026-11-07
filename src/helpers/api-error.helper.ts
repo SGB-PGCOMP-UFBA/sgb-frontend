@@ -52,6 +52,15 @@ export function formatApiError(status: number, data: unknown): string {
   return `[${status}]: ${extractApiError(data)}`
 }
 
+/**
+ * O axios lança exceção em qualquer status fora de 2xx, então o erro de uma
+ * chamada chega no `catch`, não como `response.status`.
+ */
+export function formatRequestError(error: unknown): string {
+  const response = axios.isAxiosError(error) ? error.response : undefined
+  return response ? formatApiError(response.status, response.data) : 'Erro desconhecido'
+}
+
 export function isClientError(status: number | undefined): boolean {
   return status !== undefined && status >= 400 && status < 500
 }

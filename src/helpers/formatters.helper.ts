@@ -91,6 +91,14 @@ export const formatDateHour = (date: string | number | Date): string => {
   return newDate.toLocaleString('pt-BR')
 }
 
+/** "18 de junho de 2024 às 15:04", no fuso de quem está vendo. */
+export const formatLongDateTime = (date: string | number | Date): string => {
+  const value = new Date(date)
+  const day = value.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
+  const time = value.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  return `${day} às ${time}`
+}
+
 /** Timestamp so com digitos, usado para compor nomes de arquivo. */
 export function formattedNow(): string {
   const now = new Date().toLocaleString('pt-BR', {

@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
-import { Bell, CircleX } from 'lucide-react'
+import { useEffect } from 'react'
+import { Bell } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,11 +7,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { api } from '@/services'
-import { formatDateHour } from '@/helpers/formatters.helper'
-import { formatApiError } from '@/helpers/api-error.helper'
 import type { StoredUser } from '@/helpers/auth-user.helper'
-import type { EmbedNotificationDetailed } from '@/types'
+import { useEmbedNotifications } from '@/hooks/use-embed-notifications'
+import { EmbedNotificationList } from './embed-notification-list'
 
 export interface EmbedNotificationMenuProps {
   user: StoredUser | null
@@ -22,97 +19,72 @@ export default function EmbedNotificationMenu(
   props: EmbedNotificationMenuProps
 ) {
   const { user } = props
-  const [isLoading, setIsLoading] = useState(true)
-  const [embedNotifications, setEmbedNotifications] = useState<
-    EmbedNotificationDetailed[]
-  >([])
-
-  const getEmbedNotifications = async () => {
-    if (!user) {
-      return
-    }
-
-    const response = await api.embedNotification.getAllEmbedNotifications()
-
-    if (response.status === 200) {
-      setEmbedNotifications(response.data)
-    } else {
-      toast.error(formatApiError(response.status, response.data))
-    }
-  }
-
-  const consumeEmbedNotification = async (
-    embed_notification: EmbedNotificationDetailed
-  ) => {
-    const response = await api.embedNotification.consumeEmbedNotification(
-      embed_notification.id
-    )
-
-    if (response.status >= 400) {
-      toast.error(formatApiError(response.status, response.data))
-    } else {
-      getEmbedNotifications()
-    }
-  }
+  const notifications = useEmbedNotifications()
+  const { unreadCount, refreshUnreadCount, reload } = notifications
 
   useEffect(() => {
-    getEmbedNotifications().finally(() => setIsLoading(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    if (user) refreshUnreadCount()
+  }, [user, refreshUnreadCount])
 
-  if (isLoading) {
+  if (!user) {
     return null
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={open => open && reload()}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Notificações"
+          aria-label={
+            unreadCount > 0
+              ? `Notificações, ${unreadCount} não lidas`
+              : 'Notificações'
+          }
           className="relative h-12 w-12 text-[#1c253f]"
         >
           <Bell />
-          {embedNotifications.length > 0 && (
+          {unreadCount > 0 && (
             <Badge className="absolute right-0 top-0 h-5 min-w-5 justify-center rounded-full bg-sky-500 px-1 text-[11px] text-white hover:bg-sky-500">
-              {embedNotifications.length > 99 ? '99+' : embedNotifications.length}
+              {unreadCount > 99 ? '99+' : unreadCount}
             </Badge>
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[400px] overflow-hidden">
-        <div className="px-6 py-3">
-          {embedNotifications.length === 0 ? (
-            <p className="text-center text-sm">
-              Parece que você não tem novas mensagens!
-            </p>
-          ) : (
-            embedNotifications.map((notification) => (
-              <div
-                key={notification.id}
-                className="relative mb-3 rounded-lg bg-gray-200 p-2"
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Descartar notificação"
-                  onClick={() => consumeEmbedNotification(notification)}
-                  className="absolute right-1 top-1 h-auto w-auto p-0 text-destructive hover:bg-transparent"
-                >
-                  <CircleX />
-                </Button>
-                <div className="flex flex-col text-left">
-                  <p className="text-sm font-bold">{notification.title}</p>
-                  <p className="text-sm">{notification.description}</p>
-                  <span className="text-right text-xs">
-                    {formatDateHour(notification.created_at)}
-                  </span>
-                </div>
-              </div>
-            ))
-          )}
+      <DropdownMenuContent align="end" className="w-[460px] max-w-[calc(100vw-2rem)] p-0">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b px-5 py-4">
+          <p className="shrink-0 text-base font-semibold text-foreground">Notificações</p>
+          <div className="flex items-center gap-3 whitespace-nowrap text-sm">
+            <button
+              type="button"
+              onClick={notifications.markAllAsRead}
+              disabled={unreadCount === 0}
+              className="text-sky-600 hover:underline disabled:cursor-not-allowed disabled:text-muted-foreground disabled:no-underline"
+            >
+              Marcar todas como lidas
+            </button>
+            <span aria-hidden className="h-4 w-px bg-border" />
+            <button
+              type="button"
+              aria-pressed={notifications.filter === 'unread'}
+              onClick={() =>
+                notifications.changeFilter(notifications.filter === 'unread' ? 'all' : 'unread')
+              }
+              className="text-sky-600 hover:underline"
+            >
+              {notifications.filter === 'unread' ? 'Ver todas' : 'Apenas não lidas'}
+            </button>
+          </div>
         </div>
+        <EmbedNotificationList
+          notifications={notifications.notifications}
+          filter={notifications.filter}
+          isLoading={notifications.isLoading}
+          isLoadingMore={notifications.isLoadingMore}
+          hasMore={notifications.hasMore}
+          onLoadMore={notifications.loadMore}
+          onMarkAsRead={notifications.markAsRead}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   )
