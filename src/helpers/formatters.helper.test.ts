@@ -1,4 +1,5 @@
 import {
+  formatLongDateTime,
   formatCalendarDate,
   formatDate,
   formDateToApi,
@@ -92,5 +93,13 @@ describe('datas enviadas para a API', () => {
     expect([date?.getFullYear(), date?.getMonth(), date?.getDate()]).toEqual([
       2027, 4, 11,
     ])
+  })
+})
+
+describe('formatLongDateTime', () => {
+  it('escreve dia, mês por extenso, ano e hora:minuto', () => {
+    const date = new Date(2024, 5, 18, 9, 5)
+
+    expect(formatLongDateTime(date)).toBe('18 de junho de 2024 às 09:05')
   })
 })
