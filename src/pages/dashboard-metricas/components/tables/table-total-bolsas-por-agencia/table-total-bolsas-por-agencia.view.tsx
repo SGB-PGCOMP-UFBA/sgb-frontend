@@ -1,68 +1,80 @@
 import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from '@/components/ui/table'
 import type { AgencyDetailed } from '@/types'
 
 export interface TableTotalBolsasPorAgenciaViewProps {
-  className?: string
   data: AgencyDetailed[]
+  isLoading: boolean
+  className?: string
+}
+
+function getTotalAllocated(row: AgencyDetailed) {
+  return Number(row.masters_degree_allocated_scholarships) + Number(row.doctorate_degree_allocated_scholarships)
+}
+
+function getTotalAwarded(row: AgencyDetailed) {
+  return Number(row.masters_degree_awarded_scholarships) + Number(row.doctorate_degree_awarded_scholarships)
 }
 
 function TableTotalBolsasPorAgenciaView(props: TableTotalBolsasPorAgenciaViewProps) {
-  const { data, className } = props
-
-  const getTotalAllocated = (row: AgencyDetailed) => {
-    return Number(row.masters_degree_allocated_scholarships) + Number(row.doctorate_degree_allocated_scholarships)
-  }
-
-  const getTottalAwarded = (row: AgencyDetailed) => {
-    return Number(row.masters_degree_awarded_scholarships) + Number(row.doctorate_degree_awarded_scholarships)
-  }
-
-  const getBalance = (row: AgencyDetailed) => {
-    return getTottalAwarded(row) - getTotalAllocated(row)
-  }
+  const { data, isLoading, className } = props
 
   return (
     <Card className={className}>
-      <CardContent className="h-full p-6">
-        <h3 className="mb-1 text-2xl font-bold text-foreground">
-          Concessão de Bolsas
-        </h3>
-        <Table className="min-w-[650px] [&_td]:p-2 [&_th]:h-10 [&_th]:px-2">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-left">Modalidade</TableHead>
-              <TableHead className="text-center">Concedidas Mestrado</TableHead>
-              <TableHead className="text-center">Alocadas Mestrado</TableHead>
-              <TableHead className="text-center">Concedidas Doutorado</TableHead>
-              <TableHead className="text-center">Alocadas Doutorado</TableHead>
-              <TableHead className="text-center">Total Concedidas</TableHead>
-              <TableHead className="text-center">Total Alocadas</TableHead>
-              <TableHead className="text-center">Bolsas Disponíveis</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell className="text-left font-bold">{row.name}</TableCell>
-                <TableCell className="text-center">{row.masters_degree_awarded_scholarships}</TableCell>
-                <TableCell className="text-center">{row.masters_degree_allocated_scholarships}</TableCell>
-                <TableCell className="text-center">{row.doctorate_degree_awarded_scholarships}</TableCell>
-                <TableCell className="text-center">{row.doctorate_degree_allocated_scholarships}</TableCell>
-                <TableCell className="text-center">{getTottalAwarded(row)}</TableCell>
-                <TableCell className="text-center">{getTotalAllocated(row)}</TableCell>
-                <TableCell className="text-center">{getBalance(row)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <CardContent className='p-5'>
+        <h3 className='mb-3 text-lg font-semibold text-foreground'>Concessão de Bolsas</h3>
+        {isLoading ? (
+          <Skeleton className='h-40 w-full' />
+        ) : (
+          <div className='overflow-x-auto'>
+            <Table className='min-w-[640px] [&_td]:px-3 [&_td]:py-2.5 [&_th]:px-3'>
+              <TableHeader>
+                <TableRow>
+                  <TableHead rowSpan={2} className='text-left align-bottom'>Agência</TableHead>
+                  <TableHead colSpan={2} className='h-8 border-b text-center'>Mestrado</TableHead>
+                  <TableHead colSpan={2} className='h-8 border-b text-center'>Doutorado</TableHead>
+                  <TableHead colSpan={2} className='h-8 border-b text-center'>Total</TableHead>
+                  <TableHead rowSpan={2} className='text-center align-bottom'>Disponíveis</TableHead>
+                </TableRow>
+                <TableRow>
+                  <TableHead className='h-8 text-center'>Concedidas</TableHead>
+                  <TableHead className='h-8 text-center'>Alocadas</TableHead>
+                  <TableHead className='h-8 text-center'>Concedidas</TableHead>
+                  <TableHead className='h-8 text-center'>Alocadas</TableHead>
+                  <TableHead className='h-8 text-center'>Concedidas</TableHead>
+                  <TableHead className='h-8 text-center'>Alocadas</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className='tabular-nums'>
+                {data.map(row => {
+                  const awarded = getTotalAwarded(row)
+                  const allocated = getTotalAllocated(row)
+
+                  return (
+                    <TableRow key={row.id}>
+                      <TableCell className='text-left font-semibold'>{row.name}</TableCell>
+                      <TableCell className='text-center'>{row.masters_degree_awarded_scholarships}</TableCell>
+                      <TableCell className='text-center'>{row.masters_degree_allocated_scholarships}</TableCell>
+                      <TableCell className='text-center'>{row.doctorate_degree_awarded_scholarships}</TableCell>
+                      <TableCell className='text-center'>{row.doctorate_degree_allocated_scholarships}</TableCell>
+                      <TableCell className='text-center'>{awarded}</TableCell>
+                      <TableCell className='text-center'>{allocated}</TableCell>
+                      <TableCell className='text-center font-semibold'>{awarded - allocated}</TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </CardContent>
     </Card>
   )
