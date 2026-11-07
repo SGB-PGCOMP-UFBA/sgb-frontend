@@ -1,41 +1,37 @@
-import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
-import type { AxiosResponse } from 'axios'
+import { useCallback } from 'react'
 import { api } from '@/services'
 import type { CountByCourseAndYear } from '@/services/scholarship'
-import { formatApiError } from '@/helpers/api-error.helper'
+import { useApiData } from '@/hooks/use-api-data'
 import type { AgencyName } from '@/types'
+import { toHistogramData } from '@/pages/dashboard-metricas/components/charts/chart-data.util'
 import { ColumnChartHistogramaBolsasView } from './column-chart-histograma-bolsas.view'
 
+const EMPTY_COUNT: CountByCourseAndYear = {}
+
 export interface ColumnChartHistogramaBolsasProps {
-  className?: string
   agencyName?: AgencyName
+  className?: string
 }
 
 function ColumnChartHistogramaBolsas(props: ColumnChartHistogramaBolsasProps) {
-  const { agencyName } = props
-  const [data, setData] = useState<CountByCourseAndYear>({})
-  const [isLoading, setIsLoading] = useState(true)
+  const { agencyName, className } = props
 
-  const getData = async () => {
-    let response: AxiosResponse<CountByCourseAndYear>
-    if (agencyName) response = await api.scholarship.countScholarshipsGroupingByCourseAndYearFilteringByAgencyName(agencyName)
-    else response = await api.scholarship.countScholarshipsGroupingByCourseAndYear()
-
-    if (response.status === 200) {
-      setData(response.data)
-    } else {
-      toast.error(formatApiError(response.status, response.data))
-    }
-  }
-
-  useEffect(() => {
-    getData().finally(() => setIsLoading(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const request = useCallback(
+    () =>
+      agencyName
+        ? api.scholarship.countScholarshipsGroupingByCourseAndYearFilteringByAgencyName(agencyName)
+        : api.scholarship.countScholarshipsGroupingByCourseAndYear(),
+    [agencyName]
+  )
+  const { data, isLoading } = useApiData(request, EMPTY_COUNT)
 
   return (
-    <ColumnChartHistogramaBolsasView className={props.className} isLoading={isLoading} data={data} agencyName={agencyName}/>
+    <ColumnChartHistogramaBolsasView
+      className={className}
+      isLoading={isLoading}
+      agencyName={agencyName}
+      rows={toHistogramData(data)}
+    />
   )
 }
 
