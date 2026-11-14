@@ -7,3 +7,7 @@ export const login = async (
 ): Promise<AxiosResponse<LoginResponse>> => {
   return api.post('/login', data)
 }
+
+export const logout = async (refreshToken: string): Promise<void> => {
+  await api.post('/logout', { refresh_token: refreshToken })
+}
