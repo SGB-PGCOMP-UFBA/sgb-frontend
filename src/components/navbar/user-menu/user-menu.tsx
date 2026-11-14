@@ -7,9 +7,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { removeUserFromLocalStorage } from '@/helpers/auth-user.helper'
+import { api } from '@/services'
 import type { StoredUser } from '@/helpers/auth-user.helper'
 
 export interface UserMenuProps {
@@ -19,7 +20,7 @@ export interface UserMenuProps {
 function getInitials(name: string) {
   return name
     .split(' ')
-    .map((word) => word[0])
+    .map(word => word[0])
     .slice(0, 2)
     .join('')
 }
@@ -33,30 +34,37 @@ export default function UserMenu(props: UserMenuProps) {
   }
 
   const handleLogout = () => {
+    const refreshToken = user?.refresh_token
+
     removeUserFromLocalStorage()
     navigate('/', { replace: true })
+
+    // Se falhar, a sessão local já foi encerrada; o token expira sozinho.
+    if (refreshToken) {
+      api.auth.logout(refreshToken).catch(() => undefined)
+    }
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
-          size="icon"
-          aria-label="account of current user"
-          className="h-12 w-12 rounded-full"
+          variant='ghost'
+          size='icon'
+          aria-label='account of current user'
+          className='h-12 w-12 rounded-full'
         >
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-[#1c253f] text-white">
+          <Avatar className='h-12 w-12'>
+            <AvatarFallback className='bg-[#1c253f] text-white'>
               {getInitials(user ? user.name : '')}
             </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52">
-        <div className="px-5 py-2 text-left">
-          <p className="text-base">{user ? user.name : ''}</p>
-          <p className="break-words text-sm text-muted-foreground">
+      <DropdownMenuContent align='end' className='w-52'>
+        <div className='px-5 py-2 text-left'>
+          <p className='text-base'>{user ? user.name : ''}</p>
+          <p className='break-words text-sm text-muted-foreground'>
             {user ? user.email : ''}
           </p>
         </div>

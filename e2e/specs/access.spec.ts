@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
-import { apiAs } from '../fixtures/api'
+import { apiAs, loginByApi } from '../fixtures/api'
+import { API_URL } from '../fixtures/environment'
 import { E2E_PASSWORD, USERS, storageStatePath, type E2eUserKey } from '../fixtures/users'
 
 const ROLE_LABEL = { ADMIN: 'Administrador', ADVISOR: 'Orientador', STUDENT: 'Estudante' } as const
@@ -92,5 +93,46 @@ test.describe('API nega rotas de admin com 403', () => {
     await api.dispose()
 
     expect([403, 404]).toContain(response.status())
+  })
+})
+
+test.describe('renovação da sessão', () => {
+  test.use({ storageState: { cookies: [], origins: [] } })
+
+  async function storeSession(page: Page, session: object) {
+    await page.goto('/')
+    await page.evaluate(user => localStorage.setItem('user', JSON.stringify(user)), session)
+  }
+
+  const storedSession = (page: Page) =>
+    page.evaluate(() => JSON.parse(localStorage.getItem('user') ?? 'null'))
+
+  // Um login só, numa conta que nenhum outro cenário usa: o refresh token vale
+  // uma vez, e o /login aceita 5 tentativas por conta a cada 15 minutos.
+  test('renova o access token recusado e, com o refresh token revogado, volta para o login', async ({
+    page,
+    request
+  }) => {
+    const session = await loginByApi('unlinked')
+    await storeSession(page, { ...session, access_token: 'token-recusado' })
+
+    const refreshed = page.waitForResponse(response => response.url().endsWith('/login/refresh'))
+    await page.goto('/orientandos')
+
+    expect((await refreshed).status()).toBe(200)
+    await expect(page).toHaveURL(/\/orientandos$/)
+    const renewed = await storedSession(page)
+    expect(renewed.access_token).not.toBe('token-recusado')
+    expect(renewed.refresh_token).not.toBe(session.refresh_token)
+
+    const logout = await request.post(`${API_URL}/logout`, {
+      data: { refresh_token: renewed.refresh_token }
+    })
+    expect(logout.status()).toBe(204)
+    await storeSession(page, { ...renewed, access_token: 'token-recusado' })
+    await page.goto('/orientandos')
+
+    await expect(page).toHaveURL(/\/$/)
+    expect(await storedSession(page)).toBeNull()
   })
 })
