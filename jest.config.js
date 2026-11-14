@@ -1,6 +1,9 @@
 module.exports = {
   roots: ['<rootDir>'],
 
+  // Os specs do Playwright rodam com `npm run test:e2e`, não com o Jest.
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/e2e/'],
+
   testEnvironment: 'jsdom',
 
   setupFilesAfterEnv: ['<rootDir>/src/tests/setup.ts'],

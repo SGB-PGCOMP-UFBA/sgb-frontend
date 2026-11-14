@@ -130,6 +130,20 @@ services/
 pasta `__tests__`. Só a infraestrutura de teste (setup do Jest, mocks de
 asset) vive em `src/tests/`.
 
+A exceção são os testes e2e (Playwright): eles testam a aplicação inteira, não
+um arquivo, e ficam em `e2e/` na raiz:
+
+```
+e2e/
+  auth.setup.ts              # loga uma vez por perfil e salva a sessão
+  fixtures/                  # URLs locais, usuários do seed, API, Mailpit
+  specs/<area>.spec.ts       # cenários por área ou perfil
+```
+
+Use seletores acessíveis (`getByRole`, `getByLabel`) e só recorra a
+`data-testid` quando a tela não tiver rótulo. Cenário que cria dados usa nome
+único (`uniqueSuffix`) e não depende da ordem dos outros.
+
 ## 4. Container e view
 
 O par existe para separar decisão de renderização:
