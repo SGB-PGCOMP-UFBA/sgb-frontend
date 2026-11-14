@@ -30,3 +30,8 @@ yarn-error.log*
 .env
 
 # o lockfile precisa estar versionado para o `npm ci` do CI
+
+# Playwright
+/e2e/.auth/
+/playwright-report/
+/test-results/

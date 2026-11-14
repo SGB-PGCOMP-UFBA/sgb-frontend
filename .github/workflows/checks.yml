@@ -39,6 +39,9 @@ jobs:
       - name: Check Types
         run: npm run check-types
 
+      - name: Check E2E Types
+        run: npm run check-types:e2e
+
       - name: Run Tests
         run: npm test
 
