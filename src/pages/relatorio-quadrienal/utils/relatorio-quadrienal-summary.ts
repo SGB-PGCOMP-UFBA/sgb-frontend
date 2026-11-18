@@ -9,13 +9,28 @@ export interface ReportPeriod {
 }
 
 export interface ReportTotals {
-  active: DegreeCount
+  total: DegreeCount
   onGoing: DegreeCount
   extended: DegreeCount
   finished: DegreeCount
 }
 
 type CountPicker = (agency: AgencyScholarshipReport) => DegreeCount
+
+/**
+ * Bolsas da agência no período: a soma dos baldes de status. Calculada aqui,
+ * e não lida de outro campo, para que o total sempre feche com os subtotais.
+ */
+const pickTotal: CountPicker = agency => ({
+  masters:
+    agency.onGoingCount.masters +
+    agency.extendedCount.masters +
+    agency.finishedCount.masters,
+  phd:
+    agency.onGoingCount.phd +
+    agency.extendedCount.phd +
+    agency.finishedCount.phd,
+})
 
 const PROGRAMS = [
   { key: 'masters', label: 'Mestrado' },
@@ -37,7 +52,7 @@ function sumDegreeCounts(
 
 export function sumReportTotals(data: AgencyScholarshipReport[]): ReportTotals {
   return {
-    active: sumDegreeCounts(data, agency => agency.activeCount),
+    total: sumDegreeCounts(data, pickTotal),
     onGoing: sumDegreeCounts(data, agency => agency.onGoingCount),
     extended: sumDegreeCounts(data, agency => agency.extendedCount),
     finished: sumDegreeCounts(data, agency => agency.finishedCount),
@@ -85,9 +100,8 @@ export function buildReportSummaryText(
   period: ReportPeriod,
   data: AgencyScholarshipReport[]
 ): string {
-  const pickActive: CountPicker = agency => agency.activeCount
   const pickFinished: CountPicker = agency => agency.finishedCount
-  const active = sumDegreeCounts(data, pickActive)
+  const active = sumDegreeCounts(data, pickTotal)
   const finished = sumDegreeCounts(data, pickFinished)
   const activeTotal = active.masters + active.phd
   const finishedTotal = finished.masters + finished.phd
@@ -96,7 +110,7 @@ export function buildReportSummaryText(
   const activeSentence =
     `${periodText ? `No período ${periodText}` : 'Em todo o período'}, ` +
     `há ${activeTotal} ${activeTotal === 1 ? 'bolsa ativa' : 'bolsas ativas'}` +
-    `${describeByProgramAndAgency(data, pickActive)}.`
+    `${describeByProgramAndAgency(data, pickTotal)}.`
 
   const finishedSentence =
     'Nesse mesmo período ' +

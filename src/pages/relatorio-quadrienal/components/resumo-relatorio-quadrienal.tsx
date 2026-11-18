@@ -66,7 +66,7 @@ function ResumoRelatorioQuadrienal({
         </Button>
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-        <ResumoStat label='Bolsas ativas' counts={totals.active} />
+        <ResumoStat label='Bolsas no período' counts={totals.total} />
         <ResumoStat label='Em andamento' counts={totals.onGoing} />
         <ResumoStat label='Prorrogadas' counts={totals.extended} />
         <ResumoStat label='Finalizadas' counts={totals.finished} />

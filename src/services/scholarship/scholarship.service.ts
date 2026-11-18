@@ -59,10 +59,9 @@ export interface AgencyScholarshipReport {
   scholarshipsTotal: number
   totalMasters: number
   totalPhd: number
-  activeCount: DegreeCount
-  finishedCount: DegreeCount
   onGoingCount: DegreeCount
   extendedCount: DegreeCount
+  finishedCount: DegreeCount
 }
 
 export const createScholarship = async (
