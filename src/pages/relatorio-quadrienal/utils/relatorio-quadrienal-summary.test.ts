@@ -11,42 +11,73 @@ const period = {
 }
 const fullPeriod = { startDate: null, endDate: null }
 
+/**
+ * Monta a agência a partir dos baldes de status. `ongoing` é o que sobra das
+ * bolsas do período depois das finalizadas, para os testes falarem em
+ * "bolsas no período" como o resumo fala.
+ */
 function agency(
   agencyName: string,
-  active: [number, number],
+  inPeriod: [number, number],
   finished: [number, number],
-  onGoing: [number, number] = [0, 0],
   extended: [number, number] = [0, 0]
 ): AgencyScholarshipReport {
+  const onGoing: [number, number] = [
+    inPeriod[0] - finished[0] - extended[0],
+    inPeriod[1] - finished[1] - extended[1],
+  ]
+
   return {
     agencyName,
-    scholarshipsTotal: active[0] + active[1],
-    totalMasters: active[0],
-    totalPhd: active[1],
-    activeCount: { masters: active[0], phd: active[1] },
-    finishedCount: { masters: finished[0], phd: finished[1] },
+    scholarshipsTotal: inPeriod[0] + inPeriod[1],
+    totalMasters: inPeriod[0],
+    totalPhd: inPeriod[1],
     onGoingCount: { masters: onGoing[0], phd: onGoing[1] },
     extendedCount: { masters: extended[0], phd: extended[1] },
+    finishedCount: { masters: finished[0], phd: finished[1] },
   }
 }
 
 describe('sumReportTotals', () => {
   it('quando há várias agências, soma cada status por modalidade', () => {
     const totals = sumReportTotals([
-      agency('CNPQ', [5, 2], [2, 0], [2, 1], [1, 1]),
-      agency('CAPES', [10, 4], [3, 1], [6, 2], [1, 1]),
+      agency('CNPQ', [5, 2], [2, 0], [1, 1]),
+      agency('CAPES', [10, 4], [3, 1], [1, 1]),
     ])
 
     expect(totals).toEqual({
-      active: { masters: 15, phd: 6 },
+      total: { masters: 15, phd: 6 },
       onGoing: { masters: 8, phd: 3 },
       extended: { masters: 2, phd: 2 },
       finished: { masters: 5, phd: 1 },
     })
   })
 
+  it('o total do período fecha com a soma de andamento, prorrogadas e finalizadas', () => {
+    const { total, onGoing, extended, finished } = sumReportTotals([
+      agency('CNPQ', [5, 2], [2, 0], [1, 1]),
+      agency('OUTRAS', [3, 1], [0, 1], [2, 0]),
+    ])
+
+    expect(total).toEqual({
+      masters: onGoing.masters + extended.masters + finished.masters,
+      phd: onGoing.phd + extended.phd + finished.phd,
+    })
+  })
+
+  it('o total vem dos baldes, mesmo que o total geral recebido esteja diferente', () => {
+    const capes = {
+      ...agency('CAPES', [4, 2], [1, 0]),
+      scholarshipsTotal: 99,
+      totalMasters: 90,
+      totalPhd: 9,
+    }
+
+    expect(sumReportTotals([capes]).total).toEqual({ masters: 4, phd: 2 })
+  })
+
   it('quando não há agências, devolve tudo zerado', () => {
-    expect(sumReportTotals([]).active).toEqual({ masters: 0, phd: 0 })
+    expect(sumReportTotals([]).total).toEqual({ masters: 0, phd: 0 })
   })
 })
 

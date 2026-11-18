@@ -61,10 +61,6 @@ function DataGridQuadrienal({ data }: DataGridQuadrienalProps) {
 
                 <div className='space-y-2'>
                   <StatusRow
-                    label='Bolsas Ativas no Período'
-                    counts={agency.activeCount}
-                  />
-                  <StatusRow
                     label='Bolsas em Andamento'
                     counts={agency.onGoingCount}
                   />
