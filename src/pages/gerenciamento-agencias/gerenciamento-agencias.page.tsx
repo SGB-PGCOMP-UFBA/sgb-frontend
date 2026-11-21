@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
 import { formatApiError } from '@/helpers/api-error.helper'
 import { GerenciamentoAgenciasView } from './gerenciamento-agencias.view'
 import type { InclusaoAgenciaFormValues } from './components/dialog-inclusao-agencia'
-import type { UpdateAgencyPayload } from '@/services/agency'
 import type { AgencyDetailed } from '@/types'
 
 function GerenciamentoAgencias() {
+  const navigate = useNavigate()
   const [agencys, setAgencys] = useState<AgencyDetailed[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -33,17 +34,17 @@ function GerenciamentoAgencias() {
     await getAgencys()
   }
 
-  const updateAgency = async (agencyId: number, agency: UpdateAgencyPayload) => {
-    const response = await api.agency.updateAgency(agencyId, agency)
+  const viewAgency = useCallback(
+    (agency: AgencyDetailed) => navigate(`/agencias/${agency.id}`),
+    [navigate]
+  )
 
-    if (response.status === 200) {
-      toast.success('Agência atualizada com sucesso.')
-    } else {
-      toast.error(formatApiError(response.status, response.data))
-    }
-
-    await getAgencys()
-  }
+  /** A edição acontece só na página da agência, que já abre no formulário. */
+  const editAgency = useCallback(
+    (agency: AgencyDetailed) =>
+      navigate(`/agencias/${agency.id}`, { state: { startEditing: true } }),
+    [navigate]
+  )
 
   const deleteAgency = async (agency: number) => {
     const response = await api.agency.deleteAgency(agency)
@@ -66,7 +67,8 @@ function GerenciamentoAgencias() {
       isLoading={isLoading}
       data={agencys}
       onCreate={createAgency}
-      onUpdate={updateAgency}
+      onView={viewAgency}
+      onEdit={editAgency}
       onDelete={deleteAgency}
     />
   )

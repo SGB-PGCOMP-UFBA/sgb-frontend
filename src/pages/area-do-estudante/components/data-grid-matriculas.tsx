@@ -1,20 +1,17 @@
 import { useMemo, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ActionIconButton } from '@/components/action-icon-button'
-import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
-import { Button } from '@/components/ui/button'
+import { DialogExclusaoMatricula } from '@/components/dialog-exclusao-matricula'
+import { DialogInclusaoBolsa } from '@/components/dialog-inclusao-bolsa'
+import type { InclusaoBolsaSubmitValues } from '@/components/dialog-inclusao-bolsa'
 import { formatPhone, formatCalendarDate } from '@/helpers/formatters.helper'
+import {
+  hasOngoingScholarship,
+  ONGOING_SCHOLARSHIP_BLOCKED,
+} from '@/helpers/student-records.helper'
 import { CustomChip } from '@/components'
-import { DialogExclusaoMatricula } from './dialog-exclusao-matricula'
-import { DialogInclusaoBolsa } from './dialog-inclusao-bolsa'
-import type { InclusaoBolsaSubmitValues } from './dialog-inclusao-bolsa'
-import { DialogEdicaoMatricula } from './dialog-edicao-matricula'
-import type { EdicaoMatriculaSubmitValues } from './dialog-edicao-matricula'
+import { MenuAcoesMatricula } from './menu-acoes-matricula'
 import type {
-  AdvisorFilterOption,
   EnrollmentDetailedWithFullRelations,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
@@ -22,68 +19,34 @@ import type {
 
 const NOT_INFORMED = 'Não informado'
 
-export interface MatriculaRow extends EnrollmentDetailedWithFullRelations {
-  student_email: string
-}
+type MatriculaRow = EnrollmentDetailedWithFullRelations
 
 export interface DataGridMatriculasProps {
   data: StudentDetailedWithFullRelations
-  advisors: AdvisorFilterOption[]
   agencies: IdentifiedFilterOption[]
   allocations: IdentifiedFilterOption[]
   onCreateScholarship: (data: InclusaoBolsaSubmitValues) => void
-  onUpdate: (data: EdicaoMatriculaSubmitValues) => void
+  onView: (enrollment: MatriculaRow) => void
+  onEdit: (enrollment: MatriculaRow) => void
   onDelete: (enrollmentId: number) => void
 }
 
-function DataGridMatriculas(props: DataGridMatriculasProps) {
-  const { data } = props
-
-  const enrollments = useMemo<MatriculaRow[]>(
-    () =>
-      data.enrollments.map(enrollment => ({
-        ...enrollment,
-        student_email: data.email,
-      })),
-    [data]
-  )
-
-  const hasOnGoingScholarship = enrollments.some(enrollment => enrollment.scholarships.some(scholarship => scholarship.status === 'ON_GOING' || scholarship.status === 'EXTENDED'))
-
-  const [selectedEnrollment, setSelectedEnrollment] = useState<MatriculaRow | null>(null)
-  const [isDialogForScholarshipCreateOpen, setIsDialogForScholarshipCreateOpen] = useState(false)
-  const [isDialogForEnrollmentUpdateOpen, setIsDialogForEnrollmentUpdateOpen] = useState(false)
-  const [isDialogForEnrollmentDeleteOpen, setIsDialogForEnrollmentDeleteOpen] = useState(false)
-
-  const handleDialogForScholarshipCreateClose = () => {
-    setSelectedEnrollment(null)
-    setIsDialogForScholarshipCreateOpen(false)
-  }
-
-  const handleDialogForScholarshipCreateOpen = (value: MatriculaRow) => {
-    setSelectedEnrollment(value)
-    setIsDialogForScholarshipCreateOpen(true)
-  }
-
-  const handleDialogForUpdateClose = () => {
-    setSelectedEnrollment(null)
-    setIsDialogForEnrollmentUpdateOpen(false)
-  }
-
-  const handleDialogForUpdateOpen = (value: MatriculaRow) => {
-    setSelectedEnrollment(value)
-    setIsDialogForEnrollmentUpdateOpen(true)
-  }
-
-  const handleDialogForDeleteClose = () => {
-    setSelectedEnrollment(null)
-    setIsDialogForEnrollmentDeleteOpen(false)
-  }
-
-  const handleDialogForDeleteOpen = (value: MatriculaRow) => {
-    setSelectedEnrollment(value)
-    setIsDialogForEnrollmentDeleteOpen(true)
-  }
+function DataGridMatriculas({
+  data,
+  agencies,
+  allocations,
+  onCreateScholarship,
+  onView,
+  onEdit,
+  onDelete,
+}: DataGridMatriculasProps) {
+  const [addingScholarshipTo, setAddingScholarshipTo] =
+    useState<MatriculaRow | null>(null)
+  const [deletingEnrollment, setDeletingEnrollment] =
+    useState<MatriculaRow | null>(null)
+  const addScholarshipDisabledReason = hasOngoingScholarship(data)
+    ? ONGOING_SCHOLARSHIP_BLOCKED
+    : undefined
 
   const columns = useMemo<DataTableColumn<MatriculaRow>[]>(
     () => [
@@ -166,83 +129,43 @@ function DataGridMatriculas(props: DataGridMatriculasProps) {
       {
         id: 'actions',
         header: 'Ações',
-        width: 180,
+        width: 96,
         cell: (row) => (
-          <div className="flex w-full h-full items-center justify-center gap-x-1">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={cn(
-                    'h-auto min-w-0 whitespace-normal px-2 py-1 leading-tight text-primary',
-                    hasOnGoingScholarship && 'cursor-not-allowed opacity-50 hover:bg-transparent'
-                  )}
-                  aria-label="Adicionar Bolsa"
-                  aria-disabled={hasOnGoingScholarship || undefined}
-                  onClick={
-                    hasOnGoingScholarship
-                      ? undefined
-                      : () => handleDialogForScholarshipCreateOpen(row)
-                  }
-                >
-                  <span className="capitalize font-bold text-center">Add<br />Bolsa</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs text-center">
-                {hasOnGoingScholarship
-                  ? 'Não é possível adicionar uma nova bolsa, pois você já possui uma bolsa em andamento.'
-                  : 'Adicionar Bolsa'}
-              </TooltipContent>
-            </Tooltip>
-            <ActionIconButton
-              label="Editar Matrícula"
-              icon={Pencil}
-              onClick={() => handleDialogForUpdateOpen(row)}
-            />
-            <ActionIconButton
-              label="Excluir Matrícula"
-              icon={Trash2}
-              onClick={() => handleDialogForDeleteOpen(row)}
-            />
-          </div>
+          <MenuAcoesMatricula
+            enrollment={row}
+            addScholarshipDisabledReason={addScholarshipDisabledReason}
+            onView={onView}
+            onEdit={onEdit}
+            onAddScholarship={setAddingScholarshipTo}
+            onDelete={setDeletingEnrollment}
+          />
         )
       }
     ],
-    [hasOnGoingScholarship]
+    [addScholarshipDisabledReason, onView, onEdit]
   )
 
   return (
     <div>
-      <DataTable data={enrollments} columns={columns} csvFileName="matriculas" />
+      <DataTable data={data.enrollments} columns={columns} csvFileName="matriculas" />
 
-      {isDialogForScholarshipCreateOpen && selectedEnrollment && (
+      {addingScholarshipTo && (
         <DialogInclusaoBolsa
-          isOpen={isDialogForScholarshipCreateOpen}
-          onClose={handleDialogForScholarshipCreateClose}
-          onSubmit={props.onCreateScholarship}
-          agencies={props.agencies}
-          allocations={props.allocations}
-          enrollment={selectedEnrollment}
+          isOpen={Boolean(addingScholarshipTo)}
+          onClose={() => setAddingScholarshipTo(null)}
+          onSubmit={onCreateScholarship}
+          agencies={agencies}
+          allocations={allocations}
+          enrollment={addingScholarshipTo}
         />
       )}
 
-      {selectedEnrollment && (
-        <DialogEdicaoMatricula
-          onSubmit={props.onUpdate}
-          item={selectedEnrollment}
-          advisors={props.advisors}
-          isOpen={isDialogForEnrollmentUpdateOpen}
-          onClose={handleDialogForUpdateClose}
-        />
-      )}
-
-      {selectedEnrollment && (
+      {deletingEnrollment && (
         <DialogExclusaoMatricula
-          onSubmit={props.onDelete}
-          item={selectedEnrollment}
-          isOpen={isDialogForEnrollmentDeleteOpen}
-          onClose={handleDialogForDeleteClose}
+          onSubmit={onDelete}
+          item={deletingEnrollment}
+          isOpen={Boolean(deletingEnrollment)}
+          onClose={() => setDeletingEnrollment(null)}
         />
       )}
     </div>

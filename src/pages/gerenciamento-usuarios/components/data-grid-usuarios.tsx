@@ -7,6 +7,7 @@ import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
 import { DialogSituacaoUsuario } from '@/components/dialog-situacao-usuario'
+import { DialogPerfilAdministrador } from '@/components/dialog-perfil-administrador'
 import { filterActiveScholarships } from '@/helpers/scholarship.helper'
 import { useUserScholarships } from '@/hooks/use-user-scholarships'
 import { MenuAcoesUsuario } from './menu-acoes-usuario'
@@ -20,6 +21,7 @@ export interface DataGridUsuariosProps {
   onView: (user: ManagedUser) => void
   onEdit: (user: ManagedUser) => void
   onToggleStatus: (user: ManagedUser) => void
+  onChangeAdminPrivileges: (user: ManagedUser, enabled: boolean) => void
   onDelete: (user: ManagedUser) => void
 }
 
@@ -29,9 +31,12 @@ function DataGridUsuarios({
   onView,
   onEdit,
   onToggleStatus,
+  onChangeAdminPrivileges,
   onDelete,
 }: DataGridUsuariosProps) {
   const [statusUser, setStatusUser] = useState<ManagedUser | null>(null)
+  const [adminProfileUser, setAdminProfileUser] =
+    useState<ManagedUser | null>(null)
   const [deletingUser, setDeletingUser] = useState<ManagedUser | null>(null)
   const deletingScholarships = useUserScholarships(
     deletingUser && deletingUser.role !== 'ADMIN' ? deletingUser.id : null
@@ -119,6 +124,7 @@ function DataGridUsuarios({
             onView={onView}
             onEdit={onEdit}
             onToggleStatus={setStatusUser}
+            onToggleAdminPrivileges={setAdminProfileUser}
             onDelete={setDeletingUser}
           />
         ),
@@ -142,6 +148,15 @@ function DataGridUsuarios({
           item={statusUser}
           onClose={() => setStatusUser(null)}
           onConfirm={onToggleStatus}
+        />
+      )}
+
+      {adminProfileUser && (
+        <DialogPerfilAdministrador
+          isOpen={Boolean(adminProfileUser)}
+          item={adminProfileUser}
+          onClose={() => setAdminProfileUser(null)}
+          onConfirm={onChangeAdminPrivileges}
         />
       )}
 

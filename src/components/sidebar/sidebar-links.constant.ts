@@ -44,13 +44,6 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     availableRoles: ADMIN_ROLES
   },
   {
-    name: 'Orientadores',
-    icon: MdPeople,
-    path: '/orientadores',
-    visible: true,
-    availableRoles: ADMIN_ROLES
-  },
-  {
     name: 'Usuários',
     icon: MdManageAccounts,
     path: '/usuarios',

@@ -39,8 +39,22 @@ for (const screen of SCREENS) {
       await expect(page.getByRole('cell', { name, exact: true })).toBeVisible()
     })
 
+    test('abre a página de detalhes pelo menu de ações', async ({ page }) => {
+      const api = await apiAs('admin')
+      const name = `${screen.entity} Detalhe ${uniqueSuffix()}`
+      await api.post(screen.apiPath, { data: screen.payload(name) })
+      await api.dispose()
+      await page.goto(screen.path)
+
+      await page.getByRole('button', { name: `Ações para ${name}` }).click()
+      await page.getByRole('menuitem', { name: 'Ver detalhes' }).click()
+
+      await expect(page).toHaveURL(new RegExp(`${screen.path}/\\d+$`))
+      await expect(page.getByRole('heading', { name })).toBeVisible()
+    })
+
     // O nome da agência fica bloqueado na edição; nela muda a descrição.
-    test('edita pela tela', async ({ page }) => {
+    test('edita pela página de detalhes', async ({ page }) => {
       const api = await apiAs('admin')
       const name = `${screen.entity} Editar ${uniqueSuffix()}`
       await api.post(screen.apiPath, { data: screen.payload(name) })
@@ -49,14 +63,13 @@ for (const screen of SCREENS) {
 
       const field = screen.entity === 'Agência' ? 'Descrição' : 'Nome'
       const newValue = `${name} alterada`
-      const row = page.getByRole('row').filter({ hasText: name })
-      await row.getByRole('button', { name: `Editar ${screen.entity}` }).click()
-      const dialog = page.getByRole('dialog')
-      await dialog.getByLabel(field).fill(newValue)
-      await dialog.getByRole('button', { name: 'Salvar' }).click()
+      await page.getByRole('button', { name: `Ações para ${name}` }).click()
+      await page.getByRole('menuitem', { name: 'Editar' }).click()
+      await page.getByLabel(field).fill(newValue)
+      await page.getByRole('button', { name: 'Salvar' }).click()
 
       await expect(page.getByText(`${screen.entity} atualizada com sucesso.`)).toBeVisible()
-      await expect(page.getByRole('cell', { name: newValue, exact: true })).toBeVisible()
+      await expect(page.getByText(newValue, { exact: true }).first()).toBeVisible()
     })
 
     test('exclui pela tela um registro sem bolsas', async ({ page }) => {
@@ -66,8 +79,8 @@ for (const screen of SCREENS) {
       await api.dispose()
       await page.goto(screen.path)
 
-      const row = page.getByRole('row').filter({ hasText: name })
-      await row.getByRole('button', { name: `Excluir ${screen.entity}` }).click()
+      await page.getByRole('button', { name: `Ações para ${name}` }).click()
+      await page.getByRole('menuitem', { name: 'Excluir' }).click()
       await page.getByRole('dialog').getByRole('button', { name: 'Excluir' }).click()
 
       await expect(page.getByText(`${screen.entity} excluída com sucesso.`)).toBeVisible()
@@ -77,10 +90,10 @@ for (const screen of SCREENS) {
     test('não deixa excluir um registro com bolsas, na tela nem na API', async ({ page }) => {
       await page.goto(screen.path)
 
-      const row = page
-        .getByRole('row')
-        .filter({ has: page.getByRole('cell', { name: screen.seededWithScholarships, exact: true }) })
-      await expect(row.getByRole('button', { name: `Excluir ${screen.entity}` })).toHaveAttribute(
+      await page
+        .getByRole('button', { name: `Ações para ${screen.seededWithScholarships}` })
+        .click()
+      await expect(page.getByRole('menuitem', { name: /Excluir/ })).toHaveAttribute(
         'aria-disabled',
         'true'
       )

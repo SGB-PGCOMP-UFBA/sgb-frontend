@@ -17,6 +17,7 @@ export interface GerenciamentoUsuariosViewProps {
   onCreate: () => void
   onEdit: (user: ManagedUser) => void
   onToggleStatus: (user: ManagedUser) => void
+  onChangeAdminPrivileges: (user: ManagedUser, enabled: boolean) => void
   onDelete: (user: ManagedUser) => void
 }
 
@@ -29,6 +30,7 @@ function GerenciamentoUsuariosView({
   onCreate,
   onEdit,
   onToggleStatus,
+  onChangeAdminPrivileges,
   onDelete,
 }: GerenciamentoUsuariosViewProps) {
   return (
@@ -58,6 +60,7 @@ function GerenciamentoUsuariosView({
           onView={onView}
           onEdit={onEdit}
           onToggleStatus={onToggleStatus}
+          onChangeAdminPrivileges={onChangeAdminPrivileges}
           onDelete={onDelete}
         />
       )}
