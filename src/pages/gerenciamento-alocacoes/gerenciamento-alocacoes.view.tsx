@@ -4,23 +4,23 @@ import AppLayout from '@/components/app-layout'
 import { CirclePlus } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
-import { DataGridAllocacoes } from './components/data-grid-alocacoes'
+import { DataGridAlocacoes } from './components/data-grid-alocacoes'
 import { DialogInclusaoAlocacao } from './components/dialog-inclusao-alocacao'
 import type { InclusaoAlocacaoFormValues } from './components/dialog-inclusao-alocacao'
 import Loading from '@/components/loading'
-import type { UpdateAllocationPayload } from '@/services/allocation'
 import type { AllocationDetailed } from '@/types'
 
 export interface GerenciamentoAlocacoesViewProps {
   isLoading: boolean
   data: AllocationDetailed[]
   onCreate: (allocation: InclusaoAlocacaoFormValues) => void
-  onUpdate: (allocationId: number, allocation: UpdateAllocationPayload) => void
+  onView: (allocation: AllocationDetailed) => void
+  onEdit: (allocation: AllocationDetailed) => void
   onDelete: (allocationId: number) => void
 }
 
 function GerenciamentoAlocacoesView(props: GerenciamentoAlocacoesViewProps) {
-  const { isLoading, data, onCreate, onUpdate, onDelete } = props
+  const { isLoading, data, onCreate, onView, onEdit, onDelete } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -53,10 +53,10 @@ function GerenciamentoAlocacoesView(props: GerenciamentoAlocacoesViewProps) {
       {isLoading ? (
         <Loading />
       ) : (
-        <DataGridAllocacoes
+        <DataGridAlocacoes
           data={data}
-          onCreate={onCreate}
-          onUpdate={onUpdate}
+          onView={onView}
+          onEdit={onEdit}
           onDelete={onDelete}
         />
       )}

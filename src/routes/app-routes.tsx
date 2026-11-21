@@ -12,10 +12,14 @@ import {
   GerenciamentoAgencias,
   GerenciamentoAlocacoes,
   GerenciamentoOrientandos,
-  GerenciamentoOrientadores,
   GerenciamentoUsuarios,
   DetalhesUsuario,
   DetalhesBolsa,
+  DetalhesAgencia,
+  DetalhesAlocacao,
+  DetalhesOrientando,
+  DetalhesMatricula,
+  DetalhesBolsaEstudante,
   CadastroUsuario,
   AreaDoEstudante,
   PageAboutSystem,
@@ -48,8 +52,10 @@ export default function AppRoutes() {
         <Route path="bolsistas/:id" element={<RedirectBolsista />} />
         <Route path="quadrienal" element={<RelatorioQuadrienal />} />
         <Route path="agencias" element={<GerenciamentoAgencias />} />
+        <Route path="agencias/:id" element={<DetalhesAgencia />} />
         <Route path="alocacoes" element={<GerenciamentoAlocacoes />} />
-        <Route path="orientadores" element={<GerenciamentoOrientadores />} />
+        <Route path="alocacoes/:id" element={<DetalhesAlocacao />} />
+        <Route path="orientadores" element={<Navigate to="/usuarios" replace />} />
         <Route path="usuarios" element={<GerenciamentoUsuarios />} />
         <Route path="usuarios/novo" element={<CadastroUsuario />} />
         <Route path="usuarios/:id" element={<DetalhesUsuario />} />
@@ -58,11 +64,14 @@ export default function AppRoutes() {
       {/* Rotas de usuário orientador */}
       <Route element={<RequireAuth allowedRoles={["ADVISOR"]} />}>
         <Route path="orientandos" element={<GerenciamentoOrientandos />} />
+        <Route path="orientandos/:id" element={<DetalhesOrientando />} />
       </Route>
 
       {/* Rotas de usuário estudante */}
       <Route element={<RequireAuth allowedRoles={["STUDENT"]} />}>
         <Route path="area-do-estudante" element={<AreaDoEstudante />} />
+        <Route path="area-do-estudante/matriculas/:id" element={<DetalhesMatricula />} />
+        <Route path="area-do-estudante/bolsas/:id" element={<DetalhesBolsaEstudante />} />
       </Route>
 
       {/* Qualquer rota desconhecida */}

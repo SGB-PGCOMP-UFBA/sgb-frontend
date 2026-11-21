@@ -31,6 +31,14 @@ export const getAgencys = async (): Promise<
   })
 }
 
+export const getAgency = async (
+  agencyId: number
+): Promise<AxiosResponse<AgencyDetailed>> => {
+  return api.get(`${BASE_AGENCY_API_PATH}/${agencyId}`, {
+    headers: buildHeaders()
+  })
+}
+
 export const createAgency = async (
   agency: CreateAgencyPayload
 ): Promise<AxiosResponse<AgencyDetailed>> => {

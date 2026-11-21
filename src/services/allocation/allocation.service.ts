@@ -27,6 +27,14 @@ export const getAllocations = async (): Promise<
   })
 }
 
+export const getAllocation = async (
+  allocationId: number
+): Promise<AxiosResponse<AllocationDetailed>> => {
+  return api.get(`${BASE_ALLOCATION_API_PATH}/${allocationId}`, {
+    headers: buildHeaders()
+  })
+}
+
 export const createAllocation = async (
   allocation: CreateAllocationPayload
 ): Promise<AxiosResponse<AllocationDetailed>> => {

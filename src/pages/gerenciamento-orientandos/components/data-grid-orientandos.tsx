@@ -1,10 +1,9 @@
-import { useMemo, useState } from 'react'
-import { ActionIconButton } from '@/components/action-icon-button'
-import { Eye, GraduationCap } from 'lucide-react'
+import { useMemo } from 'react'
+import { GraduationCap } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
 import { formatCpf, formatPhone } from '@/helpers/formatters.helper'
-import { DialogVisualizacaoBolsas } from './dialog-visualizacao-bolsas'
+import { MenuAcoesOrientando } from './menu-acoes-orientando'
 import type { StudentDetailedWithFullRelations } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
@@ -13,24 +12,10 @@ export type OrientandoRow = StudentDetailedWithFullRelations
 
 export interface DataGridOrientandosProps {
   data: OrientandoRow[]
+  onView: (student: OrientandoRow) => void
 }
 
-function DataGridOrientandos(props: DataGridOrientandosProps) {
-  const { data } = props
-
-  const [selectedStudent, setSelectedStudent] = useState<OrientandoRow | null>(null)
-  const [isDialogForScholarshipViewOpen, setIsDialogForScholarshipViewOpen] = useState(false)
-
-  const handleDialogForScholarshipViewClose = () => {
-    setSelectedStudent(null)
-    setIsDialogForScholarshipViewOpen(false)
-  }
-
-  const handleDialogForScholarshipViewOpen = (value: OrientandoRow) => {
-    setSelectedStudent(value)
-    setIsDialogForScholarshipViewOpen(true)
-  }
-
+function DataGridOrientandos({ data, onView }: DataGridOrientandosProps) {
   const columns = useMemo<DataTableColumn<OrientandoRow>[]>(
     () => [
       {
@@ -103,32 +88,16 @@ function DataGridOrientandos(props: DataGridOrientandosProps) {
       {
         id: 'actions',
         header: 'Ações',
-        width: 130,
-        cell: (row) => (
-          <div className="flex items-center gap-x-2 overflow-auto">
-            <ActionIconButton
-              label="Visualizar Bolsas"
-              icon={Eye}
-              onClick={() => handleDialogForScholarshipViewOpen(row)}
-            />
-          </div>
-        )
+        width: 96,
+        cell: (row) => <MenuAcoesOrientando student={row} onView={onView} />
       }
     ],
-    []
+    [onView]
   )
 
   return (
     <div>
       <DataTable data={data} columns={columns} csvFileName="orientandos" />
-
-      {selectedStudent && (
-        <DialogVisualizacaoBolsas
-          item={selectedStudent}
-          isOpen={isDialogForScholarshipViewOpen}
-          onClose={handleDialogForScholarshipViewClose}
-        />
-      )}
     </div>
   )
 }

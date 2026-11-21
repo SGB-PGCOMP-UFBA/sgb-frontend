@@ -55,6 +55,23 @@ function GerenciamentoUsuarios() {
     await getUsers()
   }
 
+  const changeAdminPrivileges = async (user: ManagedUser, enabled: boolean) => {
+    try {
+      await api.user.setAdminPrivileges(user.id, enabled)
+      toast.success(
+        enabled
+          ? 'Perfil de administrador habilitado com sucesso.'
+          : 'Perfil de administrador desabilitado com sucesso.'
+      )
+    } catch (error) {
+      toast.error(
+        `Erro ao alterar o perfil de administrador: ${extractApiMessage(error)}`
+      )
+    }
+
+    await getUsers()
+  }
+
   const deleteUser = async (user: ManagedUser) => {
     try {
       await api.user.deleteUser(user.id)
@@ -99,6 +116,7 @@ function GerenciamentoUsuarios() {
       onCreate={() => navigate('/usuarios/novo')}
       onEdit={editUser}
       onToggleStatus={toggleUserStatus}
+      onChangeAdminPrivileges={changeAdminPrivileges}
       onDelete={deleteUser}
     />
   )

@@ -8,10 +8,11 @@ import type { StudentDetailedWithFullRelations } from '@/types'
 export interface GerenciamentoOrientandosViewProps {
   isLoading: boolean
   data: StudentDetailedWithFullRelations[]
+  onView: (student: StudentDetailedWithFullRelations) => void
 }
 
 function GerenciamentoOrientandosView(props: GerenciamentoOrientandosViewProps) {
-  const { isLoading, data } = props
+  const { isLoading, data, onView } = props
 
   return (
     <AppLayout>
@@ -21,7 +22,7 @@ function GerenciamentoOrientandosView(props: GerenciamentoOrientandosViewProps) 
         icon={MdPeople}
         iconBackgroundClassName="bg-green-400"
       />
-      {isLoading ? <Loading /> : <DataGridOrientandos data={data} />}
+      {isLoading ? <Loading /> : <DataGridOrientandos data={data} onView={onView} />}
     </AppLayout>
   )
 }

@@ -66,6 +66,25 @@ function DetalhesUsuario() {
     }
   }
 
+  const changeAdminPrivileges = async (
+    target: ManagedUser,
+    enabled: boolean
+  ) => {
+    try {
+      const response = await api.user.setAdminPrivileges(target.id, enabled)
+      setUser(response.data)
+      toast.success(
+        enabled
+          ? 'Perfil de administrador habilitado com sucesso.'
+          : 'Perfil de administrador desabilitado com sucesso.'
+      )
+    } catch (error) {
+      toast.error(
+        `Erro ao alterar o perfil de administrador: ${extractApiMessage(error)}`
+      )
+    }
+  }
+
   const deleteUser = async (target: ManagedUser) => {
     try {
       await api.user.deleteUser(target.id)
@@ -101,6 +120,7 @@ function DetalhesUsuario() {
       onBack={() => navigate('/usuarios')}
       onUpdate={updateUser}
       onToggleStatus={toggleUserStatus}
+      onChangeAdminPrivileges={changeAdminPrivileges}
       onDelete={deleteUser}
       scholarships={hasScholarships ? scholarships : undefined}
       onViewScholarships={() => {

@@ -8,19 +8,19 @@ import { DataGridAgencias } from './components/data-grid-agencias'
 import { DialogInclusaoAgencia } from './components/dialog-inclusao-agencia'
 import type { InclusaoAgenciaFormValues } from './components/dialog-inclusao-agencia'
 import Loading from '@/components/loading'
-import type { UpdateAgencyPayload } from '@/services/agency'
 import type { AgencyDetailed } from '@/types'
 
 export interface GerenciamentoAgenciasViewProps {
   isLoading: boolean
   data: AgencyDetailed[]
   onCreate: (agency: InclusaoAgenciaFormValues) => void
-  onUpdate: (agencyId: number, agency: UpdateAgencyPayload) => void
+  onView: (agency: AgencyDetailed) => void
+  onEdit: (agency: AgencyDetailed) => void
   onDelete: (agencyId: number) => void
 }
 
 function GerenciamentoAgenciasView(props: GerenciamentoAgenciasViewProps) {
-  const { isLoading, data, onCreate, onUpdate, onDelete } = props
+  const { isLoading, data, onCreate, onView, onEdit, onDelete } = props
   const [isDialogForCreateOpen, setIsDialogForCreateOpen] = useState(false)
 
   const handleDialogForCreateClose = () => {
@@ -55,8 +55,8 @@ function GerenciamentoAgenciasView(props: GerenciamentoAgenciasViewProps) {
       ) : (
         <DataGridAgencias
           data={data}
-          onCreate={onCreate}
-          onUpdate={onUpdate}
+          onView={onView}
+          onEdit={onEdit}
           onDelete={onDelete}
         />
       )}

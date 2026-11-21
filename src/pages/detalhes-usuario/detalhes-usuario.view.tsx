@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { ArrowLeft, Pencil, Trash2, UserCheck, UserX } from 'lucide-react'
+import {
+  ArrowLeft,
+  Pencil,
+  ShieldCheck,
+  ShieldOff,
+  Trash2,
+  UserCheck,
+  UserX,
+} from 'lucide-react'
 import { MdManageAccounts } from 'react-icons/md'
 import AppLayout from '@/components/app-layout'
 import Loading from '@/components/loading'
@@ -7,15 +15,12 @@ import { CustomChip } from '@/components'
 import { PageHeader } from '@/components/page-header'
 import { DialogExclusaoUsuario } from '@/components/dialog-exclusao-usuario'
 import { DialogSituacaoUsuario } from '@/components/dialog-situacao-usuario'
+import { DialogPerfilAdministrador } from '@/components/dialog-perfil-administrador'
+import { DetailActionButton } from '@/components/detail-action-button'
 import { DetailSection } from '@/components/detail-section'
 import { InfoItem } from '@/components/info-item'
 import { UserFormFields } from '@/components/user-form-fields'
 import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { getUserRoleLabel } from '@/constants/user-role.constant'
 import { formatCpf, formatDate, formatPhone } from '@/helpers/formatters.helper'
 import { readFormValues } from '@/helpers/form-values.helper'
@@ -40,47 +45,12 @@ export interface DetalhesUsuarioViewProps {
   onBack: () => void
   onUpdate: (values: ManagedUserFormValues) => Promise<boolean>
   onToggleStatus: (user: ManagedUser) => void
+  onChangeAdminPrivileges: (user: ManagedUser, enabled: boolean) => void
   onDelete: (user: ManagedUser) => void
   /** Bolsas do usuario; ausente para administradores. */
   scholarships?: UserScholarshipsState
   /** Abre a pagina de bolsas filtrada por este usuario. */
   onViewScholarships: () => void
-}
-
-interface ActionButtonProps {
-  disabledReason?: string
-  children: React.ReactNode
-  variant?: 'outline' | 'destructive'
-  onClick: () => void
-}
-
-function ActionButton({
-  disabledReason,
-  children,
-  variant = 'outline',
-  onClick,
-}: ActionButtonProps) {
-  const button = (
-    <Button
-      variant={variant}
-      aria-disabled={Boolean(disabledReason) || undefined}
-      className={disabledReason ? 'cursor-not-allowed opacity-50' : undefined}
-      onClick={disabledReason ? undefined : onClick}
-    >
-      {children}
-    </Button>
-  )
-
-  if (!disabledReason) return button
-
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent className='max-w-xs text-center'>
-        {disabledReason}
-      </TooltipContent>
-    </Tooltip>
-  )
 }
 
 function DetalhesUsuarioView({
@@ -91,6 +61,7 @@ function DetalhesUsuarioView({
   onBack,
   onUpdate,
   onToggleStatus,
+  onChangeAdminPrivileges,
   onDelete,
   scholarships,
   onViewScholarships,
@@ -100,6 +71,8 @@ function DetalhesUsuarioView({
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false)
+  const [isAdminProfileDialogOpen, setIsAdminProfileDialogOpen] =
+    useState(false)
   const { formProps, hasChanges } = useFormChanges()
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -148,6 +121,8 @@ function DetalhesUsuarioView({
     )
   }
 
+  const isAdmin = user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES'
+
   return (
     <AppLayout>
       <div className='mb-4'>{backButton}</div>
@@ -160,30 +135,39 @@ function DetalhesUsuarioView({
         actions={
           !isEditing && (
             <div className='flex items-center gap-2'>
-              <ActionButton
+              <DetailActionButton
                 disabledReason={disabledReason}
                 onClick={() => setIsEditing(true)}
               >
                 <Pencil />
                 Editar
-              </ActionButton>
+              </DetailActionButton>
               {user.status && (
-                <ActionButton
+                <DetailActionButton
                   disabledReason={disabledReason}
                   onClick={() => setIsStatusDialogOpen(true)}
                 >
                   {user.status === 'ACTIVE' ? <UserX /> : <UserCheck />}
                   {user.status === 'ACTIVE' ? 'Inativar' : 'Ativar'}
-                </ActionButton>
+                </DetailActionButton>
               )}
-              <ActionButton
+              {isAdvisorRole(user.role) && (
+                <DetailActionButton
+                  disabledReason={disabledReason}
+                  onClick={() => setIsAdminProfileDialogOpen(true)}
+                >
+                  {isAdmin ? <ShieldOff /> : <ShieldCheck />}
+                  {isAdmin ? 'Desabilitar perfil admin' : 'Habilitar perfil admin'}
+                </DetailActionButton>
+              )}
+              <DetailActionButton
                 variant='destructive'
                 disabledReason={disabledReason}
                 onClick={() => setIsDeleteDialogOpen(true)}
               >
                 <Trash2 />
                 Excluir
-              </ActionButton>
+              </DetailActionButton>
             </div>
           )
         }
@@ -289,6 +273,15 @@ function DetalhesUsuarioView({
           item={user}
           onClose={() => setIsStatusDialogOpen(false)}
           onConfirm={onToggleStatus}
+        />
+      )}
+
+      {isAdminProfileDialogOpen && (
+        <DialogPerfilAdministrador
+          isOpen={isAdminProfileDialogOpen}
+          item={user}
+          onClose={() => setIsAdminProfileDialogOpen(false)}
+          onConfirm={onChangeAdminPrivileges}
         />
       )}
 

@@ -1,111 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AreaDoEstudanteView } from './area-do-estudante.view'
 import { api } from '@/services'
-import {
-  getUserFromLocalStorage,
-  updateUserFromLocalStorage,
-  removeUserFromLocalStorage,
-} from '@/helpers/auth-user.helper'
-import { formatApiError, extractApiMessage } from '@/helpers/api-error.helper'
+import { extractApiMessage } from '@/helpers/api-error.helper'
 import { formDateToApi } from '@/helpers/formatters.helper'
+import { toCreateScholarshipPayload } from '@/helpers/student-records.helper'
+import type { StudentScholarship } from '@/helpers/student-records.helper'
+import { useStudentArea } from '@/hooks/use-student-area'
+import type { InclusaoBolsaSubmitValues } from '@/components/dialog-inclusao-bolsa'
 import type { InclusaoMatriculaFormValues } from './components/dialog-inclusao-matricula'
-import type { InclusaoBolsaSubmitValues } from './components/dialog-inclusao-bolsa'
-import type { EdicaoMatriculaSubmitValues } from './components/dialog-edicao-matricula'
-import type { EdicaoBolsaSubmitValues } from './components/dialog-edicao-bolsa'
-import type {
-  AdvisorFilterOption,
-  IdentifiedFilterOption,
-  StudentDetailedWithFullRelations,
-} from '@/types'
+import type { EnrollmentDetailedWithFullRelations } from '@/types'
+
+const ENROLLMENT_PATH = '/area-do-estudante/matriculas'
+const SCHOLARSHIP_PATH = '/area-do-estudante/bolsas'
 
 function AreaDoEstudante() {
-  const [student, setStudent] =
-    useState<StudentDetailedWithFullRelations | null>(null)
-  const [agencies, setAgencies] = useState<IdentifiedFilterOption[]>([])
-  const [allocations, setAllocations] = useState<IdentifiedFilterOption[]>([])
-  const [advisors, setAdvisors] = useState<AdvisorFilterOption[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  const getAdvisors = async () => {
-    try {
-      const response = await api.user.getAdvisorFilterList()
-
-      if (response.status === 200) {
-        setAdvisors(response.data)
-      }
-    } catch {
-      toast.error('Ocorreu um erro na consulta de orientadores.')
-    }
-  }
-
-  const getAgencies = async () => {
-    try {
-      const response = await api.agency.getAgencyFilterList()
-
-      if (response.status === 200) {
-        setAgencies(response.data)
-      }
-    } catch {
-      toast.error('Ocorreu um erro na consulta de agências.')
-    }
-  }
-
-  const getAllocations = async () => {
-    try {
-      const response = await api.allocation.getAllocationFilterList()
-
-      if (response.status === 200) {
-        setAllocations(response.data)
-      }
-    } catch {
-      toast.error('Ocorreu um erro na consulta de alocações.')
-    }
-  }
-
-  const getStudent = async () => {
-    const user = getUserFromLocalStorage()
-
-    if (!user) {
-      return
-    }
-
-    try {
-      const response = await api.user.getStudent(user.id)
-
-      if (response.status === 200) {
-        setStudent(response.data)
-        updateUserFromLocalStorage({
-          link_to_lattes: response.data.link_to_lattes,
-        })
-      }
-    } catch {
-      toast.error('Ocorreu um erro na consulta de dados do estudante.')
-      removeUserFromLocalStorage()
-    }
-  }
+  const navigate = useNavigate()
+  const { isLoading, student, advisors, agencies, allocations, reloadStudent } =
+    useStudentArea()
 
   const handleCreateNewEnrollment = async (
     data: InclusaoMatriculaFormValues
   ) => {
-    if (!student) {
-      return
-    }
+    if (!student) return
 
     try {
-      const payload = {
+      await api.enrollment.createEnrollment({
         ...data,
         student_email: student.email,
         enrollment_date: formDateToApi(data.enrollment_date),
         defense_prediction_date: formDateToApi(data.defense_prediction_date),
-      }
-
-      const response = await api.enrollment.createEnrollment(payload)
-
-      if ([200, 201].includes(response.status)) {
-        toast.success('Matrícula criada com sucesso.')
-        await getStudent()
-      }
+      })
+      toast.success('Matrícula criada com sucesso.')
+      await reloadStudent()
     } catch {
       toast.error('Ocorreu um erro na criação da matrícula.')
     }
@@ -114,25 +42,14 @@ function AreaDoEstudante() {
   const handleCreateNewScholarship = async (
     data: InclusaoBolsaSubmitValues
   ) => {
-    if (!student) {
-      return
-    }
+    if (!student) return
 
     try {
-      const payload = {
-        ...data,
-        student_email: student.email,
-        scholarship_starts_at: formDateToApi(data.scholarship_starts_at),
-        scholarship_ends_at: formDateToApi(data.scholarship_ends_at),
-        salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
-      }
-
-      const response = await api.scholarship.createScholarship(payload)
-
-      if ([200, 201].includes(response.status)) {
-        toast.success('Bolsa criada com sucesso.')
-        await getStudent()
-      }
+      await api.scholarship.createScholarship(
+        toCreateScholarshipPayload(data, student.email)
+      )
+      toast.success('Bolsa criada com sucesso.')
+      await reloadStudent()
     } catch (error) {
       const message = extractApiMessage(error)
       toast.error(message ? message : 'Ocorreu um erro na criação da bolsa.')
@@ -140,98 +57,56 @@ function AreaDoEstudante() {
   }
 
   const handleDeleteEnrollment = async (enrollmentId: number) => {
-    const response = await api.enrollment.deleteEnrollment(enrollmentId)
-
-    if (response.status === 204) {
+    try {
+      await api.enrollment.deleteEnrollment(enrollmentId)
       toast.success('Matrícula excluída com sucesso.')
-      await getStudent()
-    } else {
-      toast.error(formatApiError(response.status, response.data))
+    } catch (error) {
+      toast.error(`Erro ao excluir a matrícula: ${extractApiMessage(error)}`)
     }
+
+    await reloadStudent()
   }
 
   const handleDeleteScholarship = async (scholarshipId: number) => {
-    const response = await api.scholarship.deleteScholarship(scholarshipId)
-
-    if (response.status === 204) {
+    try {
+      await api.scholarship.deleteScholarship(scholarshipId)
       toast.success('Bolsa excluída com sucesso.')
-      await getStudent()
-    } else {
-      toast.error(formatApiError(response.status, response.data))
-    }
-  }
-
-  const handleUpdateEnrollment = async (data: EdicaoMatriculaSubmitValues) => {
-    try {
-      const updateEnrollment = api.enrollment.updateEnrollment(
-        data.enrollment_id,
-        {
-          advisor_email: data.advisor_email,
-          student_email: data.student_email,
-          enrollment_program: data.enrollment_program,
-          enrollment_number: data.enrollment_number,
-          enrollment_date: formDateToApi(data.enrollment_date),
-          defense_prediction_date: formDateToApi(data.defense_prediction_date),
-        }
-      )
-      const response = await Promise.all([updateEnrollment])
-
-      if (response.length > 0) {
-        toast.success(
-          'As informações da matrícula foram atualizadas com sucesso.'
-        )
-      }
     } catch (error) {
-      toast.error(`Erro ao atualizar a matrícula: ${extractApiMessage(error)}`)
+      toast.error(`Erro ao excluir a bolsa: ${extractApiMessage(error)}`)
     }
 
-    await getStudent()
+    await reloadStudent()
   }
 
-  const handleUpdateScholarship = async (
-    data: EdicaoBolsaSubmitValues
-  ): Promise<false | void> => {
-    try {
-      const updateScholarship = api.scholarship.updateScholarship(
-        data.scholarship_id,
-        {
-          enrollment_id: data.enrollment_id,
-          student_email: data.student_email,
-          agency_id: data.agency_id,
-          allocation_id: data.allocation_id,
-          scholarship_starts_at: formDateToApi(data.scholarship_starts_at),
-          scholarship_ends_at: formDateToApi(data.scholarship_ends_at),
-          extension_ends_at: formDateToApi(data.extension_ends_at),
-          salary: Number(data.salary.replace(/[^\d,]/g, '').replace(',', '.')),
-        }
-      )
+  const viewEnrollment = useCallback(
+    (enrollment: EnrollmentDetailedWithFullRelations) =>
+      navigate(`${ENROLLMENT_PATH}/${enrollment.id}`),
+    [navigate]
+  )
 
-      const response = await Promise.all([updateScholarship])
+  /** A edição acontece só na página da matrícula, que já abre no formulário. */
+  const editEnrollment = useCallback(
+    (enrollment: EnrollmentDetailedWithFullRelations) =>
+      navigate(`${ENROLLMENT_PATH}/${enrollment.id}`, {
+        state: { startEditing: true },
+      }),
+    [navigate]
+  )
 
-      if (response.length > 0) {
-        toast.success('As informações da bolsa foram atualizadas com sucesso.')
-      }
-    } catch (error) {
-      const message = extractApiMessage(error)
-      toast.error(
-        message ? message : 'Ocorreu um erro na atualização da bolsa.'
-      )
-      return false
-    }
+  const viewScholarship = useCallback(
+    (scholarship: StudentScholarship) =>
+      navigate(`${SCHOLARSHIP_PATH}/${scholarship.id}`),
+    [navigate]
+  )
 
-    await getStudent()
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getAdvisors()
-      await getAgencies()
-      await getAllocations()
-      await getStudent()
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [])
+  /** A edição acontece só na página da bolsa, que já abre no formulário. */
+  const editScholarship = useCallback(
+    (scholarship: StudentScholarship) =>
+      navigate(`${SCHOLARSHIP_PATH}/${scholarship.id}`, {
+        state: { startEditing: true },
+      }),
+    [navigate]
+  )
 
   return (
     <AreaDoEstudanteView
@@ -242,9 +117,11 @@ function AreaDoEstudante() {
       allocations={allocations}
       onCreateNewEnrollment={handleCreateNewEnrollment}
       onCreateNewScholarship={handleCreateNewScholarship}
-      onUpdateEnrollment={handleUpdateEnrollment}
-      onUpdateScholarship={handleUpdateScholarship}
+      onViewEnrollment={viewEnrollment}
+      onEditEnrollment={editEnrollment}
       onDeleteEnrollment={handleDeleteEnrollment}
+      onViewScholarship={viewScholarship}
+      onEditScholarship={editScholarship}
       onDeleteScholarship={handleDeleteScholarship}
     />
   )

@@ -1,79 +1,31 @@
 import { useMemo, useState } from 'react'
-import { ActionIconButton } from '@/components/action-icon-button'
-import { Pencil, Trash2 } from 'lucide-react'
 import { DataTable } from '@/components/data-table'
 import type { DataTableColumn } from '@/components/data-table/data-table.type'
+import { DialogExclusaoBolsaEstudante } from '@/components/dialog-exclusao-bolsa-estudante'
 import { formatBrazilianCurrency, formatCalendarDate } from '@/helpers/formatters.helper'
+import {
+  listStudentScholarships,
+  type StudentScholarship,
+} from '@/helpers/student-records.helper'
 import { CustomChip } from '@/components'
-import { DialogExclusaoBolsa } from './dialog-exclusao-bolsa'
-import { DialogEdicaoBolsa } from './dialog-edicao-bolsa'
-import type { EdicaoBolsaSubmitValues } from './dialog-edicao-bolsa'
-import type {
-  EnrollmentProgram,
-  IdentifiedFilterOption,
-  ScholarshipDetailedWithFullRelations,
-  StudentDetailedWithFullRelations
-} from '@/types'
+import { MenuAcoesBolsaEstudante } from './menu-acoes-bolsa-estudante'
+import type { StudentDetailedWithFullRelations } from '@/types'
 
 const NOT_INFORMED = 'Não informado'
 
-export interface BolsaRow extends ScholarshipDetailedWithFullRelations {
-  student_id: number
-  student_email: string
-  enrollment_id: number
-  enrollment_number: string
-  enrollment_program: EnrollmentProgram
-}
+type BolsaRow = StudentScholarship
 
 export interface DataGridBolsasProps {
   data: StudentDetailedWithFullRelations
-  agencies: IdentifiedFilterOption[]
-  allocations: IdentifiedFilterOption[]
-  onUpdate: (data: EdicaoBolsaSubmitValues) => Promise<false | void>
+  onView: (scholarship: BolsaRow) => void
+  onEdit: (scholarship: BolsaRow) => void
   onDelete: (scholarshipId: number) => void
 }
 
-function DataGridBolsas(props: DataGridBolsasProps) {
-  const { data } = props
-
-  const scholarships = useMemo<BolsaRow[]>(
-    () =>
-      data.enrollments.flatMap(enrollment =>
-        enrollment.scholarships.map(scholarship => ({
-          ...scholarship,
-          student_id: data.id,
-          student_email: data.email,
-          enrollment_id: enrollment.id,
-          enrollment_number: enrollment.enrollment_number.trim(),
-          enrollment_program: enrollment.enrollment_program,
-        }))
-      ),
-    [data]
-  )
-
-  const [selectedScholarship, setSelectedScholarship] = useState<BolsaRow | null>(null)
-  const [isDialogForScholarshipUpdateOpen, setIsDialogForScholarshipUpdateOpen] = useState(false)
-  const [isDialogForScholarshipDeleteOpen, setIsDialogForScholarshipDeleteOpen] = useState(false)
-
-  const handleDialogForUpdateClose = () => {
-    setSelectedScholarship(null)
-    setIsDialogForScholarshipUpdateOpen(false)
-  }
-
-  const handleDialogForUpdateOpen = (value: BolsaRow) => {
-    setSelectedScholarship(value)
-    setIsDialogForScholarshipUpdateOpen(true)
-  }
-
-  const handleDialogForDeleteClose = () => {
-    setSelectedScholarship(null)
-    setIsDialogForScholarshipDeleteOpen(false)
-  }
-
-  const handleDialogForDeleteOpen = (value: BolsaRow) => {
-    setSelectedScholarship(value)
-    setIsDialogForScholarshipDeleteOpen(true)
-  }
+function DataGridBolsas({ data, onView, onEdit, onDelete }: DataGridBolsasProps) {
+  const scholarships = useMemo(() => listStudentScholarships(data), [data])
+  const [deletingScholarship, setDeletingScholarship] =
+    useState<BolsaRow | null>(null)
 
   const columns = useMemo<DataTableColumn<BolsaRow>[]>(
     () => [
@@ -146,47 +98,30 @@ function DataGridBolsas(props: DataGridBolsasProps) {
       {
         id: 'actions',
         header: 'Ações',
-        width: 180,
+        width: 96,
         cell: (row) => (
-          <div className="flex items-center gap-x-2 overflow-auto">
-            <ActionIconButton
-              label="Editar Bolsa"
-              icon={Pencil}
-              onClick={() => handleDialogForUpdateOpen(row)}
-            />
-            <ActionIconButton
-              label="Excluir Bolsa"
-              icon={Trash2}
-              onClick={() => handleDialogForDeleteOpen(row)}
-            />
-          </div>
+          <MenuAcoesBolsaEstudante
+            scholarship={row}
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={setDeletingScholarship}
+          />
         )
       }
     ],
-    []
+    [onView, onEdit]
   )
 
   return (
     <div>
       <DataTable data={scholarships} columns={columns} csvFileName="bolsas" />
 
-      {selectedScholarship && (
-        <DialogEdicaoBolsa
-          onSubmit={props.onUpdate}
-          item={selectedScholarship}
-          agencies={props.agencies}
-          allocations={props.allocations}
-          isOpen={isDialogForScholarshipUpdateOpen}
-          onClose={handleDialogForUpdateClose}
-        />
-      )}
-
-      {selectedScholarship && (
-        <DialogExclusaoBolsa
-          onSubmit={props.onDelete}
-          item={selectedScholarship}
-          isOpen={isDialogForScholarshipDeleteOpen}
-          onClose={handleDialogForDeleteClose}
+      {deletingScholarship && (
+        <DialogExclusaoBolsaEstudante
+          onSubmit={onDelete}
+          item={deletingScholarship}
+          isOpen={Boolean(deletingScholarship)}
+          onClose={() => setDeletingScholarship(null)}
         />
       )}
     </div>

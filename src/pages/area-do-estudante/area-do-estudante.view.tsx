@@ -12,12 +12,12 @@ import Loading from '@/components/loading'
 import { DialogInclusaoMatricula } from './components/dialog-inclusao-matricula'
 import type { InclusaoMatriculaFormValues } from './components/dialog-inclusao-matricula'
 import { DataGridBolsas } from './components/data-grid-bolsas'
-import type { EdicaoBolsaSubmitValues } from './components/dialog-edicao-bolsa'
 import { DataGridMatriculas } from './components/data-grid-matriculas'
-import type { EdicaoMatriculaSubmitValues } from './components/dialog-edicao-matricula'
-import type { InclusaoBolsaSubmitValues } from './components/dialog-inclusao-bolsa'
+import type { InclusaoBolsaSubmitValues } from '@/components/dialog-inclusao-bolsa'
+import type { StudentScholarship } from '@/helpers/student-records.helper'
 import type {
   AdvisorFilterOption,
+  EnrollmentDetailedWithFullRelations,
   IdentifiedFilterOption,
   StudentDetailedWithFullRelations
 } from '@/types'
@@ -33,9 +33,11 @@ export interface AreaDoEstudanteViewProps {
   student: StudentDetailedWithFullRelations | null
   onCreateNewEnrollment: (data: InclusaoMatriculaFormValues) => void
   onCreateNewScholarship: (data: InclusaoBolsaSubmitValues) => void
-  onUpdateEnrollment: (data: EdicaoMatriculaSubmitValues) => void
-  onUpdateScholarship: (data: EdicaoBolsaSubmitValues) => Promise<false | void>
+  onViewEnrollment: (enrollment: EnrollmentDetailedWithFullRelations) => void
+  onEditEnrollment: (enrollment: EnrollmentDetailedWithFullRelations) => void
   onDeleteEnrollment: (enrollmentId: number) => void
+  onViewScholarship: (scholarship: StudentScholarship) => void
+  onEditScholarship: (scholarship: StudentScholarship) => void
   onDeleteScholarship: (scholarshipId: number) => void
 }
 
@@ -85,10 +87,27 @@ function AreaDoEstudanteView(props: AreaDoEstudanteViewProps) {
         }
       />
       <h3 className="text-xl font-medium text-gray-900">Matrículas</h3>
-      {props.isLoading ? <Loading /> : props.student && <DataGridMatriculas data={props.student} agencies={props.agencies} allocations={props.allocations} advisors={props.advisors} onCreateScholarship={props.onCreateNewScholarship} onUpdate={props.onUpdateEnrollment} onDelete={props.onDeleteEnrollment} />}
+      {props.isLoading ? <Loading /> : props.student && (
+        <DataGridMatriculas
+          data={props.student}
+          agencies={props.agencies}
+          allocations={props.allocations}
+          onCreateScholarship={props.onCreateNewScholarship}
+          onView={props.onViewEnrollment}
+          onEdit={props.onEditEnrollment}
+          onDelete={props.onDeleteEnrollment}
+        />
+      )}
 
       <h3 className="text-xl font-medium text-gray-900">Bolsas</h3>
-      {props.isLoading ? <Loading /> : props.student && <DataGridBolsas data={props.student} agencies={props.agencies} allocations={props.allocations} onUpdate={props.onUpdateScholarship} onDelete={props.onDeleteScholarship} />}
+      {props.isLoading ? <Loading /> : props.student && (
+        <DataGridBolsas
+          data={props.student}
+          onView={props.onViewScholarship}
+          onEdit={props.onEditScholarship}
+          onDelete={props.onDeleteScholarship}
+        />
+      )}
 
       {isDialogForCreateEnrollmentOpen && (
         <DialogInclusaoMatricula

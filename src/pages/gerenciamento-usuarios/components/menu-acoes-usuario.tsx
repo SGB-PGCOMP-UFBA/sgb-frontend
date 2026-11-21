@@ -1,9 +1,18 @@
-import { Eye, Pencil, Trash2, UserCheck, UserX } from 'lucide-react'
+import {
+  Eye,
+  Pencil,
+  ShieldCheck,
+  ShieldOff,
+  Trash2,
+  UserCheck,
+  UserX,
+} from 'lucide-react'
 import {
   ActionMenu,
   ActionMenuItem,
   ActionMenuSeparator,
 } from '@/components/action-menu'
+import { isAdvisorRole } from '@/helpers/managed-user.helper'
 import type { ManagedUser } from '@/types'
 
 export interface MenuAcoesUsuarioProps {
@@ -12,6 +21,7 @@ export interface MenuAcoesUsuarioProps {
   onView: (user: ManagedUser) => void
   onEdit: (user: ManagedUser) => void
   onToggleStatus: (user: ManagedUser) => void
+  onToggleAdminPrivileges: (user: ManagedUser) => void
   onDelete: (user: ManagedUser) => void
 }
 
@@ -21,9 +31,11 @@ function MenuAcoesUsuario({
   onView,
   onEdit,
   onToggleStatus,
+  onToggleAdminPrivileges,
   onDelete,
 }: MenuAcoesUsuarioProps) {
   const isActive = user.status === 'ACTIVE'
+  const isAdmin = user.role === 'ADVISOR_WITH_ADMIN_PRIVILEGES'
 
   return (
     <ActionMenu label={`Ações para ${user.name}`}>
@@ -44,6 +56,18 @@ function MenuAcoesUsuario({
           label={isActive ? 'Inativar' : 'Ativar'}
           disabledReason={disabledReason}
           onSelect={() => onToggleStatus(user)}
+        />
+      )}
+      {isAdvisorRole(user.role) && (
+        <ActionMenuItem
+          icon={isAdmin ? ShieldOff : ShieldCheck}
+          label={
+            isAdmin
+              ? 'Desabilitar perfil de administrador'
+              : 'Habilitar perfil de administrador'
+          }
+          disabledReason={disabledReason}
+          onSelect={() => onToggleAdminPrivileges(user)}
         />
       )}
       <ActionMenuSeparator />

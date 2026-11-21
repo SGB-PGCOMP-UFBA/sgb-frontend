@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { api } from '@/services'
 import { formatApiError } from '@/helpers/api-error.helper'
 import { GerenciamentoAlocacoesView } from './gerenciamento-alocacoes.view'
 import type { InclusaoAlocacaoFormValues } from './components/dialog-inclusao-alocacao'
-import type { UpdateAllocationPayload } from '@/services/allocation'
 import type { AllocationDetailed } from '@/types'
 
 function GerenciamentoAlocacoes() {
+  const navigate = useNavigate()
   const [allocations, setAllocations] = useState<AllocationDetailed[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -33,17 +34,20 @@ function GerenciamentoAlocacoes() {
     await getAllocations()
   }
 
-  const updateAllocation = async (allocationId: number, allocation: UpdateAllocationPayload) => {
-    const response = await api.allocation.updateAllocation(allocationId, allocation)
+  const viewAllocation = useCallback(
+    (allocation: AllocationDetailed) =>
+      navigate(`/alocacoes/${allocation.id}`),
+    [navigate]
+  )
 
-    if (response.status === 200) {
-      toast.success('Alocação atualizada com sucesso.')
-    } else {
-      toast.error(formatApiError(response.status, response.data))
-    }
-
-    await getAllocations()
-  }
+  /** A edição acontece só na página da alocação, que já abre no formulário. */
+  const editAllocation = useCallback(
+    (allocation: AllocationDetailed) =>
+      navigate(`/alocacoes/${allocation.id}`, {
+        state: { startEditing: true },
+      }),
+    [navigate]
+  )
 
   const deleteAllocation = async (allocation: number) => {
     const response = await api.allocation.deleteAllocation(allocation)
@@ -66,7 +70,8 @@ function GerenciamentoAlocacoes() {
       isLoading={isLoading}
       data={allocations}
       onCreate={createAllocation}
-      onUpdate={updateAllocation}
+      onView={viewAllocation}
+      onEdit={editAllocation}
       onDelete={deleteAllocation}
     />
   )
